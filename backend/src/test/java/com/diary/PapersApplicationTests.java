@@ -1,4 +1,4 @@
-package com.diary.PapersApplication;
+package com.diary;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
