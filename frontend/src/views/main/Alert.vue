@@ -3,9 +3,92 @@
         <div class="Alert_List">
             <div class="Alert_Day">오늘</div>
             <div class="Alert_Item">
-                <div class="Item_Profile"></div>
-                <div class="Item_Content"></div>
-                <div class="Item_Time"></div>
+                <div class="Item_Profile">
+                    <img src="../../assets/image/user.png" class="Profile_img"/>
+                </div>
+                <div class="Item_Content">
+                    싸피님이 '여행 기록 일기장'에 일기를 작성했습니다.
+                </div>
+                <div class="Item_Time">
+                    오후 7시 21분
+                </div>
+            </div>
+            <div class="Alert_Item">
+                <div class="Item_Profile">
+                    <img src="../../assets/image/user.png" class="Profile_img"/>
+                </div>
+                <div class="Item_Content">
+                    싸피님이 '여행 기록 일기장'에 일기를 작성했습니다.
+                </div>
+                <div class="Item_Time">
+                    오후 7시 21분
+                </div>
+            </div>
+            <div class="Alert_Item">
+                <div class="Item_Profile">
+                    <img src="../../assets/image/user.png" class="Profile_img"/>
+                </div>
+                <div class="Item_Content">
+                    싸피님이 '여행 기록 일기장'에 일기를 작성했습니다.
+                </div>
+                <div class="Item_Time">
+                    오후 7시 21분
+                </div>
+            </div>
+            <div class="Alert_Item">
+                <div class="Item_Profile">
+                    <img src="../../assets/image/user.png" class="Profile_img"/>
+                </div>
+                <div class="Item_Content">
+                    싸피님이 '여행 기록 일기장'에 일기를 작성했습니다.
+                </div>
+                <div class="Item_Time">
+                    오후 7시 21분
+                </div>
+            </div>
+            <div class="Alert_Item">
+                <div class="Item_Profile">
+                    <img src="../../assets/image/user.png" class="Profile_img"/>
+                </div>
+                <div class="Item_Content">
+                    싸피님이 '여행 기록 일기장'에 일기를 작성했습니다.
+                </div>
+                <div class="Item_Time">
+                    오후 7시 21분
+                </div>
+            </div>
+            <div class="Alert_Item">
+                <div class="Item_Profile">
+                    <img src="../../assets/image/user.png" class="Profile_img"/>
+                </div>
+                <div class="Item_Content">
+                    싸피님이 '여행 기록 일기장'에 일기를 작성했습니다.
+                </div>
+                <div class="Item_Time">
+                    오후 7시 21분
+                </div>
+            </div>
+            <div class="Alert_Item">
+                <div class="Item_Profile">
+                    <img src="../../assets/image/user.png" class="Profile_img"/>
+                </div>
+                <div class="Item_Content">
+                    싸피님이 '여행 기록 일기장'에 일기를 작성했습니다.
+                </div>
+                <div class="Item_Time">
+                    오후 7시 21분
+                </div>
+            </div>
+            <div class="Alert_Item">
+                <div class="Item_Profile">
+                    <img src="../../assets/image/user.png" class="Profile_img"/>
+                </div>
+                <div class="Item_Content">
+                    싸피님이 '여행 기록 일기장'에 일기를 작성했습니다.
+                </div>
+                <div class="Item_Time">
+                    오후 7시 21분
+                </div>
             </div>
         </div>
     </div>
@@ -43,17 +126,34 @@ export default {
     border-radius: 15px;
     box-shadow: 1px 1px 3px grey;
     margin:0 auto;
-    margin-top:15px;
+    margin-top:10px;
     line-height:75px;
 }
 .Item_Profile{
-    /* height:45px; */
-    /* width:45px; */
+    height:75px;
+    width:100px;
+    display: inline-block;
+    overflow: hidden;
+}
+.Profile_img{
+    width:45px;
+    height:45px;
+    margin-left:27.5px;
+    margin-top:15px;
 }
 .Item_Content{
-    /* border:1px solid blue; */
+    height:75px;
+    width:398px;
+    display: inline-block;
+    overflow: hidden;
+    font-size:15px;
 }
 .Item_Time{
-    /* border:1px solid blue; */
+    height:75px;
+    width:100px;
+    display: inline-block;
+    overflow: hidden;
+    font-size:15px;
+    color:grey;
 }
 </style>

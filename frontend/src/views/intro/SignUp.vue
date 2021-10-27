@@ -14,6 +14,7 @@
                 <v-text-field 
                 class="SignUp_Input" 
                 label="ID"
+                color="#FFB319"
                 :rules="rules"></v-text-field>
             </div>
             <div>
@@ -21,6 +22,7 @@
                 class="SignUp_Input" 
                 type="password" 
                 label="PW"
+                color="#FFB319"
                 :rules="rules"></v-text-field>
             </div>
             <div>
@@ -28,6 +30,7 @@
                 class="SignUp_Input" 
                 type="password" 
                 label="NAME"
+                color="#FFB319"
                 :rules="rules"></v-text-field>
             </div>
             <v-btn

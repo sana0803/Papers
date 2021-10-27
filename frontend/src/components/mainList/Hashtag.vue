@@ -59,16 +59,16 @@ export default {
 }
 #Hastag_List{
     text-align: center;
-    margin-top:14px;
+    margin-top:24px;
     height:200px;
 }
 .Hashtag_Item{
-    background:rgb(231, 231, 231);
+    background:#F6F6F6;
     border-radius: 15px;
-    padding:5px 5px 5px 5px;
     height:35px;
+    line-height: 35px;
+    padding:0 11px;
     font-size:18px;
-    line-height:23px;
     margin:10px;
     display: inline-block;
     cursor:pointer;
