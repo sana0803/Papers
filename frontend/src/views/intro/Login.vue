@@ -33,6 +33,7 @@
                     <v-text-field 
                     class="Login_Input" 
                     label="ID"
+                    color="#FFB319"
                     :rules="rules"></v-text-field>
                 </div>
                 <div>
@@ -40,6 +41,7 @@
                     class="Login_Input" 
                     type="password" 
                     label="PW"
+                    color="#FFB319"
                     :rules="rules"></v-text-field>
                 </div>
                 <v-btn

@@ -7,7 +7,7 @@
             <v-icon @click="goAlert" style="font-size:3.0em">notifications</v-icon>
         </div>
         <div id="Header_Profile">
-            <v-icon style="font-size:3.0em">account_circle</v-icon>
+            <img @click="goMyPage" id="Profile_img" src="../assets/image/user.png" />
         </div>
     </div>
 </template>
@@ -24,6 +24,9 @@ export default {
         },
         goAlert() {
             this.$router.push('alert')
+        },
+        goMyPage() {
+            this.$router.push('myPage')
         }
     }
 }
@@ -63,8 +66,12 @@ export default {
 }
 #Header_Profile{
     margin-right:15px;
-    line-height:7.5vh;
     float:right;
     cursor: pointer;
+}
+#Profile_img{
+    width:3.0em;
+    height:3.0em;
+    margin-top:13px;
 }
 </style>

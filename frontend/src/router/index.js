@@ -26,7 +26,8 @@ const routes = [
     redirect: 'main/mainList',
     children:[
       {path: 'mainList', component: () => import('../views/main/MainList.vue')},
-      {path: 'alert', component: () => import('../views/main/Alert.vue')}
+      {path: 'alert', component: () => import('../views/main/Alert.vue')},
+      {path: 'myPage', component: () => import('../views/main/MyPage.vue')}
     ]
   },
   {
