@@ -34,8 +34,8 @@
                 :rules="rules"></v-text-field>
             </div>
             <v-btn
-            @click="signUp"
-            id="SignUp_Btn"
+                @click="signUp"
+                id="SignUp_Btn"
             >회원가입</v-btn>
         </div>
     </div>

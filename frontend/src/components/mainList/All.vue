@@ -34,7 +34,7 @@ export default {
     margin-bottom:31px;
     margin-left:31px;
     background:peachpuff;
-    box-shadow: 1px 1px 10px grey;
+    box-shadow: 3px 3px 11px rgba(166, 166, 168, 0.25);
     overflow:hidden
 }
 </style>

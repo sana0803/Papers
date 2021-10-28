@@ -49,9 +49,9 @@
                 id="Login_Btn"
                 >로그인</v-btn>
                 <v-btn
-                id="GoSignUp_Btn"
-                @click="goSignUp"
-                text
+                    id="GoSignUp_Btn"
+                    @click="goSignUp"
+                    text
                 >
                 처음이신가요?&nbsp;&nbsp; >
                 </v-btn>
@@ -171,6 +171,7 @@ export default {
     top:30px;
 }
 #GoSignUp_Btn{
+    width:200px;
     position:relative;
     top:50px;
     font-size:18px;
@@ -192,7 +193,6 @@ export default {
   width: 100%;
   height: 100%;
 }
-
 #page1 {
   z-index: 1;
   transform-origin: left center;

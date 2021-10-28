@@ -2,6 +2,7 @@
     <div id="Main_Container">
         <!-- Header -->
         <Header></Header>
+        <div style="height:7.5vh" />
         <router-view />
     </div>
 </template>
@@ -21,6 +22,6 @@ export default {
     border-left:1px solid lightgrey;
     margin:0 auto;
     width:1272px;
-    height:100vh;
+    height:100%;
 }
 </style>
