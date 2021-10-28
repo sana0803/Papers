@@ -10,9 +10,15 @@ import javax.persistence.*;
 @Entity
 public class User {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
     String userId;
-    String password;
-    String jwtToken;
+    String userPwd;
+    String userName;
+    int userMileage;
+    String userNickname;
+    String userProfile;
+
+    @PrePersist
+    public void setUp(){
+        this.userMileage = 0;
+    }
 }

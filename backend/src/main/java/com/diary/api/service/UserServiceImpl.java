@@ -22,7 +22,7 @@ public class UserServiceImpl implements UserService{
         User user = new User();
         user.setUserId(userId);
 //        user.setPassword(passwordEncoder.encode(password));
-        user.setPassword(password);
+        user.setUserPwd(password);
         return userRepository.save(user);
 
     }
