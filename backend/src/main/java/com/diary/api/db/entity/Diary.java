@@ -10,21 +10,19 @@ import java.time.LocalDate;
 @Entity
 @Getter
 @Setter
-@Table(name = "Diary")
-public class Diary {
+public class Diary extends BaseEntity{
 
-    @Id
-    @Column(name = "diary_id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long diaryId;
 
-    @Column(name = "diary_title")
     private String diaryTitle;
 
-    @Column(name = "diary_desc")
     private String diaryDesc;
 
-    @Column(name = "diary_created_date")
     private LocalDate diaryCreatedDate;
 
+    @PrePersist
+    public void setUp(){
+        this.diaryId = super.id;
+        this.diaryCreatedDate = LocalDate.now();
+    }
 }
