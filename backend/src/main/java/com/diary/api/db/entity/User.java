@@ -10,15 +10,15 @@ import javax.persistence.*;
 @Entity
 public class User {
     @Id
-    String userId;
-    String userPwd;
-    String userName;
-    int userMileage;
-    String userNickname;
-    String userProfile;
+    private String userId;
+    private String userPwd;
+    private String userName;
+    private int userMileage;
+    private String userNickname;
+    private String userProfile;
 
     @PrePersist
     public void setUp(){
-        this.userMileage = 0;
+        this.userMileage = 50;
     }
 }
