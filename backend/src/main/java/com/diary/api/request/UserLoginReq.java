@@ -5,7 +5,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class UserReq {
+public class UserLoginReq {
     String userId;
-    String password;
+    String userPwd;
 }

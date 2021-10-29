@@ -1,7 +1,7 @@
 package com.diary.config;
 
 import com.diary.common.auth.JwtAuthenticationFilter;
-import com.diary.common.auth.SsafyUserDetailService;
+import com.diary.common.auth.PapersUserDetailService;
 import com.diary.api.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -21,7 +21,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
-    private SsafyUserDetailService ssafyUserDetailService;
+    private PapersUserDetailService ssafyUserDetailService;
 
     @Autowired
     private UserService userService;
