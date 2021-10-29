@@ -14,11 +14,11 @@ public class UserDiary extends BaseEntity{
     private String guestId;
 
     @ManyToOne
-    @JoinColumn(name = "diary_id", nullable = false)
-    private Diary diary;
+    @JoinColumn(name = "diaryId", referencedColumnName = "id", nullable = false)
+    Diary diary;
 
     @ManyToOne
-    @JoinColumn(name = "owner_id", referencedColumnName = "userId" ,nullable = false)
-    private User owner;
+    @JoinColumn(name = "ownerId", referencedColumnName = "userId", nullable = false)
+    User owner;
 
 }
