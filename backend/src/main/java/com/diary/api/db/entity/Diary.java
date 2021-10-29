@@ -23,7 +23,7 @@ public class Diary extends BaseEntity {
     User user;
 
     @ManyToOne
-    @JoinColumn(name = "coverId", referencedColumnName = "id", nullable = false)
+    @JoinColumn(name = "coverId", referencedColumnName = "id", nullable = true)
     DiaryCover diaryCover;
 
     @PrePersist

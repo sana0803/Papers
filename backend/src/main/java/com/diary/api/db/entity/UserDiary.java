@@ -11,11 +11,7 @@ import javax.persistence.*;
 @Setter
 public class UserDiary extends BaseEntity{
 
-<<<<<<< HEAD
-    String guestId;
-=======
     private String guestId;
->>>>>>> 6fbbbaaa2d746034028d4f110c5b0193cd4c0d8e
 
     @ManyToOne
     @JoinColumn(name = "diaryId", referencedColumnName = "id", nullable = false)
