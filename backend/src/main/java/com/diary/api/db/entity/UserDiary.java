@@ -11,9 +11,7 @@ import javax.persistence.*;
 @Setter
 public class UserDiary extends BaseEntity{
 
-    Long userDiaryId;
-
-    String guestId;
+    private String guestId;
 
     @ManyToOne
     @JoinColumn(name = "diaryId", referencedColumnName = "id", nullable = false)
@@ -22,9 +20,5 @@ public class UserDiary extends BaseEntity{
     @ManyToOne
     @JoinColumn(name = "ownerId", referencedColumnName = "userId", nullable = false)
     User owner;
-
-    @PrePersist
-    public void setUp(){
-    }
 
 }
