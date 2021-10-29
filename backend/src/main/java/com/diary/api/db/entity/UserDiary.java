@@ -11,21 +11,20 @@ import javax.persistence.*;
 @Setter
 public class UserDiary extends BaseEntity{
 
-    private Long userDiaryId;
+    Long userDiaryId;
 
-    private String guestId;
-
-    @ManyToOne
-    @JoinColumn(name = "diary_id", nullable = false)
-    private Diary diary;
+    String guestId;
 
     @ManyToOne
-    @JoinColumn(name = "owner_id", referencedColumnName = "userId" ,nullable = false)
-    private User owner;
+    @JoinColumn(name = "diaryId", referencedColumnName = "id", nullable = false)
+    Diary diary;
+
+    @ManyToOne
+    @JoinColumn(name = "ownerId", referencedColumnName = "userId", nullable = false)
+    User owner;
 
     @PrePersist
     public void setUp(){
-        this.userDiaryId = super.id;
     }
 
 }

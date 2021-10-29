@@ -12,15 +12,19 @@ import java.time.LocalDate;
 @Setter
 public class Diary extends BaseEntity {
 
-    private String diaryTitle;
+    String diaryTitle;
 
-    private String diaryDesc;
+    String diaryDesc;
 
-    private LocalDate diaryCreatedDate;
+    LocalDate diaryCreatedDate;
 
     @ManyToOne
     @JoinColumn(name = "ownerId", referencedColumnName = "userId", nullable = false)
-    private User user;
+    User user;
+
+    @ManyToOne
+    @JoinColumn(name = "coverId", referencedColumnName = "id", nullable = false)
+    DiaryCover diaryCover;
 
     @PrePersist
     public void setUp(){
