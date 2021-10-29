@@ -11,8 +11,6 @@ import javax.persistence.*;
 @Setter
 public class UserDiary extends BaseEntity{
 
-    Long userDiaryId;
-
     String guestId;
 
     @ManyToOne
@@ -21,7 +19,7 @@ public class UserDiary extends BaseEntity{
 
     @ManyToOne
     @JoinColumn(name = "ownerId", referencedColumnName = "userId", nullable = false)
-    User owner;
+    User user;
 
     @PrePersist
     public void setUp(){
