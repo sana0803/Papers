@@ -8,6 +8,7 @@ import com.diary.common.auth.PapersUserDetails;
 import com.diary.api.db.entity.User;
 import com.diary.api.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -22,14 +23,11 @@ public class UserController {
     UserService userService;
 
     @PostMapping()
-    public ResponseEntity signUp(
-            @RequestParam String userId,
-            @RequestParam String userPwd,
-            @RequestParam String userName,
-            @RequestParam String userNickname
-    ) {
-        if (userService.signupUser(new UserSignupReq(userId, userPwd, userName, userNickname)))
-            return ResponseEntity.ok().build();
+    public ResponseEntity signup(@RequestBody UserSignupReq userSignupReq) {
+        if (userService.getUserByUserId(userSignupReq.getUserId()) != null)
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(BaseResponseBody.of(409, "이미 가입된 회원"));
+        if (userService.signupUser(userSignupReq))
+            return ResponseEntity.ok().body(BaseResponseBody.of(200, "회원가입 성공"));
         return ResponseEntity.status(401).body(BaseResponseBody.of(401, "회원가입 실패"));
     }
 

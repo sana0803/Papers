@@ -20,6 +20,7 @@ import java.util.List;
 
 @Service("userService")
 public class UserServiceImpl implements UserService{
+    final String DEFAULT_PROFILE_URL = "https://papers-bucket.s3.ap-northeast-2.amazonaws.com/profile/default-profile.png";
 
     @Autowired
     PasswordEncoder passwordEncoder;
@@ -46,24 +47,22 @@ public class UserServiceImpl implements UserService{
         }
         User user = new User();
         user.setUserId(userSignupReq.getUserId());
-
-        String encryptedPwd = passwordEncoder.encode(userSignupReq.getUserPwd());
-        System.out.println(encryptedPwd);
-
-        user.setUserPwd(encryptedPwd);
+        user.setUserPwd(passwordEncoder.encode(userSignupReq.getUserPwd()));
         user.setUserName(userSignupReq.getUserName());
         user.setUserNickname(userSignupReq.getUserNickname());
-        user.setUserProfile("test");
+        user.setUserProfile(DEFAULT_PROFILE_URL);
 
-        System.out.println(userSignupReq.getUserName());
-
-        if (userRepository.save(user) == null) return false;
+        if (userRepository.save(user) == null)
+            return false;
         return true;
     }
 
     @Override
     public User getUserByUserId(String userId) {
-        return userRepository.findByUserId(userId).get();
+        User user = null;
+        if (userRepository.findByUserId(userId).isPresent())
+            user = userRepository.findByUserId(userId).get();
+        return user;
     }
 
     @Override
