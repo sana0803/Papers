@@ -13,6 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service("diaryService")
 public class DiaryServiceImpl implements DiaryService {
@@ -42,5 +44,15 @@ public class DiaryServiceImpl implements DiaryService {
         diary.setDiaryCreatedDate(LocalDate.now());
 
         return DiaryRes.of(diaryRepository.save(diary));
+    }
+
+    // 내 일기장 전체 조회
+
+    // 일기장 한개 조회
+
+    // 일기장 삭제
+    @Override
+    public void deleteDiary(Long id) {
+        diaryRepository.deleteById(id);
     }
 }
