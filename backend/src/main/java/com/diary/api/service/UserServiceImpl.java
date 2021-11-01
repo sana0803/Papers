@@ -1,5 +1,6 @@
 package com.diary.api.service;
 
+import com.diary.api.db.entity.Font;
 import com.diary.api.db.entity.Sticker;
 import com.diary.api.db.entity.User;
 import com.diary.api.db.entity.UserStickerPackage;
@@ -31,6 +32,9 @@ public class UserServiceImpl implements UserService{
 
     @Autowired
     StickerRepository stickerRepository;
+
+    @Autowired
+    FontRepository fontRepository;
 
     @Autowired
     UserStickerPackageRepository userStickerPackageRepository;
@@ -94,6 +98,17 @@ public class UserServiceImpl implements UserService{
             ));
         }
         return stickersResList;
+    }
+
+    @Override
+    public List<Font> getFonts(User user) {
+        List<Font> list = fontRepository.getFonts(user.getUserId());
+        return list;
+//        List<FontRes> fontResList = new ArrayList<>();
+//        for (Font font : list) {
+//            fontResList.add(new FontRes(font));
+//        }
+//        return fontResList;
     }
 
     public List<StickerRes> convertStickerRes (List<Sticker> stickers) {

@@ -1,5 +1,6 @@
 package com.diary.api.controller;
 
+import com.diary.api.db.entity.Font;
 import com.diary.api.request.UserSignupReq;
 import com.diary.api.response.BaseResponseBody;
 import com.diary.api.response.StickerPackagesRes;
@@ -50,4 +51,11 @@ public class UserController {
         return ResponseEntity.ok(userService.getStickers(user));
     }
 
+    @GetMapping("/fonts")
+    public ResponseEntity<List<Font>> getFonts(@ApiIgnore Authentication authentication) {
+        PapersUserDetails userDetails = (PapersUserDetails)authentication.getDetails();
+        User user = userService.getUserByUserId(userDetails.getUsername());
+        if (user == null) return ResponseEntity.notFound().build();
+        return ResponseEntity.ok(userService.getFonts(user));
+    }
 }
