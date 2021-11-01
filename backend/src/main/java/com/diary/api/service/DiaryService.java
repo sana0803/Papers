@@ -14,7 +14,7 @@ public interface DiaryService {
     // 일기장 수정
     DiaryRes updateDiary(Long id, DiaryReq diaryReq);
     // 일기장 전체 조회
-    List<Diary> getDiaryList(String ownerId);
+    List<DiaryRes> getDiaryList(String ownerId);
     // 일기장 한개 조회
     List<NoteRes> getDiary(Long id);
     // 일기장 삭제

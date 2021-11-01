@@ -77,7 +77,7 @@ public class DiaryController {
             @ApiResponse(code = 401, message = "일기장 조회 실패"),
             @ApiResponse(code = 500, message = "인증 오류")
     })
-    public ResponseEntity<List<Diary>> getUserDiary(@PathVariable String userId) {
+    public ResponseEntity<List<DiaryRes>> getUserDiary(@PathVariable String userId) {
 
         return ResponseEntity.status(200).body(diaryService.getDiaryList(userId));
     }

@@ -66,10 +66,17 @@ public class DiaryServiceImpl implements DiaryService {
 
     // 내 일기장 전체 조회
     @Override
-    public List<Diary> getDiaryList(String ownerId) {
-        System.out.println(diaryRepository.findAllByUser(ownerId));
-        return diaryRepository.findAllByUser(ownerId);
+    public List<DiaryRes> getDiaryList(String userId) {
+        List<DiaryRes> diaryResList = null;
+        User ownerId = userService.getUserByUserId(userId);
+        List<Diary> diaryList = diaryRepository.findAllByUser(ownerId);
+
+        if (diaryList.size() != 0) {
+            diaryResList = convertToDiaryRes(diaryList);
+        }
+        return diaryResList;
     }
+
     // 일기장 한개 조회
     @Override
     public List<NoteRes> getDiary(Long id) {
@@ -80,5 +87,21 @@ public class DiaryServiceImpl implements DiaryService {
     @Override
     public void deleteDiary(Long id) {
         diaryRepository.deleteById(id);
+    }
+
+    // 일기장을 필요정보만 리턴
+    public List<DiaryRes> convertToDiaryRes(List<Diary> diaries) {
+        List<DiaryRes> diaryResList = new ArrayList<>();
+        for (Diary diary : diaries) {
+            diaryResList.add(new DiaryRes(
+                    diary.getId(),
+                    diary.getDiaryCover().getId(),
+                    diary.getDiaryTitle(),
+                    diary.getDiaryDesc(),
+                    diary.getUser().getUserId(),
+                    diary.getDiaryCreatedDate()
+            ));
+        }
+        return diaryResList;
     }
 }
