@@ -2,7 +2,7 @@
     <div id="Header_Container">
         <div @click="goHome" id="Header_Title">PAPERS</div>
         <div id="Header_Album">내 앨범</div>
-        <div id="Header_Store">상점</div>
+        <div @click="goStore" id="Header_Store">상점</div>
         <div id="Header_Alarm">
             <v-icon @click="goAlert" style="font-size:3.0em">notifications</v-icon>
         </div>
@@ -30,6 +30,9 @@ export default {
     methods: {
         goHome() {
             this.$router.push('/main')
+        },
+        goStore() {
+            this.$router.push('store')
         },
         goAlert() {
             this.$router.push('alert')

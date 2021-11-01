@@ -21,11 +21,9 @@ export default {
 
 <style lang="scss" scoped>
 #Write_Container{
-    height:100vh;
+    height:100%;
 }
 #Write_Main{
-    width:79.5%;
-    float:right;
     height:100%;
     display:flex;
     justify-content: center;

@@ -1,7 +1,7 @@
 <template>
     <div id="MainList_Out">
         <v-btn
-            v-if="MainListMode=='list'"
+            v-if="mainListMode=='list'"
             id="Templete_Btn"
             @click="goTemplete"
             fab
@@ -22,16 +22,16 @@
                 <div @click="select('hashtag')" id="hashtag" class="Head_Item">해시태그</div>
             </div>
             <div id="MainList_Content">
-                <div v-if="MainListMode=='list'">
+                <div v-if="mainListMode=='list'">
                     <All />
                 </div>
-                <div v-if="MainListMode=='diary'">
+                <div v-if="mainListMode=='diary'">
                     <Diary />
                 </div>
-                <div v-if="MainListMode=='calender'">
+                <div v-if="mainListMode=='calender'">
                     <Calender />
                 </div>
-                <div v-if="MainListMode=='hashtag'">
+                <div v-if="mainListMode=='hashtag'">
                     <Hashtag />
                 </div>
             </div>
@@ -48,7 +48,7 @@ import Hashtag from '../../components/mainList/Hashtag.vue'
 export default {
     data() {
         return {
-            MainListMode: 'list'
+            mainListMode: 'list'
         }
     },
     components:{
@@ -59,7 +59,7 @@ export default {
     },
     methods: {
         select(target) {
-            this.MainListMode = target
+            this.mainListMode = target
             var tar = document.getElementById(target)
 
             var arr = [
