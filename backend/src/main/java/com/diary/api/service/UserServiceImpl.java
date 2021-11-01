@@ -1,5 +1,6 @@
 package com.diary.api.service;
 
+import com.diary.api.db.entity.Font;
 import com.diary.api.db.entity.Sticker;
 import com.diary.api.db.entity.User;
 import com.diary.api.db.entity.UserStickerPackage;
@@ -19,6 +20,7 @@ import java.util.List;
 
 @Service("userService")
 public class UserServiceImpl implements UserService{
+    final String DEFAULT_PROFILE_URL = "https://papers-bucket.s3.ap-northeast-2.amazonaws.com/profile/default-profile.png";
 
     @Autowired
     PasswordEncoder passwordEncoder;
@@ -33,6 +35,9 @@ public class UserServiceImpl implements UserService{
     StickerRepository stickerRepository;
 
     @Autowired
+    FontRepository fontRepository;
+
+    @Autowired
     UserStickerPackageRepository userStickerPackageRepository;
 
     @Override
@@ -42,24 +47,22 @@ public class UserServiceImpl implements UserService{
         }
         User user = new User();
         user.setUserId(userSignupReq.getUserId());
-
-        String encryptedPwd = passwordEncoder.encode(userSignupReq.getUserPwd());
-        System.out.println(encryptedPwd);
-
-        user.setUserPwd(encryptedPwd);
+        user.setUserPwd(passwordEncoder.encode(userSignupReq.getUserPwd()));
         user.setUserName(userSignupReq.getUserName());
         user.setUserNickname(userSignupReq.getUserNickname());
-        user.setUserProfile("test");
+        user.setUserProfile(DEFAULT_PROFILE_URL);
 
-        System.out.println(userSignupReq.getUserName());
-
-        if (userRepository.save(user) == null) return false;
+        if (userRepository.save(user) == null)
+            return false;
         return true;
     }
 
     @Override
     public User getUserByUserId(String userId) {
-        return userRepository.findByUserId(userId).get();
+        User user = null;
+        if (userRepository.findByUserId(userId).isPresent())
+            user = userRepository.findByUserId(userId).get();
+        return user;
     }
 
     @Override
@@ -94,6 +97,17 @@ public class UserServiceImpl implements UserService{
             ));
         }
         return stickersResList;
+    }
+
+    @Override
+    public List<Font> getFonts(User user) {
+        List<Font> list = fontRepository.getFonts(user.getUserId());
+        return list;
+//        List<FontRes> fontResList = new ArrayList<>();
+//        for (Font font : list) {
+//            fontResList.add(new FontRes(font));
+//        }
+//        return fontResList;
     }
 
     public List<StickerRes> convertStickerRes (List<Sticker> stickers) {
