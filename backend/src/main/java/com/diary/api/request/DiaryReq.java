@@ -9,8 +9,8 @@ import lombok.Setter;
 @Setter
 @ApiModel("DiaryRegisterRequest")
 public class DiaryReq {
-//    @ApiModelProperty(name = "일기장 커버", example = "1")
-//    Long coverId;
+    @ApiModelProperty(name = "일기장 커버", example = "1")
+    Long coverId;
 
     @ApiModelProperty(name = "일기장 제목", example = "싸피 일기장")
     String diaryTitle;
@@ -21,10 +21,10 @@ public class DiaryReq {
     @ApiModelProperty(name = "유저 id", example = "ssafy")
     String ownerId;
 
-    public static DiaryReq of(String diaryTitle, String diaryDesc, String ownerId) {
+    public static DiaryReq of(Long coverId, String diaryTitle, String diaryDesc, String ownerId) {
         DiaryReq diaryReq = new DiaryReq();
 
-//        diaryReq.setCoverId(coverId);
+        diaryReq.setCoverId(coverId);
         diaryReq.setDiaryTitle(diaryTitle);
         diaryReq.setDiaryDesc(diaryDesc);
         diaryReq.setOwnerId(ownerId);

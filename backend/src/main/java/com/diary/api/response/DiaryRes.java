@@ -14,6 +14,7 @@ import java.time.LocalDate;
 public class DiaryRes {
     @ApiModelProperty(name = "Diary Info")
     Long id;
+    Long coverId;
     String diaryTitle;
     String diaryDesc;
     String ownerId;
@@ -22,6 +23,7 @@ public class DiaryRes {
     public static DiaryRes of(Diary diary) {
         DiaryRes diaryRes = new DiaryRes(
                 diary.getId(),
+                diary.getDiaryCover().getId(),
                 diary.getDiaryTitle(),
                 diary.getDiaryDesc(),
                 diary.getUser().getUserId(),
@@ -30,8 +32,9 @@ public class DiaryRes {
         return diaryRes;
     }
 
-    public DiaryRes(Long id, String diaryTitle, String diaryDesc, String ownerId, LocalDate diaryCreatedDate) {
+    public DiaryRes(Long id, Long coverId, String diaryTitle, String diaryDesc, String ownerId, LocalDate diaryCreatedDate) {
         this.id = id;
+        this.coverId = coverId;
         this.diaryTitle = diaryTitle;
         this.diaryDesc = diaryDesc;
         this.ownerId = ownerId;

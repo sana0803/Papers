@@ -25,15 +25,17 @@ public class DiaryController {
     @PostMapping()
     @ApiOperation(value = "일기장 만들기", notes = "일기장을 등록한다.")
     @ApiResponses({
-            @ApiResponse(code = 200, message = "일기장 등록 성공")
+            @ApiResponse(code = 200, message = "일기장 등록 성공"),
+            @ApiResponse(code = 401, message = "일기장 만들기 실패"),
+            @ApiResponse(code = 500, message = "인증 오류")
     })
     public ResponseEntity<DiaryRes> createDiary(
-//            @RequestParam Long coverId,
+            @RequestParam Long coverId,
             @RequestParam String diaryTitle,
             @RequestParam String diaryDesc,
             @RequestParam String owner
             ) throws IOException {
-        return ResponseEntity.ok(diaryService.createDiary(DiaryReq.of(diaryTitle, diaryDesc, owner)));
+        return ResponseEntity.ok(diaryService.createDiary(DiaryReq.of(coverId, diaryTitle, diaryDesc, owner)));
     }
 
 }

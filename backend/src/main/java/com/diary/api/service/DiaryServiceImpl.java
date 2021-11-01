@@ -21,16 +21,21 @@ public class DiaryServiceImpl implements DiaryService {
     DiaryRepository diaryRepository;
 
     @Autowired
+    DiaryRepositorySupport diaryRepositorySupport;
+
+    @Autowired
     UserService userService;
 
     // 일기장 생성
     @Override
     public DiaryRes createDiary(DiaryReq diaryReq) {
         User ownerId = userService.getUserByUserId(diaryReq.getOwnerId());
+        DiaryCover coverId = diaryRepositorySupport.getDiaryCover(diaryReq.getCoverId()).get();
         String diaryTitle = diaryReq.getDiaryTitle();
         String diaryDesc = diaryReq.getDiaryDesc();
 
         Diary diary = new Diary();
+        diary.setDiaryCover(coverId);
         diary.setDiaryTitle(diaryTitle);
         diary.setDiaryDesc(diaryDesc);
         diary.setUser(ownerId);
