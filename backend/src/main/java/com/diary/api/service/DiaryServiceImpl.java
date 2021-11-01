@@ -3,11 +3,14 @@ package com.diary.api.service;
 
 import com.diary.api.db.entity.Diary;
 import com.diary.api.db.entity.DiaryCover;
+import com.diary.api.db.entity.Note;
 import com.diary.api.db.entity.User;
 import com.diary.api.db.repository.DiaryRepository;
 import com.diary.api.db.repository.DiaryRepositorySupport;
+import com.diary.api.db.repository.NoteRepository;
 import com.diary.api.request.DiaryReq;
 import com.diary.api.response.DiaryRes;
+import com.diary.api.response.NoteRes;
 import org.checkerframework.checker.units.qual.A;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,6 +18,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service("diaryService")
 public class DiaryServiceImpl implements DiaryService {
@@ -27,6 +31,9 @@ public class DiaryServiceImpl implements DiaryService {
 
     @Autowired
     UserService userService;
+
+    @Autowired
+    NoteRepository noteRepository;
 
     // 일기장 생성
     @Override
@@ -46,9 +53,28 @@ public class DiaryServiceImpl implements DiaryService {
         return DiaryRes.of(diaryRepository.save(diary));
     }
 
-    // 내 일기장 전체 조회
+    //일기장 수정
+    @Override
+    public DiaryRes updateDiary(Long id, DiaryReq diaryReq) {
+        Diary diary = diaryRepository.getOne(id);
+        diary.setDiaryCover(diaryRepositorySupport.getDiaryCover(diaryReq.getCoverId()).get());
+        diary.setDiaryTitle(diaryReq.getDiaryTitle());
+        diary.setDiaryDesc(diaryReq.getDiaryDesc());
+        diary.setDiaryCreatedDate(LocalDate.now());
+        return  DiaryRes.of(diaryRepository.save(diary));
+    }
 
+    // 내 일기장 전체 조회
+    @Override
+    public List<Diary> getDiaryList(String ownerId) {
+        System.out.println(diaryRepository.findAllByUser(ownerId));
+        return diaryRepository.findAllByUser(ownerId);
+    }
     // 일기장 한개 조회
+    @Override
+    public List<NoteRes> getDiary(Long id) {
+        return null;
+    }
 
     // 일기장 삭제
     @Override

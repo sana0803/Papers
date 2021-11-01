@@ -8,6 +8,7 @@ import com.diary.api.db.entity.DiaryCover;
 import com.diary.api.db.entity.QDiary;
 import com.diary.api.db.entity.QDiaryCover;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import org.checkerframework.checker.index.qual.PolyUpperBound;
 import org.checkerframework.checker.units.qual.A;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -38,5 +39,12 @@ public class DiaryRepositorySupport {
         if(diaryCover == null) return Optional.empty();
         return Optional.ofNullable(diaryCover);
     }
+
+//    public List<Diary> getAllByOwnerId (String ownerId) {
+//        List<Diary> diaries = jpaQueryFactory.select(qDiary).from(qDiary)
+//                .where(qDiary.user.userId.eq(ownerId)).fetch();
+//        if (diaries == null) return new ArrayList<>();
+//        return diaries;
+//    }
 
 }
