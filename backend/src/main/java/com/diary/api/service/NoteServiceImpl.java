@@ -5,6 +5,8 @@ import com.diary.api.db.repository.*;
 import com.diary.api.request.NoteReq;
 import com.diary.api.request.NoteStickerReq;
 import com.diary.api.response.NoteRes;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
@@ -78,8 +80,13 @@ public class NoteServiceImpl implements NoteService{
 
     // 일기 작성
     @Override
-    public NoteRes setNote(NoteReq noteReq){
+    public NoteRes setNote(Long noteId, NoteReq noteReq){
+
         Note note = new Note();
+        if(noteId != null)
+            if(noteRepositorySupport.getNote(noteId).isPresent())
+                note = noteRepositorySupport.getNote(noteId).get();
+
         note.setNoteContent(noteReq.getNoteContent());
         note.setNoteDesign(noteRepositorySupport.getNoteDesign(noteReq.getDesignId()).get());
         note.setNoteLayout(noteRepositorySupport.getNoteLayout(noteReq.getLayoutId()).get());
@@ -122,5 +129,27 @@ public class NoteServiceImpl implements NoteService{
         noteRes.setNoteHashtag(noteRepositorySupport.getNoteHashtags(note.getId()).get());
         noteRes.setNoteMedia(noteRepositorySupport.getNoteMedias(note.getId()).get());
         return noteRes;
+    }
+
+    // 일기 작성
+    public NoteRes registNote(NoteReq noteReq){
+        return this.setNote(null, noteReq);
+    }
+    // 일기 수정
+    public NoteRes updateNote(Long noteId, NoteReq noteReq) {
+        return this.setNote(noteId, noteReq);
+    }
+
+    //  일기 삭제
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    public boolean deleteNote(Long noteId) {
+        try {
+            if(noteRepositorySupport.getNote(noteId).isPresent())
+                noteRepository.delete(noteRepositorySupport.getNote(noteId).get());
+
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
     }
 }
