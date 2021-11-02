@@ -42,7 +42,15 @@ public class JwtTokenUtil {
                 .withIssuer(ISSUER)
                 .build();
     }
-
+    public static User getUser(Authentication authentication, UserService userService){
+        try {
+            PapersUserDetails userDetails = (PapersUserDetails)authentication.getDetails();
+            User user = userService.getUserByUserId(userDetails.getUser().getUserId());
+            return user;
+        } catch (Exception e) {
+            return null;
+        }
+    }
     public static String getToken(String userId) {
         Date expires = JwtTokenUtil.getTokenExpiration(expirationTime);
         return JWT.create()

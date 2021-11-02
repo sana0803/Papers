@@ -14,9 +14,6 @@ import org.springframework.web.bind.annotation.*;
 public class AuthController {
 
     @Autowired
-    JwtTokenUtil jwtTokenUtil;
-
-    @Autowired
     UserService userService;
 
     @PostMapping()

@@ -10,7 +10,7 @@ import java.util.List;
 
 @Getter
 @Setter
-public class StickerPackagesRes extends BaseResponseBody{
+public class StickerPackagesRes {
     private Long id;
     private String stickerPackageName;
     private int stickerPackagePrice;
