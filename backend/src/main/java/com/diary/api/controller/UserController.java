@@ -2,12 +2,16 @@ package com.diary.api.controller;
 
 import com.diary.api.db.entity.DiaryCover;
 import com.diary.api.db.entity.Font;
+import com.diary.api.db.entity.Notification;
+import com.diary.api.request.NotificationReq;
 import com.diary.api.request.UserSignupReq;
 import com.diary.api.response.BaseResponseBody;
+import com.diary.api.response.NotificationRes;
 import com.diary.api.response.StickerPackagesRes;
 import com.diary.common.auth.PapersUserDetails;
 import com.diary.api.db.entity.User;
 import com.diary.api.service.UserService;
+import com.diary.common.util.JwtTokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -65,4 +69,32 @@ public class UserController {
         if (user == null) return ResponseEntity.notFound().build();
         return ResponseEntity.ok(userService.getDiaryCover(user));
     }
+
+    @GetMapping("/notification")
+    public ResponseEntity<List<NotificationRes>> getNotifications(@ApiIgnore Authentication authentication) {
+        PapersUserDetails userDetails = (PapersUserDetails)authentication.getDetails();
+        User user = userService.getUserByUserId(userDetails.getUsername());
+        if (user == null) return ResponseEntity.notFound().build();
+        return ResponseEntity.ok(userService.getNotifications(user));
+    }
+
+    @PostMapping("/notification")
+    public ResponseEntity createNotification(@ApiIgnore Authentication authentication, @RequestBody NotificationReq notificationReq) {
+        PapersUserDetails userDetails = (PapersUserDetails)authentication.getDetails();
+        User user = userService.getUserByUserId(userDetails.getUsername());
+        if (user == null) return ResponseEntity.notFound().build();
+        userService.createNotification(user, notificationReq);
+        return ResponseEntity.ok().build();
+    }
+
+    @PutMapping("/notification-read")
+    public ResponseEntity readNotification(@ApiIgnore Authentication authentication, @RequestParam Long notId) {
+        PapersUserDetails userDetails = (PapersUserDetails)authentication.getDetails();
+        User user = userService.getUserByUserId(userDetails.getUsername());
+        if (user == null) return ResponseEntity.notFound().build();
+        userService.readNotification(user, notId);
+        return ResponseEntity.ok().build();
+    }
+
+
 }

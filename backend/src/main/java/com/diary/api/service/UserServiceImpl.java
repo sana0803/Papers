@@ -2,8 +2,10 @@ package com.diary.api.service;
 
 import com.diary.api.db.entity.*;
 import com.diary.api.db.repository.*;
+import com.diary.api.request.NotificationReq;
 import com.diary.api.request.UserLoginReq;
 import com.diary.api.request.UserSignupReq;
+import com.diary.api.response.NotificationRes;
 import com.diary.api.response.StickerPackagesRes;
 import com.diary.api.response.StickerRes;
 import com.diary.api.response.UserRes;
@@ -40,6 +42,12 @@ public class UserServiceImpl implements UserService{
     @Autowired
     DiaryCoverRepositorySupport diaryCoverRepositorySupport;
 
+    @Autowired
+    NotificationRepository notificationRepository;
+
+    @Autowired
+    NotificationInfoRepository notificationInfoRepository;
+
     @Override
     public boolean signupUser(UserSignupReq userSignupReq) {
         if (userRepository.findByUserId(userSignupReq.getUserId()).isPresent()) {
@@ -67,7 +75,6 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public UserRes authenticate(UserLoginReq userLoginReq) {
-        System.out.println(userLoginReq.getUserPwd());
         if (!userRepository.findByUserId(userLoginReq.getUserId()).isPresent())
             return null;
 
@@ -114,6 +121,54 @@ public class UserServiceImpl implements UserService{
     public List<DiaryCover> getDiaryCover(User user) {
         List<DiaryCover> list = diaryCoverRepositorySupport.getDiaryCover(user.getUserId());
         return list;
+    }
+
+    @Override
+    public List<NotificationRes> getNotifications(User user) {
+        List<Notification> notifications = userRepositorySupport.getNotifications(user.getUserId());
+        List<NotificationRes> notificationResList = new ArrayList<>();
+        for (Notification notification : notifications) {
+            notificationResList.add(NotificationRes.of(notification));
+        }
+        return notificationResList;
+    }
+
+    @Override
+    public boolean createNotification(User user, NotificationReq notificationReq) {
+//        int notificationType = notificationReq.getNotificationInfoId();
+//        switch (notificationType) {
+//            case 1:
+//                // 공유 일기 작성 알림
+//                // 다이어리 id or 노트 id 필요
+//                // 해당 다이어리에 공유된 모둔 유저한테 알림
+//                break;
+//            case 2:
+//                // 감정 표현 알림
+//                // 다이어리 id or 노트 id 필요
+//                // 해당 다이어리에 공유된 모둔 유저한테 알림
+//                break;
+//            case 3:
+//                // 공유 일기 초대 알림
+//                // 다이어리 id 필요
+//                // 해당 다이어리에 공유된 모둔 유저한테 알림
+//                break;
+//            default:
+//        }
+        if (!notificationInfoRepository.findById((long)notificationReq.getNotificationInfoId()).isPresent()) {
+            return false;
+        }
+        Notification notification = new Notification();
+        notification.setNotificationContent(notificationReq.getNotificationContent());
+        notification.setNotificationInfo(notificationInfoRepository.findById((long)notificationReq.getNotificationInfoId()).get());
+        notification.setUser(user);
+        if (notificationRepository.save(notification) == null)
+            return false;
+        return true;
+    }
+
+    @Override
+    public boolean readNotification(User user, Long id) {
+        return userRepositorySupport.readNotification(user.getUserId(), id);
     }
 
     public List<StickerRes> convertStickerRes (List<Sticker> stickers) {
