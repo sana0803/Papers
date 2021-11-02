@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div @click="dialog = true" class="Font_Item">
+        <div class="Font_Item">
             <div class="Font_Header">
                 <span class="Font_Name">나눔고딕체</span>
                 <span class="Font_Price">100장</span>
@@ -10,6 +10,7 @@
                     즐거운 일기 쓰기! papers에서 매일매일 추억을 쌓아보아요.
                 </div>
                 <v-btn
+                    @click="dialog = true"
                     class="Font_Btn"
                     color="#FFB319"
                     outlined

@@ -72,6 +72,12 @@ export default {
             }
             this.$store.dispatch('signUp', user)
                 .then(() => {
+                    Swal.fire({
+                        icon: 'success',
+                        title: '<span style="font-size:25px;">회원가입을 축하드립니다.</span>',
+                        confirmButtonColor: '#b0da9b',
+                        confirmButtonText: '<span style="font-size:18px;">확인</span>'
+                    })
                     this.$router.push('/')
                 })
                 .catch(() => {

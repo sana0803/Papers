@@ -34,7 +34,13 @@ const routes = [
   },
   {
     path: '/diary',
-    component: () => import('../layouts/DiaryLayout.vue')
+    component: () => import('../layouts/DiaryLayout.vue'),
+    redirect: 'diary/diaryList1',
+    children:[
+      {path: 'diaryList1', component: () => import('../views/diary/DiaryList1.vue')},
+      {path: 'diaryList2', component: () => import('../views/diary/DiaryList2.vue')},
+      {path: 'manage', component: () => import('../views/diary/Manage.vue')}
+    ]
   },
   {
     path: '/write',
