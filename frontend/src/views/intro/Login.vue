@@ -97,6 +97,14 @@ export default {
                     this.$store.commit('setLoginUser', loginUser)
                     this.$router.push('main')
                 })
+                .catch(()=>{
+                    Swal.fire({
+                        icon: 'error',
+                        title: '<span style="font-size:25px;">아이디 또는 비밀번호를 확인해주세요</span>',
+                        confirmButtonColor: '#f27474',
+                        confirmButtonText: '<span style="font-size:18px;">확인</span>'
+                    })
+                })
         },
         goSignUp() {
             this.$router.push('signUp')

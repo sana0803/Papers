@@ -44,6 +44,7 @@
 </template>
 
 <script>
+import Swal from 'sweetalert2'
 import {mapActions} from 'vuex'
 const Login = 'Login'
 
@@ -70,9 +71,16 @@ export default {
                 userNickname: '닉네임'
             }
             this.$store.dispatch('signUp', user)
-                .then((result) => {
-                    console.log(result)
+                .then(() => {
                     this.$router.push('/')
+                })
+                .catch(() => {
+                    Swal.fire({
+                        icon: 'error',
+                        title: '<span style="font-size:25px;">중복된 아이디입니다.</span>',
+                        confirmButtonColor: '#f27474',
+                        confirmButtonText: '<span style="font-size:18px;">확인</span>'
+                    })
                 })
         }
     }

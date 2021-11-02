@@ -13,3 +13,10 @@ export function login({state}, user){
     const url = baseUrl + '/auth'
     return $axios.post(url, user)
 }
+
+export function write({state}, note){
+    console.log('write action 호출', state)
+    console.log(note)
+    const url = baseUrl + '/note'
+    return $axios.post(url, note)
+}

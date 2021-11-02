@@ -9,6 +9,7 @@
         </div>
         <div id="WriteContent_Btn">
             <v-btn
+                @click="write"
                 id="Write_Btn"
                 >
                 작성
@@ -25,9 +26,45 @@
 
 <script>
 export default {
+    computed: {
+        loginUser() {
+            return this.$store.getters.getLoginUser
+        }
+    },
     methods: {
         back() {
             this.$router.go(-1)
+        },
+        write() {
+            console.log(this.loginUser.userId)
+            const note = {
+                designId:1,
+                diaryId:1,
+                fontId:1,
+                layoutId:1,
+                noteContent:"테스트입니다",
+                noteHashtagList:[
+                    "#해시태그",
+                    "#테스트",
+                    "#입니다"
+                ],
+                noteMediaList:[
+                    "테스트"
+                ],
+                noteTitle:"테스트제목",
+                stickerList:[
+                    {
+                        leftPixel:1,
+                        stickerId:1,
+                        topPixel:1
+                    }
+                ],
+                writerId: this.loginUser.userName
+            }
+            this.$store.dispatch('write',note)
+                .then((res) => {
+                    console.log(res)
+                })
         }
     },
 };

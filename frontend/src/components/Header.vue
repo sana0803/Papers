@@ -8,7 +8,7 @@
             <v-icon @click="goAlert" style="font-size:3.0em">notifications</v-icon>
         </div>
         <div id="Header_Profile">
-            <img @click="goMyPage" id="Profile_img" src="../assets/image/user.png" />
+            <img @click="goMyPage" id="Profile_img" :src="loginUser.userProfile" />
         </div>
         <div id="Logout">
             <v-btn

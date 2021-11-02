@@ -3,7 +3,7 @@
         <div id="Mypage_Content">
             <div id="Mypage_Title">기본 프로필 편집</div>
             <div id="Mypage_Profile">
-                <img src="../../assets/image/user.png" id="Profile_img">
+                <img :src="loginUser.userProfile" id="Profile_img">
                 <v-btn
                 id="Change_Btn"
                 text
