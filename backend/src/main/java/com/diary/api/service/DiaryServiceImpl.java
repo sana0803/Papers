@@ -50,8 +50,7 @@ public class DiaryServiceImpl implements DiaryService {
         diary.setDiaryTitle(diaryTitle);
         diary.setDiaryDesc(diaryDesc);
         diary.setUser(ownerId);
-        diary.setDiaryCreatedDate(LocalDate.now());
-
+//        diary.setDiaryCreatedDate(LocalDate.now());
         diaryRepository.save(diary);
 
         UserDiary userDiary = new UserDiary();
@@ -60,7 +59,9 @@ public class DiaryServiceImpl implements DiaryService {
 //        userDiary.setUser(userService.getUserByUserId(user.getUserId()));
         userDiaryRepository.save(userDiary);
 
-        return DiaryRes.of(diary);
+        DiaryRes diaryRes = new DiaryRes(diary);
+
+        return diaryRes;
     }
 
     //일기장 수정
@@ -70,8 +71,10 @@ public class DiaryServiceImpl implements DiaryService {
         diary.setDiaryCover(diaryRepositorySupport.getDiaryCover(diaryReq.getCoverId()).get());
         diary.setDiaryTitle(diaryReq.getDiaryTitle());
         diary.setDiaryDesc(diaryReq.getDiaryDesc());
-        diary.setDiaryCreatedDate(LocalDate.now());
-        return  DiaryRes.of(diaryRepository.save(diary));
+//        diary.setDiaryCreatedDate(LocalDate.now());
+        diaryRepository.save(diary);
+        DiaryRes diaryRes = new DiaryRes(diary);
+        return  diaryRes;
     }
 
     // 내 일기장 전체 조회
@@ -104,12 +107,13 @@ public class DiaryServiceImpl implements DiaryService {
         List<DiaryRes> diaryResList = new ArrayList<>();
         for (Diary diary : diaries) {
             diaryResList.add(new DiaryRes(
-                    diary.getId(),
-                    diary.getDiaryCover().getId(),
-                    diary.getDiaryTitle(),
-                    diary.getDiaryDesc(),
-                    diary.getUser().getUserId(),
-                    diary.getDiaryCreatedDate()
+                    diary
+//                    diary.getId(),
+//                    diary.getDiaryCover(),
+//                    diary.getDiaryTitle(),
+//                    diary.getDiaryDesc(),
+//                    diary.getUser().getUserId(),
+//                    diary.getDiaryCreatedDate()
             ));
         }
         return diaryResList;

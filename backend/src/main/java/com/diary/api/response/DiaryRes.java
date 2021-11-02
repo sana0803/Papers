@@ -1,6 +1,8 @@
 package com.diary.api.response;
 
 import com.diary.api.db.entity.Diary;
+import com.diary.api.db.entity.DiaryCover;
+import com.diary.api.request.DiaryReq;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
@@ -14,30 +16,18 @@ import java.time.LocalDate;
 public class DiaryRes {
     @ApiModelProperty(name = "Diary Info")
     Long id;
-    Long coverId;
+    DiaryCover diaryCover;
     String diaryTitle;
     String diaryDesc;
     String ownerId;
     LocalDate diaryCreatedDate;
 
-    public static DiaryRes of(Diary diary) {
-        DiaryRes diaryRes = new DiaryRes(
-                diary.getId(),
-                diary.getDiaryCover().getId(),
-                diary.getDiaryTitle(),
-                diary.getDiaryDesc(),
-                diary.getUser().getUserId(),
-                diary.getDiaryCreatedDate()
-        );
-        return diaryRes;
-    }
-
-    public DiaryRes(Long id, Long coverId, String diaryTitle, String diaryDesc, String ownerId, LocalDate diaryCreatedDate) {
-        this.id = id;
-        this.coverId = coverId;
-        this.diaryTitle = diaryTitle;
-        this.diaryDesc = diaryDesc;
-        this.ownerId = ownerId;
-        this.diaryCreatedDate = diaryCreatedDate;
+    public DiaryRes(Diary diary) {
+        this.id = diary.getId();
+        this.diaryCover = diary.getDiaryCover();
+        this.diaryTitle = diary.getDiaryTitle();
+        this.diaryDesc = diary.getDiaryDesc();
+        this.ownerId = diary.getUser().getUserId();
+        this.diaryCreatedDate = diary.getDiaryCreatedDate();
     }
 }

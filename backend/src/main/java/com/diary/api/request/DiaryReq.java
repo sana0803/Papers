@@ -18,16 +18,16 @@ public class DiaryReq {
     @ApiModelProperty(name = "일기장 설명", example = "일상 기록")
     String diaryDesc;
 
-    @ApiModelProperty(name = "유저 id", example = "ssafy")
+    @ApiModelProperty(name = "유저 id", example = "test1")
     String ownerId;
 
-    public static DiaryReq of(Long coverId, String diaryTitle, String diaryDesc, String ownerId) {
-        DiaryReq diaryReq = new DiaryReq();
-
-        diaryReq.setCoverId(coverId);
-        diaryReq.setDiaryTitle(diaryTitle);
-        diaryReq.setDiaryDesc(diaryDesc);
-        diaryReq.setOwnerId(ownerId);
-        return diaryReq;
-    }
+//    public static DiaryReq of(Long coverId, String diaryTitle, String diaryDesc, String ownerId) {
+//        DiaryReq diaryReq = new DiaryReq();
+//
+//        diaryReq.setCoverId(coverId);
+//        diaryReq.setDiaryTitle(diaryTitle);
+//        diaryReq.setDiaryDesc(diaryDesc);
+//        diaryReq.setOwnerId(ownerId);
+//        return diaryReq;
+//    }
 }
