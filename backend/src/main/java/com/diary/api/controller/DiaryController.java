@@ -12,6 +12,7 @@ import com.diary.api.service.UserService;
 import com.diary.common.auth.PapersUserDetails;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -35,23 +36,46 @@ public class DiaryController {
     @ApiOperation(value = "일기장 만들기", notes = "일기장을 등록한다.")
     @ApiResponses({
             @ApiResponse(code = 200, message = "일기장 등록 성공"),
-            @ApiResponse(code = 401, message = "일기장 만들기 실패"),
-            @ApiResponse(code = 500, message = "인증 오류")
+            @ApiResponse(code = 401, message = "인증 오류"),
+            @ApiResponse(code = 500, message = "일기장 등록 실패")
     })
-    public ResponseEntity<DiaryRes> createDiary(
-//            @ApiIgnore Authentication authentication,
+    public ResponseEntity<? extends BaseResponseBody> createDiary(
+            @ApiIgnore Authentication authentication,
             @RequestBody DiaryReq diaryReq
-            ) throws IOException {
-//        PapersUserDetails userDetails = (PapersUserDetails)authentication.getDetails();
-//        User user = userService.getUserByUserId(userDetails.getUsername());
-//        if (userDetails.getUser().getUserId() != null) {
-//           return ResponseEntity.ok(diaryService.createDiary(user, diaryReq));
-//        }
-//        else {
-//            return null;
-//        }
-        return ResponseEntity.ok(diaryService.createDiary(diaryReq));
+    ) {
+        PapersUserDetails userDetails = (PapersUserDetails)authentication.getDetails();
+        User user = userService.getUserByUserId(userDetails.getUsername());
+        if (user == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(BaseResponseBody.of(401, "존재하지 않는 회원입니다."));
+        }
+        if (diaryReq == null) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(BaseResponseBody.of(500, "내용이 존재하지 않거나 오류가 발생하였습니다."));
+        }
+        DiaryRes diaryRes = diaryService.createDiary(user, diaryReq);
+        if (diaryRes == null) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(BaseResponseBody.of(500, "내용이 존재하지 않거나 오류가 발생하였습니다."));
+        }
+        else {
+            diaryRes.setStatusCode(200);
+            diaryRes.setMessage("일기장이 정상적으로 생성되었습니다.");
+            return ResponseEntity.status(HttpStatus.OK).body(diaryRes);
+        }
     }
+
+//    public ResponseEntity<DiaryRes> createDiary(
+////            @ApiIgnore Authentication authentication,
+//            @RequestBody DiaryReq diaryReq
+//            ) throws IOException {
+////        PapersUserDetails userDetails = (PapersUserDetails)authentication.getDetails();
+////        User user = userService.getUserByUserId(userDetails.getUsername());
+////        if (userDetails.getUser().getUserId() != null) {
+////           return ResponseEntity.ok(diaryService.createDiary(user, diaryReq));
+////        }
+////        else {
+////            return null;
+////        }
+//        return ResponseEntity.ok(diaryService.createDiary(diaryReq));
+//    }
 
     @PutMapping("/{id}")
     @ApiOperation(value = "일기장 수정", notes = "일기장 id로 일기장 수정")

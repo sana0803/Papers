@@ -13,7 +13,7 @@ import java.time.LocalDate;
 @Getter
 @Setter
 @ApiModel("DiaryResponse")
-public class DiaryRes {
+public class DiaryRes extends BaseResponseBody{
     @ApiModelProperty(name = "Diary Info")
     Long id;
     DiaryCover diaryCover;

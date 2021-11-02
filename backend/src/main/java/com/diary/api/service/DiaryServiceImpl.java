@@ -38,9 +38,8 @@ public class DiaryServiceImpl implements DiaryService {
 
     // 일기장 생성
     @Override
-    public DiaryRes createDiary(DiaryReq diaryReq) {
-        User ownerId = userService.getUserByUserId(diaryReq.getOwnerId());
-//        User ownerId = userService.getUserByUserId(user.getUserId());
+    public DiaryRes createDiary(User user, DiaryReq diaryReq) {
+        User owner = user;
         DiaryCover coverId = diaryRepositorySupport.getDiaryCover(diaryReq.getCoverId()).get();
         String diaryTitle = diaryReq.getDiaryTitle();
         String diaryDesc = diaryReq.getDiaryDesc();
@@ -49,14 +48,13 @@ public class DiaryServiceImpl implements DiaryService {
         diary.setDiaryCover(coverId);
         diary.setDiaryTitle(diaryTitle);
         diary.setDiaryDesc(diaryDesc);
-        diary.setUser(ownerId);
-//        diary.setDiaryCreatedDate(LocalDate.now());
+        diary.setUser(owner);
+        diary.setDiaryCreatedDate(LocalDate.now());
         diaryRepository.save(diary);
 
         UserDiary userDiary = new UserDiary();
         userDiary.setDiary(diaryRepository.getOne(diary.getId()));
-        userDiary.setUser(userService.getUserByUserId(diaryReq.getOwnerId()));
-//        userDiary.setUser(userService.getUserByUserId(user.getUserId()));
+        userDiary.setUser(user);
         userDiaryRepository.save(userDiary);
 
         DiaryRes diaryRes = new DiaryRes(diary);
@@ -108,12 +106,6 @@ public class DiaryServiceImpl implements DiaryService {
         for (Diary diary : diaries) {
             diaryResList.add(new DiaryRes(
                     diary
-//                    diary.getId(),
-//                    diary.getDiaryCover(),
-//                    diary.getDiaryTitle(),
-//                    diary.getDiaryDesc(),
-//                    diary.getUser().getUserId(),
-//                    diary.getDiaryCreatedDate()
             ));
         }
         return diaryResList;

@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface DiaryService {
     // 일기장 생성
-    DiaryRes createDiary(DiaryReq diaryReq);
+    DiaryRes createDiary(User user, DiaryReq diaryReq);
     // 일기장 수정
     DiaryRes updateDiary(Long id, DiaryReq diaryReq);
     // 내 일기장 전체 조회
