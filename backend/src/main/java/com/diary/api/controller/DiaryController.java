@@ -3,6 +3,7 @@ package com.diary.api.controller;
 
 import com.diary.api.db.entity.Diary;
 import com.diary.api.db.entity.User;
+import com.diary.api.db.repository.DiaryRepository;
 import com.diary.api.request.DiaryReq;
 import com.diary.api.request.NoteReq;
 import com.diary.api.response.BaseResponseBody;
@@ -20,6 +21,7 @@ import springfox.documentation.annotations.ApiIgnore;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 @Api(value = "일기장 API", tags = {"Diary"})
 @RestController
@@ -31,6 +33,9 @@ public class DiaryController {
 
     @Autowired
     UserService userService;
+
+    @Autowired
+    DiaryRepository diaryRepository;
 
     @PostMapping()
     @ApiOperation(value = "일기장 만들기", notes = "일기장을 등록한다.")
@@ -62,57 +67,86 @@ public class DiaryController {
         }
     }
 
-//    public ResponseEntity<DiaryRes> createDiary(
-////            @ApiIgnore Authentication authentication,
-//            @RequestBody DiaryReq diaryReq
-//            ) throws IOException {
-////        PapersUserDetails userDetails = (PapersUserDetails)authentication.getDetails();
-////        User user = userService.getUserByUserId(userDetails.getUsername());
-////        if (userDetails.getUser().getUserId() != null) {
-////           return ResponseEntity.ok(diaryService.createDiary(user, diaryReq));
-////        }
-////        else {
-////            return null;
-////        }
-//        return ResponseEntity.ok(diaryService.createDiary(diaryReq));
-//    }
-
     @PutMapping("/{id}")
     @ApiOperation(value = "일기장 수정", notes = "일기장 id로 일기장 수정")
     @ApiResponses({
             @ApiResponse(code = 200, message = "일기장 수정 성공"),
-            @ApiResponse(code = 401, message = "일기장 수정 실패"),
-            @ApiResponse(code = 500, message = "인증 오류")
+            @ApiResponse(code = 401, message = "인증 오류"),
+            @ApiResponse(code = 500, message = "일기장 수정 실패")
     })
-    public ResponseEntity<DiaryRes> updateDiary
-            (@PathVariable Long id,
-             @RequestBody DiaryReq diaryReq
-            ) throws IOException {
-        return ResponseEntity.ok(diaryService.updateDiary(id, diaryReq));
-    }
+    public ResponseEntity<? extends BaseResponseBody> updateDiary (
+            @PathVariable Long id,
+            @ApiIgnore Authentication authentication,
+            @RequestBody DiaryReq diaryReq
+    ) {
+        PapersUserDetails userDetails = (PapersUserDetails)authentication.getDetails();
+        User user = userService.getUserByUserId(userDetails.getUsername());
+        if (user == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(BaseResponseBody.of(401, "존재하지 않는 회원입니다."));
+        }
+        if (diaryReq == null) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(BaseResponseBody.of(500, "내용이 존재하지 않거나 오류가 발생하였습니다."));
+        }
+        Optional<Diary> diary = diaryRepository.findById(id);
 
+        if (user != diary.get().getUser()) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(BaseResponseBody.of(401, "자신의 일기장만 수정할 수 있습니다."));
+        }
+        DiaryRes diaryRes = diaryService.updateDiary(id, diaryReq);
+        if (diaryRes == null) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(BaseResponseBody.of(500, "내용이 존재하지 않거나 오류가 발생하였습니다."));
+        }
+        else {
+            diaryRes.setStatusCode(200);
+            diaryRes.setMessage("일기장이 정상적으로 수정되었습니다.");
+            return ResponseEntity.status(HttpStatus.OK).body(diaryRes);
+        }
+
+    }
 
     @DeleteMapping("/{id}")
     @ApiOperation(value = "일기장 삭제", notes = "일기장 id로 일기장 삭제")
     @ApiResponses({
             @ApiResponse(code = 200, message = "일기장 삭제 성공"),
-            @ApiResponse(code = 401, message = "일기장 삭제 실패"),
-            @ApiResponse(code = 500, message = "인증 오류")
+            @ApiResponse(code = 401, message = "인증 오류"),
+            @ApiResponse(code = 500, message = "일기장 삭제 실패")
     })
-    public ResponseEntity<? extends BaseResponseBody> deleteDiary(@PathVariable Long id, @ApiIgnore Authentication authentication) {
+    public ResponseEntity<? extends BaseResponseBody> deleteDiary(
+            @PathVariable Long id,
+            @ApiIgnore Authentication authentication
+    ) {
+        PapersUserDetails userDetails = (PapersUserDetails)authentication.getDetails();
+        User user = userService.getUserByUserId(userDetails.getUsername());
+
+        if (user == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(BaseResponseBody.of(401, "존재하지 않는 회원입니다."));
+        }
+
+        Optional<Diary> diary = diaryRepository.findById(id);
+        if (user != diary.get().getUser()) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(BaseResponseBody.of(401, "자신의 일기장만 삭제할 수 있습니다."));
+        }
+
         diaryService.deleteDiary(id);
         return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Delete Success"));
     }
 
-    @GetMapping("/{userId}")
+    @GetMapping()
     @ApiOperation(value = "내 일기장 전체 조회", notes = "유저 id로 일기장 전체 조회")
     @ApiResponses({
             @ApiResponse(code = 200, message = "일기장 조회 성공"),
-            @ApiResponse(code = 401, message = "일기장 조회 실패"),
-            @ApiResponse(code = 500, message = "인증 오류")
+            @ApiResponse(code = 401, message = "인증"),
+            @ApiResponse(code = 500, message = "일기장 조회 실패")
     })
-    public ResponseEntity<List<DiaryRes>> getUserDiary(@PathVariable String userId) {
+    public ResponseEntity<List<DiaryRes>> getUserDiary(
+            @ApiIgnore Authentication authentication
+    ) {
+        PapersUserDetails userDetails = (PapersUserDetails)authentication.getDetails();
+        User user = userService.getUserByUserId(userDetails.getUsername());
 
-        return ResponseEntity.status(200).body(diaryService.getDiaryList(userId));
+        if (user == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(diaryService.getDiaryList(user.getUserId()));
     }
 }

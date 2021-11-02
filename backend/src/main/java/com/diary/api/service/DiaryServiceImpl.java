@@ -69,7 +69,6 @@ public class DiaryServiceImpl implements DiaryService {
         diary.setDiaryCover(diaryRepositorySupport.getDiaryCover(diaryReq.getCoverId()).get());
         diary.setDiaryTitle(diaryReq.getDiaryTitle());
         diary.setDiaryDesc(diaryReq.getDiaryDesc());
-//        diary.setDiaryCreatedDate(LocalDate.now());
         diaryRepository.save(diary);
         DiaryRes diaryRes = new DiaryRes(diary);
         return  diaryRes;
