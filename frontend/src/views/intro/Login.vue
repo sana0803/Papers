@@ -31,17 +31,21 @@
             <div class="page" id="page2">
                 <div>
                     <v-text-field 
+                    v-on:keyup.enter="login"
                     class="Login_Input" 
                     label="ID"
                     color="#FFB319"
+                    v-model="userId"
                     :rules="rules"></v-text-field>
                 </div>
                 <div>
                     <v-text-field 
+                    v-on:keyup.enter="login"
                     class="Login_Input" 
                     type="password" 
                     label="PW"
                     color="#FFB319"
+                    v-model="userPwd"
                     :rules="rules"></v-text-field>
                 </div>
                 <v-btn
@@ -49,9 +53,9 @@
                 id="Login_Btn"
                 >로그인</v-btn>
                 <v-btn
-                id="GoSignUp_Btn"
-                @click="goSignUp"
-                text
+                    id="GoSignUp_Btn"
+                    @click="goSignUp"
+                    text
                 >
                 처음이신가요?&nbsp;&nbsp; >
                 </v-btn>
@@ -61,10 +65,14 @@
 </template>
 
 <script>
+import Swal from 'sweetalert2'
+
 export default {
     data() {
         return{
             introMode: true,
+            userId: '',
+            userPwd:'',
             rules: [
                 value => !!value || '입력창을 확인해주세요.',
             ]
@@ -72,7 +80,31 @@ export default {
     },
     methods:{
         login() {
-            this.$router.push('main')
+            const user = {
+                userId: this.userId,
+                userPwd: this.userPwd
+            }
+            this.$store.dispatch('login', user)
+                .then((result) => {
+                    const loginUser = {
+                        userId: result.data.userId,
+                        userName: result.data.userName,
+                        userMileage: result.data.userMileage,
+                        userProfile: result.data.userProfile,
+                        userToken: result.data.userToken
+                    }
+                    // Store에 loginUser 정보 저장
+                    this.$store.commit('setLoginUser', loginUser)
+                    this.$router.push('main')
+                })
+                .catch(()=>{
+                    Swal.fire({
+                        icon: 'error',
+                        title: '<span style="font-size:25px;">아이디 또는 비밀번호를 확인해주세요</span>',
+                        confirmButtonColor: '#f27474',
+                        confirmButtonText: '<span style="font-size:18px;">확인</span>'
+                    })
+                })
         },
         goSignUp() {
             this.$router.push('signUp')
@@ -171,6 +203,7 @@ export default {
     top:30px;
 }
 #GoSignUp_Btn{
+    width:200px;
     position:relative;
     top:50px;
     font-size:18px;
@@ -192,7 +225,6 @@ export default {
   width: 100%;
   height: 100%;
 }
-
 #page1 {
   z-index: 1;
   transform-origin: left center;

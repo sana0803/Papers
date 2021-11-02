@@ -27,12 +27,18 @@ const routes = [
     children:[
       {path: 'mainList', component: () => import('../views/main/MainList.vue')},
       {path: 'alert', component: () => import('../views/main/Alert.vue')},
-      {path: 'myPage', component: () => import('../views/main/MyPage.vue')}
+      {path: 'myPage', component: () => import('../views/main/MyPage.vue')},
+      {path: 'templete', component: () => import('../views/main/WriteTemplete.vue')},
+      {path: 'store', component: () => import('../views/main/Store.vue')}
     ]
   },
   {
     path: '/diary',
     component: () => import('../layouts/DiaryLayout.vue')
+  },
+  {
+    path: '/write',
+    component: () => import('../views/write/Write.vue')
   }
 ]
 

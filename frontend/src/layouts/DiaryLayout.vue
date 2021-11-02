@@ -2,10 +2,8 @@
     <div id="Diary_Container">
         <!-- Header -->
         <Header></Header>
-        다이어리레이아웃
-        <div style="height:500px; border:1px solid red;">
-            <router-view />
-        </div>
+        <div style="height:7.5vh" />
+        <router-view />
     </div>
 </template>
 
@@ -24,6 +22,6 @@ export default {
     border-left:1px solid lightgrey;
     margin:0 auto;
     width:1272px;
-    height:100vh;
+    height:100%;
 }
 </style>
