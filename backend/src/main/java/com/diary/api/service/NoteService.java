@@ -10,5 +10,8 @@ public interface NoteService {
 
     public List<NoteRes> getMonthNote(int month, Long diaryId);
     public NoteRes getNote(Long noteId);
-    public NoteRes setNote(NoteReq noteReq);
+    public NoteRes setNote(Long noteId, NoteReq noteReq);
+    public NoteRes registNote(NoteReq noteReq);
+    public NoteRes updateNote(Long noteId, NoteReq noteReq);
+    public boolean deleteNote(Long noteId);
 }

@@ -61,6 +61,7 @@ public class NoteRepositorySupport {
     }
 
     public Optional<Note> getNote(Long noteId) {
+        System.out.println(noteId);
         Note note = jpaQueryFactory.select(qNote).from(qNote)
                 .where(qNote.id.eq(noteId)).fetchOne();
         if(note == null) return Optional.empty();
