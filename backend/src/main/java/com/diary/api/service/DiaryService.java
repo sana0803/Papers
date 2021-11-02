@@ -1,5 +1,6 @@
 package com.diary.api.service;
 
+import com.diary.api.db.entity.User;
 import com.diary.api.request.DiaryReq;
 import com.diary.api.response.DiaryRes;
 import com.diary.api.response.NoteRes;

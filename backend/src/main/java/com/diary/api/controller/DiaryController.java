@@ -2,10 +2,14 @@ package com.diary.api.controller;
 
 
 import com.diary.api.db.entity.Diary;
+import com.diary.api.db.entity.User;
 import com.diary.api.request.DiaryReq;
+import com.diary.api.request.NoteReq;
 import com.diary.api.response.BaseResponseBody;
 import com.diary.api.response.DiaryRes;
 import com.diary.api.service.DiaryService;
+import com.diary.api.service.UserService;
+import com.diary.common.auth.PapersUserDetails;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -18,11 +22,14 @@ import java.util.List;
 
 @Api(value = "일기장 API", tags = {"Diary"})
 @RestController
-@RequestMapping("/api/v1/diary")
+@RequestMapping("/api/diary")
 public class DiaryController {
 
     @Autowired
     DiaryService diaryService;
+
+    @Autowired
+    UserService userService;
 
     @PostMapping()
     @ApiOperation(value = "일기장 만들기", notes = "일기장을 등록한다.")
@@ -32,12 +39,18 @@ public class DiaryController {
             @ApiResponse(code = 500, message = "인증 오류")
     })
     public ResponseEntity<DiaryRes> createDiary(
-            @RequestParam Long coverId,
-            @RequestParam String diaryTitle,
-            @RequestParam String diaryDesc,
-            @RequestParam String owner
+//            @ApiIgnore Authentication authentication,
+            @RequestBody DiaryReq diaryReq
             ) throws IOException {
-        return ResponseEntity.ok(diaryService.createDiary(DiaryReq.of(coverId, diaryTitle, diaryDesc, owner)));
+//        PapersUserDetails userDetails = (PapersUserDetails)authentication.getDetails();
+//        User user = userService.getUserByUserId(userDetails.getUsername());
+//        if (userDetails.getUser().getUserId() != null) {
+//           return ResponseEntity.ok(diaryService.createDiary(user, diaryReq));
+//        }
+//        else {
+//            return null;
+//        }
+        return ResponseEntity.ok(diaryService.createDiary(diaryReq));
     }
 
     @PutMapping("/{id}")
@@ -49,12 +62,9 @@ public class DiaryController {
     })
     public ResponseEntity<DiaryRes> updateDiary
             (@PathVariable Long id,
-             @RequestParam Long coverId,
-             @RequestParam String diaryTitle,
-             @RequestParam String diaryDesc,
-             @RequestParam String owner
+             @RequestBody DiaryReq diaryReq
             ) throws IOException {
-        return ResponseEntity.ok(diaryService.updateDiary(id, DiaryReq.of(coverId, diaryTitle, diaryDesc, owner)));
+        return ResponseEntity.ok(diaryService.updateDiary(id, diaryReq));
     }
 
 

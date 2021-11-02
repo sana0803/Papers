@@ -40,6 +40,7 @@ public class DiaryServiceImpl implements DiaryService {
     @Override
     public DiaryRes createDiary(DiaryReq diaryReq) {
         User ownerId = userService.getUserByUserId(diaryReq.getOwnerId());
+//        User ownerId = userService.getUserByUserId(user.getUserId());
         DiaryCover coverId = diaryRepositorySupport.getDiaryCover(diaryReq.getCoverId()).get();
         String diaryTitle = diaryReq.getDiaryTitle();
         String diaryDesc = diaryReq.getDiaryDesc();
@@ -56,6 +57,7 @@ public class DiaryServiceImpl implements DiaryService {
         UserDiary userDiary = new UserDiary();
         userDiary.setDiary(diaryRepository.getOne(diary.getId()));
         userDiary.setUser(userService.getUserByUserId(diaryReq.getOwnerId()));
+//        userDiary.setUser(userService.getUserByUserId(user.getUserId()));
         userDiaryRepository.save(userDiary);
 
         return DiaryRes.of(diary);
