@@ -1,5 +1,6 @@
 package com.diary.api.controller;
 
+import com.diary.api.db.entity.DiaryCover;
 import com.diary.api.db.entity.Font;
 import com.diary.api.request.UserSignupReq;
 import com.diary.api.response.BaseResponseBody;
@@ -38,7 +39,7 @@ public class UserController {
         User user = userService.getUserByUserId(userDetails.getUsername());
         if (user == null) return ResponseEntity.status(401).body(BaseResponseBody.of(401, "잘못된 토큰"));
         userService.updateMileage(user, user.getUserMileage() + amount);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.status(HttpStatus.OK).body(BaseResponseBody.of(200, "마일리지 적립 성공"));
     }
 
     @GetMapping("/stickers")
@@ -55,5 +56,13 @@ public class UserController {
         User user = userService.getUserByUserId(userDetails.getUsername());
         if (user == null) return ResponseEntity.notFound().build();
         return ResponseEntity.ok(userService.getFonts(user));
+    }
+
+    @GetMapping("/covers")
+    public ResponseEntity<List<DiaryCover>> getCovers(@ApiIgnore Authentication authentication) {
+        PapersUserDetails userDetails = (PapersUserDetails)authentication.getDetails();
+        User user = userService.getUserByUserId(userDetails.getUsername());
+        if (user == null) return ResponseEntity.notFound().build();
+        return ResponseEntity.ok(userService.getDiaryCover(user));
     }
 }

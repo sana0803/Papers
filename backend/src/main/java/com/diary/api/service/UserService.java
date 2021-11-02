@@ -1,5 +1,6 @@
 package com.diary.api.service;
 
+import com.diary.api.db.entity.DiaryCover;
 import com.diary.api.db.entity.Font;
 import com.diary.api.db.entity.User;
 import com.diary.api.request.UserLoginReq;
@@ -16,4 +17,5 @@ public interface UserService {
     boolean updateMileage(User user, int amount);
     List<StickerPackagesRes> getStickers(User user);
     List<Font> getFonts(User user);
+    List<DiaryCover> getDiaryCover(User user);
 }

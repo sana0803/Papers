@@ -1,9 +1,6 @@
 package com.diary.api.service;
 
-import com.diary.api.db.entity.Font;
-import com.diary.api.db.entity.Sticker;
-import com.diary.api.db.entity.User;
-import com.diary.api.db.entity.UserStickerPackage;
+import com.diary.api.db.entity.*;
 import com.diary.api.db.repository.*;
 import com.diary.api.request.UserLoginReq;
 import com.diary.api.request.UserSignupReq;
@@ -39,6 +36,9 @@ public class UserServiceImpl implements UserService{
 
     @Autowired
     UserStickerPackageRepository userStickerPackageRepository;
+
+    @Autowired
+    DiaryCoverRepositorySupport diaryCoverRepositorySupport;
 
     @Override
     public boolean signupUser(UserSignupReq userSignupReq) {
@@ -108,6 +108,12 @@ public class UserServiceImpl implements UserService{
 //            fontResList.add(new FontRes(font));
 //        }
 //        return fontResList;
+    }
+
+    @Override
+    public List<DiaryCover> getDiaryCover(User user) {
+        List<DiaryCover> list = diaryCoverRepositorySupport.getDiaryCover(user.getUserId());
+        return list;
     }
 
     public List<StickerRes> convertStickerRes (List<Sticker> stickers) {
