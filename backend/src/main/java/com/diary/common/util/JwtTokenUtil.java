@@ -4,8 +4,12 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.*;
+import com.diary.api.db.entity.User;
+import com.diary.api.service.UserService;
+import com.diary.common.auth.PapersUserDetails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
 import java.time.Instant;
@@ -17,7 +21,6 @@ import java.util.Date;
 public class JwtTokenUtil {
     private static String secretKey;
     private static Integer expirationTime;
-
     public static final String TOKEN_PREFIX = "Bearer ";
     public static final String HEADER_STRING = "Authorization";
     public static final String ISSUER = "ssafy.com";
@@ -39,7 +42,15 @@ public class JwtTokenUtil {
                 .withIssuer(ISSUER)
                 .build();
     }
-
+    public static User getUser(Authentication authentication, UserService userService){
+        try {
+            PapersUserDetails userDetails = (PapersUserDetails)authentication.getDetails();
+            User user = userService.getUserByUserId(userDetails.getUser().getUserId());
+            return user;
+        } catch (Exception e) {
+            return null;
+        }
+    }
     public static String getToken(String userId) {
         Date expires = JwtTokenUtil.getTokenExpiration(expirationTime);
         return JWT.create()
