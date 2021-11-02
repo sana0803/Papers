@@ -15,6 +15,7 @@
                 class="SignUp_Input" 
                 label="ID"
                 color="#FFB319"
+                v-model="userId"
                 :rules="rules"></v-text-field>
             </div>
             <div>
@@ -23,14 +24,15 @@
                 type="password" 
                 label="PW"
                 color="#FFB319"
+                v-model="userPwd"
                 :rules="rules"></v-text-field>
             </div>
             <div>
                 <v-text-field 
                 class="SignUp_Input" 
-                type="password" 
                 label="NAME"
                 color="#FFB319"
+                v-model="userName"
                 :rules="rules"></v-text-field>
             </div>
             <v-btn
@@ -42,17 +44,36 @@
 </template>
 
 <script>
+import {mapActions} from 'vuex'
+const Login = 'Login'
+
 export default {
-    methods:{
-        signUp() {
-            this.$router.push('main')
-        }
-    },
     data() {
         return{
             rules: [
                 value => !!value || '입력창을 확인해주세요.',
-            ]
+            ],
+            userId:'',
+            userPwd:'',
+            userName:''
+        }
+    },
+    methods:{
+        ...mapActions(Login, [
+            'sign'
+        ]),
+        signUp() {
+            const user = {
+                userId: this.userId,
+                userPwd: this.userPwd,
+                userName: this.userName,
+                userNickname: '닉네임'
+            }
+            this.$store.dispatch('signUp', user)
+                .then((result) => {
+                    console.log(result)
+                    this.$router.push('/')
+                })
         }
     }
 }

@@ -3,8 +3,9 @@ module.exports = {
     'vuetify'
   ],
   devServer: {
+    https: true,
     port: 8080,
-    proxy: 'http://localhost:80',
+    proxy: 'https://localhost:443',
     disableHostCheck: true
   },
   outputDir: '../backend/src/main/resources/dist',

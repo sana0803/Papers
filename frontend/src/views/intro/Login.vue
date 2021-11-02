@@ -31,17 +31,21 @@
             <div class="page" id="page2">
                 <div>
                     <v-text-field 
+                    v-on:keyup.enter="login"
                     class="Login_Input" 
                     label="ID"
                     color="#FFB319"
+                    v-model="userId"
                     :rules="rules"></v-text-field>
                 </div>
                 <div>
                     <v-text-field 
+                    v-on:keyup.enter="login"
                     class="Login_Input" 
                     type="password" 
                     label="PW"
                     color="#FFB319"
+                    v-model="userPwd"
                     :rules="rules"></v-text-field>
                 </div>
                 <v-btn
@@ -61,10 +65,14 @@
 </template>
 
 <script>
+import Swal from 'sweetalert2'
+
 export default {
     data() {
         return{
             introMode: true,
+            userId: '',
+            userPwd:'',
             rules: [
                 value => !!value || '입력창을 확인해주세요.',
             ]
@@ -72,7 +80,23 @@ export default {
     },
     methods:{
         login() {
-            this.$router.push('main')
+            const user = {
+                userId: this.userId,
+                userPwd: this.userPwd
+            }
+            this.$store.dispatch('login', user)
+                .then((result) => {
+                    const loginUser = {
+                        userId: result.data.userId,
+                        userName: result.data.userName,
+                        userMileage: result.data.userMileage,
+                        userProfile: result.data.userProfile,
+                        userToken: result.data.userToken
+                    }
+                    // Store에 loginUser 정보 저장
+                    this.$store.commit('setLoginUser', loginUser)
+                    this.$router.push('main')
+                })
         },
         goSignUp() {
             this.$router.push('signUp')

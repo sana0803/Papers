@@ -3,6 +3,7 @@
         <div @click="goHome" id="Header_Title">PAPERS</div>
         <div id="Header_Album">내 앨범</div>
         <div @click="goStore" id="Header_Store">상점</div>
+        <div id="Header_Mileage">{{loginUser.userMileage}}장</div>
         <div id="Header_Alarm">
             <v-icon @click="goAlert" style="font-size:3.0em">notifications</v-icon>
         </div>
@@ -23,8 +24,9 @@
 
 <script>
 export default {
-    data() {
-        return {
+    computed: {
+        loginUser() {
+            return this.$store.getters.getLoginUser
         }
     },
     methods: {
@@ -41,6 +43,7 @@ export default {
             this.$router.push('myPage')
         },
         logout() {
+            this.$store.commit('setLoginUser', {})
             this.$router.push('/')
         }
     }
@@ -76,8 +79,13 @@ export default {
     margin-left:40px;
     cursor: pointer;
 }
-#Header_Alarm{
+#Header_Mileage{
+    margin-right:15px;
     margin-left: auto;
+    line-height:7.5vh;
+    color:#FFB319;
+}
+#Header_Alarm{
     margin-right: 15px;
     line-height:7.5vh;
     cursor: pointer;

@@ -97,10 +97,15 @@
 
 <script>
 export default {
+    computed:{
+        loginUser() {
+            return this.$store.getters.getLoginUser
+        }
+    },
     data() {
         return {
-            nickName: "김싸피",
-            pwd: "123123",
+            nickName: this.$store.getters.getLoginUser.userName,
+            pwd: '123123',
             pwdCheck: "123123",
             rules: [
                 value => !!value || '입력창을 확인해주세요.',
