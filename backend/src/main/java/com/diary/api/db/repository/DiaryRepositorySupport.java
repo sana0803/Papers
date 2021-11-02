@@ -40,11 +40,4 @@ public class DiaryRepositorySupport {
         return Optional.ofNullable(diaryCover);
     }
 
-//    public List<Diary> getAllByOwnerId (String ownerId) {
-//        List<Diary> diaries = jpaQueryFactory.select(qDiary).from(qDiary)
-//                .where(qDiary.user.userId.eq(ownerId)).fetch();
-//        if (diaries == null) return new ArrayList<>();
-//        return diaries;
-//    }
-
 }

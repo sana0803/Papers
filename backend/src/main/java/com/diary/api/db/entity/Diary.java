@@ -6,6 +6,8 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -23,8 +25,14 @@ public class Diary extends BaseEntity {
     User user;
 
     @ManyToOne
-    @JoinColumn(name = "coverId", referencedColumnName = "id", nullable = true)
+    @JoinColumn(name = "coverId", referencedColumnName = "id", nullable = false)
     DiaryCover diaryCover;
+
+    @OneToMany(mappedBy = "diary", cascade = CascadeType.ALL)
+    private Set<Note> notes = new HashSet<>();
+
+    @OneToMany(mappedBy = "diary", cascade = CascadeType.ALL)
+    private Set<UserDiary> userDiaries = new HashSet<>();
 
     @PrePersist
     public void setUp(){

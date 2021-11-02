@@ -1,13 +1,11 @@
 package com.diary.api.service;
 
 
-import com.diary.api.db.entity.Diary;
-import com.diary.api.db.entity.DiaryCover;
-import com.diary.api.db.entity.Note;
-import com.diary.api.db.entity.User;
+import com.diary.api.db.entity.*;
 import com.diary.api.db.repository.DiaryRepository;
 import com.diary.api.db.repository.DiaryRepositorySupport;
 import com.diary.api.db.repository.NoteRepository;
+import com.diary.api.db.repository.UserDiaryRepository;
 import com.diary.api.request.DiaryReq;
 import com.diary.api.response.DiaryRes;
 import com.diary.api.response.NoteRes;
@@ -35,6 +33,9 @@ public class DiaryServiceImpl implements DiaryService {
     @Autowired
     NoteRepository noteRepository;
 
+    @Autowired
+    UserDiaryRepository userDiaryRepository;
+
     // 일기장 생성
     @Override
     public DiaryRes createDiary(DiaryReq diaryReq) {
@@ -50,7 +51,14 @@ public class DiaryServiceImpl implements DiaryService {
         diary.setUser(ownerId);
         diary.setDiaryCreatedDate(LocalDate.now());
 
-        return DiaryRes.of(diaryRepository.save(diary));
+        diaryRepository.save(diary);
+
+        UserDiary userDiary = new UserDiary();
+        userDiary.setDiary(diaryRepository.getOne(diary.getId()));
+        userDiary.setUser(userService.getUserByUserId(diaryReq.getOwnerId()));
+        userDiaryRepository.save(userDiary);
+
+        return DiaryRes.of(diary);
     }
 
     //일기장 수정
