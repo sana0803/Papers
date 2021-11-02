@@ -19,6 +19,6 @@ public class UserDiary extends BaseEntity{
 
     @ManyToOne
     @JoinColumn(name = "ownerId", referencedColumnName = "userId", nullable = false)
-    User owner;
+    User user;
 
 }
