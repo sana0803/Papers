@@ -1,6 +1,5 @@
 package com.diary.api.service;
 
-
 import com.diary.api.db.entity.*;
 import com.diary.api.db.repository.*;
 import com.diary.api.request.DiaryReq;
@@ -23,9 +22,6 @@ public class DiaryServiceImpl implements DiaryService {
     DiaryRepositorySupport diaryRepositorySupport;
 
     @Autowired
-    UserService userService;
-
-    @Autowired
     NoteRepository noteRepository;
 
     @Autowired
@@ -37,15 +33,12 @@ public class DiaryServiceImpl implements DiaryService {
     // 일기장 생성
     @Override
     public DiaryRes createDiary(User user, DiaryReq diaryReq) {
-//        User owner = user;
         DiaryCover coverId = diaryRepositorySupport.getDiaryCover(diaryReq.getCoverId()).get();
         String diaryTitle = diaryReq.getDiaryTitle();
-        String diaryDesc = diaryReq.getDiaryDesc();
 
         Diary diary = new Diary();
         diary.setDiaryCover(coverId);
         diary.setDiaryTitle(diaryTitle);
-        diary.setDiaryDesc(diaryDesc);
         diary.setUser(user);
         diary.setDiaryCreatedDate(LocalDate.now());
         diaryRepository.save(diary);
@@ -54,8 +47,6 @@ public class DiaryServiceImpl implements DiaryService {
         userDiary.setDiary(diaryRepository.getOne(diary.getId()));
         userDiary.setUser(user);
         userDiaryRepository.save(userDiary);
-
-//        DiaryRes diaryRes = new DiaryRes(diary);
 
         return new DiaryRes(diary);
     }
@@ -66,19 +57,23 @@ public class DiaryServiceImpl implements DiaryService {
         Diary diary = diaryRepository.getOne(id);
         diary.setDiaryCover(diaryRepositorySupport.getDiaryCover(diaryReq.getCoverId()).get());
         diary.setDiaryTitle(diaryReq.getDiaryTitle());
-        diary.setDiaryDesc(diaryReq.getDiaryDesc());
         diaryRepository.save(diary);
-//        DiaryRes diaryRes = new DiaryRes(diary);
+
         return new DiaryRes(diary);
     }
 
-    // 내 일기장 전체 조회
+    // 내 일기장 전체 조회, 나에게 공유된 일기장도 조회
     @Override
-    public List<DiaryRes> getDiaryList(String userId) {
+    public List<DiaryRes> getDiaryList(User user) {
         List<DiaryRes> diaryResList = null;
-        User ownerId = userService.getUserByUserId(userId);
-        List<Diary> diaryList = diaryRepository.findAllByUser(ownerId);
+        List<Diary> diaryList = diaryRepository.findAllByUser(user);
 
+        // 나에게 되어있는 다이어리도 가져오기
+        List<UserDiary> userDiaryList = userDiaryRepository.findByGuestId(user.getUserId());
+        for (UserDiary userDiary : userDiaryList) {
+            diaryList.add(userDiary.getDiary());
+        }
+        // 다이어리 리턴값에맞춰서 변경
         if (diaryList.size() != 0) {
             diaryResList = convertToDiaryRes(diaryList);
         }
@@ -92,10 +87,6 @@ public class DiaryServiceImpl implements DiaryService {
 
         Diary diary = diaryRepository.getOne(id);
         List<Note> notes = noteRepository.findAllByDiary(diary);
-//        if (!noteRepository.findAllByDiary(diary).isEmpty()) {
-//            notes = noteRepository.findAllByDiary(diary);
-//        }
-//        else return null;
 
         for (Note note: notes) {
             NoteRes noteRes = new NoteRes(note);

@@ -1,6 +1,5 @@
 package com.diary.api.controller;
 
-
 import com.diary.api.db.entity.Diary;
 import com.diary.api.db.entity.User;
 import com.diary.api.db.repository.DiaryRepository;
@@ -10,7 +9,6 @@ import com.diary.api.response.DiaryRes;
 import com.diary.api.response.NoteRes;
 import com.diary.api.service.DiaryService;
 import com.diary.api.service.UserService;
-import com.diary.common.auth.PapersUserDetails;
 import com.diary.common.util.JwtTokenUtil;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,8 +50,6 @@ public class DiaryController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(BaseResponseBody.of(500, "내용이 존재하지 않거나 오류가 발생하였습니다."));
         }
 
-//        PapersUserDetails userDetails = (PapersUserDetails)authentication.getDetails();
-//        User user = userService.getUserByUserId(userDetails.getUsername());
         User user = JwtTokenUtil.getUser(authentication, userService);
         if (user == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(BaseResponseBody.of(401, "존재하지 않는 회원입니다."));
@@ -86,15 +82,12 @@ public class DiaryController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(BaseResponseBody.of(500, "내용이 존재하지 않거나 오류가 발생하였습니다."));
         }
 
-//        PapersUserDetails userDetails = (PapersUserDetails)authentication.getDetails();
-//        User user = userService.getUserByUserId(userDetails.getUsername());
         User user = JwtTokenUtil.getUser(authentication, userService);
         if (user == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(BaseResponseBody.of(401, "존재하지 않는 회원입니다."));
         }
 
         Optional<Diary> diary = diaryRepository.findById(id);
-
         if (user != diary.get().getUser()) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(BaseResponseBody.of(401, "자신의 일기장만 수정할 수 있습니다."));
         }
@@ -122,9 +115,6 @@ public class DiaryController {
             @PathVariable Long id,
             @ApiIgnore Authentication authentication
     ) {
-//        PapersUserDetails userDetails = (PapersUserDetails)authentication.getDetails();
-//        User user = userService.getUserByUserId(userDetails.getUsername());
-
         User user = JwtTokenUtil.getUser(authentication, userService);
         if (user == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(BaseResponseBody.of(401, "존재하지 않는 회원입니다."));
@@ -149,13 +139,11 @@ public class DiaryController {
     public ResponseEntity<List<DiaryRes>> getUserDiary(
             @ApiIgnore Authentication authentication
     ) {
-//        PapersUserDetails userDetails = (PapersUserDetails)authentication.getDetails();
-//        User user = userService.getUserByUserId(userDetails.getUsername());
         User user = JwtTokenUtil.getUser(authentication, userService);
         if (user == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
-        return ResponseEntity.status(HttpStatus.OK).body(diaryService.getDiaryList(user.getUserId()));
+        return ResponseEntity.status(HttpStatus.OK).body(diaryService.getDiaryList(user));
     }
 
     @GetMapping("/{id}")
@@ -169,9 +157,6 @@ public class DiaryController {
             @PathVariable Long id,
             @ApiIgnore Authentication authentication
     ) {
-//        PapersUserDetails userDetails = (PapersUserDetails)authentication.getDetails();
-//        User user = userService.getUserByUserId(userDetails.getUsername());
-
         User user = JwtTokenUtil.getUser(authentication, userService);
         if (user == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();

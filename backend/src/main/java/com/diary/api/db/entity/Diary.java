@@ -16,7 +16,7 @@ public class Diary extends BaseEntity {
 
     String diaryTitle;
 
-    String diaryDesc;
+//    String diaryDesc;
 
     LocalDate diaryCreatedDate;
 
@@ -36,6 +36,8 @@ public class Diary extends BaseEntity {
 
     @PrePersist
     public void setUp(){
+
         this.diaryCreatedDate = LocalDate.now();
+
     }
 }

@@ -2,6 +2,7 @@ package com.diary.api.response;
 
 import com.diary.api.db.entity.Diary;
 import com.diary.api.db.entity.DiaryCover;
+import com.diary.api.db.entity.User;
 import com.diary.api.request.DiaryReq;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -18,16 +19,16 @@ public class DiaryRes extends BaseResponseBody{
     Long id;
     DiaryCover diaryCover;
     String diaryTitle;
-    String diaryDesc;
     String ownerId;
     LocalDate diaryCreatedDate;
+//    User guest;
 
     public DiaryRes(Diary diary) {
         this.id = diary.getId();
         this.diaryCover = diary.getDiaryCover();
         this.diaryTitle = diary.getDiaryTitle();
-        this.diaryDesc = diary.getDiaryDesc();
         this.ownerId = diary.getUser().getUserId();
         this.diaryCreatedDate = diary.getDiaryCreatedDate();
+//        this.guest = diary.getUser();
     }
 }
