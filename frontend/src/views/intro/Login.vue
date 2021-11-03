@@ -19,6 +19,7 @@
                     </v-btn>
                 </div>
                 <div v-if="!introMode" id="Login_left">
+                    <div id="Line"></div>
                     <div id="Left_Title">
                         PAPERS
                     </div>
@@ -31,17 +32,21 @@
             <div class="page" id="page2">
                 <div>
                     <v-text-field 
+                    v-on:keyup.enter="login"
                     class="Login_Input" 
                     label="ID"
                     color="#FFB319"
+                    v-model="userId"
                     :rules="rules"></v-text-field>
                 </div>
                 <div>
                     <v-text-field 
+                    v-on:keyup.enter="login"
                     class="Login_Input" 
                     type="password" 
                     label="PW"
                     color="#FFB319"
+                    v-model="userPwd"
                     :rules="rules"></v-text-field>
                 </div>
                 <v-btn
@@ -49,9 +54,9 @@
                 id="Login_Btn"
                 >로그인</v-btn>
                 <v-btn
-                id="GoSignUp_Btn"
-                @click="goSignUp"
-                text
+                    id="GoSignUp_Btn"
+                    @click="goSignUp"
+                    text
                 >
                 처음이신가요?&nbsp;&nbsp; >
                 </v-btn>
@@ -61,10 +66,14 @@
 </template>
 
 <script>
+import Swal from 'sweetalert2'
+
 export default {
     data() {
         return{
             introMode: true,
+            userId: '',
+            userPwd:'',
             rules: [
                 value => !!value || '입력창을 확인해주세요.',
             ]
@@ -72,7 +81,31 @@ export default {
     },
     methods:{
         login() {
-            this.$router.push('main')
+            const user = {
+                userId: this.userId,
+                userPwd: this.userPwd
+            }
+            this.$store.dispatch('login', user)
+                .then((result) => {
+                    const loginUser = {
+                        userId: result.data.userId,
+                        userName: result.data.userName,
+                        userMileage: result.data.userMileage,
+                        userProfile: result.data.userProfile,
+                        userToken: result.data.userToken
+                    }
+                    // Store에 loginUser 정보 저장
+                    this.$store.commit('setLoginUser', loginUser)
+                    this.$router.push('main')
+                })
+                .catch(()=>{
+                    Swal.fire({
+                        icon: 'error',
+                        title: '<span style="font-size:25px;">아이디 또는 비밀번호를 확인해주세요</span>',
+                        confirmButtonColor: '#f27474',
+                        confirmButtonText: '<span style="font-size:18px;">확인</span>'
+                    })
+                })
         },
         goSignUp() {
             this.$router.push('signUp')
@@ -83,7 +116,7 @@ export default {
             const container = document.getElementById('Login_Container')
             page1.style.transform = "rotateY(-180deg)"
             page1.style.transition = "1s"
-            container.style.transform = "translate(200px,0px)"
+            container.style.transform = "translate(230px,0px)"
             container.style.transition = "1s"
         }
     }
@@ -103,49 +136,54 @@ export default {
 }
 #Login_Container {
     position: relative;
-    width: 400px;
-    height: 580px;
-    perspective: 1000px;
+    width: 461px;
+    height: 644px;
+    perspective: 1500px;
 }
 #Login_Outer{
-    width:400px;
-    height:580px;
+    width:461px;
+    height:644px;
     margin-left:-33px;
-    background:#FFB319;
+    background:#FAE7CB;
     display:flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
+    box-shadow: 2px 3px 12px 2px rgba(35, 35, 35, 0.25);
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px;
 }
 #Intro_Title{
     width:190px;
     height:70px;
     line-height:70px;
     text-align: center;
-    font-size:60px;
-    color:white;
+    font-size:62px;
+    color:#FFB319;
     font-family: Cafe24Syongsyong;
 }
 #Intro_content{
     font-size:20px;
     text-align: center;
-    color:white;
+    color:#585858;
     margin-top:150px;
 }
 #Spread_Btn{
-    color:white;
+    color:#222222;
     margin-top:30px;
     font-size:18px;
 }
 #Login_left{
-    width:400px;
-    height:580px;
+    width:461px;
+    height:644px;
     display:flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
     transform: scaleX(-1);
     margin-left:-33px;
+    background: #FAE7CB;
+    position:relative;
 }
 #Left_Title{
     width:190px;
@@ -171,6 +209,7 @@ export default {
     top:30px;
 }
 #GoSignUp_Btn{
+    width:200px;
     position:relative;
     top:50px;
     font-size:18px;
@@ -187,18 +226,15 @@ export default {
   top: 0;
   left: 0;
   padding: 0 32px;
-  background-color: #ffffff;
-  box-shadow: 0 0 1px lightgrey, -1px 0 1px lightgrey;
+  background-color: #FAE7CB;
   width: 100%;
   height: 100%;
 }
-
 #page1 {
   z-index: 1;
   transform-origin: left center;
   transition-duration: 1s;
   transition-timing-function: ease-in;
-  border:1px solid lightgrey;
 }
 #page2 {
   z-index: 0;
@@ -206,6 +242,12 @@ export default {
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  border:1px solid lightgrey;
+}
+#Line{
+    height:590px;
+    border: 1px solid #D7D7D7;
+    position:absolute;
+    top:10px;
+    left:461px;
 }
 </style>

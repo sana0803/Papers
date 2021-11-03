@@ -19,7 +19,7 @@ export default {
     border-left:1px solid lightgrey;
     margin:0 auto;
     width:1272px;
-    height:100vh;
+    height:100%;
     justify-content: center;
     align-items: center;
 }

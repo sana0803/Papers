@@ -122,9 +122,8 @@ export default {
 .Alert_Item{
     width:600px;
     height:75px;
-    border:1px solid lightgray;
     border-radius: 15px;
-    box-shadow: 1px 1px 3px grey;
+    box-shadow: 2px 2px 10px rgba(166, 166, 168, 0.25);
     margin:0 auto;
     margin-top:10px;
     line-height:75px;

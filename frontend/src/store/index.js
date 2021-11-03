@@ -1,21 +1,20 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import Login from './modules/Login';
-import SignUp from './modules/SignUp';
+import state from './modules/state.js'
+import * as actions from './modules/actions.js'
+import * as mutations from './modules/mutations.js'
+import * as getters from './modules/getters.js'
+import Login from './modules/Login.js'
 
 Vue.use(Vuex)
 
 export default new Vuex.Store({
-  // state: {
-  // },
-  // mutations: {
-  // },
-  // actions: {
-  // },
-  // getters: {
-  // },
+  // namespaced: true,
+  state,
+  mutations,
+  actions,
+  getters,
   modules: {
-    Login,
-    SignUp
+    Login:Login
   }
 })

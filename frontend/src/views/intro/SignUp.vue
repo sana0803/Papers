@@ -15,6 +15,7 @@
                 class="SignUp_Input" 
                 label="ID"
                 color="#FFB319"
+                v-model="userId"
                 :rules="rules"></v-text-field>
             </div>
             <div>
@@ -23,36 +24,70 @@
                 type="password" 
                 label="PW"
                 color="#FFB319"
+                v-model="userPwd"
                 :rules="rules"></v-text-field>
             </div>
             <div>
                 <v-text-field 
                 class="SignUp_Input" 
-                type="password" 
-                label="NAME"
+                label="NICKNAME"
                 color="#FFB319"
+                v-model="userName"
                 :rules="rules"></v-text-field>
             </div>
             <v-btn
-            @click="signUp"
-            id="SignUp_Btn"
+                @click="signUp"
+                id="SignUp_Btn"
             >회원가입</v-btn>
         </div>
     </div>
 </template>
 
 <script>
+import Swal from 'sweetalert2'
+import {mapActions} from 'vuex'
+const Login = 'Login'
+
 export default {
-    methods:{
-        signUp() {
-            this.$router.push('main')
-        }
-    },
     data() {
         return{
             rules: [
                 value => !!value || '입력창을 확인해주세요.',
-            ]
+            ],
+            userId:'',
+            userPwd:'',
+            userName:''
+        }
+    },
+    methods:{
+        ...mapActions(Login, [
+            'sign'
+        ]),
+        signUp() {
+            const user = {
+                userId: this.userId,
+                userPwd: this.userPwd,
+                userName: this.userName,
+                userNickname: '닉네임'
+            }
+            this.$store.dispatch('signUp', user)
+                .then(() => {
+                    Swal.fire({
+                        icon: 'success',
+                        title: '<span style="font-size:25px;">회원가입을 축하드립니다.</span>',
+                        confirmButtonColor: '#b0da9b',
+                        confirmButtonText: '<span style="font-size:18px;">확인</span>'
+                    })
+                    this.$router.push('/')
+                })
+                .catch(() => {
+                    Swal.fire({
+                        icon: 'error',
+                        title: '<span style="font-size:25px;">중복된 아이디입니다.</span>',
+                        confirmButtonColor: '#f27474',
+                        confirmButtonText: '<span style="font-size:18px;">확인</span>'
+                    })
+                })
         }
     }
 }
