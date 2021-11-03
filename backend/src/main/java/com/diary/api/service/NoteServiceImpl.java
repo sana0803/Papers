@@ -2,18 +2,19 @@ package com.diary.api.service;
 
 import com.diary.api.db.entity.*;
 import com.diary.api.db.repository.*;
+import com.diary.api.request.NoteEmotionReq;
 import com.diary.api.request.NoteReq;
 import com.diary.api.request.NoteStickerReq;
+import com.diary.api.response.BaseResponseBody;
 import com.diary.api.response.NoteRes;
+import com.diary.common.util.JwtTokenUtil;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.*;
 
 @Service
@@ -39,6 +40,12 @@ public class NoteServiceImpl implements NoteService{
 
     @Autowired
     UserRepository userRepository;
+
+    @Autowired
+    EmotionRepository emotionRepository;
+
+    @Autowired
+    UserService userService;
 
     // 월별 일기 목록 조회
     @Override
@@ -125,6 +132,11 @@ public class NoteServiceImpl implements NoteService{
             noteStickerRepository.save(noteSticker);
         }
 
+        noteRepositorySupport.deleteNoteEmotion(note.getId());
+        for(NoteEmotionReq noteEmotionReq : noteReq.getEmotionList()) {
+            this.setNoteEmotion(noteEmotionReq, note.getId());
+        }
+
         NoteRes noteRes = new NoteRes(note);
         noteRes.setNoteSticker(noteRepositorySupport.getNoteStickers(note.getId()).get());
         noteRes.setNoteEmotion(noteRepositorySupport.getNoteEmotions(note.getId()).get());
@@ -156,24 +168,46 @@ public class NoteServiceImpl implements NoteService{
 
     // 일기들 일기장 옮기기
     public boolean changeDiaryNote(List<Long> notes, Long diaryId, Authentication authentication) {
-        Set<String> userId = new HashSet<>();
-        try {
+
+        User user = JwtTokenUtil.getUser(authentication, userService);
+//        try {
             for(Long noteId : notes) {
                 Note note = noteRepositorySupport.getNote(noteId).get();
-                userId.add(note.getUser().getUserId());
+                if(user.getUserId() != note.getUser().getUserId()) return false;
 
-                if(userId.size() <= 2) return false;
-
-                note.getDiary().setId(diaryId);
+                note.setDiary(diaryRepository.getOne(diaryId));
                 noteRepository.save(note);
             }
             return true;
-        } catch (Exception e) {
-            return false;
-        }
+//        } catch (Exception e) {
+//            return false;
+//        }
     }
 
     public List<String> getImageFiles(String userId, Long diaryId){
         return noteRepositorySupport.getImageFiles(userId, diaryId);
+    }
+
+    public boolean setNoteEmotion(NoteEmotionReq noteEmotionReq, Long noteId){
+        try {
+            Emotion emotion = new Emotion();
+            emotion.setEmotionInfo(noteRepositorySupport.getEmotionInfo(noteEmotionReq.getEmotionInfoId()).get());
+            if(noteId != null) emotion.setNote(noteRepositorySupport.getNote(noteId).get());
+            else emotion.setNote(noteRepositorySupport.getNote(noteEmotionReq.getNoteId()).get());
+            emotion.setUser(userRepository.findByUserId(noteEmotionReq.getWriterId()).get());
+            emotionRepository.save(emotion);
+            return true;
+        }catch (Exception e) {
+            return false;
+        }
+    }
+
+    public boolean deleteNoteEmotion(NoteEmotionReq noteEmotionReq) {
+        try {
+            noteRepositorySupport.deleteNoteEmotionByUser(noteEmotionReq.getNoteId(), noteEmotionReq.getWriterId());
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
     }
 }
