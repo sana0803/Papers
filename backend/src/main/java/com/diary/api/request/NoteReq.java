@@ -18,4 +18,5 @@ public class NoteReq {
     List<String> noteMediaList;
     List<String> noteHashtagList;
     List<NoteStickerReq> stickerList;
+    List<NoteEmotionReq> emotionList;
 }
