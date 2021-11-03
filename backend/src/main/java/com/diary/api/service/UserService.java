@@ -30,4 +30,5 @@ public interface UserService {
     boolean createNotification(User user, NotificationReq notificationReq);
     boolean readNotification(User user, Long id);
     List<UserSearchRes> getUsersLikeUserId(String userIdSubString);
+    List<User> searchUserByUserID(String userId);
 }

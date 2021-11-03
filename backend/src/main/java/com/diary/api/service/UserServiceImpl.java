@@ -216,4 +216,13 @@ public class UserServiceImpl implements UserService{
         }
         return stickerRes;
     }
+
+    @Override
+    public List<User> searchUserByUserID(String userId) {
+        List<User> users = userRepository.findByUserIdContainingIgnoreCase(userId);
+        if (users != null) {
+            return users;
+        }
+        return null;
+    }
 }
