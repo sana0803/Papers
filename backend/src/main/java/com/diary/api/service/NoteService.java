@@ -1,5 +1,7 @@
 package com.diary.api.service;
 
+import com.diary.api.db.entity.Emotion;
+import com.diary.api.request.NoteEmotionReq;
 import com.diary.api.request.NoteReq;
 import com.diary.api.response.NoteRes;
 import org.springframework.security.core.Authentication;
@@ -17,4 +19,6 @@ public interface NoteService {
     public boolean deleteNote(Long noteId);
     public boolean changeDiaryNote(List<Long> notes, Long diaryId, Authentication authentication);
     public List<String> getImageFiles(String userId, Long diaryId);
+    public boolean setNoteEmotion(NoteEmotionReq noteEmotionReq, Long noteId);
+    public boolean deleteNoteEmotion(NoteEmotionReq noteEmotionReq);
 }

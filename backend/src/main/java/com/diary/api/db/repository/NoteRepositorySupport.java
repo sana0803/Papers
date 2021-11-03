@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -39,6 +40,7 @@ public class NoteRepositorySupport {
     QNoteDesign qNoteDesign = QNoteDesign.noteDesign;
     QNoteLayout qNoteLayout = QNoteLayout.noteLayout;
     QNoteSticker qNoteSticker = QNoteSticker.noteSticker;
+    QEmotionInfo qEmotionInfo = QEmotionInfo.emotionInfo;
 
     public Optional<List<Note>> getMonthNote(int month, Long diaryId) {
         List<Note> notes = jpaQueryFactory.select(qNote).from(qNote)
@@ -106,6 +108,13 @@ public class NoteRepositorySupport {
         return Optional.ofNullable(emotion);
     }
 
+    public Optional<EmotionInfo> getEmotionInfo(Long emotionInfoId) {
+        EmotionInfo emotionInfo = jpaQueryFactory.select(qEmotionInfo).from(qEmotionInfo)
+                .where(qEmotionInfo.id.eq(emotionInfoId)).fetchOne();
+        if(emotionInfo == null) return Optional.empty();
+        return Optional.ofNullable(emotionInfo);
+    }
+
     public Optional<NoteDesign> getNoteDesign(Long noteDesignId){
         NoteDesign noteDesign = jpaQueryFactory.select(qNoteDesign).from(qNoteDesign)
                 .where(qNoteDesign.id.eq(noteDesignId)).fetchOne();
@@ -120,20 +129,29 @@ public class NoteRepositorySupport {
         return Optional.ofNullable(noteLayout);
     }
 
+    @Transactional
     public void deleteNoteMedia(Long noteId) {
-        jpaQueryFactory.delete(qNoteMedia).where(qNoteMedia.note.id.eq(noteId));
+        jpaQueryFactory.delete(qNoteMedia).where(qNoteMedia.note.id.eq(noteId)).execute();
     }
 
+    @Transactional
     public void deleteNoteHashtag(Long noteId) {
-        jpaQueryFactory.delete(qNoteHashtag).where(qNoteHashtag.note.id.eq(noteId));
+        jpaQueryFactory.delete(qNoteHashtag).where(qNoteHashtag.note.id.eq(noteId)).execute();
     }
 
+    @Transactional
     public void deleteNoteEmotion(Long noteId) {
-        jpaQueryFactory.delete(qEmotion).where(qEmotion.note.id.eq(noteId));
+        jpaQueryFactory.delete(qEmotion).where(qEmotion.note.id.eq(noteId)).execute();
     }
 
+    @Transactional
+    public void deleteNoteEmotionByUser(Long noteId, String userId){
+        jpaQueryFactory.delete(qEmotion).where(qEmotion.note.id.eq(noteId).and(qEmotion.user.userId.eq(userId))).execute();
+    }
+
+    @Transactional
     public void deleteNoteSticker(Long noteId) {
-        jpaQueryFactory.delete(qNoteSticker).where(qNoteSticker.note.id.eq(noteId));
+        jpaQueryFactory.delete(qNoteSticker).where(qNoteSticker.note.id.eq(noteId)).execute();
     }
     public List<String> getImageFiles(String userId, Long diaryId){
         AWSCredentials crd = new BasicAWSCredentials(ACCESS_KEY, SECRET_KEY);
