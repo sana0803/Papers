@@ -12,7 +12,6 @@ public class User {
     @Id
     private String userId;
     private String userPwd;
-    private String userName;
     private int userMileage;
     private String userNickname;
     private String userProfile;

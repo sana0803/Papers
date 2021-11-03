@@ -46,7 +46,6 @@ public class UserRepositorySupport {
     @Transactional
     public boolean updateUser (User user) {
         Long row = jpaQueryFactory.update(qUser)
-                .set(qUser.userName, user.getUserName())
                 .set(qUser.userNickname, user.getUserNickname())
                 .set(qUser.userProfile, user.getUserProfile())
                 .where(qUser.userId.eq(user.getUserId()))
@@ -62,5 +61,14 @@ public class UserRepositorySupport {
                 .where(qNotification.user.userId.eq(userId))
                 .fetch();
         return notifications;
+    }
+
+    public List<User> getUsersLikeUserId(String userIdSubString) {
+        List<User> users = jpaQueryFactory.select(qUser)
+                .from(qUser)
+                .where(qUser.userId.like("%" + userIdSubString + "%"))
+                .fetch();
+        return users;
+
     }
 }

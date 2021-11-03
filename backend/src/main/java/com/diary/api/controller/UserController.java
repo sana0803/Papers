@@ -6,13 +6,12 @@ import com.diary.api.db.entity.Notification;
 import com.diary.api.request.NotificationReq;
 import com.diary.api.request.UserSignupReq;
 import com.diary.api.request.UserUpdateReq;
-import com.diary.api.response.BaseResponseBody;
-import com.diary.api.response.NotificationRes;
-import com.diary.api.response.StickerPackagesRes;
+import com.diary.api.response.*;
 import com.diary.common.auth.PapersUserDetails;
 import com.diary.api.db.entity.User;
 import com.diary.api.service.UserService;
 import com.diary.common.util.JwtTokenUtil;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -99,5 +98,22 @@ public class UserController {
         if (user == null) return ResponseEntity.notFound().build();
         userService.readNotification(user, notId);
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/id-check/{userId}")
+    public ResponseEntity checkUserId(@ApiIgnore Authentication authentication, @PathVariable String userId) {
+        User user = JwtTokenUtil.getUser(authentication, userService);
+        if (user == null) return ResponseEntity.status(HttpStatus.OK).body(BaseResponseBody.of(401, "잘못된 토큰"));
+
+        user = userService.getUserByUserId(userId);
+        if (user == null) return ResponseEntity.status(HttpStatus.OK).body(BaseResponseBody.of(200, "사용 가능한 아이디입니다."));
+        return ResponseEntity.status(HttpStatus.OK).body(BaseResponseBody.of(200, "이미 존재하는 아이디입니다."));
+    }
+
+    @GetMapping()
+    public ResponseEntity<List<UserSearchRes>> getUsersLikeUserId(@ApiIgnore Authentication authentication, @RequestParam String userIdSubString) {
+        User user = JwtTokenUtil.getUser(authentication, userService);
+        if (user == null) return ResponseEntity.notFound().build();
+        return ResponseEntity.ok(userService.getUsersLikeUserId(userIdSubString));
     }
 }

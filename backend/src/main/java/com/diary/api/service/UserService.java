@@ -11,6 +11,7 @@ import com.diary.api.request.UserUpdateReq;
 import com.diary.api.response.NotificationRes;
 import com.diary.api.response.StickerPackagesRes;
 import com.diary.api.response.UserRes;
+import com.diary.api.response.UserSearchRes;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -28,4 +29,5 @@ public interface UserService {
     List<NotificationRes> getNotifications(User user);
     boolean createNotification(User user, NotificationReq notificationReq);
     boolean readNotification(User user, Long id);
+    List<UserSearchRes> getUsersLikeUserId(String userIdSubString);
 }
