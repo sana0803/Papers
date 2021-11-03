@@ -6,18 +6,14 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class UserRes extends BaseResponseBody{
+public class UserSearchRes {
     private String userId;
     private String userNickname;
-    private int userMileage;
     private String userProfile;
-    private String userToken;
 
-    public UserRes(User user, String userToken) {
+    public UserSearchRes(User user) {
         this.userId = user.getUserId();
         this.userNickname = user.getUserNickname();
-        this.userMileage = user.getUserMileage();
         this.userProfile = user.getUserProfile();
-        this.userToken = userToken;
     }
 }

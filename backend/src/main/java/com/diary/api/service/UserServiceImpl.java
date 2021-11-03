@@ -11,10 +11,7 @@ import com.diary.api.request.NotificationReq;
 import com.diary.api.request.UserLoginReq;
 import com.diary.api.request.UserSignupReq;
 import com.diary.api.request.UserUpdateReq;
-import com.diary.api.response.NotificationRes;
-import com.diary.api.response.StickerPackagesRes;
-import com.diary.api.response.StickerRes;
-import com.diary.api.response.UserRes;
+import com.diary.api.response.*;
 import com.diary.common.util.JwtTokenUtil;
 import com.diary.common.util.S3Util;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -70,7 +67,6 @@ public class UserServiceImpl implements UserService{
         User user = new User();
         user.setUserId(userSignupReq.getUserId());
         user.setUserPwd(passwordEncoder.encode(userSignupReq.getUserPwd()));
-        user.setUserName(userSignupReq.getUserName());
         user.setUserNickname(userSignupReq.getUserNickname());
         user.setUserProfile(DEFAULT_PROFILE_URL);
 
@@ -88,7 +84,6 @@ public class UserServiceImpl implements UserService{
         S3Util.removeNewFile(uploadFile);
         System.out.println(uploadImageUrl);
 
-        user.setUserName(userUpdateReq.getUserName());
         user.setUserNickname(userUpdateReq.getUserNickname());
         user.setUserPwd(passwordEncoder.encode(userUpdateReq.getUserPwd()));
         user.setUserProfile(uploadImageUrl);
@@ -202,6 +197,16 @@ public class UserServiceImpl implements UserService{
     @Override
     public boolean readNotification(User user, Long id) {
         return userRepositorySupport.readNotification(user.getUserId(), id);
+    }
+
+    @Override
+    public List<UserSearchRes> getUsersLikeUserId(String userIdSubString) {
+        List<UserSearchRes> UserSearchResList = new ArrayList<>();
+        List<User> users = userRepositorySupport.getUsersLikeUserId(userIdSubString);
+        for (User user : users) {
+            UserSearchResList.add(new UserSearchRes(user));
+        }
+        return UserSearchResList;
     }
 
     public List<StickerRes> convertStickerRes (List<Sticker> stickers) {
