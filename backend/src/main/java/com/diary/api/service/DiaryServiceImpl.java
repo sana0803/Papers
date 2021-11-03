@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service("diaryService")
 public class DiaryServiceImpl implements DiaryService {
@@ -29,6 +30,9 @@ public class DiaryServiceImpl implements DiaryService {
 
     @Autowired
     UserDiaryRepository userDiaryRepository;
+
+    @Autowired
+    UserRepository userRepository;
 
     // 일기장 생성
     @Override
@@ -75,7 +79,7 @@ public class DiaryServiceImpl implements DiaryService {
         }
         // 다이어리 리턴값에맞춰서 변경
         if (diaryList.size() != 0) {
-            diaryResList = convertToDiaryRes(diaryList);
+            diaryResList = convertToDiaryRes(diaryList, user);
         }
         return diaryResList;
     }
@@ -106,10 +110,18 @@ public class DiaryServiceImpl implements DiaryService {
     }
 
     // 일기장을 필요정보만 리턴
-    public List<DiaryRes> convertToDiaryRes(List<Diary> diaries) {
+    public List<DiaryRes> convertToDiaryRes(List<Diary> diaries, User user) {
         List<DiaryRes> diaryResList = new ArrayList<>();
         for (Diary diary : diaries) {
-            diaryResList.add(new DiaryRes(diary));
+            // 공유다이어리인경우 guest찾아서 닉네임으로 넣어주기
+            String guestId = userDiaryRepository.getOne(diary.getId()).getGuestId();
+            String guestNickname = userRepository.findByUserId(guestId).get().getUserNickname();
+            DiaryRes diaryRes = new DiaryRes(diary);
+            if (!guestId.isEmpty() && !guestId.equals(user.getUserId())) {
+                diaryRes.setGuestId(guestNickname);
+            }
+            diaryResList.add(diaryRes);
+
         }
         return diaryResList;
     }
