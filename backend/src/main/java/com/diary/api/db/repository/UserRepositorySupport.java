@@ -63,4 +63,13 @@ public class UserRepositorySupport {
                 .fetch();
         return notifications;
     }
+
+    public List<User> getUsersLikeUserId(String userIdSubString) {
+        List<User> users = jpaQueryFactory.select(qUser)
+                .from(qUser)
+                .where(qUser.userId.like("%" + userIdSubString + "%"))
+                .fetch();
+        return users;
+
+    }
 }
