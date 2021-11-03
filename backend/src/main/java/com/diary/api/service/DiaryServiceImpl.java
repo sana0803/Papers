@@ -2,21 +2,16 @@ package com.diary.api.service;
 
 
 import com.diary.api.db.entity.*;
-import com.diary.api.db.repository.DiaryRepository;
-import com.diary.api.db.repository.DiaryRepositorySupport;
-import com.diary.api.db.repository.NoteRepository;
-import com.diary.api.db.repository.UserDiaryRepository;
+import com.diary.api.db.repository.*;
 import com.diary.api.request.DiaryReq;
 import com.diary.api.response.DiaryRes;
 import com.diary.api.response.NoteRes;
-import org.checkerframework.checker.units.qual.A;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service("diaryService")
 public class DiaryServiceImpl implements DiaryService {
@@ -34,12 +29,15 @@ public class DiaryServiceImpl implements DiaryService {
     NoteRepository noteRepository;
 
     @Autowired
+    NoteRepositorySupport noteRepositorySupport;
+
+    @Autowired
     UserDiaryRepository userDiaryRepository;
 
     // 일기장 생성
     @Override
     public DiaryRes createDiary(User user, DiaryReq diaryReq) {
-        User owner = user;
+//        User owner = user;
         DiaryCover coverId = diaryRepositorySupport.getDiaryCover(diaryReq.getCoverId()).get();
         String diaryTitle = diaryReq.getDiaryTitle();
         String diaryDesc = diaryReq.getDiaryDesc();
@@ -48,7 +46,7 @@ public class DiaryServiceImpl implements DiaryService {
         diary.setDiaryCover(coverId);
         diary.setDiaryTitle(diaryTitle);
         diary.setDiaryDesc(diaryDesc);
-        diary.setUser(owner);
+        diary.setUser(user);
         diary.setDiaryCreatedDate(LocalDate.now());
         diaryRepository.save(diary);
 
@@ -57,9 +55,9 @@ public class DiaryServiceImpl implements DiaryService {
         userDiary.setUser(user);
         userDiaryRepository.save(userDiary);
 
-        DiaryRes diaryRes = new DiaryRes(diary);
+//        DiaryRes diaryRes = new DiaryRes(diary);
 
-        return diaryRes;
+        return new DiaryRes(diary);
     }
 
     //일기장 수정
@@ -70,8 +68,8 @@ public class DiaryServiceImpl implements DiaryService {
         diary.setDiaryTitle(diaryReq.getDiaryTitle());
         diary.setDiaryDesc(diaryReq.getDiaryDesc());
         diaryRepository.save(diary);
-        DiaryRes diaryRes = new DiaryRes(diary);
-        return  diaryRes;
+//        DiaryRes diaryRes = new DiaryRes(diary);
+        return new DiaryRes(diary);
     }
 
     // 내 일기장 전체 조회
@@ -90,7 +88,24 @@ public class DiaryServiceImpl implements DiaryService {
     // 일기장 한개 조회
     @Override
     public List<NoteRes> getDiary(Long id) {
-        return null;
+        List<NoteRes> noteResList = new ArrayList<>();
+
+        Diary diary = diaryRepository.getOne(id);
+        List<Note> notes = noteRepository.findAllByDiary(diary);
+//        if (!noteRepository.findAllByDiary(diary).isEmpty()) {
+//            notes = noteRepository.findAllByDiary(diary);
+//        }
+//        else return null;
+
+        for (Note note: notes) {
+            NoteRes noteRes = new NoteRes(note);
+            noteRes.setNoteSticker(noteRepositorySupport.getNoteStickers(note.getId()).get());
+            noteRes.setNoteEmotion(noteRepositorySupport.getNoteEmotions(note.getId()).get());
+            noteRes.setNoteHashtag(noteRepositorySupport.getNoteHashtags(note.getId()).get());
+            noteRes.setNoteMedia(noteRepositorySupport.getNoteMedias(note.getId()).get());
+            noteResList.add(noteRes);
+        }
+        return noteResList;
     }
 
     // 일기장 삭제
@@ -103,9 +118,7 @@ public class DiaryServiceImpl implements DiaryService {
     public List<DiaryRes> convertToDiaryRes(List<Diary> diaries) {
         List<DiaryRes> diaryResList = new ArrayList<>();
         for (Diary diary : diaries) {
-            diaryResList.add(new DiaryRes(
-                    diary
-            ));
+            diaryResList.add(new DiaryRes(diary));
         }
         return diaryResList;
     }
