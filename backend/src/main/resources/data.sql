@@ -5,7 +5,7 @@ insert into note_design values (1, 'design-url-1') ON DUPLICATE KEY UPDATE id=1;
 insert into note_layout values (1) ON DUPLICATE KEY UPDATE id=1;
 
 -- 사용자
-insert into user values ('test1', 50, '홍길동', '의적', 'userprofile1', 'testpwd1') ON DUPLICATE KEY UPDATE user_id='test1';
+insert into user values ('test1', 50, '의적', 'https://papers-bucket.s3.amazonaws.com/profile/test1/eb3df4c9-a031-42c9-9bb5-0d3562de7995landing-main.jpg', '$2a$10$9RbUeMd5zBbv1bic5Me.euAyCi1fqlwbWhKfmn0k3D7bnqJCtJhx.') ON DUPLICATE KEY UPDATE user_id='test1';
 
 -- 폰트
 insert into font values (1, 'font1', 50, 'font-url-1') ON DUPLICATE KEY UPDATE id=1;

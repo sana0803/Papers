@@ -67,7 +67,6 @@ public class UserServiceImpl implements UserService{
         User user = new User();
         user.setUserId(userSignupReq.getUserId());
         user.setUserPwd(passwordEncoder.encode(userSignupReq.getUserPwd()));
-        user.setUserName(userSignupReq.getUserName());
         user.setUserNickname(userSignupReq.getUserNickname());
         user.setUserProfile(DEFAULT_PROFILE_URL);
 
@@ -85,7 +84,6 @@ public class UserServiceImpl implements UserService{
         S3Util.removeNewFile(uploadFile);
         System.out.println(uploadImageUrl);
 
-        user.setUserName(userUpdateReq.getUserName());
         user.setUserNickname(userUpdateReq.getUserNickname());
         user.setUserPwd(passwordEncoder.encode(userUpdateReq.getUserPwd()));
         user.setUserProfile(uploadImageUrl);

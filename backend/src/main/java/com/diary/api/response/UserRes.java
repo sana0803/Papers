@@ -9,14 +9,12 @@ import lombok.Setter;
 public class UserRes extends BaseResponseBody{
     private String userId;
     private String userNickname;
-    private String userName;
     private int userMileage;
     private String userProfile;
     private String userToken;
 
     public UserRes(User user, String userToken) {
         this.userId = user.getUserId();
-        this.userName = user.getUserName();
         this.userNickname = user.getUserNickname();
         this.userMileage = user.getUserMileage();
         this.userProfile = user.getUserProfile();

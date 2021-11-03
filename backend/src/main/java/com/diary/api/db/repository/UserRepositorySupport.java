@@ -46,7 +46,6 @@ public class UserRepositorySupport {
     @Transactional
     public boolean updateUser (User user) {
         Long row = jpaQueryFactory.update(qUser)
-                .set(qUser.userName, user.getUserName())
                 .set(qUser.userNickname, user.getUserNickname())
                 .set(qUser.userProfile, user.getUserProfile())
                 .where(qUser.userId.eq(user.getUserId()))
