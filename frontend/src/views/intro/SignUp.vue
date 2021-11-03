@@ -30,7 +30,7 @@
             <div>
                 <v-text-field 
                 class="SignUp_Input" 
-                label="NAME"
+                label="NICKNAME"
                 color="#FFB319"
                 v-model="userName"
                 :rules="rules"></v-text-field>

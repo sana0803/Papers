@@ -319,8 +319,9 @@ export default {
     width:131px;
     height:38px;
     margin:0 auto;
-    margin-top:10px;
+    margin-top:5px;
     font-size:16px;
+    text-align: center;
 }
 #Dialog_Btn_Box{
     width:164px;

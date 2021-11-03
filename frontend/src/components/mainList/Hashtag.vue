@@ -54,6 +54,7 @@ export default {
     background:#FFB319;
     color:white;
     width:40px;
+    height:40px;
     position: relative;
     top:-2px;
 }

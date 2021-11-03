@@ -29,7 +29,8 @@ const routes = [
       {path: 'alert', component: () => import('../views/main/Alert.vue')},
       {path: 'myPage', component: () => import('../views/main/MyPage.vue')},
       {path: 'templete', component: () => import('../views/main/WriteTemplete.vue')},
-      {path: 'store', component: () => import('../views/main/Store.vue')}
+      {path: 'store', component: () => import('../views/main/Store.vue')},
+      {path: 'album', component: () => import('../views/main/Album.vue')}
     ]
   },
   {

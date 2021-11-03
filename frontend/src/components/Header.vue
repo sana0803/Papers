@@ -1,7 +1,7 @@
 <template>
     <div id="Header_Container">
         <div @click="goHome" id="Header_Title">PAPERS</div>
-        <div id="Header_Album">내 앨범</div>
+        <div @click="goAlbum" id="Header_Album">내 앨범</div>
         <div @click="goStore" id="Header_Store">상점</div>
         <div id="Header_Mileage">{{loginUser.userMileage}}장</div>
         <div id="Header_Alarm">
@@ -32,6 +32,9 @@ export default {
     methods: {
         goHome() {
             this.$router.push('/main')
+        },
+        goAlbum() {
+            this.$router.push('album')
         },
         goStore() {
             this.$router.push('store')
