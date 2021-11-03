@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="MainList_Item">
-            일기 하나임
+            커버
         </div>
         <div class="MainList_Item">
         </div>

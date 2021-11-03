@@ -3,7 +3,7 @@
         <div id="Mypage_Content">
             <div id="Mypage_Title">기본 프로필 편집</div>
             <div id="Mypage_Profile">
-                <img src="../../assets/image/user.png" id="Profile_img">
+                <img :src="loginUser.userProfile" id="Profile_img">
                 <v-btn
                 id="Change_Btn"
                 text
@@ -18,6 +18,7 @@
                 class="Form_Input" 
                 color="#FFB319"
                 v-model="nickName"
+                :rules="rules"
                 ></v-text-field>
             </div>
             <div class="Mypage_Form">
@@ -28,6 +29,7 @@
                 type="password"
                 color="#FFB319"
                 v-model="pwd"
+                :rules="rules"
                 ></v-text-field>
             </div>
             <div class="Mypage_Form">
@@ -38,6 +40,7 @@
                 type="password"
                 color="#FFB319"
                 v-model="pwdCheck"
+                :rules="pwdCheckRule"
                 ></v-text-field>
             </div>
             <div id="Mypage_Title2">
@@ -67,6 +70,14 @@
                     커버 목록
                 </v-tab-item>
             </v-tabs>
+            <div id="Mypage_Delete">
+                <v-btn
+                    id="Delete_Btn"
+                    text
+                >
+                회원 탈퇴
+                </v-btn>
+            </div>
             <div id="Mypage_Btn_Box">
                 <v-btn
                 class="Mypage_Btn"
@@ -86,11 +97,30 @@
 
 <script>
 export default {
+    computed:{
+        loginUser() {
+            return this.$store.getters.getLoginUser
+        }
+    },
     data() {
         return {
-            nickName: "김싸피",
-            pwd: "123123",
-            pwdCheck: "123123"
+            nickName: this.$store.getters.getLoginUser.userName,
+            pwd: '123123',
+            pwdCheck: "123123",
+            rules: [
+                value => !!value || '입력창을 확인해주세요.',
+            ],
+            pwdCheckRule:[
+                value => !!value || '입력창을 확인해주세요.',
+                value => {
+                    if(this.pwd != value) {
+                        return '비밀번호가 일치하지 않습니다.'
+                    }
+                    else{
+                        return true
+                    }
+                }
+            ]
         }
     },
     methods:{
@@ -106,12 +136,12 @@ export default {
     display:flex;
     justify-content: center;
     align-items: center;
-    margin: auto;
-    margin-top:44px;
+    margin: 0 auto;
+    margin-top:34px;
     width:600px;
     height:800px;
     border-radius: 15px;
-    box-shadow: 1px 1px 10px gray;
+    box-shadow: 3px 3px 11px rgba(166, 166, 168, 0.25);
 }
 #Mypage_Content{
     width:528px;
@@ -165,5 +195,17 @@ export default {
 }
 .Mypage_Btn{
     margin-left:10px;
+}
+#Mypage_Delete{
+    float:left;
+    height:30px;
+    margin-top:20px;
+}
+#Delete_Btn{
+    color:gray;
+    width:50px;
+    font-size:15px;
+    position:relative;
+    left:-1px;
 }
 </style>
