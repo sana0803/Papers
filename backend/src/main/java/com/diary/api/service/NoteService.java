@@ -2,6 +2,7 @@ package com.diary.api.service;
 
 import com.diary.api.request.NoteReq;
 import com.diary.api.response.NoteRes;
+import org.springframework.security.core.Authentication;
 
 import java.util.List;
 import java.util.Optional;
@@ -14,4 +15,6 @@ public interface NoteService {
     public NoteRes registNote(NoteReq noteReq);
     public NoteRes updateNote(Long noteId, NoteReq noteReq);
     public boolean deleteNote(Long noteId);
+    public boolean changeDiaryNote(List<Long> notes, Long diaryId, Authentication authentication);
+    public List<String> getImageFiles(String userId, Long diaryId);
 }

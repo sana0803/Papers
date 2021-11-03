@@ -9,13 +9,12 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class NoteServiceImpl implements NoteService{
@@ -92,13 +91,14 @@ public class NoteServiceImpl implements NoteService{
         note.setNoteLayout(noteRepositorySupport.getNoteLayout(noteReq.getLayoutId()).get());
         note.setNoteTitle(noteReq.getNoteTitle());
         note.setNoteContent(noteReq.getNoteContent());
-        note.setNoteCreateDate(LocalDate.now());
-        note.setNoteCreateTime(LocalTime.now());
+//        note.setNoteCreateDate(LocalDate.now());
+//        note.setNoteCreateTime(LocalTime.now());
         note.setDiary(diaryRepository.findById(noteReq.getDiaryId()).get());
         note.setFont(noteRepositorySupport.getFont(noteReq.getFontId()).get());
         note.setUser(userRepository.findByUserId(noteReq.getWriterId()).get());
         noteRepository.save(note);
 
+        noteRepositorySupport.deleteNoteHashtag(note.getId());
         for(String hashtag : noteReq.getNoteHashtagList()){
             NoteHashtag noteHashtag = new NoteHashtag();
             noteHashtag.setNote(noteRepositorySupport.getNote(note.getId()).get());
@@ -106,6 +106,7 @@ public class NoteServiceImpl implements NoteService{
             noteHashtagRepository.save(noteHashtag);
         }
 
+        noteRepositorySupport.deleteNoteMedia(note.getId());
         for(String media : noteReq.getNoteMediaList()){
             NoteMedia noteMedia = new NoteMedia();
             noteMedia.setNote(noteRepositorySupport.getNote(note.getId()).get());
@@ -114,6 +115,7 @@ public class NoteServiceImpl implements NoteService{
             noteMediaRepository.save(noteMedia);
         }
 
+        noteRepositorySupport.deleteNoteSticker(note.getId());
         for(NoteStickerReq sticker : noteReq.getStickerList()){
             NoteSticker noteSticker = new NoteSticker();
             noteSticker.setSticker(noteRepositorySupport.getSticker(sticker.getStickerId()).get());
@@ -146,10 +148,32 @@ public class NoteServiceImpl implements NoteService{
         try {
             if(noteRepositorySupport.getNote(noteId).isPresent())
                 noteRepository.delete(noteRepositorySupport.getNote(noteId).get());
-
             return true;
         } catch (Exception e) {
             return false;
         }
+    }
+
+    // 일기들 일기장 옮기기
+    public boolean changeDiaryNote(List<Long> notes, Long diaryId, Authentication authentication) {
+        Set<String> userId = new HashSet<>();
+        try {
+            for(Long noteId : notes) {
+                Note note = noteRepositorySupport.getNote(noteId).get();
+                userId.add(note.getUser().getUserId());
+
+                if(userId.size() <= 2) return false;
+
+                note.getDiary().setId(diaryId);
+                noteRepository.save(note);
+            }
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    public List<String> getImageFiles(String userId, Long diaryId){
+        return noteRepositorySupport.getImageFiles(userId, diaryId);
     }
 }
