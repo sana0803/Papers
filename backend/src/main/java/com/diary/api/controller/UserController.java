@@ -5,6 +5,7 @@ import com.diary.api.db.entity.Font;
 import com.diary.api.db.entity.Notification;
 import com.diary.api.request.NotificationReq;
 import com.diary.api.request.UserSignupReq;
+import com.diary.api.request.UserUpdateReq;
 import com.diary.api.response.BaseResponseBody;
 import com.diary.api.response.NotificationRes;
 import com.diary.api.response.StickerPackagesRes;
@@ -17,8 +18,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import springfox.documentation.annotations.ApiIgnore;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -36,6 +39,16 @@ public class UserController {
         return ResponseEntity.status(401).body(BaseResponseBody.of(401, "회원가입 실패"));
     }
 
+    @PutMapping()
+    public ResponseEntity updateUser(@ApiIgnore Authentication authentication, @ModelAttribute UserUpdateReq userUpdateReq) throws IOException {
+        User user = JwtTokenUtil.getUser(authentication, userService);
+        if (user == null) return ResponseEntity.status(401).body(BaseResponseBody.of(401, "잘못된 토큰"));
+        if (!userService.updateUser(user, userUpdateReq)) {
+            return ResponseEntity.status(500).body(BaseResponseBody.of(500, "유저 정보 수정 중 문제 발생"));
+        }
+        return ResponseEntity.ok().body(BaseResponseBody.of(201, "회원 정보 수정정 성공"));
+
+    }
     @PutMapping("/mileage")
     public ResponseEntity<? extends BaseResponseBody> updateMileage(@ApiIgnore Authentication authentication, @RequestParam int amount) {
         User user = JwtTokenUtil.getUser(authentication, userService);
