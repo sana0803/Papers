@@ -1,20 +1,20 @@
 package com.diary.api.controller;
 
-import com.diary.api.db.entity.Note;
 import com.diary.api.request.NoteReq;
 import com.diary.api.response.BaseResponseBody;
 import com.diary.api.response.NoteRes;
 import com.diary.api.service.NoteService;
 import com.diary.common.auth.PapersUserDetails;
-import com.diary.common.util.JwtTokenUtil;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import springfox.documentation.annotations.ApiIgnore;
 
 import java.util.List;
@@ -54,7 +54,9 @@ public class NoteController {
             @ApiResponse(code = 200, message = "일기 저장 성공"),
             @ApiResponse(code = 500, message = "일기 저장 오류발생")
     })
-    public ResponseEntity<? extends BaseResponseBody> setNote(@RequestBody NoteReq noteReq) {
+    public ResponseEntity<? extends BaseResponseBody> setNote(@ApiIgnore Authentication authentication, @RequestBody NoteReq noteReq) {
+        PapersUserDetails userDetails = (PapersUserDetails)authentication.getDetails();
+        noteReq.setWriterId(userDetails.getUser().getUserId());
         NoteRes noteRes = noteService.registNote(noteReq);
         if(noteRes == null) return ResponseEntity.status(500).body(BaseResponseBody.of(500, "존재하지 않거나 오류가 발생하였습니다."));
         return ResponseEntity.status(200).body(noteRes);
@@ -92,4 +94,40 @@ public class NoteController {
         if(!noteService.deleteNote(noteId)) return ResponseEntity.status(500).body(BaseResponseBody.of(500, "존재하지 않거나 오류가 발생하였습니다."));
         return ResponseEntity.status(200).body(BaseResponseBody.of(200, "삭제 완료"));
     }
+
+    @PutMapping("/change-diary")
+    @ApiOperation(value = "일기들 일기장 옮기기", notes = "일기들 일기장 옮기기")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "일기장 옮기기 성공"),
+            @ApiResponse(code = 500, message = "일기장 옮기는 중 오류발생")
+    })
+    public ResponseEntity<? extends BaseResponseBody> changeDiaryNote(@ApiIgnore Authentication authentication, @RequestBody List<Long> notes, @RequestBody Long diaryId) {
+        if(!noteService.changeDiaryNote(notes, diaryId, authentication)) return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(BaseResponseBody.of(500, "존재하지 않거나 오류가 발생하였습니다."));
+        return ResponseEntity.status(200).body(BaseResponseBody.of(200, "삭제 완료"));
+    }
+
+    @GetMapping("/files")
+    @ApiOperation(value = "클라우드에서 사진파일 목록 가져오기", notes = "클라우드에서 사진파일 목록 가져오기")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "사진파일 가져오기 성공"),
+            @ApiResponse(code = 500, message = "사진파일 가져오는 중 오류발생")
+    })
+    public ResponseEntity<List<String>> getImageFiles(@ApiIgnore Authentication authentication, @ApiParam Long diaryId) {
+        PapersUserDetails userDetails = (PapersUserDetails)authentication.getDetails();
+        noteService.getImageFiles(userDetails.getUser().getUserId(), diaryId);
+        return ResponseEntity.status(200).body(noteService.getImageFiles(userDetails.getUser().getUserId(), diaryId));
+    }
+
+//    @PostMapping("/files")
+//    @ApiOperation(value = "클라우드에서 사진파일 목록 가져오기", notes = "클라우드에서 사진파일 목록 가져오기")
+//    @ApiResponses({
+//            @ApiResponse(code = 200, message = "사진파일 가져오기 성공"),
+//            @ApiResponse(code = 500, message = "사진파일 가져오는 중 오류발생")
+//    })
+//    public ResponseEntity<List<String>> setImageFiles(@ApiIgnore Authentication authentication, @RequestBody List<MultipartFile> files) {
+//        PapersUserDetails userDetails = (PapersUserDetails)authentication.getDetails();
+//        noteService.getImageFiles(userDetails.getUser().getUserId(), diaryId);
+//        return ResponseEntity.status(200).body(noteService.getImageFiles(userDetails.getUser().getUserId(), diaryId));
+//    }
+
 }

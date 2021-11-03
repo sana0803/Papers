@@ -1,15 +1,31 @@
 package com.diary.api.db.repository;
 
+import com.amazonaws.auth.AWSCredentials;
+import com.amazonaws.auth.BasicAWSCredentials;
+import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.AmazonS3Client;
+import com.amazonaws.services.s3.model.ObjectListing;
+import com.amazonaws.services.s3.model.S3ObjectSummary;
 import com.diary.api.db.entity.*;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @Repository
 public class NoteRepositorySupport {
+
+    private String S3_IMAGE_URL = "https://papers-bucket.s3.amazonaws.com/";
+
+    @Value("${cloud.aws.credentials.access-key}")
+    private String ACCESS_KEY;
+
+    @Value("${cloud.aws.credentials.secret-key}")
+    private String SECRET_KEY;
 
     @Autowired
     private JPAQueryFactory jpaQueryFactory;
@@ -35,6 +51,7 @@ public class NoteRepositorySupport {
     public Optional<List<NoteSticker>> getNoteStickers(Long noteId){
         List<NoteSticker> stickers = jpaQueryFactory.select(qNoteSticker).from(qNoteSticker)
                 .where(qNoteSticker.note.id.eq(noteId)).fetch();
+        for(NoteSticker noteSticker : stickers) noteSticker.setNote(null);
         if(stickers == null) return Optional.empty();
         return Optional.ofNullable(stickers);
     }
@@ -42,6 +59,7 @@ public class NoteRepositorySupport {
     public Optional<List<Emotion>> getNoteEmotions(Long noteId){
         List<Emotion> emotions = jpaQueryFactory.select(qEmotion).from(qEmotion)
                 .where(qEmotion.note.id.eq(noteId)).fetch();
+        for(Emotion emotion : emotions) emotion.setNote(null);
         if(emotions == null) return Optional.empty();
         return Optional.ofNullable(emotions);
     }
@@ -61,7 +79,6 @@ public class NoteRepositorySupport {
     }
 
     public Optional<Note> getNote(Long noteId) {
-        System.out.println(noteId);
         Note note = jpaQueryFactory.select(qNote).from(qNote)
                 .where(qNote.id.eq(noteId)).fetchOne();
         if(note == null) return Optional.empty();
@@ -101,5 +118,36 @@ public class NoteRepositorySupport {
                 .where(qNoteLayout.id.eq(noteLayoutId)).fetchOne();
         if(noteLayout == null) return Optional.empty();
         return Optional.ofNullable(noteLayout);
+    }
+
+    public void deleteNoteMedia(Long noteId) {
+        jpaQueryFactory.delete(qNoteMedia).where(qNoteMedia.note.id.eq(noteId));
+    }
+
+    public void deleteNoteHashtag(Long noteId) {
+        jpaQueryFactory.delete(qNoteHashtag).where(qNoteHashtag.note.id.eq(noteId));
+    }
+
+    public void deleteNoteEmotion(Long noteId) {
+        jpaQueryFactory.delete(qEmotion).where(qEmotion.note.id.eq(noteId));
+    }
+
+    public void deleteNoteSticker(Long noteId) {
+        jpaQueryFactory.delete(qNoteSticker).where(qNoteSticker.note.id.eq(noteId));
+    }
+    public List<String> getImageFiles(String userId, Long diaryId){
+        AWSCredentials crd = new BasicAWSCredentials(ACCESS_KEY, SECRET_KEY);
+        AmazonS3 s3 = new AmazonS3Client(crd);
+        ObjectListing objects = s3.listObjects("papers-bucket", "diary-file/" + userId + "/" + diaryId);
+
+        List<String> urls = new ArrayList<>();
+        do {
+            for (S3ObjectSummary objectSummary : objects.getObjectSummaries()) {
+                urls.add(S3_IMAGE_URL + objectSummary.getKey());
+            }
+//            objects = s3.listNextBatchOfObjects(objects);
+        } while (objects.isTruncated());
+        urls.remove(0);
+        return urls;
     }
 }
