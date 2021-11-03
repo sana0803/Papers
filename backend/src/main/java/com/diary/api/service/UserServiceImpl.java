@@ -1,25 +1,39 @@
 package com.diary.api.service;
 
+import com.amazonaws.auth.AWSCredentials;
+import com.amazonaws.auth.BasicAWSCredentials;
+import com.amazonaws.services.s3.AmazonS3Client;
+import com.amazonaws.services.s3.model.CannedAccessControlList;
+import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.diary.api.db.entity.*;
 import com.diary.api.db.repository.*;
 import com.diary.api.request.NotificationReq;
 import com.diary.api.request.UserLoginReq;
 import com.diary.api.request.UserSignupReq;
+import com.diary.api.request.UserUpdateReq;
 import com.diary.api.response.NotificationRes;
 import com.diary.api.response.StickerPackagesRes;
 import com.diary.api.response.StickerRes;
 import com.diary.api.response.UserRes;
 import com.diary.common.util.JwtTokenUtil;
+import com.diary.common.util.S3Util;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 @Service("userService")
 public class UserServiceImpl implements UserService{
-    final String DEFAULT_PROFILE_URL = "https://papers-bucket.s3.ap-northeast-2.amazonaws.com/profile/default-profile.png";
+    private final String DEFAULT_PROFILE_URL = "https://papers-bucket.s3.ap-northeast-2.amazonaws.com/profile/default-profile.png";
 
     @Autowired
     PasswordEncoder passwordEncoder;
@@ -63,6 +77,25 @@ public class UserServiceImpl implements UserService{
         if (userRepository.save(user) == null)
             return false;
         return true;
+    }
+
+    @Override
+    public boolean updateUser(User user, UserUpdateReq userUpdateReq) throws IOException {
+        File uploadFile = S3Util.convert(userUpdateReq.getUserProfile())  // 파일 변환할 수 없으면 에러
+                .orElseThrow(() -> new IllegalArgumentException("error: MultipartFile -> File convert fail"));
+        String fileName = "profile/" + user.getUserId() + "/" + UUID.randomUUID() + uploadFile.getName();   // S3에 저장된 파일 이름
+        String uploadImageUrl = S3Util.putS3(uploadFile, fileName); // s3로 업로드
+        S3Util.removeNewFile(uploadFile);
+        System.out.println(uploadImageUrl);
+
+        user.setUserName(userUpdateReq.getUserName());
+        user.setUserNickname(userUpdateReq.getUserNickname());
+        user.setUserPwd(passwordEncoder.encode(userUpdateReq.getUserPwd()));
+        user.setUserProfile(uploadImageUrl);
+
+        if (userRepositorySupport.updateUser(user))
+            return true;
+        return false;
     }
 
     @Override

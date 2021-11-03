@@ -7,14 +7,18 @@ import com.diary.api.db.entity.User;
 import com.diary.api.request.NotificationReq;
 import com.diary.api.request.UserLoginReq;
 import com.diary.api.request.UserSignupReq;
+import com.diary.api.request.UserUpdateReq;
 import com.diary.api.response.NotificationRes;
 import com.diary.api.response.StickerPackagesRes;
 import com.diary.api.response.UserRes;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 public interface UserService {
     boolean signupUser(UserSignupReq userSignupReq);
+    boolean updateUser(User user, UserUpdateReq userUpdateReq) throws IOException;
     User getUserByUserId(String userId);
     UserRes authenticate(UserLoginReq userLoginReq);
     boolean updateMileage(User user, int amount);
