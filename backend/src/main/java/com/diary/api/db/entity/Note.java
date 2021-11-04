@@ -1,5 +1,6 @@
 package com.diary.api.db.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -40,17 +41,25 @@ public class Note extends BaseEntity{
     @JoinColumn(name = "designId", referencedColumnName = "id", nullable = false)
     NoteDesign noteDesign;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "note", cascade = CascadeType.ALL)
     private Set<NoteHashtag> hashtags = new HashSet<>();
 
+    @JsonIgnore
     @OneToMany(mappedBy = "note", cascade = CascadeType.ALL)
     private Set<NoteMedia> noteMedia = new HashSet<>();
 
+    @JsonIgnore
     @OneToMany(mappedBy = "note", cascade = CascadeType.ALL)
     private Set<Emotion> emotions = new HashSet<>();
 
+    @JsonIgnore
     @OneToMany(mappedBy = "note", cascade = CascadeType.ALL)
     private Set<NoteSticker> noteStickers = new HashSet<>();
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "note", cascade = CascadeType.ALL)
+    private Set<EmotionLog> emotionLogs = new HashSet<>();
 
     @PrePersist
     public void setUp() {
