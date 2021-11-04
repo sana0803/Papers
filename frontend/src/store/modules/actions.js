@@ -16,7 +16,20 @@ export function login({state}, user){
 
 export function write({state}, note){
     console.log('write action 호출', state)
-    console.log(note)
     const url = baseUrl + '/note'
     return $axios.post(url, note)
+}
+
+export function diaryCreate({state}, diary){
+    console.log('diaryCreate action 호출', state)
+    const userToken = state.loginUser.userToken
+    const url = baseUrl + '/diary'
+    return $axios.post(url, diary, { headers: { Authorization: `Bearer ${userToken}` } })
+}
+
+export function diaryGet({state}){
+    console.log('diaryGet action 호출', state)
+    const userToken = state.loginUser.userToken
+    const url = baseUrl + '/diary'
+    return $axios.get(url, { headers: { Authorization: `Bearer ${userToken}` } })
 }

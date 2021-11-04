@@ -24,8 +24,8 @@ export default {
     align-items: center;
 }
 #Intro_Box{
-    width:800px;
-    height:580px;
-    border:1px solid lightgrey;
+    width:922px;
+    height:644px;
+    /* border:1px solid lightgrey; */
 }
 </style>
