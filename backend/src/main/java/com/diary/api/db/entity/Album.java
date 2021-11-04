@@ -7,6 +7,8 @@ import org.apache.tomcat.jni.Local;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -19,6 +21,9 @@ public class Album extends BaseEntity implements Serializable {
 
     private String albumName;
     private LocalDate albumDate;
+
+    @OneToMany(mappedBy = "album", cascade = CascadeType.ALL)
+    Set<AlbumContent> albumContents = new HashSet<>();
 
     @PrePersist
     public void setUp () {
