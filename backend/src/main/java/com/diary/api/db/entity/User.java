@@ -1,9 +1,12 @@
 package com.diary.api.db.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -15,6 +18,10 @@ public class User {
     private int userMileage;
     private String userNickname;
     private String userProfile;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    Set<EmotionLog> emotionLogs = new HashSet<>();
 
     @PrePersist
     public void setUp(){
