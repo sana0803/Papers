@@ -1,6 +1,8 @@
 <template>
     <div id="SignUp_Container">
         <div id="SignUp_left">
+            <img class="Img" src="../../assets/image/paper.png" />
+            <div id="Line"></div>
             <div id="Left_Title">
                 PAPERS
             </div>
@@ -10,10 +12,11 @@
             </div>
         </div>
         <div id="SignUp_right">
+            <div id="Form_Box">
             <div>
                 <v-text-field 
                 class="SignUp_Input" 
-                label="ID"
+                label="아이디"
                 color="#FFB319"
                 v-model="userId"
                 :rules="rules"></v-text-field>
@@ -22,7 +25,7 @@
                 <v-text-field 
                 class="SignUp_Input" 
                 type="password" 
-                label="PW"
+                label="비밀번호"
                 color="#FFB319"
                 v-model="userPwd"
                 :rules="rules"></v-text-field>
@@ -30,7 +33,16 @@
             <div>
                 <v-text-field 
                 class="SignUp_Input" 
-                label="NICKNAME"
+                type="password" 
+                label="비밀번호확인"
+                color="#FFB319"
+                v-model="userPwdCheck"
+                :rules="rules"></v-text-field>
+            </div>
+            <div>
+                <v-text-field 
+                class="SignUp_Input" 
+                label="닉네임"
                 color="#FFB319"
                 v-model="userName"
                 :rules="rules"></v-text-field>
@@ -39,6 +51,7 @@
                 @click="signUp"
                 id="SignUp_Btn"
             >회원가입</v-btn>
+            </div>
         </div>
     </div>
 </template>
@@ -56,6 +69,7 @@ export default {
             ],
             userId:'',
             userPwd:'',
+            userPwdCheck:'',
             userName:''
         }
     },
@@ -95,18 +109,25 @@ export default {
 
 <style scoped>
 #SignUp_Container{
-    width:800px;
-    height:580px;
+    background: #FAE7CB;
+    border-radius: 20px;
+    width:922px;
+    height:644px;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 2px 3px 12px 2px rgba(35, 35, 35, 0.25);
 }
 #SignUp_left{
-    width:400px;
-    height:580px;
+    width:443px;
+    height:610px;
+    background: white;
     float:left;
-    border-right:1px solid lightgrey;
     display:flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
+    position: relative;
 }
 #Left_Title{
     width:190px;
@@ -114,18 +135,20 @@ export default {
     line-height:70px;
     text-align: center;
     font-size:60px;
-    color:black;
+    color:#FFB319;
     font-family: Cafe24Syongsyong;
 }
 #Left_content{
     font-size:20px;
     text-align: center;
-    color:black;
-    margin-top:150px;
+    color:#222222;
+    margin-top:80px;
 }
 #SignUp_right{
-    width:400px;
-    height:580px;
+    margin-left:0px;
+    width:445px;
+    height:610px;
+    background: white;
     float:right;
     display:flex;
     justify-content: center;
@@ -135,13 +158,29 @@ export default {
 #SignUp_Btn{
     background:#FFB319;
     color:white;
-    width:200px;
+    width:220px;
+    margin-top:10px;
     position:relative;
-    top:30px;
+    /* top:10px; */
     font-size:20px;
 }
 .SignUp_Input{
-    width:200px;
+    width:220px;
     font-size:25px;
+    margin-top:-10px;
+}
+#Line{
+    height:590px;
+    border: 1px solid #D7D7D7;
+    position:absolute;
+    top:10px;
+    left:443px;
+}
+#Form_Box{
+    height:273px;
+}
+.Img{
+    width:87px;
+    height:87px;
 }
 </style>
