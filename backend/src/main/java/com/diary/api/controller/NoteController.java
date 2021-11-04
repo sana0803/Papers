@@ -98,10 +98,8 @@ public class NoteController {
             @ApiResponse(code = 500, message = "일기 삭제 오류발생")
     })
     public ResponseEntity<? extends BaseResponseBody> deleteNote(@ApiIgnore Authentication authentication, @PathVariable Long noteId) {
-        PapersUserDetails userDetails = (PapersUserDetails)authentication.getDetails();
-        NoteRes noteRes = noteService.getNote(noteId);
-        if(!userDetails.getUser().getUserId().equals(noteRes.getWriterId()))
-            return ResponseEntity.status(401).body(BaseResponseBody.of(401, "작성자가 아니어서 삭제할 수 없습니다."));
+        User user = JwtTokenUtil.getUser(authentication, userService);
+        if (user == null) return ResponseEntity.status(401).body(BaseResponseBody.of(200, "작성자가 아니어서 삭제할 수 없습니다."));
         if(!noteService.deleteNote(noteId)) return ResponseEntity.status(500).body(BaseResponseBody.of(500, "존재하지 않거나 오류가 발생하였습니다."));
         return ResponseEntity.status(200).body(BaseResponseBody.of(200, "삭제 완료"));
     }
@@ -149,7 +147,7 @@ public class NoteController {
     })
     public ResponseEntity<? extends BaseResponseBody> setNoteEmotion(@ApiIgnore Authentication authentication, @RequestBody NoteEmotionReq emotionReq){
         User user = JwtTokenUtil.getUser(authentication, userService);
-        if (user == null) return ResponseEntity.status(401).body(BaseResponseBody.of(200, "잘못된 토큰"));
+        if (user == null) return ResponseEntity.status(401).body(BaseResponseBody.of(401, "잘못된 토큰"));
         emotionReq.setWriterId(user.getUserId());
         if(noteService.setNoteEmotion(emotionReq, null)) return ResponseEntity.status(200).body(BaseResponseBody.of(200, "감정추가 성공"));
         else return ResponseEntity.status(500).body(BaseResponseBody.of(500, "감정 추가 중 오류 발생"));
@@ -163,7 +161,7 @@ public class NoteController {
     })
     public ResponseEntity<? extends BaseResponseBody> deleteNoteEmotion(@ApiIgnore Authentication authentication, @RequestBody NoteEmotionReq emotionReq){
         User user = JwtTokenUtil.getUser(authentication, userService);
-        if (user == null) return ResponseEntity.status(401).body(BaseResponseBody.of(200, "잘못된 토큰"));
+        if (user == null) return ResponseEntity.status(401).body(BaseResponseBody.of(401, "잘못된 토큰"));
         emotionReq.setWriterId(user.getUserId());
         if(noteService.deleteNoteEmotion(emotionReq)) return ResponseEntity.status(200).body(BaseResponseBody.of(200, "감정취소 성공"));
         else return ResponseEntity.status(500).body(BaseResponseBody.of(500, "감정 취소 중 오류 발생"));
