@@ -50,6 +50,7 @@
                     </div>
                     <div class="Invite_Input">
                         <v-text-field 
+                        v-model="diaryTitle"
                         style="margin-top:10px;"
                         color="#FFB319"
                         label="일기장 타이틀을 입력해주세요."></v-text-field>
@@ -111,7 +112,7 @@
                         </div>
                     </div>
                     <div id="Dialog_Btn_Box">
-                        <v-btn style="background:#FFB319; color:white;" class="Dialog_Btn">확인</v-btn>
+                        <v-btn @click="create" style="background:#FFB319; color:white;" class="Dialog_Btn">확인</v-btn>
                         <v-btn @click="dialog=false" style="background:#9F9F9F; color:white;" class="Dialog_Btn">취소</v-btn>
                     </div>  
                 </div>
@@ -124,13 +125,32 @@
 export default {
     data() {
         return{
-            dialog: false
+            dialog: false,
+            diaryTitle: ''
         }
     },
     methods:{
         goDiary() {
             this.$router.push('/diary')
+        },
+        create() {
+            const diary = {
+                coverId: 1,
+                diaryTitle: this.diaryTitle
+            }
+            this.$store.dispatch('diaryCreate', diary)
+                .then((res) => {
+                    console.log(res)
+                })
+            this.dialog = false
+            this.diaryTitle = ''
         }
+    },
+    created() {
+        this.$store.dispatch('diaryGet')
+            .then((res) => {
+                console.log(res)
+            })
     }
 }
 </script>
