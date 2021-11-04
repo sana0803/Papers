@@ -23,11 +23,13 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 export default {
     computed: {
         loginUser() {
             return this.$store.getters.getLoginUser
-        }
+        },
+        ...mapGetters(["getAlarmEventSource"]),
     },
     methods: {
         goHome() {
@@ -48,6 +50,8 @@ export default {
         logout() {
             this.$store.commit('setLoginUser', {})
             this.$router.push('/')
+            console.log(this.getAlarmEventSource + '로그 아웃 시 event close')
+            this.getAlarmEventSource.close()
         }
     }
 }
