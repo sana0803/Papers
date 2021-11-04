@@ -12,6 +12,9 @@ import com.diary.api.db.entity.User;
 import com.diary.api.service.UserService;
 import com.diary.common.util.JwtTokenUtil;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -115,5 +118,19 @@ public class UserController {
         User user = JwtTokenUtil.getUser(authentication, userService);
         if (user == null) return ResponseEntity.notFound().build();
         return ResponseEntity.ok(userService.getUsersLikeUserId(userIdSubString));
+    }
+
+    @GetMapping("/search")
+    @ApiOperation(value = "유저 ID로 유저 검색", notes = "userId를 반환한다.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "반환 성공")
+    })
+    public ResponseEntity<List<UserSearchRes>> searchUser(
+            @ApiIgnore Authentication authentication,
+            @RequestParam String userId
+    ) {
+        User user = JwtTokenUtil.getUser(authentication, userService);
+        if (user == null) return ResponseEntity.notFound().build();
+        return ResponseEntity.ok(userService.searchUserByUserID(userId));
     }
 }
