@@ -6,33 +6,9 @@
             </div>
             <div id="Plus_Name">일기장 만들기</div>
         </div>
-        <div @click="goDiary" class="Diary_Item">
+        <div v-for="diary in diaryList" :key="diary.id" @click="goDiary" class="Diary_Item">
             <div class="Diary_Img"></div>
-            <div class="Diary_Name">일기장 이름 어쩌구</div>
-        </div>
-        <div class="Diary_Item">
-            <div class="Diary_Img"></div>
-            <div class="Diary_Name">일기장 이름 어쩌구</div>
-        </div>
-        <div class="Diary_Item">
-            <div class="Diary_Img"></div>
-            <div class="Diary_Name">일기장 이름 어쩌구</div>
-        </div>
-        <div class="Diary_Item">
-            <div class="Diary_Img"></div>
-            <div class="Diary_Name">일기장 이름 어쩌구</div>
-        </div>
-        <div class="Diary_Item">
-            <div class="Diary_Img"></div>
-            <div class="Diary_Name">일기장 이름 어쩌구</div>
-        </div>
-        <div class="Diary_Item">
-            <div class="Diary_Img"></div>
-            <div class="Diary_Name">일기장 이름 어쩌구</div>
-        </div>
-        <div class="Diary_Item">
-            <div class="Diary_Img"></div>
-            <div class="Diary_Name">일기장 이름 어쩌구</div>
+            <div class="Diary_Name">{{diary.diaryTitle}}</div>
         </div>
          <!-- Dialog -->
         <v-dialog
@@ -126,7 +102,8 @@ export default {
     data() {
         return{
             dialog: false,
-            diaryTitle: ''
+            diaryTitle: '',
+						diaryList: []
         }
     },
     methods:{
@@ -139,8 +116,11 @@ export default {
                 diaryTitle: this.diaryTitle
             }
             this.$store.dispatch('diaryCreate', diary)
-                .then((res) => {
-                    console.log(res)
+                .then(() => {
+                    this.$store.dispatch('diaryGet')
+											.then((res) => {
+													this.diaryList = res.data.reverse()
+											})
                 })
             this.dialog = false
             this.diaryTitle = ''
@@ -149,7 +129,7 @@ export default {
     created() {
         this.$store.dispatch('diaryGet')
             .then((res) => {
-                console.log(res)
+                this.diaryList = res.data.reverse()
             })
     }
 }
