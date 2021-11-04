@@ -218,11 +218,12 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public List<User> searchUserByUserID(String userId) {
+    public List<UserSearchRes> searchUserByUserID(String userId) {
+        List<UserSearchRes> UserSearchResList = new ArrayList<>();
         List<User> users = userRepository.findByUserIdContainingIgnoreCase(userId);
-        if (users != null) {
-            return users;
+        for (User user : users) {
+            UserSearchResList.add(new UserSearchRes(user));
         }
-        return null;
+        return UserSearchResList;
     }
 }

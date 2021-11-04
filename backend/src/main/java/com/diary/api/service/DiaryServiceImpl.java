@@ -5,13 +5,13 @@ import com.diary.api.db.repository.*;
 import com.diary.api.request.DiaryReq;
 import com.diary.api.response.DiaryRes;
 import com.diary.api.response.NoteRes;
+import com.diary.api.response.UserSearchRes;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service("diaryService")
 public class DiaryServiceImpl implements DiaryService {
@@ -34,14 +34,22 @@ public class DiaryServiceImpl implements DiaryService {
     @Autowired
     UserRepository userRepository;
 
+    @Autowired
+    DiaryCoverRepository diaryCoverRepository;
+
     // 일기장 생성
     @Override
     public DiaryRes createDiary(User user, DiaryReq diaryReq) {
-        DiaryCover coverId = diaryRepositorySupport.getDiaryCover(diaryReq.getCoverId()).get();
+
+        int i = 1;
+        Long I = Long.valueOf(i);
+        // 초기값 넣어주기
+        DiaryCover cover = diaryCoverRepository.getOne(I);
+//        DiaryCover coverId = diaryRepositorySupport.getDiaryCover(diaryReq.getCoverId()).get();
         String diaryTitle = diaryReq.getDiaryTitle();
 
         Diary diary = new Diary();
-        diary.setDiaryCover(coverId);
+        diary.setDiaryCover(cover);
         diary.setDiaryTitle(diaryTitle);
         diary.setUser(user);
         diary.setDiaryCreatedDate(LocalDate.now());
@@ -113,15 +121,20 @@ public class DiaryServiceImpl implements DiaryService {
     public List<DiaryRes> convertToDiaryRes(List<Diary> diaries, User user) {
         List<DiaryRes> diaryResList = new ArrayList<>();
         for (Diary diary : diaries) {
-            // 공유다이어리인경우 guest찾아서 닉네임으로 넣어주기
-            String guestId = userDiaryRepository.getOne(diary.getId()).getGuestId();
-            String guestNickname = userRepository.findByUserId(guestId).get().getUserNickname();
-            DiaryRes diaryRes = new DiaryRes(diary);
-            if (!guestId.isEmpty() && !guestId.equals(user.getUserId())) {
-                diaryRes.setGuestId(guestNickname);
-            }
-            diaryResList.add(diaryRes);
+            // 공유다이어리인경우 guest 찾아서 닉네임으로 넣어주기
+            List<UserDiary> userDiaryList = userDiaryRepository.findAllByDiaryId(diary.getId());
+            List<UserSearchRes> guestList = new ArrayList<>();
+            for (UserDiary userDiary : userDiaryList) {
+                User guest = userRepository.findByUserId(userDiary.getGuestId()).get();
+                // 공유다이어리에서 자신은 제외
+                if (!guest.getUserId().equals(user.getUserId())) {
+                    guestList.add(new UserSearchRes(guest));
+                }
 
+            }
+            DiaryRes diaryRes = new DiaryRes(diary);
+            diaryRes.setGuest(guestList);
+            diaryResList.add(diaryRes);
         }
         return diaryResList;
     }

@@ -54,7 +54,6 @@ public class DiaryController {
         if (user == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(BaseResponseBody.of(401, "존재하지 않는 회원입니다."));
         }
-
         DiaryRes diaryRes = diaryService.createDiary(user, diaryReq);
         if (diaryRes == null) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(BaseResponseBody.of(500, "내용이 존재하지 않거나 오류가 발생하였습니다."));

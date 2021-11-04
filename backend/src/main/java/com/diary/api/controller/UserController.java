@@ -121,14 +121,16 @@ public class UserController {
     }
 
     @GetMapping("/search")
-    @ApiOperation(value = "유저ID로 유저 검색", notes = "userId를 반환한다.")
+    @ApiOperation(value = "유저 ID로 유저 검색", notes = "userId를 반환한다.")
     @ApiResponses({
             @ApiResponse(code = 200, message = "반환 성공")
     })
-    public ResponseEntity<List<User>> searchUser(
+    public ResponseEntity<List<UserSearchRes>> searchUser(
             @ApiIgnore Authentication authentication,
             @RequestParam String userId
     ) {
+        User user = JwtTokenUtil.getUser(authentication, userService);
+        if (user == null) return ResponseEntity.notFound().build();
         return ResponseEntity.ok(userService.searchUserByUserID(userId));
     }
 }

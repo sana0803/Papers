@@ -2,15 +2,14 @@ package com.diary.api.response;
 
 import com.diary.api.db.entity.Diary;
 import com.diary.api.db.entity.DiaryCover;
-import com.diary.api.db.entity.User;
-import com.diary.api.db.repository.UserDiaryRepository;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDate;
-import java.util.Optional;
+import java.util.List;
+
 
 @Getter
 @Setter
@@ -22,7 +21,8 @@ public class DiaryRes extends BaseResponseBody{
     String diaryTitle;
     String ownerId;
     LocalDate diaryCreatedDate;
-    String guestId;
+//    String guestId;
+    List guest;
 
     public DiaryRes(Diary diary) {
         this.id = diary.getId();

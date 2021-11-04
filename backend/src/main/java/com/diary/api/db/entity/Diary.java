@@ -1,13 +1,16 @@
 package com.diary.api.db.entity;
 
 
+import com.diary.api.db.repository.DiaryCoverRepository;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
+
 
 @Entity
 @Getter
@@ -15,8 +18,6 @@ import java.util.Set;
 public class Diary extends BaseEntity {
 
     String diaryTitle;
-
-//    String diaryDesc;
 
     LocalDate diaryCreatedDate;
 
@@ -36,8 +37,6 @@ public class Diary extends BaseEntity {
 
     @PrePersist
     public void setUp(){
-
         this.diaryCreatedDate = LocalDate.now();
-
     }
 }
