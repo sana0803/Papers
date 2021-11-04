@@ -37,7 +37,7 @@ export default {
 }
 #Templete_Container {
   margin: 0 auto;
-  width: 985px;
+  width: 986px;
 }
 #Templete_Count {
   margin-top: 44px;

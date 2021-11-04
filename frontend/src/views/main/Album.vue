@@ -6,7 +6,7 @@
         <div
           @click="select('all')"
           id="list"
-          style="color: black; font-weight: bold"
+          style="color: #222; font-weight: 600"
           class="Head_Item"
         >
           전체
@@ -42,10 +42,10 @@ export default {
 
       for (let i = 0; i < 1; i++) {
         if (tar == arr[i]) {
-          arr[i].style.color = "black";
-          arr[i].style.fontWeight = "bold";
+          arr[i].style.color = "#222";
+          arr[i].style.fontWeight = "600";
         } else {
-          arr[i].style.color = "gray";
+          arr[i].style.color = "#9F9F9F";
           arr[i].style.fontWeight = "400";
         }
       }
@@ -61,7 +61,7 @@ export default {
 }
 #Album_Container {
   margin: 0 auto;
-  width: 985px;
+  width: 986px;
 }
 #Album_Head {
   padding-top: 44px;
@@ -72,13 +72,14 @@ export default {
   color: #ffb319;
   font-size: 20px;
   margin-left: 18px;
+  font-weight: 500;
 }
 .Head_Item {
   display: inline-block;
   font-size: 18px;
   margin-left: 36px;
   cursor: pointer;
-  color: gray;
+  color: #9F9F9F;
 }
 #Album_Content {
   margin-top: 34px;

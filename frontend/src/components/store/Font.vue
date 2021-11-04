@@ -2,7 +2,7 @@
   <div>
     <div class="Font_Item">
       <div class="Font_Header">
-        <span class="Font_Name">나눔고딕체</span>
+        <span class="font-name">나눔고딕체</span>
         <span class="Font_Price">100장</span>
       </div>
       <div class="Font_Content">
@@ -16,7 +16,7 @@
     </div>
     <div class="Font_Item">
       <div class="Font_Header">
-        <span class="Font_Name">나눔고딕체</span>
+        <span class="font-name">나눔고딕체</span>
         <span class="Font_Price">100장</span>
       </div>
       <div class="Font_Content">
@@ -28,7 +28,7 @@
     </div>
     <div class="Font_Item">
       <div class="Font_Header">
-        <span class="Font_Name">나눔고딕체</span>
+        <span class="font-name">나눔고딕체</span>
         <span class="Font_Price">100장</span>
       </div>
       <div class="Font_Content">
@@ -40,7 +40,7 @@
     </div>
     <div class="Font_Item">
       <div class="Font_Header">
-        <span class="Font_Name">나눔고딕체</span>
+        <span class="font-name">나눔고딕체</span>
         <span class="Font_Price">100장</span>
       </div>
       <div class="Font_Content">
@@ -52,7 +52,7 @@
     </div>
     <div class="Font_Item">
       <div class="Font_Header">
-        <span class="Font_Name">나눔고딕체</span>
+        <span class="font-name">나눔고딕체</span>
         <span class="Font_Price">100장</span>
       </div>
       <div class="Font_Content">
@@ -64,7 +64,7 @@
     </div>
     <div class="Font_Item">
       <div class="Font_Header">
-        <span class="Font_Name">나눔고딕체</span>
+        <span class="font-name">나눔고딕체</span>
         <span class="Font_Price">100장</span>
       </div>
       <div class="Font_Content">
@@ -76,7 +76,7 @@
     </div>
     <div class="Font_Item">
       <div class="Font_Header">
-        <span class="Font_Name">나눔고딕체</span>
+        <span class="font-name">나눔고딕체</span>
         <span class="Font_Price">100장</span>
       </div>
       <div class="Font_Content">
@@ -88,7 +88,7 @@
     </div>
     <div class="Font_Item">
       <div class="Font_Header">
-        <span class="Font_Name">나눔고딕체</span>
+        <span class="font-name">나눔고딕체</span>
         <span class="Font_Price">100장</span>
       </div>
       <div class="Font_Content">
@@ -100,7 +100,7 @@
     </div>
     <div class="Font_Item">
       <div class="Font_Header">
-        <span class="Font_Name">나눔고딕체</span>
+        <span class="font-name">나눔고딕체</span>
         <span class="Font_Price">100장</span>
       </div>
       <div class="Font_Content">
@@ -112,7 +112,7 @@
     </div>
     <div class="Font_Item">
       <div class="Font_Header">
-        <span class="Font_Name">나눔고딕체</span>
+        <span class="font-name">나눔고딕체</span>
         <span class="Font_Price">100장</span>
       </div>
       <div class="Font_Content">
@@ -124,7 +124,7 @@
     </div>
     <div class="Font_Item">
       <div class="Font_Header">
-        <span class="Font_Name">나눔고딕체</span>
+        <span class="font-name">나눔고딕체</span>
         <span class="Font_Price">100장</span>
       </div>
       <div class="Font_Content">
@@ -136,7 +136,7 @@
     </div>
     <div class="Font_Item">
       <div class="Font_Header">
-        <span class="Font_Name">나눔고딕체</span>
+        <span class="font-name">나눔고딕체</span>
         <span class="Font_Price">100장</span>
       </div>
       <div class="Font_Content">
@@ -148,7 +148,7 @@
     </div>
     <div class="Font_Item">
       <div class="Font_Header">
-        <span class="Font_Name">나눔고딕체</span>
+        <span class="font-name">나눔고딕체</span>
         <span class="Font_Price">100장</span>
       </div>
       <div class="Font_Content">
@@ -160,7 +160,7 @@
     </div>
     <div class="Font_Item">
       <div class="Font_Header">
-        <span class="Font_Name">나눔고딕체</span>
+        <span class="font-name">나눔고딕체</span>
         <span class="Font_Price">100장</span>
       </div>
       <div class="Font_Content">
@@ -216,39 +216,41 @@ export default {
 <style scoped>
 .Font_Item {
   display: inline-block;
-  width: 284px;
+  width: 286px;
   height: 180px;
-  margin-bottom: 31px;
-  margin-left: 31px;
+  margin-bottom: 32px;
+  margin-left: 32px;
   border-radius: 8px;
   box-shadow: 3px 3px 11px rgba(166, 166, 168, 0.25);
   overflow: hidden;
 }
 .Font_Header {
-  height: 51px;
-  border-bottom: 1px solid #d7d7d7;
-  line-height: 51px;
+  height: 50px;
+  border-bottom: 1px solid #e7e7e7;
+  line-height: 50px;
 }
-.Font_Content {
+/* .Font_Content {
   height: 129px;
-}
-.Font_Name {
+} */
+.font-name {
   margin-left: 16px;
   font-size: 16px;
+  font-weight: 500;
 }
 .Font_Price {
   font-size: 16px;
   float: right;
   margin-right: 16px;
   color: #ffb319;
+  font-weight: 600;
 }
 .Font_Discription {
-  width: 243px;
+  /* width: 243px; */
   height: 44px;
-  margin-top: 16px;
-  margin-left: 16px;
+  margin: 16px 16px 0 16px;
   font-size: 15px;
   color: #585858;
+  /* background-color: aquamarine; */
 }
 .Font_Btn {
   width: 70px;
@@ -257,6 +259,7 @@ export default {
   margin-right: 16px;
   float: right;
   font-size: 15px;
+  /* color: #585858; */
 }
 #Dialog {
   height: 180px;
@@ -288,5 +291,6 @@ export default {
 .Dialog_Btn {
   width: 76px;
   height: 32px;
+  color: #585858;
 }
 </style>

@@ -157,7 +157,7 @@ export default {
 #Plus_Img {
   width: 284px;
   height: 394px;
-  box-shadow: 2px 3px 12px 2px rgba(35, 35, 35, 0.25);
+  box-shadow: 3px 3px 11px rgba(166, 166, 168, 0.25);  
   cursor: pointer;
   display: flex;
   justify-content: center;
@@ -165,6 +165,7 @@ export default {
 }
 #Plus_Name {
   margin-top: 19px;
+  font-size: 15px;
 }
 .Diary_Item {
   display: inline-block;
@@ -183,6 +184,7 @@ export default {
 }
 .Diary_Name {
   margin-top: 19px;
+  font-size: 15px;
 }
 #Dialog {
   height: 524px;
@@ -204,7 +206,7 @@ export default {
 }
 .Dialog_Header {
   font-size: 18px;
-  font-weight: bold;
+  font-weight: 600;
 }
 .Invite_Input {
   margin-top: 0px;
@@ -237,6 +239,7 @@ export default {
 .Dialog_Btn {
   width: 76px;
   height: 32px;
+  box-shadow: none;
 }
 .Search_Item {
   height: 50px;

@@ -14,15 +14,15 @@
       <div class="Hashtag_Item">#해시태그</div>
       <div class="Hashtag_Item">#해시태그</div>
       <div class="Hashtag_Item">#해시태그</div>
+      <div class="Hashtag_Item">#홍대</div>
+      <div class="Hashtag_Item">#해시태그</div>
+      <div class="Hashtag_Item">#맛집</div>
       <div class="Hashtag_Item">#해시태그</div>
       <div class="Hashtag_Item">#해시태그</div>
+      <div class="Hashtag_Item">#일기장</div>
       <div class="Hashtag_Item">#해시태그</div>
       <div class="Hashtag_Item">#해시태그</div>
-      <div class="Hashtag_Item">#해시태그</div>
-      <div class="Hashtag_Item">#해시태그</div>
-      <div class="Hashtag_Item">#해시태그</div>
-      <div class="Hashtag_Item">#해시태그</div>
-      <div class="Hashtag_Item">#해시태그</div>
+      <div class="Hashtag_Item">#반려묘</div>
       <div class="Hashtag_Item">#해시태그</div>
       <div class="Hashtag_Item">#해시태그</div>
       <div class="Hashtag_Item">#해시태그</div>
@@ -44,6 +44,8 @@ export default {};
 #Hashtag_Search {
   width: 392px;
   margin: 0 auto;
+  /* background-color:lightblue; */
+  margin-bottom: 30px;
 }
 .Search_Input {
   width: 85%;
@@ -59,17 +61,20 @@ export default {};
 }
 #Hastag_List {
   text-align: center;
-  margin-top: 24px;
-  height: 200px;
+  width: 922px;
+  margin: 0 auto;
+  /* background-color: #eee; */
 }
 .Hashtag_Item {
   background: #f6f6f6;
-  border-radius: 15px;
+  border-radius: 16px;
   height: 35px;
   line-height: 35px;
   padding: 0 11px;
-  font-size: 18px;
-  margin: 10px;
+  font-size: 16px;
+  font-weight: 500;
+  color: #585858;
+  margin: 0px 12px 18px 0px;
   display: inline-block;
   cursor: pointer;
 }

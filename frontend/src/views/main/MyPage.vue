@@ -41,7 +41,7 @@
       <div id="Mypage_Title2">내 구매 목록</div>
       <v-tabs
         fixed-tabs
-        style="border: 1px solid lightgray; margin-top: 10px; height: 375px"
+        style="border: 1px solid #d7d7d7; margin-top: 10px; height: 375px"
         color="#FFB319"
       >
         <v-tab> 스티커 </v-tab>
@@ -121,7 +121,7 @@ export default {
 }
 #Mypage_Title {
   font-size: 18px;
-  font-weight: bold;
+  font-weight: 600;
 }
 #Mypage_Profile {
   height: 45px;
@@ -153,12 +153,12 @@ export default {
 }
 #Mypage_Title2 {
   font-size: 18px;
-  font-weight: bold;
+  font-weight: 600;
   margin-top: 24px;
 }
 .Tab {
   height: 325px;
-  border-top: 1px solid lightgray;
+  border-top: 1px solid #d7d7d7;
 }
 #Mypage_Btn_Box {
   margin-top: 20px;
@@ -174,7 +174,7 @@ export default {
   margin-top: 20px;
 }
 #Delete_Btn {
-  color: gray;
+  color: #9f9f9f;
   width: 50px;
   font-size: 15px;
   position: relative;

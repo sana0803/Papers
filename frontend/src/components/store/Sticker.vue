@@ -136,35 +136,37 @@ export default {
 <style scoped>
 .Sticker_Item {
   display: inline-block;
-  width: 284px;
-  height: 424px;
-  margin-bottom: 21px;
-  margin-left: 31px;
+  width: 286px;
+  margin-bottom: 32px;
+  margin-left: 32px;
+  /* background-color: cornflowerblue; */
 }
 .Sticker_Item:hover {
   opacity: 0.7;
 }
 .Sticker_img {
-  width: 284px;
+  width: 286px;
   height: 394px;
   background: rgb(199, 193, 188);
   box-shadow: 3px 3px 11px rgba(166, 166, 168, 0.25);
   cursor: pointer;
 }
 .Sticker_Title {
-  margin-top: 10px;
+  margin-top: 19px;
   font-size: 15px;
 }
 .Sticker_Price {
   float: right;
   color: #ffb319;
+  font-weight: 600;
+  font-size: 15px;
 }
 #Dialog {
   height: 610px;
 }
 #Dialog_Header {
   height: 42px;
-  border-bottom: 1px solid #d7d7d7;
+  border-bottom: 1px solid #e7e7e7;
 }
 #Dialog_Close {
   float: right;
@@ -232,5 +234,6 @@ export default {
 .Name_Btn {
   width: 76px;
   height: 32px;
+  box-shadow: none;
 }
 </style>

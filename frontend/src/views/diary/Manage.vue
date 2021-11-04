@@ -190,7 +190,7 @@ export default {
   height: 22px;
   font-size: 18px;
   line-height: 22px;
-  font-weight: bold;
+  font-weight: 600;
 }
 #Member_Box {
   width: 105%;
@@ -250,7 +250,7 @@ export default {
   height: 22px;
   font-size: 18px;
   line-height: 22px;
-  font-weight: bold;
+  font-weight: 600;
 }
 #Invite_Input {
   margin-top: 20px;
@@ -311,6 +311,7 @@ export default {
 .Btn {
   width: 76px;
   height: 32px;
+  box-shadow: none;
 }
 #Dialog {
   height: 180px;

@@ -31,7 +31,7 @@
         </div>
         <div class="Dialog_Content">
           <div class="Dialog_Text">
-            종이 <span style="color: #ffb319">150장</span>을 소비해<br />
+            종이 <span style="color: #ffb319; font-weight:600;">150장</span>을 소비해<br />
             앨범을 만드시겠습니까?
           </div>
           <div class="Dialog_Btn_Box">
@@ -72,7 +72,7 @@ export default {
 #Plus_Img {
   width: 284px;
   height: 319px;
-  box-shadow: 2px 3px 12px 2px rgba(35, 35, 35, 0.25);
+  box-shadow: 3px 3px 11px rgba(166, 166, 168, 0.25);
   cursor: pointer;
   display: flex;
   justify-content: center;
@@ -80,6 +80,7 @@ export default {
 }
 #Plus_Name {
   margin-top: 19px;
+  font-size: 15px;
 }
 .Diary_Item {
   display: inline-block;
@@ -92,11 +93,13 @@ export default {
   width: 284px;
   height: 319px;
   background: rgb(165, 214, 243);
-  box-shadow: 2px 3px 12px 2px rgba(35, 35, 35, 0.25);
+  box-shadow: 3px 3px 11px rgba(166, 166, 168, 0.25);
   cursor: pointer;
 }
 .Diary_Name {
   margin-top: 19px;
+  font-size: 15px;
+  
 }
 .Dialog {
   height: 180px;
@@ -128,5 +131,6 @@ export default {
 .Dialog_Btn {
   width: 76px;
   height: 32px;
+  box-shadow: none;
 }
 </style>

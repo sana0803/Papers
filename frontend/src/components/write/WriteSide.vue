@@ -109,7 +109,7 @@ export default {
 #WriteSide_Container {
   width: 392px;
   height: 100%;
-  border-right: 1px solid lightgray;
+  border-right: 1px solid #D7D7D7;
   float: left;
 }
 #WriteSide_Top {
@@ -124,7 +124,7 @@ export default {
 }
 .Head_Title {
   height: 50px;
-  border-bottom: 1px solid lightgray;
+  border-bottom: 1px solid #D7D7D7;
   line-height: 50px;
   display: flex;
   align-items: center;
@@ -132,6 +132,7 @@ export default {
 .Head_Name {
   margin-left: 36px;
   font-size: 18px;
+  font-weight: 600;
 }
 .goStore_Btn {
   margin-left: auto;
@@ -152,7 +153,7 @@ export default {
   width: 317px;
   // padding-left:31px;
   height: 30px;
-  font-size: 21px;
+  font-size: 20px;
   margin-top: 15px;
   position: relative;
 }

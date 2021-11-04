@@ -70,12 +70,14 @@ export default {
   width: 152px;
   margin: 0 auto;
   margin-top: 30px;
+  box-shadow: none;
 }
 #Write_Btn {
   background: #ffb319;
   color: white;
   font-size: 17px;
   width: 70px;
+  box-shadow: none;
 }
 #Back_Btn {
   background: #9f9f9f;
@@ -83,5 +85,6 @@ export default {
   font-size: 17px;
   width: 70px;
   margin-left: 12px;
+  box-shadow: none;
 }
 </style>
