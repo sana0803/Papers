@@ -1,35 +1,29 @@
 <template>
-    <div>
-        <div id="Line"></div>
-    </div>
+  <div>
+    <div id="Line"></div>
+  </div>
 </template>
 
 <script>
 export default {
-    name: 'FrontendDiarylist1',
+  name: "FrontendDiarylist1",
 
-    data() {
-        return {
-            
-        };
-    },
+  data() {
+    return {};
+  },
 
-    mounted() {
-        
-    },
+  mounted() {},
 
-    methods: {
-        
-    },
+  methods: {},
 };
 </script>
 
 <style lang="scss" scoped>
-#Line{
-    height:590px;
-    border: 1px solid #D7D7D7;
-    position:absolute;
-    top:70px;
-    left:461px;
+#Line {
+  height: 590px;
+  border: 1px solid #d7d7d7;
+  position: absolute;
+  top: 70px;
+  left: 461px;
 }
 </style>
