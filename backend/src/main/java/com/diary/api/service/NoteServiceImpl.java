@@ -42,6 +42,9 @@ public class NoteServiceImpl implements NoteService{
     UserRepository userRepository;
 
     @Autowired
+    UserRepositorySupport userRepositorySupport;
+
+    @Autowired
     EmotionRepository emotionRepository;
 
     @Autowired
@@ -147,6 +150,9 @@ public class NoteServiceImpl implements NoteService{
 
     // 일기 작성
     public NoteRes registNote(NoteReq noteReq){
+        User user = userRepository.findByUserId(noteReq.getWriterId()).get();
+        // 일기작성 마일리지 10점 적립
+        userService.updateMileage(user, user.getUserMileage() + 10);
         return this.setNote(null, noteReq);
     }
     // 일기 수정
@@ -188,6 +194,7 @@ public class NoteServiceImpl implements NoteService{
         return noteRepositorySupport.getImageFiles(userId, diaryId);
     }
 
+    // 일기에 감정표현 남기기
     public boolean setNoteEmotion(NoteEmotionReq noteEmotionReq, Long noteId){
         try {
             Emotion emotion = new Emotion();
@@ -202,6 +209,7 @@ public class NoteServiceImpl implements NoteService{
         }
     }
 
+    // 감정표현 취소
     public boolean deleteNoteEmotion(NoteEmotionReq noteEmotionReq) {
         try {
             noteRepositorySupport.deleteNoteEmotionByUser(noteEmotionReq.getNoteId(), noteEmotionReq.getWriterId());
