@@ -9,6 +9,7 @@
                     <div id="Intro_content">
                         당신의 소중한 추억을 위한<br>
                         일상 기록 서비스
+                        
                     </div>
                     <v-btn
                     id="Spread_Btn"
@@ -17,6 +18,23 @@
                     >
                     Click&nbsp;&nbsp; >
                     </v-btn>
+                    
+                <br>    
+                <v-btn
+                    id="connection"
+                    @click="connection"
+                    text
+                >
+                연결
+                </v-btn>
+                <br>    
+                <v-btn
+                    id="publish"
+                    @click="publish"
+                >
+                알림 발생
+                </v-btn>
+
                 </div>
                 <div v-if="!introMode" id="Login_left">
                     <div id="Line"></div>
@@ -109,6 +127,35 @@ export default {
         },
         goSignUp() {
             this.$router.push('signUp')
+        },
+        connection() {
+          // alert('tes')
+          const API_NOTIFICATION_URL = 'https://localhost/api'
+          // let url = API_NOTIFICATION_URL + "/notification/push?uuid=dsasasa";
+          // let eventSource = new EventSource(url, {withCredentials: true});
+          // eventSource.onmessage = function (e) {
+          //   alert(e.data)
+          // }
+          // console.log(eventSource)
+
+          const eventSource = new EventSource(API_NOTIFICATION_URL + `/notification/subscribe?id=${Math.random()}`);
+          eventSource.onopen = (e) => {
+            console.log('---open---')
+            console.log(e)
+            console.log('----------')
+          }
+          eventSource.onerror = (e) => {
+            console.log('---error---')
+            console.log(e)
+            console.log('----------')
+          }
+          eventSource.onmessage = (e) => {
+            alert(e.data);
+          }
+        },
+        publish() {
+          const API_NOTIFICATION_URL = 'https://localhost/api'
+          fetch(API_NOTIFICATION_URL + `/notification/publish?message=알림 발생입니다.`);
         },
         spread() {
             setTimeout(() => this.introMode = false, 250);
