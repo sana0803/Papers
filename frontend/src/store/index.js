@@ -15,6 +15,6 @@ export default new Vuex.Store({
   actions,
   getters,
   modules: {
-    Login:Login
+    Login: Login
   }
 })

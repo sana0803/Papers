@@ -19,6 +19,6 @@ public interface NoteService {
     public boolean deleteNote(Long noteId);
     public boolean changeDiaryNote(List<Long> notes, Long diaryId, Authentication authentication);
     public List<String> getImageFiles(String userId, Long diaryId);
-    public boolean setNoteEmotion(NoteEmotionReq noteEmotionReq, Long noteId);
+    public boolean setNoteEmotion(NoteEmotionReq noteEmotionReq);
     public boolean deleteNoteEmotion(NoteEmotionReq noteEmotionReq);
 }
