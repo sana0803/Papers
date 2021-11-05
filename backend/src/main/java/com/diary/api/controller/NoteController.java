@@ -150,7 +150,7 @@ public class NoteController {
         User user = JwtTokenUtil.getUser(authentication, userService);
         if (user == null) return ResponseEntity.status(401).body(BaseResponseBody.of(401, "잘못된 토큰"));
         emotionReq.setWriterId(user.getUserId());
-        if(noteService.setNoteEmotion(emotionReq, null)) return ResponseEntity.status(200).body(BaseResponseBody.of(200, "감정추가 성공"));
+        if(noteService.setNoteEmotion(emotionReq)) return ResponseEntity.status(200).body(BaseResponseBody.of(200, "감정추가 성공"));
         else return ResponseEntity.status(500).body(BaseResponseBody.of(500, "감정 추가 중 오류 발생"));
     }
 

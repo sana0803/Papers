@@ -6,15 +6,14 @@
 
 <script>
 export default {
-  name: "FrontendDiarylist1",
-
-  data() {
-    return {};
+  computed: {
+    currentDiary() {
+      return this.$store.getters.getCurrentDiary;
+    },
   },
-
-  mounted() {},
-
-  methods: {},
+  created() {
+    console.log(this.currentDiary)
+  }
 };
 </script>
 

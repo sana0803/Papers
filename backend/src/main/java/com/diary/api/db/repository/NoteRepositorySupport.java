@@ -7,6 +7,7 @@ import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.ObjectListing;
 import com.amazonaws.services.s3.model.S3ObjectSummary;
 import com.diary.api.db.entity.*;
+import com.diary.api.request.NoteEmotionReq;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -145,8 +146,10 @@ public class NoteRepositorySupport {
     }
 
     @Transactional
-    public void deleteNoteEmotionByUser(Long noteId, String userId){
-        jpaQueryFactory.delete(qEmotion).where(qEmotion.note.id.eq(noteId).and(qEmotion.user.userId.eq(userId))).execute();
+    public void deleteNoteEmotionByUser(NoteEmotionReq noteEmotionReq){
+        jpaQueryFactory.delete(qEmotion).where(qEmotion.note.id.eq(noteEmotionReq.getNoteId())
+                .and(qEmotion.user.userId.eq(noteEmotionReq.getWriterId()))
+                .and(qEmotion.emotionInfo.id.eq(noteEmotionReq.getEmotionInfoId()))).execute();
     }
 
     @Transactional

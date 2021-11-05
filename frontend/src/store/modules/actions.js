@@ -33,3 +33,11 @@ export function diaryGet({ state }) {
     const url = baseUrl + '/diary'
     return $axios.get(url, { headers: { Authorization: `Bearer ${userToken}` } })
 }
+
+export function memberSearch({state}, search) {
+    console.log('memberSearch action 호출', state)
+    const  url = baseUrl + '/user/search?userId=' + search
+    const userToken = state.loginUser.userToken
+    console.log(url)
+    return $axios.get(url,  { headers: { Authorization: `Bearer ${userToken}` } })
+}

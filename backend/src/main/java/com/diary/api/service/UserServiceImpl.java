@@ -25,7 +25,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @Service("userService")
@@ -37,6 +36,9 @@ public class UserServiceImpl implements UserService{
 
     @Autowired
     UserRepository userRepository;
+
+    @Autowired
+    UserDiaryRepository userDiaryRepository;
 
     @Autowired
     UserRepositorySupport userRepositorySupport;
@@ -217,6 +219,7 @@ public class UserServiceImpl implements UserService{
         return stickerRes;
     }
 
+    // 유저 id로 유저 검색
     @Override
     public List<UserSearchRes> searchUserByUserID(String userId) {
         List<UserSearchRes> UserSearchResList = new ArrayList<>();
@@ -225,5 +228,18 @@ public class UserServiceImpl implements UserService{
             UserSearchResList.add(new UserSearchRes(user));
         }
         return UserSearchResList;
+    }
+
+    // 다이어리 초대 수락
+    @Override
+    public boolean acceptInvite(User user, Long diaryId) {
+        List<UserDiary> userDiaryList = userDiaryRepository.findAllByDiaryId(diaryId);
+        for (UserDiary userDiary : userDiaryList) {
+            if (userDiary.getGuestId().equals(user.getUserId())) {
+                userDiary.setAccepted(true);
+                userDiaryRepository.save(userDiary);
+            }
+        }
+        return true;
     }
 }
