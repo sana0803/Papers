@@ -9,6 +9,7 @@ import com.amazonaws.services.s3.model.S3ObjectSummary;
 import com.diary.api.db.entity.*;
 import com.diary.api.request.NoteEmotionReq;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import org.checkerframework.checker.nullness.Opt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
@@ -44,6 +45,12 @@ public class NoteRepositorySupport {
     QEmotionInfo qEmotionInfo = QEmotionInfo.emotionInfo;
     QUserDiary qUserDiary = QUserDiary.userDiary;
 
+    public Optional<List<Note>> getNoteList(String userId) {
+        List<Note> notes = jpaQueryFactory.select(qNote).from(qNote)
+                .where(qNote.user.userId.eq(userId)).fetch();
+        if(notes == null) return Optional.empty();
+        return Optional.of(notes);
+    }
     public Optional<List<Note>> getMonthNote(int month, String userId) {
         List<Note> notes = jpaQueryFactory.select(qNote).from(qNote)
                 .where(qNote.noteCreateDate.month().eq(month)
@@ -175,5 +182,19 @@ public class NoteRepositorySupport {
         } while (objects.isTruncated());
         urls.remove(0);
         return urls;
+    }
+
+    public Optional<List<Note>> getHashtagNotes(String hashtag, String userId){
+        List<Note> notes = jpaQueryFactory.select(qNote).from(qNote)
+                .join(qNoteHashtag).on(qNote.id.eq(qNoteHashtag.note.id))
+                .where(qNote.diary.id.in(
+                        jpaQueryFactory.select(qUserDiary.diary.id).from(qUserDiary)
+                        .where(qUserDiary.user.userId.eq(userId)
+                        .or(qUserDiary.guestId.eq(userId)))
+                )
+                .and(qNoteHashtag.tagValue.eq(hashtag))).fetch();
+
+        if(notes == null) return Optional.empty();
+        return Optional.of(notes);
     }
 }

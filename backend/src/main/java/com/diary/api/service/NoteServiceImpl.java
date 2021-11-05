@@ -56,6 +56,23 @@ public class NoteServiceImpl implements NoteService{
     @Autowired
     EmotionLogRepositorySupport emotionLogRepositorySupport;
 
+    public List<NoteRes> getNoteList(String userId) {
+        List<Note> notes = null;
+        if(noteRepositorySupport.getNoteList(userId).isPresent())
+            notes = noteRepositorySupport.getNoteList(userId).get();
+        List<NoteRes> noteResList = new ArrayList<>();
+        for(Note note : notes) {
+            NoteRes noteRes = new NoteRes(note);
+            noteRes.setNoteSticker(noteRepositorySupport.getNoteStickers(note.getId()).get());
+            noteRes.setNoteEmotion(noteRepositorySupport.getNoteEmotions(note.getId()).get());
+            noteRes.setNoteHashtag(noteRepositorySupport.getNoteHashtags(note.getId()).get());
+            noteRes.setNoteMedia(noteRepositorySupport.getNoteMedias(note.getId()).get());
+            noteResList.add(noteRes);
+        }
+        if(noteResList == null) return null;
+        return noteResList;
+    }
+
     // 월별 일기 목록 조회
     @Override
     public List<NoteRes> getMonthNote(int month, String userId){
@@ -142,7 +159,7 @@ public class NoteServiceImpl implements NoteService{
         }
 
         noteRepositorySupport.deleteNoteEmotion(note.getId());
-        if(noteReq.getEmotionList() == null) {
+        if(noteReq.getEmotionList().size() > 0) {
             for (NoteEmotionReq noteEmotionReq : noteReq.getEmotionList()) {
                 this.setNoteEmotion(noteEmotionReq);
             }
@@ -234,5 +251,22 @@ public class NoteServiceImpl implements NoteService{
         } catch (Exception e) {
             return false;
         }
+    }
+
+    public List<NoteRes> getHashtagNotes(String hashtag, String userId) {
+        List<Note> notes = null;
+        if(noteRepositorySupport.getHashtagNotes(hashtag, userId).isPresent())
+            notes = noteRepositorySupport.getHashtagNotes(hashtag, userId).get();
+        List<NoteRes> noteResList = new ArrayList<>();
+        for(Note note : notes) {
+            NoteRes noteRes = new NoteRes(note);
+            noteRes.setNoteSticker(noteRepositorySupport.getNoteStickers(note.getId()).get());
+            noteRes.setNoteEmotion(noteRepositorySupport.getNoteEmotions(note.getId()).get());
+            noteRes.setNoteHashtag(noteRepositorySupport.getNoteHashtags(note.getId()).get());
+            noteRes.setNoteMedia(noteRepositorySupport.getNoteMedias(note.getId()).get());
+            noteResList.add(noteRes);
+        }
+        if(noteResList == null) return null;
+        return noteResList;
     }
 }
