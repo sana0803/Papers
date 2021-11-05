@@ -11,7 +11,7 @@ import java.util.Optional;
 
 public interface NoteService {
 
-    public List<NoteRes> getMonthNote(int month, Long diaryId);
+    public List<NoteRes> getMonthNote(int month, String userId);
     public NoteRes getNote(Long noteId);
     public NoteRes setNote(Long noteId, NoteReq noteReq);
     public NoteRes registNote(NoteReq noteReq);
