@@ -41,7 +41,7 @@ public class NotificationServiceImpl implements NotificationService{
                 log.info("알림 클라이언트로 보냄");
             } catch (Exception e) {
                 deadIds.add(id);
-                log.error("에러가 발생해서 삭제 목록에 추가함");
+                log.error("* 에러가 발생해서 삭제 목록에 추가함 *");
             }
         });
 
