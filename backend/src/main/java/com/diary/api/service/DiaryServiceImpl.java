@@ -166,4 +166,17 @@ public class DiaryServiceImpl implements DiaryService {
         }
         return true;
     }
+
+    // 다이어리에 초대된 사람 삭제
+    @Override
+    public boolean disinviteDiary(Long diaryId, String userId) {
+        List<UserDiary> userDiaryList = userDiaryRepository.findAllByDiaryId(diaryId);
+        for (UserDiary userDiary : userDiaryList) {
+            if (userDiary.getGuestId().equals(userId)) {
+                userDiaryRepository.delete(userDiary);
+                return true;
+            }
+        }
+        return false;
+    }
 }
