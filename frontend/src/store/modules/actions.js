@@ -34,10 +34,18 @@ export function diaryGet({ state }) {
     return $axios.get(url, { headers: { Authorization: `Bearer ${userToken}` } })
 }
 
-export function memberSearch({state}, search) {
+export function memberSearch({ state }, search) {
     console.log('memberSearch action 호출', state)
     const  url = baseUrl + '/user/search?userId=' + search
     const userToken = state.loginUser.userToken
     console.log(url)
+    return $axios.get(url,  { headers: { Authorization: `Bearer ${userToken}` } })
+}
+
+export function getDiaryContent({ state }, id) {
+    console.log('getDiaryContent action 호출', state)
+    console.log(id)
+    const url = baseUrl + '/diary/' + id
+    const userToken = state.loginUser.userToken
     return $axios.get(url,  { headers: { Authorization: `Bearer ${userToken}` } })
 }

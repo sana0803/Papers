@@ -8,9 +8,12 @@ export default function () {
 
     const alarmEventSource = {} // 알람 전송을 위한 채널
 
+    const diaryContent = {}
+
     return {
       loginUser,
       currentDiary,
-      alarmEventSource
+      alarmEventSource,
+      diaryContent,
     }
 }

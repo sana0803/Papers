@@ -100,7 +100,7 @@ export default {
   },
   methods: {
     goDiary(diary) {
-      this.$store.commit('setCurrentDiary', diary)
+      this.$store.commit('setCurrentDiary', diary) // mutaion 호출 ('뮤테이션 이름, 매개변수)
       this.$router.push("/diary");
     },
     create() {
