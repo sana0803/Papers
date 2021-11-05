@@ -78,11 +78,13 @@ public class NoteController {
             @ApiResponse(code = 200, message = "일기 저장 성공"),
             @ApiResponse(code = 500, message = "일기 저장 오류발생")
     })
-    public ResponseEntity<? extends BaseResponseBody> setNote(@ApiIgnore Authentication authentication, @RequestBody NoteReq noteReq) {
+    public ResponseEntity<? extends BaseResponseBody> setNote(@ApiIgnore Authentication authentication, @ModelAttribute NoteReq noteReq) {
         User user = JwtTokenUtil.getUser(authentication, userService);
         if (user == null) return ResponseEntity.status(401).body(BaseResponseBody.of(401, "잘못된 토큰"));
 
         noteReq.setWriterId(user.getUserId());
+        System.out.println(noteReq.getWriterId());
+        System.out.println(noteReq.getNoteMediaList().size());
         NoteRes noteRes = noteService.registNote(noteReq);
         if(noteRes == null) return ResponseEntity.status(500).body(BaseResponseBody.of(500, "존재하지 않거나 오류가 발생하였습니다."));
         return ResponseEntity.status(200).body(noteRes);
