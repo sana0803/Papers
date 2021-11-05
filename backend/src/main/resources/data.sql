@@ -6,6 +6,8 @@ insert into note_layout values (1) ON DUPLICATE KEY UPDATE id=1;
 
 -- 사용자
 insert into user values ('test1', 50, '의적', 'https://papers-bucket.s3.amazonaws.com/profile/test1/eb3df4c9-a031-42c9-9bb5-0d3562de7995landing-main.jpg', '$2a$10$9RbUeMd5zBbv1bic5Me.euAyCi1fqlwbWhKfmn0k3D7bnqJCtJhx.') ON DUPLICATE KEY UPDATE user_id='test1';
+insert into user values ('test2', 150, '로봇', 'https://papers-bucket.s3.amazonaws.com/profile/test1/eb3df4c9-a031-42c9-9bb5-0d3562de7995landing-main.jpg', '$2a$10$9RbUeMd5zBbv1bic5Me.euAyCi1fqlwbWhKfmn0k3D7bnqJCtJhx.') ON DUPLICATE KEY UPDATE user_id='test2';
+insert into user values ('test3', 210, '카누', 'https://papers-bucket.s3.amazonaws.com/profile/test1/eb3df4c9-a031-42c9-9bb5-0d3562de7995landing-main.jpg', '$2a$10$9RbUeMd5zBbv1bic5Me.euAyCi1fqlwbWhKfmn0k3D7bnqJCtJhx.') ON DUPLICATE KEY UPDATE user_id='test3';
 
 -- 폰트
 insert into font values (1, 'font1', 50, 'font-url-1') ON DUPLICATE KEY UPDATE id=1;
@@ -25,7 +27,7 @@ insert into sticker_package values (1, 'package1', 50) ON DUPLICATE KEY UPDATE i
 insert into diary_cover values (1, 'cover1', 500, 'test.com') ON DUPLICATE KEY UPDATE id=1;
 
 -- 다이어리
-insert into diary values (1, sysdate(), 'desc1', 1, 'test1') ON DUPLICATE KEY UPDATE id=1;
+insert into diary values (1, sysdate(), 'desc1', '다이어리 이름', 1, 'test1') ON DUPLICATE KEY UPDATE id=1;
 
 -- 노트
 insert into note (id, note_content, note_create_date, note_create_time, note_title, diary_id, font_id, design_id, layout_id, writer_id)
