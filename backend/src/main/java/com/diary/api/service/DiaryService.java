@@ -1,6 +1,7 @@
 package com.diary.api.service;
 
 import com.diary.api.db.entity.User;
+import com.diary.api.request.DiaryInviteReq;
 import com.diary.api.request.DiaryReq;
 import com.diary.api.response.DiaryRes;
 import com.diary.api.response.NoteRes;
@@ -18,4 +19,6 @@ public interface DiaryService {
     List<NoteRes> getDiary(Long id);
     // 일기장 삭제
     void deleteDiary(Long id);
+    // 일기장 초대
+    boolean inviteDiary(User user, DiaryInviteReq diaryInviteReq);
 }
