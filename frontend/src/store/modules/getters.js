@@ -5,3 +5,7 @@ export function getLoginUser(state) {
 export function getCurrentDiary(state) {
   return state.currentDiary
 }
+
+export function getAlarmEventSource(state) {
+  return state.alarmEventSource
+}

@@ -6,8 +6,11 @@ export default function () {
     // 현재 보고있는 일기장
     const currentDiary = {}
 
+    const alarmEventSource = {} // 알람 전송을 위한 채널
+
     return {
-        loginUser,
-        currentDiary
+      loginUser,
+      currentDiary,
+      alarmEventSource
     }
 }

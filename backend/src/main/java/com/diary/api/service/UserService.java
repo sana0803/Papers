@@ -31,4 +31,5 @@ public interface UserService {
     boolean readNotification(User user, Long id);
     List<UserSearchRes> getUsersLikeUserId(String userIdSubString);
     List<UserSearchRes> searchUserByUserID(String userId);
+    boolean acceptInvite(User user, Long diaryId);
 }
