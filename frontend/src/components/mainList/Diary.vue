@@ -59,7 +59,9 @@
               <div class="Search_Img">
                 <img class="Img" :src="member.userProfile" />
               </div>
-              <span class="Search_Name">{{member.userNickname}}</span>
+              <span class="Search_Name">{{member.userNickname}} </span>
+              <span calss="Search_UserId">({{ member.userId }})</span>
+              
               <!-- <div class="Search_Check"></div> -->
               <div class="Search_Check">
                 <v-checkbox
@@ -100,7 +102,8 @@ export default {
       diaryList: [],
       search: "",
       memberList: [],
-      selected: []
+      selected: [],
+      currentCreateDiaryId: 0
     };
   },
   methods: {
@@ -113,18 +116,34 @@ export default {
         coverId: 1,
         diaryTitle: this.diaryTitle,
       };
-      this.$store.dispatch("diaryCreate", diary).then(() => {
-        this.$store.dispatch("diaryGet").then((res) => {
+      this.$store.dispatch("diaryCreate", diary).then((response) => { // 다이어리 생성
+        this.currentCreateDiaryId = response.data.id;
+        this.$store.dispatch("diaryGet").then((res) => { // 다이어리 가져오기
           this.diaryList = res.data.reverse();
+          let inviteAlarmPushUser = []
+          this.selected.forEach(function (item) {
+            if (item != null)
+              inviteAlarmPushUser.push(item)
+          })
+          alert('id : ' + this.currentCreateDiaryId)
+          let share = {
+          'diaryId': this.currentCreateDiaryId,
+          'inviteList': inviteAlarmPushUser
+          }
+          this.$store.dispatch("shareDiary", share).then((res) => { // 다이어리 공유 요청 보내기
+            console.log(res)
+          });
         });
       });
       this.dialog = false;
       this.diaryTitle = "";
+      
     },
     memberSearch() {
       this.$store.dispatch('memberSearch', this.search)
         .then((res) => {
           this.memberList = res.data
+          console.log('user 검색')
           console.log(this.memberList)
         })
     }
@@ -266,6 +285,9 @@ export default {
 .Search_Name {
   margin-left: 16px;
   font-size: 16px;
+}
+.Search_UserId {
+  color: red;
 }
 .Search_Check {
   height:50px;

@@ -30,6 +30,6 @@ public interface UserService {
     boolean createNotification(User user, NotificationReq notificationReq);
     boolean readNotification(User user, Long id);
     List<UserSearchRes> getUsersLikeUserId(String userIdSubString);
-    List<UserSearchRes> searchUserByUserID(String userId);
+    List<UserSearchRes> searchUserByUserID(String userId, String searchUserId);
     boolean acceptInvite(User user, Long diaryId);
 }

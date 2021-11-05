@@ -127,11 +127,11 @@ public class UserController {
     })
     public ResponseEntity<List<UserSearchRes>> searchUser(
             @ApiIgnore Authentication authentication,
-            @RequestParam String userId
+            @RequestParam String searchUserId
     ) {
         User user = JwtTokenUtil.getUser(authentication, userService);
         if (user == null) return ResponseEntity.notFound().build();
-        return ResponseEntity.ok(userService.searchUserByUserID(userId));
+        return ResponseEntity.ok(userService.searchUserByUserID(user.getUserId(), searchUserId));
     }
 
 

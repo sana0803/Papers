@@ -14,7 +14,7 @@
             Click&nbsp;&nbsp; >
           </v-btn>
 
-          <!-- <br>    
+          <br>    
           <v-btn
             id="connection"
             @click="connection"
@@ -34,7 +34,7 @@
             @click="close"
           >
           연결 끊기
-          </v-btn> -->
+          </v-btn>
 
         </div>
         <div v-if="!introMode" id="Login_left">
@@ -123,7 +123,7 @@ export default {
           this.$store.commit("setLoginUser", loginUser);
 
 
-          const alarmEventSource = new EventSource(this.API_NOTIFICATION_URL + `/notification/subscribe?uuid=${loginUser.userToken}`);
+          const alarmEventSource = new EventSource(this.API_NOTIFICATION_URL + `/notification/subscribe?uuid=${loginUser.userToken}&userId=${loginUser.userId}`);
           // 알림 발생 시 이벤트 처리
           alarmEventSource.onmessage = (e) => {
             alert(e.data)

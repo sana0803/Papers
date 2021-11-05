@@ -14,6 +14,8 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.reflections.Reflections.log;
+
 @Service("diaryService")
 public class DiaryServiceImpl implements DiaryService {
 
@@ -37,6 +39,9 @@ public class DiaryServiceImpl implements DiaryService {
 
     @Autowired
     DiaryCoverRepository diaryCoverRepository;
+
+    @Autowired
+    NotificationService notificationService;
 
     // 일기장 생성
     @Override
@@ -157,8 +162,8 @@ public class DiaryServiceImpl implements DiaryService {
     //다이어리 초대
     @Override
     public boolean inviteDiary(User user, DiaryInviteReq diaryInviteReq) {
-
         List<String> guestList = diaryInviteReq.getInviteList();
+
         for (String guestId : guestList) {
             UserDiary userDiary = new UserDiary();
             userDiary.setGuestId(guestId);
@@ -167,6 +172,12 @@ public class DiaryServiceImpl implements DiaryService {
             userDiary.setDiary(diaryRepository.getOne(diaryInviteReq.getDiaryId()));
             userDiaryRepository.save(userDiary);
         }
+        log.info("---diary service");
+        for (String s : guestList) {
+            log.info("초대 받는 사람 : " + s);
+        }
+        notificationService.publishToUsers(guestList);
+        log.info("----------------");
         return true;
     }
 
