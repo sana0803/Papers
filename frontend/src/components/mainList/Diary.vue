@@ -9,7 +9,7 @@
     <div
       v-for="diary in diaryList"
       :key="diary.id"
-      @click="goDiary"
+      @click="goDiary(diary)"
       class="Diary_Item"
     >
       <div class="Diary_Img"></div>
@@ -42,53 +42,28 @@
               class="Search_Input"
               color="#FFB319"
               label="아이디 검색"
+              v-model="search"
+              v-on:keyup.enter="memberSearch"
             ></v-text-field>
             <v-btn id="Search_Btn" icon>
-              <v-icon style="font-size: 2.8em">search</v-icon>
+              <v-icon @click="memberSearch" style="font-size: 2.8em">search</v-icon>
             </v-btn>
           </div>
           <div id="Search_List">
-            <div class="Search_Item">
+            <div v-for="(member,idx) in memberList" :key="member.userId" class="Search_Item">
               <div class="Search_Img">
-                <img class="Img" src="../../assets/image/user.png" />
+                <img class="Img" :src="member.userProfile" />
               </div>
-              <span class="Search_Name">김싸피</span>
-              <div class="Search_Check"></div>
-            </div>
-            <div class="Search_Item">
-              <div class="Search_Img">
-                <img class="Img" src="../../assets/image/user.png" />
+              <span class="Search_Name">{{member.userNickname}}</span>
+              <!-- <div class="Search_Check"></div> -->
+              <div class="Search_Check">
+                <v-checkbox
+                  class="check"
+                  v-model="selected[idx]"
+                  :key="member.userId"
+                  :value="member.userId"
+                ></v-checkbox>
               </div>
-              <span class="Search_Name">김싸피</span>
-              <div class="Search_Check"></div>
-            </div>
-            <div class="Search_Item">
-              <div class="Search_Img">
-                <img class="Img" src="../../assets/image/user.png" />
-              </div>
-              <span class="Search_Name">김싸피</span>
-              <div class="Search_Check"></div>
-            </div>
-            <div class="Search_Item">
-              <div class="Search_Img">
-                <img class="Img" src="../../assets/image/user.png" />
-              </div>
-              <span class="Search_Name">김싸피</span>
-              <div class="Search_Check"></div>
-            </div>
-            <div class="Search_Item">
-              <div class="Search_Img">
-                <img class="Img" src="../../assets/image/user.png" />
-              </div>
-              <span class="Search_Name">김싸피</span>
-              <div class="Search_Check"></div>
-            </div>
-            <div class="Search_Item">
-              <div class="Search_Img">
-                <img class="Img" src="../../assets/image/user.png" />
-              </div>
-              <span class="Search_Name">김싸피</span>
-              <div class="Search_Check"></div>
             </div>
           </div>
           <div id="Dialog_Btn_Box">
@@ -118,13 +93,18 @@ export default {
       dialog: false,
       diaryTitle: "",
       diaryList: [],
+      search: "",
+      memberList: [],
+      selected: []
     };
   },
   methods: {
-    goDiary() {
+    goDiary(diary) {
+      this.$store.commit('setCurrentDiary', diary)
       this.$router.push("/diary");
     },
     create() {
+      console.log(this.selected)
       const diary = {
         coverId: 1,
         diaryTitle: this.diaryTitle,
@@ -137,6 +117,13 @@ export default {
       this.dialog = false;
       this.diaryTitle = "";
     },
+    memberSearch() {
+      this.$store.dispatch('memberSearch', this.search)
+        .then((res) => {
+          this.memberList = res.data
+          console.log(this.memberList)
+        })
+    }
   },
   created() {
     this.$store.dispatch("diaryGet").then((res) => {
@@ -263,14 +250,12 @@ export default {
   font-size: 16px;
 }
 .Search_Check {
+  height:50px;
   float: right;
-  width: 18px;
-  height: 18px;
-  border-radius: 20px;
-  margin-top: 16px;
-  margin-right: 14px;
-  border: 1px solid #d7d7d7;
-  cursor: pointer;
+}
+.check{
+  position:relative;
+  top:-7px;
 }
 #Search_List {
   overflow: auto;
