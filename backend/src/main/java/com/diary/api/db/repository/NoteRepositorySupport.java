@@ -42,11 +42,16 @@ public class NoteRepositorySupport {
     QNoteLayout qNoteLayout = QNoteLayout.noteLayout;
     QNoteSticker qNoteSticker = QNoteSticker.noteSticker;
     QEmotionInfo qEmotionInfo = QEmotionInfo.emotionInfo;
+    QUserDiary qUserDiary = QUserDiary.userDiary;
 
-    public Optional<List<Note>> getMonthNote(int month, Long diaryId) {
+    public Optional<List<Note>> getMonthNote(int month, String userId) {
         List<Note> notes = jpaQueryFactory.select(qNote).from(qNote)
                 .where(qNote.noteCreateDate.month().eq(month)
-                .and(qNote.diary.id.eq(diaryId))).fetch();
+                .and(qNote.diary.id.in(
+                        jpaQueryFactory.select(qUserDiary.diary.id).from(qUserDiary)
+                        .where(qUserDiary.user.userId.eq(userId)
+                        .or(qUserDiary.guestId.eq(userId)))
+                ))).fetch();
         if(notes == null) return Optional.empty();
         return Optional.ofNullable(notes);
     }

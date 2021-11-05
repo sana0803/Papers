@@ -58,12 +58,12 @@ public class NoteServiceImpl implements NoteService{
 
     // 월별 일기 목록 조회
     @Override
-    public List<NoteRes> getMonthNote(int month, Long diaryId){
+    public List<NoteRes> getMonthNote(int month, String userId){
         List<NoteRes> noteResList = new ArrayList<>();
         List<Note> notes = null;
 
-        if(noteRepositorySupport.getMonthNote(month, diaryId).isPresent())
-            notes = noteRepositorySupport.getMonthNote(month, diaryId).get();
+        if(noteRepositorySupport.getMonthNote(month, userId).isPresent())
+            notes = noteRepositorySupport.getMonthNote(month, userId).get();
         else return null;
 
         for(Note note : notes) {
@@ -142,8 +142,10 @@ public class NoteServiceImpl implements NoteService{
         }
 
         noteRepositorySupport.deleteNoteEmotion(note.getId());
-        for(NoteEmotionReq noteEmotionReq : noteReq.getEmotionList()) {
-            this.setNoteEmotion(noteEmotionReq);
+        if(noteReq.getEmotionList() == null) {
+            for (NoteEmotionReq noteEmotionReq : noteReq.getEmotionList()) {
+                this.setNoteEmotion(noteEmotionReq);
+            }
         }
 
         NoteRes noteRes = new NoteRes(note);

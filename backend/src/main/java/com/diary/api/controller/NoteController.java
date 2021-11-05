@@ -41,14 +41,16 @@ public class NoteController {
     @ApiResponses({
             @ApiResponse(code = 200, message = "월별 일기 목록 반환 성공")
     })
-    public ResponseEntity<List<NoteRes>> getMonthNotes(@PathVariable int month, @ApiParam Long diaryId) {
-        List<NoteRes> noteResList = noteService.getMonthNote(month, diaryId);
+    public ResponseEntity<List<NoteRes>> getMonthNotes(@PathVariable int month, @ApiIgnore Authentication authentication) {
+        User user = JwtTokenUtil.getUser(authentication, userService);
+        if (user == null) return ResponseEntity.status(401).build();
+        List<NoteRes> noteResList = noteService.getMonthNote(month, user.getUserId());
         if(noteResList == null) return ResponseEntity.status(500).build();
         return ResponseEntity.status(200).body(noteResList);
     }
 
     @GetMapping()
-    @ApiOperation(value = "날짜별 일기 조회", notes = "해당 날짜의 일기를 반환한다")
+    @ApiOperation(value = "일기 조회", notes = "해당 ID의 일기를 반환한다")
     @ApiResponses({
             @ApiResponse(code = 200, message = "일기 반환 성공")
     })
@@ -66,7 +68,7 @@ public class NoteController {
     })
     public ResponseEntity<? extends BaseResponseBody> setNote(@ApiIgnore Authentication authentication, @RequestBody NoteReq noteReq) {
         User user = JwtTokenUtil.getUser(authentication, userService);
-        if (user == null) return ResponseEntity.status(401).body(BaseResponseBody.of(200, "잘못된 토큰"));
+        if (user == null) return ResponseEntity.status(401).body(BaseResponseBody.of(401, "잘못된 토큰"));
 
         noteReq.setWriterId(user.getUserId());
         NoteRes noteRes = noteService.registNote(noteReq);

@@ -7,7 +7,9 @@ import java.util.List;
 
 @Getter
 @Setter
-public class AlbumContentReq {
-    List<String> albumContentUrl;
-    List<String> albumContentText;
+public class AlbumReq {
+
+    List<String> albumText;
+    List<AlbumContentReq> albumContentReqs;
+
 }
