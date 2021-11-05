@@ -4,7 +4,7 @@
     <div id="diary-left-wrap">
       <div class="diary-content">
         <div class="diary-title-wrap">
-          <span class="diary-title">제목~ 오늘의 일기</span>
+          <span class="diary-title">dtd {{ diaryList[0].noteTitle }}</span>
           <span class="diary-date">21.11.04</span>
         </div>
         <div class="diary-text">
@@ -67,7 +67,11 @@
 <script>
 export default {
   data() {
-    return {};
+    return {
+      diaryList: [],
+      title: '',
+      content: '',
+    };
   },
   methods: {
     clickHeart() {},
@@ -82,6 +86,10 @@ export default {
   created() {
     console.log(this.currentDiary);
     this.$store.dispatch("getDiaryContent", this.currentDiary.id)
+      .then((res) => {
+        console.log(res.data)
+        this.diaryList = res.data
+      })
   },
 };
 </script>
