@@ -3,6 +3,7 @@ package com.diary.api.controller;
 import com.diary.api.db.entity.Diary;
 import com.diary.api.db.entity.User;
 import com.diary.api.db.repository.DiaryRepository;
+import com.diary.api.request.DiaryInviteReq;
 import com.diary.api.request.DiaryReq;
 import com.diary.api.response.BaseResponseBody;
 import com.diary.api.response.DiaryRes;
@@ -161,5 +162,30 @@ public class DiaryController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
         return ResponseEntity.status(HttpStatus.OK).body(diaryService.getDiary(id));
+    }
+
+    @PutMapping("/invite")
+    @ApiOperation(value = "내 일기장에 다른 유저 초대요청", notes = "유저 id와 일기장 id로 추가")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "일기장 초대요청 성공"),
+            @ApiResponse(code = 401, message = "인증오류"),
+            @ApiResponse(code = 500, message = "일기장 초대요청 실패")
+    })
+    public ResponseEntity<? extends BaseResponseBody> inviteDiary(
+            @ApiIgnore Authentication authentication,
+            @RequestBody DiaryInviteReq diaryInviteReq
+    ) {
+        User user = JwtTokenUtil.getUser(authentication, userService);
+        if (user == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(BaseResponseBody.of(401, "존재하지 않는 회원입니다."));
+        }
+
+        String userId = user.getUserId();
+        Diary diary = diaryRepository.getOne(diaryInviteReq.getDiaryId());
+        if (!userId.equals(diary.getUser().getUserId())) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(BaseResponseBody.of(401, "자신의 일기장만 초대할 수 있습니다."));
+        }
+        diaryService.inviteDiary(user, diaryInviteReq);
+        return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Delete Success"));
     }
 }

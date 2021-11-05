@@ -2,6 +2,7 @@ package com.diary.api.service;
 
 import com.diary.api.db.entity.*;
 import com.diary.api.db.repository.*;
+import com.diary.api.request.DiaryInviteReq;
 import com.diary.api.request.DiaryReq;
 import com.diary.api.response.DiaryRes;
 import com.diary.api.response.NoteRes;
@@ -55,10 +56,10 @@ public class DiaryServiceImpl implements DiaryService {
         diary.setDiaryCreatedDate(LocalDate.now());
         diaryRepository.save(diary);
 
-        UserDiary userDiary = new UserDiary();
-        userDiary.setDiary(diaryRepository.getOne(diary.getId()));
-        userDiary.setUser(user);
-        userDiaryRepository.save(userDiary);
+//        UserDiary userDiary = new UserDiary();
+//        userDiary.setDiary(diaryRepository.getOne(diary.getId()));
+//        userDiary.setUser(user);
+//        userDiaryRepository.save(userDiary);
 
         return new DiaryRes(diary);
     }
@@ -148,5 +149,21 @@ public class DiaryServiceImpl implements DiaryService {
             diaryResList.add(diaryRes);
         }
         return diaryResList;
+    }
+
+    //다이어리 초대
+    @Override
+    public boolean inviteDiary(User user, DiaryInviteReq diaryInviteReq) {
+
+        List<String> guestList = diaryInviteReq.getInviteList();
+        for (String guestId : guestList) {
+            UserDiary userDiary = new UserDiary();
+            userDiary.setGuestId(guestId);
+            userDiary.setAccepted(false);
+            userDiary.setUser(user);
+            userDiary.setDiary(diaryRepository.getOne(diaryInviteReq.getDiaryId()));
+            userDiaryRepository.save(userDiary);
+        }
+        return true;
     }
 }

@@ -133,4 +133,28 @@ public class UserController {
         if (user == null) return ResponseEntity.notFound().build();
         return ResponseEntity.ok(userService.searchUserByUserID(userId));
     }
+
+
+    @PutMapping("/invite")
+    @ApiOperation(value = "일기장 초대요청 수락", notes = "")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "수락 성공"),
+            @ApiResponse(code = 401, message = "인증오류"),
+            @ApiResponse(code = 500, message = "수락 실패")
+    })
+
+    public ResponseEntity<? extends BaseResponseBody> acceptInvite(
+            @ApiIgnore Authentication authentication,
+            @RequestParam Long diaryId
+    ) {
+        User user = JwtTokenUtil.getUser(authentication, userService);
+        if (user == null) return ResponseEntity.status(401).body(BaseResponseBody.of(401, "잘못된 토큰입니다."));
+        if (userService.acceptInvite(user, diaryId)) {
+            return ResponseEntity.status(HttpStatus.OK).body(BaseResponseBody.of(200, "초대 수락 성공"));
+        }
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(BaseResponseBody.of(500, "해당 유저에게 공유된 일기장이 없습니다."));
+
+
+    }
 }
+
