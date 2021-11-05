@@ -45,7 +45,7 @@
             class="SignUp_Input"
             label="닉네임"
             color="#FFB319"
-            v-model="userName"
+            v-model="userNickname"
             :rules="rules"
           ></v-text-field>
         </div>
@@ -67,7 +67,7 @@ export default {
       userId: "",
       userPwd: "",
       userPwdCheck: "",
-      userName: "",
+      userNickname: "",
     };
   },
   methods: {
@@ -76,8 +76,8 @@ export default {
       const user = {
         userId: this.userId,
         userPwd: this.userPwd,
-        userName: this.userName,
-        userNickname: "닉네임",
+        userNickname: this.userNickname,
+        userName: "이름",
       };
       this.$store
         .dispatch("signUp", user)

@@ -131,7 +131,10 @@ public class DiaryServiceImpl implements DiaryService {
         for (Diary diary : diaries) {
             // 공유다이어리인경우 guest 찾아서 닉네임으로 넣어주기
 //            System.out.println(diary + "컨버트다이어리의 포문안에서");
-            List<UserDiary> userDiaryList = userDiaryRepository.findAllByDiaryId(diary.getId());
+            List<UserDiary> userDiaryList = new ArrayList<>();
+            if (!userDiaryRepository.findAllByDiaryId(diary.getId()).isEmpty()) {
+                userDiaryList = userDiaryRepository.findAllByDiaryId(diary.getId());
+            }
             List<UserSearchRes> guestList = new ArrayList<>();
             for (UserDiary userDiary : userDiaryList) {
 //                System.out.println(userDiary + "컨버트다이어리의 두번째포문안에서");

@@ -4,10 +4,10 @@
     <Header></Header>
     <div style="height: 7.5vh" />
     <div id="Diary_Header">
-      <span style="font-size: 18px">ㅇㅇㅇㅇ일기장 (3명) </span>
-      <span class="Header_txt">김싸피 </span>
+      <span style="font-size: 18px">{{currentDiary.diaryTitle}}</span>
+      <!-- <span class="Header_txt">김싸피 </span>
       <span class="Header_txt">홍싸피 </span>
-      <span class="Header_txt">황싸피 </span>
+      <span class="Header_txt">황싸피 </span> -->
     </div>
     <div id="Diary_Content">
       <div @click="goList" id="Diary_PostIt1">일기</div>
@@ -29,6 +29,11 @@ import Header from "../components/Header.vue";
 export default {
   components: {
     Header,
+  },
+  computed: {
+    currentDiary() {
+      return this.$store.getters.getCurrentDiary;
+    },
   },
   data() {
     return {
