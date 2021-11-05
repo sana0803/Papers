@@ -4,15 +4,12 @@
     <div id="diary-left-wrap">
       <div class="diary-content">
         <div class="diary-title-wrap">
-          <span class="diary-title">dtd {{ diaryList[0].noteTitle }}</span>
-          <span class="diary-date">21.11.04</span>
+          <span class="diary-title">{{ diaryList[0].noteTitle }}</span>
+          <span class="diary-date">{{ diaryList[0].noteCreatedDate }}</span>
         </div>
         <div class="diary-text">
           <span
-            >어쩌구 저쩌구 일기 간략하게 한두 줄만 씁니다. 어쩌구 저쩌구 일기
-            간략하게 한두 줄만 씁니다. 어쩌구 저쩌구 일기 간략하게 한두 줄만
-            씁니다. 어쩌구 저쩌구 일기 간략하게 한두 줄만 씁니다. 어쩌구 저쩌구
-            일기 간략하게 한두 줄만 씁니다.</span
+            >{{ diaryList[0].noteContent }}.</span
           >
         </div>
         <div class="diary-hashtag">
@@ -69,8 +66,6 @@ export default {
   data() {
     return {
       diaryList: [],
-      title: '',
-      content: '',
     };
   },
   methods: {
