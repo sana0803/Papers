@@ -221,11 +221,12 @@ public class UserServiceImpl implements UserService{
 
     // 유저 id로 유저 검색
     @Override
-    public List<UserSearchRes> searchUserByUserID(String userId) {
+    public List<UserSearchRes> searchUserByUserID(String userId, String searchUserId) {
         List<UserSearchRes> UserSearchResList = new ArrayList<>();
-        List<User> users = userRepository.findByUserIdContainingIgnoreCase(userId);
+        List<User> users = userRepository.findByUserIdContainingIgnoreCase(searchUserId);
         for (User user : users) {
-            UserSearchResList.add(new UserSearchRes(user));
+            if (!userId.equals(user.getUserId()))
+                UserSearchResList.add(new UserSearchRes(user));
         }
         return UserSearchResList;
     }
