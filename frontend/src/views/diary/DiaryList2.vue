@@ -173,17 +173,16 @@ export default {
   left: 461px;
 }
 #List_Left {
-  width: 443px;
-  height: 610px;
+  width: 371px;
+  height: 505px;
   display: inline-block;
-  padding: 36px;
   overflow: hidden;
+  background-color:cadetblue;
 }
 #List_Right {
   width: 443px;
   height: 610px;
   display: inline-block;
-  padding: 36px;
   overflow: hidden;
 }
 .List_Header {
@@ -195,10 +194,11 @@ export default {
   color: #9f9f9f;
 }
 .Img_Box {
-  width: 378px;
-  height: 505px;
+  // height: 505px;
   margin: 0 auto;
-  margin-top: 32px;
+  float: left;
+  // background-color: aquamarine;
+  // margin-top: 32px;
   // display: flex;
   // flex-wrap: wrap;
   // justify-content: space-between;

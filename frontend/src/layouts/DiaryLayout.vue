@@ -66,7 +66,7 @@ export default {
   border-left: 1px solid lightgrey;
   margin: 0 auto;
   width: 1272px;
-  height: 100%;
+  height: 100vh;
 }
 #Diary_Header {
   margin-left: 175px;
@@ -127,6 +127,6 @@ export default {
 #Diary_In {
   width: 886px;
   height: 610px;
-  background: #EEE;
+  background: #fff;
 }
 </style>
