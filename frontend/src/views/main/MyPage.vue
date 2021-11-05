@@ -55,7 +55,7 @@
         <v-btn id="Delete_Btn" text> 회원 탈퇴 </v-btn>
       </div>
       <div id="Mypage_Btn_Box">
-        <v-btn class="Mypage_Btn" color="#FFB319" style="color: white"
+        <v-btn @click="modify" class="Mypage_Btn" color="#FFB319" style="color: white"
           >수정</v-btn
         >
         <v-btn
@@ -75,11 +75,11 @@ export default {
   computed: {
     loginUser() {
       return this.$store.getters.getLoginUser;
-    },
+    }
   },
   data() {
     return {
-      nickName: this.$store.getters.getLoginUser.userName,
+      nickName: this.$store.getters.getLoginUser.userNickname,
       pwd: "123123",
       pwdCheck: "123123",
       rules: [(value) => !!value || "입력창을 확인해주세요."],
