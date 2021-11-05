@@ -54,7 +54,9 @@
               <div class="Search_Img">
                 <img class="Img" :src="member.userProfile" />
               </div>
-              <span class="Search_Name">{{member.userNickname}}</span>
+              <span class="Search_Name">{{member.userNickname}} </span>
+              <span calss="Search_UserId">({{ member.userId }})</span>
+              
               <!-- <div class="Search_Check"></div> -->
               <div class="Search_Check">
                 <v-checkbox
@@ -109,8 +111,8 @@ export default {
         coverId: 1,
         diaryTitle: this.diaryTitle,
       };
-      this.$store.dispatch("diaryCreate", diary).then(() => {
-        this.$store.dispatch("diaryGet").then((res) => {
+      this.$store.dispatch("diaryCreate", diary).then(() => { // 다이어리 생성
+        this.$store.dispatch("diaryGet").then((res) => { // 다이어리 가져오기
           this.diaryList = res.data.reverse();
         });
       });
@@ -121,6 +123,7 @@ export default {
       this.$store.dispatch('memberSearch', this.search)
         .then((res) => {
           this.memberList = res.data
+          console.log('user 검색')
           console.log(this.memberList)
         })
     }
@@ -248,6 +251,9 @@ export default {
 .Search_Name {
   margin-left: 16px;
   font-size: 16px;
+}
+.Search_UserId {
+  color: red;
 }
 .Search_Check {
   height:50px;
