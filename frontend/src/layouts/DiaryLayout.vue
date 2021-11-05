@@ -122,6 +122,6 @@ export default {
 #Diary_In {
   width: 886px;
   height: 610px;
-  background: #ffffff;
+  background: #EEE;
 }
 </style>

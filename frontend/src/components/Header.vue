@@ -81,6 +81,8 @@ export default {
   margin-left: auto;
   line-height: 7.5vh;
   color: #ffb319;
+  font-size: 15px;
+  font-weight: 500;
 }
 #Header_Alarm {
   margin-right: 15px;
