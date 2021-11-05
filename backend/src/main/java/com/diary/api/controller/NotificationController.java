@@ -1,5 +1,6 @@
 package com.diary.api.controller;
 
+import com.diary.api.response.AlarmDataSet;
 import com.diary.api.service.NotificationServiceImpl;
 import com.diary.api.service.UserService;
 import lombok.extern.slf4j.Slf4j;
@@ -27,16 +28,18 @@ public class NotificationController {
 
 
     @GetMapping("/subscribe")
-    public SseEmitter subscribe(@RequestParam String uuid) {
+    public SseEmitter subscribe(@RequestParam String uuid, @RequestParam String userId) {
         SseEmitter emitter = new SseEmitter(50000l);
-        notificationService.addEmitter(uuid, emitter);
-
+        notificationService.addEmitter(uuid, new AlarmDataSet(userId, emitter));
+        System.out.println("알림 / 로그인 된 유저 아이디 : " + userId);
         emitter.onTimeout(() -> {
                 emitter.complete();
                 notificationService.removeEmitter(uuid);
+                notificationService.removeUser(userId);
         });
         emitter.onCompletion(() -> {
             notificationService.removeEmitter(uuid);
+            notificationService.removeUser(userId);
         });
         return emitter;
     }
