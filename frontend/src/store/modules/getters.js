@@ -9,3 +9,7 @@ export function getCurrentDiary(state) {
 export function getAlarmEventSource(state) {
   return state.alarmEventSource
 }
+
+export function getDiaryContent(state) {
+  return state.diaryContent
+}
