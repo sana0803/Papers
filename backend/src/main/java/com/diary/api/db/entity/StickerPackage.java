@@ -1,5 +1,6 @@
 package com.diary.api.db.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -16,6 +17,7 @@ public class StickerPackage extends BaseEntity{
     int stickerPackagePrice;
     String stickerPackageName;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "stickerPackage", cascade = CascadeType.ALL)
     Set<Sticker> stickerSet = new HashSet<>();
 }
