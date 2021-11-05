@@ -2,7 +2,9 @@ package com.diary.api.controller;
 
 import com.diary.api.db.entity.Diary;
 import com.diary.api.db.entity.User;
+import com.diary.api.db.entity.UserDiary;
 import com.diary.api.db.repository.DiaryRepository;
+import com.diary.api.db.repository.UserDiaryRepository;
 import com.diary.api.request.DiaryInviteReq;
 import com.diary.api.request.DiaryReq;
 import com.diary.api.response.BaseResponseBody;
@@ -36,8 +38,11 @@ public class DiaryController {
     @Autowired
     DiaryRepository diaryRepository;
 
+    @Autowired
+    UserDiaryRepository userDiaryRepository;
+
     @PostMapping()
-    @ApiOperation(value = "일기장 만들기", notes = "일기장을 등록한다.")
+    @ApiOperation(value = "일기장 만들기", notes = "일기장 만들기.")
     @ApiResponses({
             @ApiResponse(code = 200, message = "일기장 등록 성공"),
             @ApiResponse(code = 401, message = "인증 오류"),
@@ -130,7 +135,7 @@ public class DiaryController {
     }
 
     @GetMapping()
-    @ApiOperation(value = "내 일기장 전체 조회", notes = "유저 id로 일기장 전체 조회")
+    @ApiOperation(value = "내 일기장 전체 조회", notes = "내가 가진 일기장 전체 조회")
     @ApiResponses({
             @ApiResponse(code = 200, message = "일기장 조회 성공"),
             @ApiResponse(code = 401, message = "인증"),
@@ -147,7 +152,7 @@ public class DiaryController {
     }
 
     @GetMapping("/{id}")
-    @ApiOperation(value = "내 일기장 한개 조회", notes = "유저 id로 일기장 한개 조회")
+    @ApiOperation(value = "내 일기장 한개 조회", notes = "일기장 id로 일기장의 일기전체 조회")
     @ApiResponses({
             @ApiResponse(code = 200, message = "일기 조회 성공"),
             @ApiResponse(code = 401, message = "인증"),
@@ -164,8 +169,8 @@ public class DiaryController {
         return ResponseEntity.status(HttpStatus.OK).body(diaryService.getDiary(id));
     }
 
-    @PutMapping("/invite")
-    @ApiOperation(value = "내 일기장에 다른 유저 초대요청", notes = "유저 id와 일기장 id로 추가")
+    @PostMapping("/invite")
+    @ApiOperation(value = "내 일기장에 다른 유저 초대요청", notes = "초대할 유저 id와 일기장 id로 추가")
     @ApiResponses({
             @ApiResponse(code = 200, message = "일기장 초대요청 성공"),
             @ApiResponse(code = 401, message = "인증오류"),
@@ -186,6 +191,35 @@ public class DiaryController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(BaseResponseBody.of(401, "자신의 일기장만 초대할 수 있습니다."));
         }
         diaryService.inviteDiary(user, diaryInviteReq);
-        return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Delete Success"));
+        return ResponseEntity.status(HttpStatus.OK).body(BaseResponseBody.of(200, "초대요청이 성공적으로 이루어졌습니다."));
+    }
+
+    @DeleteMapping("/invite")
+    @ApiOperation(value = "공유된 일기장에 멤버 퇴출", notes = "삭제할 유저 id와 일기장 id로 퇴출")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "일기장 초대요청 성공"),
+            @ApiResponse(code = 401, message = "인증오류"),
+            @ApiResponse(code = 500, message = "일기장 초대요청 실패")
+    })
+    public ResponseEntity<? extends BaseResponseBody> disinviteDiary(
+            @ApiIgnore Authentication authentication,
+            @RequestParam Long diaryId,
+            @RequestParam String userId
+    ) {
+        User user = JwtTokenUtil.getUser(authentication, userService);
+        if (user == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(BaseResponseBody.of(401, "존재하지 않는 회원입니다."));
+        }
+
+        List<UserDiary> userDiaryList = userDiaryRepository.findAllByDiaryId(diaryId);
+        for (UserDiary userDiary : userDiaryList ) {
+            if (!userDiary.getUser().equals(user)) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(BaseResponseBody.of(401, "자신의 일기장 멤버만 삭제할 수 있습니다."));
+            }
+        }
+        if (diaryService.disinviteDiary(diaryId, userId)) {
+            return ResponseEntity.status(HttpStatus.OK).body(BaseResponseBody.of(200, "멤버 삭제가 성공적으로 이루어졌습니다."));
+        }
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(BaseResponseBody.of(500, "해당 유저에게 공유된 일기장이 없습니다."));
     }
 }

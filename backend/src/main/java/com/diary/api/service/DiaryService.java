@@ -21,4 +21,6 @@ public interface DiaryService {
     void deleteDiary(Long id);
     // 일기장 초대
     boolean inviteDiary(User user, DiaryInviteReq diaryInviteReq);
+    // 일기장 초대된 사람 삭제
+    boolean disinviteDiary(Long diaryId, String userId);
 }
