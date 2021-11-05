@@ -106,7 +106,7 @@ public class UserController {
     @GetMapping("/id-check/{userId}")
     public ResponseEntity checkUserId(@ApiIgnore Authentication authentication, @PathVariable String userId) {
         User user = JwtTokenUtil.getUser(authentication, userService);
-        if (user == null) return ResponseEntity.status(HttpStatus.OK).body(BaseResponseBody.of(401, "잘못된 토큰"));
+        if (user == null) return ResponseEntity.status(401).body(BaseResponseBody.of(401, "잘못된 토큰"));
 
         user = userService.getUserByUserId(userId);
         if (user == null) return ResponseEntity.status(HttpStatus.OK).body(BaseResponseBody.of(200, "사용 가능한 아이디입니다."));

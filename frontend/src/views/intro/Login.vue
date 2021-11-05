@@ -13,6 +13,29 @@
           <v-btn id="Spread_Btn" @click="spread" text>
             Click&nbsp;&nbsp; >
           </v-btn>
+
+          <br>    
+          <v-btn
+            id="connection"
+            @click="connection"
+          >
+          연결
+          </v-btn>
+          <br>    
+          <v-btn
+            id="publish"
+            @click="publish"
+          >
+          알림 발생
+          </v-btn>
+          <br>    
+          <v-btn
+            id="close"
+            @click="close"
+          >
+          연결 끊기
+          </v-btn>
+
         </div>
         <div v-if="!introMode" id="Login_left">
           <div id="Login_Left_In">
@@ -65,15 +88,20 @@
 
 <script>
 import Swal from "sweetalert2";
-
+import { mapGetters } from 'vuex'
 export default {
   data() {
     return {
+      API_NOTIFICATION_URL: 'https://localhost/api',
+      alarmEventSource: null,
       introMode: true,
       userId: "",
       userPwd: "",
       rules: [(value) => !!value || "입력창을 확인해주세요."],
     };
+  },
+  computed: {
+    ...mapGetters(["getAlarmEventSource"]),
   },
   methods: {
     login() {
@@ -93,6 +121,15 @@ export default {
           };
           // Store에 loginUser 정보 저장
           this.$store.commit("setLoginUser", loginUser);
+
+
+          const alarmEventSource = new EventSource(this.API_NOTIFICATION_URL + `/notification/subscribe?uuid=${loginUser.userToken}`);
+          // 알림 발생 시 이벤트 처리
+          alarmEventSource.onmessage = (e) => {
+            alert(e.data)
+          }
+          this.$store.commit('setAlarmEventSource', alarmEventSource)
+
           this.$router.push("main");
         })
         .catch(() => {
@@ -119,6 +156,39 @@ export default {
       container.style.transition = "1s";
       loginBox.style.boxShadow = "2px 3px 12px 2px rgba(35, 35, 35, 0.25)";
       loginBox.style.transition = "1.2s";
+    },
+    connection() {
+      // alert('tes')
+      const API_NOTIFICATION_URL = 'https://localhost/api'
+      // let url = API_NOTIFICATION_URL + "/notification/push?uuid=dsasasa";
+      // let eventSource = new EventSource(url, {withCredentials: true});
+      // eventSource.onmessage = function (e) {
+      //   alert(e.data)
+      // }
+      // console.log(eventSource)
+
+      const alarmEventSource = new EventSource(API_NOTIFICATION_URL + `/notification/subscribe?uuid=${Math.random()}`);
+      this.alarmEventSource = alarmEventSource
+      alarmEventSource.onopen = (e) => {
+        console.log('---open---')
+        console.log(e)
+        console.log('----------')
+      }
+      alarmEventSource.onerror = (e) => {
+        console.log('---error---')
+        console.log(e)
+        console.log('----------')
+      }
+      alarmEventSource.onmessage = (e) => {
+        alert(e.data);
+      }
+    },
+    close () {
+      this.getAlarmEventSource.close()
+    },
+    publish() {
+      const API_NOTIFICATION_URL = 'https://localhost/api'
+      fetch(API_NOTIFICATION_URL + `/notification/publish?message=알림 발생입니다.`);
     },
   },
 };
