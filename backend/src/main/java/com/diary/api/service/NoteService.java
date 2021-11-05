@@ -11,6 +11,7 @@ import java.util.Optional;
 
 public interface NoteService {
 
+    public List<NoteRes> getNoteList(String userId);
     public List<NoteRes> getMonthNote(int month, String userId);
     public NoteRes getNote(Long noteId);
     public NoteRes setNote(Long noteId, NoteReq noteReq);
@@ -21,4 +22,5 @@ public interface NoteService {
     public List<String> getImageFiles(String userId, Long diaryId);
     public boolean setNoteEmotion(NoteEmotionReq noteEmotionReq);
     public boolean deleteNoteEmotion(NoteEmotionReq noteEmotionReq);
+    public List<NoteRes> getHashtagNotes(String hashtag, String userId);
 }

@@ -1,6 +1,7 @@
 <template>
   <div id="Calender_Container">
     <v-sheet tile height="45" class="d-flex">
+      <!-- 뒤로 가기 -->
       <v-btn
         icon
         class="ma-2"
@@ -10,6 +11,7 @@
       >
         <v-icon>mdi-chevron-left</v-icon>
       </v-btn>
+      <!-- 앞으로 가기 -->
       <v-btn
         icon
         class="ma-2"
@@ -20,6 +22,7 @@
         <v-icon>mdi-chevron-right</v-icon>
       </v-btn>
     </v-sheet>
+    <!-- 달력 -->
     <v-sheet height="600">
       <v-calendar
         ref="calendar"
@@ -59,7 +62,8 @@ export default {
         "Conference",
         "Party",
       ],
-    };
+      calenderList: []
+    }
   },
   methods: {
     getEvents({ start, end }) {
@@ -94,6 +98,11 @@ export default {
     rnd(a, b) {
       return Math.floor((b - a + 1) * Math.random()) + a;
     },
+  },
+  created() {
+    this.$store.dispatch("calenderGet").then((res) => {
+      this.calenderList = res.data.reverse()
+    });
   },
 };
 </script>

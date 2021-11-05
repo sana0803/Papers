@@ -114,7 +114,7 @@ export default {
         .then((result) => {
           const loginUser = {
             userId: result.data.userId,
-            userName: result.data.userName,
+            userNickname: result.data.userNickname,
             userMileage: result.data.userMileage,
             userProfile: result.data.userProfile,
             userToken: result.data.userToken,

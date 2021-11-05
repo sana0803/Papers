@@ -16,8 +16,9 @@ export function login({ state }, user) {
 
 export function write({ state }, note) {
     console.log('write action 호출', state)
+    const userToken = state.loginUser.userToken
     const url = baseUrl + '/note'
-    return $axios.post(url, note)
+    return $axios.post(url, note, { headers: { Authorization: `Bearer ${userToken}` } })
 }
 
 export function diaryCreate({ state }, diary) {
@@ -34,7 +35,7 @@ export function diaryGet({ state }) {
     return $axios.get(url, { headers: { Authorization: `Bearer ${userToken}` } })
 }
 
-export function memberSearch({state}, search) {
+export function memberSearch({ state }, search) {
     console.log('memberSearch action 호출', state)
     const  url = baseUrl + '/user/search?searchUserId=' + search
     const userToken = state.loginUser.userToken
@@ -42,10 +43,25 @@ export function memberSearch({state}, search) {
     return $axios.get(url,  { headers: { Authorization: `Bearer ${userToken}` } })
 }
 
-export function shareDiary ({state}, share) {
+export function shareDiary({ state }, share) {
   console.log('shareDiary action 호출', state)
-  const  url = baseUrl + '/diary/invite'
+  const url = baseUrl + '/diary/invite'
   const userToken = state.loginUser.userToken
   console.log(url)
   return $axios.post(url, share, { headers: { Authorization: `Bearer ${userToken}` } })
+}
+
+export function noteGet({ state }) {
+    console.log('noteGet action 호출', state)
+    const userToken = state.loginUser.userToken
+    const url = baseUrl + '/note/note-list'
+    return $axios.get(url, { headers: { Authorization: `Bearer ${userToken}` } })
+}
+
+export function getDiaryContent({ state }, id) {
+    console.log('getDiaryContent action 호출', state)
+    // console.log(id)
+    const url = baseUrl + '/diary/' + id
+    const userToken = state.loginUser.userToken
+    return $axios.get(url, { headers: { Authorization: `Bearer ${userToken}` } })
 }

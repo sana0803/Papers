@@ -4,7 +4,9 @@
       <div id="Plus_Img">
         <v-icon style="font-size: 5em; color: #ffb319">add</v-icon>
       </div>
-      <div id="Plus_Name">일기장 만들기</div>
+      <div id="plus-under">
+        <span id="Plus_Name">일기장 만들기</span>
+      </div>
     </div>
     <div
       v-for="diary in diaryList"
@@ -13,7 +15,10 @@
       class="Diary_Item"
     >
       <div class="Diary_Img"></div>
-      <div class="Diary_Name">{{ diary.diaryTitle }}</div>
+      <div class="diary-under">
+        <span class="Diary_Name">{{ diary.diaryTitle }}</span>
+        <span class="Diary_Day">{{ diary.diaryCreatedDate }}</span>
+      </div>
     </div>
     <!-- Dialog -->
     <v-dialog v-model="dialog" persistent max-width="443">
@@ -103,7 +108,7 @@ export default {
   },
   methods: {
     goDiary(diary) {
-      this.$store.commit('setCurrentDiary', diary)
+      this.$store.commit('setCurrentDiary', diary) // mutaion 호출 ('뮤테이션 이름, 매개변수)
       this.$router.push("/diary");
     },
     create() {
@@ -168,8 +173,12 @@ export default {
   justify-content: center;
   align-items: center;
 }
+#plus-under{
+  margin-top:12px;
+  display:flex;
+  align-items: center;
+}
 #Plus_Name {
-  margin-top: 19px;
   font-size: 15px;
 }
 .Diary_Item {
@@ -188,8 +197,18 @@ export default {
   cursor: pointer;
 }
 .Diary_Name {
-  margin-top: 19px;
+  max-width:190px;
   font-size: 15px;
+}
+.Diary_Day{
+  font-size: 15px;
+  color:#929292;
+}
+.diary-under{
+  margin-top:12px;
+  display: flex;
+  justify-content: space-between;
+  align-items:center;
 }
 #Dialog {
   height: 524px;

@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.*;
 
@@ -55,6 +56,23 @@ public class NoteServiceImpl implements NoteService{
 
     @Autowired
     EmotionLogRepositorySupport emotionLogRepositorySupport;
+
+    public List<NoteRes> getNoteList(String userId) {
+        List<Note> notes = null;
+        if(noteRepositorySupport.getNoteList(userId).isPresent())
+            notes = noteRepositorySupport.getNoteList(userId).get();
+        List<NoteRes> noteResList = new ArrayList<>();
+        for(Note note : notes) {
+            NoteRes noteRes = new NoteRes(note);
+            noteRes.setNoteSticker(noteRepositorySupport.getNoteStickers(note.getId()).get());
+            noteRes.setNoteEmotion(noteRepositorySupport.getNoteEmotions(note.getId()).get());
+            noteRes.setNoteHashtag(noteRepositorySupport.getNoteHashtags(note.getId()).get());
+            noteRes.setNoteMedia(noteRepositorySupport.getNoteMedias(note.getId()).get());
+            noteResList.add(noteRes);
+        }
+        if(noteResList == null) return null;
+        return noteResList;
+    }
 
     // 월별 일기 목록 조회
     @Override
@@ -123,11 +141,24 @@ public class NoteServiceImpl implements NoteService{
         }
 
         noteRepositorySupport.deleteNoteMedia(note.getId());
-        for(String media : noteReq.getNoteMediaList()){
+
+        noteRepositorySupport.setNoteMedias(noteReq.getNoteMediaList(), noteReq.getWriterId(), note.getDiary().getId());
+
+        for(MultipartFile multipartFile : noteReq.getNoteMediaList()) {
+            NoteMedia noteMedia = new NoteMedia();
+            noteMedia.setNote(noteRepositorySupport.getNote(note.getId()).get());
+            noteMedia.setMediaUrl("https://papers-bucket.s3.amazonaws.com/diary-file/"
+                    + noteReq.getWriterId() + "/" + noteReq.getDiaryId() + "/" + multipartFile.getOriginalFilename());
+            noteMedia.setMediaExtension(multipartFile.getOriginalFilename()
+                    .substring(multipartFile.getOriginalFilename().lastIndexOf(".")));
+            noteMediaRepository.save(noteMedia);
+        }
+
+        for(String media : noteReq.getNoteS3MediaList()){
             NoteMedia noteMedia = new NoteMedia();
             noteMedia.setNote(noteRepositorySupport.getNote(note.getId()).get());
             noteMedia.setMediaUrl(media);
-            noteMedia.setMediaExtension(media.split("\\.")[media.split("\\.").length - 1]);
+            noteMedia.setMediaExtension("." + media.split("\\.")[media.split("\\.").length - 1]);
             noteMediaRepository.save(noteMedia);
         }
 
@@ -142,7 +173,7 @@ public class NoteServiceImpl implements NoteService{
         }
 
         noteRepositorySupport.deleteNoteEmotion(note.getId());
-        if(noteReq.getEmotionList() == null) {
+        if(noteReq.getEmotionList().size() > 0) {
             for (NoteEmotionReq noteEmotionReq : noteReq.getEmotionList()) {
                 this.setNoteEmotion(noteEmotionReq);
             }
@@ -234,5 +265,22 @@ public class NoteServiceImpl implements NoteService{
         } catch (Exception e) {
             return false;
         }
+    }
+
+    public List<NoteRes> getHashtagNotes(String hashtag, String userId) {
+        List<Note> notes = null;
+        if(noteRepositorySupport.getHashtagNotes(hashtag, userId).isPresent())
+            notes = noteRepositorySupport.getHashtagNotes(hashtag, userId).get();
+        List<NoteRes> noteResList = new ArrayList<>();
+        for(Note note : notes) {
+            NoteRes noteRes = new NoteRes(note);
+            noteRes.setNoteSticker(noteRepositorySupport.getNoteStickers(note.getId()).get());
+            noteRes.setNoteEmotion(noteRepositorySupport.getNoteEmotions(note.getId()).get());
+            noteRes.setNoteHashtag(noteRepositorySupport.getNoteHashtags(note.getId()).get());
+            noteRes.setNoteMedia(noteRepositorySupport.getNoteMedias(note.getId()).get());
+            noteResList.add(noteRes);
+        }
+        if(noteResList == null) return null;
+        return noteResList;
     }
 }
