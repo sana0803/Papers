@@ -41,3 +41,11 @@ export function memberSearch({state}, search) {
     console.log(url)
     return $axios.get(url,  { headers: { Authorization: `Bearer ${userToken}` } })
 }
+
+export function shareDiary ({state}, share) {
+  console.log('shareDiary action 호출', state)
+  const  url = baseUrl + '/diary/invite'
+  const userToken = state.loginUser.userToken
+  console.log(url)
+  return $axios.post(url, share, { headers: { Authorization: `Bearer ${userToken}` } })
+}

@@ -106,18 +106,27 @@ export default {
       this.$router.push("/diary");
     },
     create() {
-      console.log(this.selected)
       const diary = {
         coverId: 1,
         diaryTitle: this.diaryTitle,
       };
       this.$store.dispatch("diaryCreate", diary).then(() => { // 다이어리 생성
         this.$store.dispatch("diaryGet").then((res) => { // 다이어리 가져오기
+          let currentCreateDiaryId = res.data[res.data.length-1].id
           this.diaryList = res.data.reverse();
+
+          let share = {
+          'diaryId': currentCreateDiaryId,
+          'inviteList': this.selected
+          }
+          this.$store.dispatch("shareDiary", share).then((res) => { // 다이어리 공유 요청 보내기
+            console.log(res)
+          });
         });
       });
       this.dialog = false;
       this.diaryTitle = "";
+      
     },
     memberSearch() {
       this.$store.dispatch('memberSearch', this.search)

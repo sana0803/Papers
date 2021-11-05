@@ -187,6 +187,9 @@ public class DiaryController {
 
         String userId = user.getUserId();
         Diary diary = diaryRepository.getOne(diaryInviteReq.getDiaryId());
+        System.out.println("다이어리 가져오기");
+        System.out.println("조회할 다이어리 아이디는 "  + diaryInviteReq.getDiaryId());
+        System.out.println(diary);
         if (!userId.equals(diary.getUser().getUserId())) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(BaseResponseBody.of(401, "자신의 일기장만 초대할 수 있습니다."));
         }
