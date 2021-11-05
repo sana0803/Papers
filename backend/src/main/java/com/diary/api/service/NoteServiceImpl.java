@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.*;
 
@@ -140,11 +141,24 @@ public class NoteServiceImpl implements NoteService{
         }
 
         noteRepositorySupport.deleteNoteMedia(note.getId());
-        for(String media : noteReq.getNoteMediaList()){
+
+        noteRepositorySupport.setNoteMedias(noteReq.getNoteMediaList(), noteReq.getWriterId(), note.getDiary().getId());
+
+        for(MultipartFile multipartFile : noteReq.getNoteMediaList()) {
+            NoteMedia noteMedia = new NoteMedia();
+            noteMedia.setNote(noteRepositorySupport.getNote(note.getId()).get());
+            noteMedia.setMediaUrl("https://papers-bucket.s3.amazonaws.com/diary-file/"
+                    + noteReq.getWriterId() + "/" + noteReq.getDiaryId() + "/" + multipartFile.getOriginalFilename());
+            noteMedia.setMediaExtension(multipartFile.getOriginalFilename()
+                    .substring(multipartFile.getOriginalFilename().lastIndexOf(".")));
+            noteMediaRepository.save(noteMedia);
+        }
+
+        for(String media : noteReq.getNoteS3MediaList()){
             NoteMedia noteMedia = new NoteMedia();
             noteMedia.setNote(noteRepositorySupport.getNote(note.getId()).get());
             noteMedia.setMediaUrl(media);
-            noteMedia.setMediaExtension(media.split("\\.")[media.split("\\.").length - 1]);
+            noteMedia.setMediaExtension("." + media.split("\\.")[media.split("\\.").length - 1]);
             noteMediaRepository.save(noteMedia);
         }
 
