@@ -5,10 +5,10 @@ const Login = {
     getters: {
     },
     actions: {
-        sign({state}, name) {
+        sign({ state }, name) {
             console.log(state, name, '사인사인')
         }
     }
-  };
-   
-  export default Login;
+};
+
+export default Login;

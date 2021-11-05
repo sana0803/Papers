@@ -216,4 +216,14 @@ public class UserServiceImpl implements UserService{
         }
         return stickerRes;
     }
+
+    @Override
+    public List<UserSearchRes> searchUserByUserID(String userId) {
+        List<UserSearchRes> UserSearchResList = new ArrayList<>();
+        List<User> users = userRepository.findByUserIdContainingIgnoreCase(userId);
+        for (User user : users) {
+            UserSearchResList.add(new UserSearchRes(user));
+        }
+        return UserSearchResList;
+    }
 }

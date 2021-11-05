@@ -42,10 +42,19 @@ public class NoteServiceImpl implements NoteService{
     UserRepository userRepository;
 
     @Autowired
+    UserRepositorySupport userRepositorySupport;
+
+    @Autowired
     EmotionRepository emotionRepository;
 
     @Autowired
     UserService userService;
+
+    @Autowired
+    EmotionLogRepository emotionLogRepository;
+
+    @Autowired
+    EmotionLogRepositorySupport emotionLogRepositorySupport;
 
     // 월별 일기 목록 조회
     @Override
@@ -134,7 +143,7 @@ public class NoteServiceImpl implements NoteService{
 
         noteRepositorySupport.deleteNoteEmotion(note.getId());
         for(NoteEmotionReq noteEmotionReq : noteReq.getEmotionList()) {
-            this.setNoteEmotion(noteEmotionReq, note.getId());
+            this.setNoteEmotion(noteEmotionReq);
         }
 
         NoteRes noteRes = new NoteRes(note);
@@ -147,6 +156,9 @@ public class NoteServiceImpl implements NoteService{
 
     // 일기 작성
     public NoteRes registNote(NoteReq noteReq){
+        User user = userRepository.findByUserId(noteReq.getWriterId()).get();
+        // 일기작성 마일리지 10점 적립
+        userService.updateMileage(user, user.getUserMileage() + 10);
         return this.setNote(null, noteReq);
     }
     // 일기 수정
@@ -188,23 +200,34 @@ public class NoteServiceImpl implements NoteService{
         return noteRepositorySupport.getImageFiles(userId, diaryId);
     }
 
-    public boolean setNoteEmotion(NoteEmotionReq noteEmotionReq, Long noteId){
+    // 일기에 감정표현 남기기
+    public boolean setNoteEmotion(NoteEmotionReq noteEmotionReq){
         try {
             Emotion emotion = new Emotion();
+            User user = userRepository.findByUserId(noteEmotionReq.getWriterId()).get();
             emotion.setEmotionInfo(noteRepositorySupport.getEmotionInfo(noteEmotionReq.getEmotionInfoId()).get());
-            if(noteId != null) emotion.setNote(noteRepositorySupport.getNote(noteId).get());
-            else emotion.setNote(noteRepositorySupport.getNote(noteEmotionReq.getNoteId()).get());
-            emotion.setUser(userRepository.findByUserId(noteEmotionReq.getWriterId()).get());
+            emotion.setNote(noteRepositorySupport.getNote(noteEmotionReq.getNoteId()).get());
+            emotion.setUser(user);
             emotionRepository.save(emotion);
+
+            List<EmotionLog> emotionLogList = emotionLogRepositorySupport.getEmotionLog(
+                    noteEmotionReq.getNoteId(),
+                    user.getUserId()).get();
+            if(emotionLogList.size() == 0) {
+                emotionLogRepository.save(new EmotionLog(user, noteRepositorySupport.getNote(noteEmotionReq.getNoteId()).get()));
+                userService.updateMileage(user, user.getUserMileage() + 2);
+            }
             return true;
         }catch (Exception e) {
+            e.printStackTrace();
             return false;
         }
     }
 
+    // 감정표현 취소
     public boolean deleteNoteEmotion(NoteEmotionReq noteEmotionReq) {
         try {
-            noteRepositorySupport.deleteNoteEmotionByUser(noteEmotionReq.getNoteId(), noteEmotionReq.getWriterId());
+            noteRepositorySupport.deleteNoteEmotionByUser(noteEmotionReq);
             return true;
         } catch (Exception e) {
             return false;

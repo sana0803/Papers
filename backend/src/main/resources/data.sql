@@ -27,7 +27,7 @@ insert into sticker_package values (1, 'package1', 50) ON DUPLICATE KEY UPDATE i
 insert into diary_cover values (1, 'cover1', 500, 'test.com') ON DUPLICATE KEY UPDATE id=1;
 
 -- 다이어리
-insert into diary values (1, sysdate(), 'desc1', 'diary-title-1', 1, 'test1') ON DUPLICATE KEY UPDATE id=1;
+insert into diary values (1, sysdate(), 'desc1', '다이어리 이름', 1, 'test1') ON DUPLICATE KEY UPDATE id=1;
 
 -- 노트
 insert into note (id, note_content, note_create_date, note_create_time, note_title, diary_id, font_id, design_id, layout_id, writer_id)
