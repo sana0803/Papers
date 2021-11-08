@@ -13,7 +13,7 @@
       </v-btn>
     </div>
     <div id="Hastag_List">
-      <div @click="clickHashtag(hashtag)" v-for="(hashtag, idx) in hashtagList" :key="idx" class="Hashtag_Item">{{ hashtag }}</div>
+      <div @click="clickHashtag(hashtag)" v-for="(hashtag, idx) in hashtagList" :key="idx" class="Hashtag_Item">#{{ hashtag }}</div>
     </div>
   </div>
 </template>

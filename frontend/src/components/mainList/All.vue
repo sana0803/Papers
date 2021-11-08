@@ -7,7 +7,9 @@
       @click="detailNote(note)"
       class="note_Item"
     >
-      <div class="note_Img"></div>
+      <div class="note_ImgBox">
+        <v-img class="note_Img" :src="note.noteMedia[0]" />
+      </div>
       <div class="note-under">
         <span class="note_Name">{{ note.noteTitle }}</span>
         <span class="note_Day">{{ note.noteCreatedDate }}</span>
@@ -44,12 +46,22 @@ export default {
   margin-bottom: 31px;
   margin-left: 31px;
 }
-.note_Img {
+.note_ImgBox {
   width: 284px;
   height: 394px;
-  background: rgb(176, 247, 135);
+  background: rgb(185, 228, 161);
   box-shadow: 2px 3px 12px 2px rgba(35, 35, 35, 0.25);
   cursor: pointer;
+  overflow:hidden;
+  margin:0 auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.note_Img{
+  /* width:100%;
+  height:100%; */
+  object-fit:contain;
 }
 .note_Name {
   font-size: 15px;

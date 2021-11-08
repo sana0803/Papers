@@ -81,12 +81,20 @@ export function searchHashtag({ state }, search) {
     console.log('searchHashtag action 호출', state)
     const url = baseUrl + '/note/hashtag?hashtag=' + search
     const userToken = state.loginUser.userToken
+    console.log(url)
     return $axios.get(url, { headers: { Authorization: `Bearer ${userToken}` } })
 }
 
-export function getHashtag({ state}) {
+export function getHashtag({ state }) {
     console.log('getHashtag action 호출', state)
     const userToken = state.loginUser.userToken
     const url = baseUrl + '/note/hashtag-list'
     return $axios.get(url, { headers: { Authorization: `Bearer ${userToken}` } })
+}
+
+export function getCover({state }) {
+    console.log('getCover action 호출', state)
+    const userToken = state.loginUser.userToken
+    const url = baseUrl + '/user/covers'
+    return $axios.get(url, { headers: { Authorization: `Bearer ${userToken}` } } )
 }

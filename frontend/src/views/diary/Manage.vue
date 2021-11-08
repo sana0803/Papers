@@ -90,7 +90,11 @@
         </div>
         <div class="Header2">커버 편집</div>
         <div class="Header3">기본 커버</div>
-        <div class="Cover_Box"></div>
+        <div class="Cover_Box">
+          <div v-for="(item, idx) in coverList" :key="idx" class="cover-item">
+            <v-img class="cover-img" :src="item.coverUrl" />
+          </div>
+        </div>
         <div class="Header3">내 커버</div>
         <div class="Cover_Box"></div>
         <div class="Header3">사진</div>
@@ -146,6 +150,7 @@ export default {
   data() {
     return {
       dialog: false,
+      coverList: []
     };
   },
   methods: {
@@ -153,6 +158,13 @@ export default {
       this.$router.go(-1);
     },
   },
+  created() {
+    this.$store.dispatch('getCover')
+      .then((res) => {
+        this.coverList = res.data
+        console.log(this.coverList)
+      })
+  }
 };
 </script>
 
@@ -331,5 +343,18 @@ export default {
   margin-top: 5px;
   font-size: 16px;
   text-align: center;
+}
+.cover-item{
+  display:inline-block;
+  height:100%;
+  width:75px;
+  cursor: pointer;
+  overflow:hidden;
+  margin:0 auto;
+}
+.cover-img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
 }
 </style>

@@ -53,8 +53,11 @@
               <v-toolbar-title v-html="selectedEvent.name"></v-toolbar-title>
               <v-spacer></v-spacer>
             </v-toolbar>
-            <v-card-text id="select-box">
-              {{selectedEvent.content}} 
+            <v-card-text id="select-box"> 
+              {{selectedEvent.content}}
+              <div style="height:200px;">
+                <v-img :src="selectedEvent.noteMedia" />
+              </div>
             </v-card-text>
             <v-card-actions>
               <v-btn
@@ -108,7 +111,7 @@ export default {
     getEvents() {
       this.$store.dispatch("calenderGet", this.month).then((res) => {
         const events = []
-
+        console.log(res.data)
         for(let i = 0; i < res.data.length; i++) {
           const allDay = this.rnd(0, 3) === 0;
 
@@ -118,6 +121,7 @@ export default {
             content: res.data[i].noteContent,
             start: res.data[i].noteCreatedDate,
             end: res.data[i].noteCreatedDate,
+            noteMedia: res.data[i].noteMedia[0],
             color: this.colors[this.rnd(0, this.colors.length - 1)],
             timed: allDay,
           }
@@ -208,11 +212,12 @@ export default {
   width: 95%;
 }
 #select-box{
+  font-size:18px;
   width:400px;
   height:500px;
   background:yellow;
-  display:flex;
+  /* display:flex;
   justify-content: center;
-  align-items: center;
+  align-items: center; */
 }
 </style>

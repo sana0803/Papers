@@ -75,8 +75,7 @@ export default {
       const tmp = this.noteHashtag.split("#")
       const noteHashtagList = []
       for(let i=1;i<tmp.length;i++){
-        let temp = '#' + tmp[i]
-        noteHashtagList[i-1] = temp
+        noteHashtagList[i-1] = tmp[i]
       }
 
       const note = {
