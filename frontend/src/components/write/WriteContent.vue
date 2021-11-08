@@ -100,7 +100,22 @@ export default {
         writerId: this.loginUser.userNickname,
       }
       console.log(note)
-      this.$store.dispatch("write", note).then(() => {
+
+      const formData = new FormData()
+      formData.append('designId', 1)
+      formData.append('diaryId', selectDiaryId)
+      formData.append('emotionList', JSON.stringify({}))
+      formData.append('fontId', 1)
+      formData.append('layoutId', 1)
+      formData.append('noteContent', this.noteContent)
+      formData.append('noteHashtagList', noteHashtagList)
+      formData.append('noteS3MediaList', [{}])
+      formData.append('noteMediaList', this.noteMedia)
+      formData.append('noteTitle', this.noteTitle)
+      formData.append('stickerList[]', JSON.stringify(note.stickerList[0]))
+
+      formData.append('writerId', this.loginUser.userNickname)
+      this.$store.dispatch("write", formData).then(() => {
         Swal.fire({
             icon: "success",
             title:

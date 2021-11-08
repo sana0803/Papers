@@ -5,8 +5,10 @@
         class="Search_Input"
         color="#FFB319"
         label="해시태그를 검색해보세요."
+        v-model="search"
+        v-on:keyup.enter="searchHashtag"
       ></v-text-field>
-      <v-btn id="Search_Btn" icon>
+      <v-btn id="Search_Btn" icon @click="searchHashtag">
         <v-icon style="font-size: 2.8em">search</v-icon>
       </v-btn>
     </div>
@@ -37,7 +39,20 @@
 </template>
 
 <script>
-export default {};
+export default {
+  data () {
+    return {
+      search : ""
+    }
+  },
+  methods: {
+    searchHashtag () {
+      this.$store.dispatch('searchHashtag', this.search).then((res) => {
+        console.log(res.data)
+      })
+    },
+  },
+};
 </script>
 
 <style scoped>
