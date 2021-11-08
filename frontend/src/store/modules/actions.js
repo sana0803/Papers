@@ -18,7 +18,12 @@ export function write({ state }, note) {
     console.log('write action 호출', state)
     const userToken = state.loginUser.userToken
     const url = baseUrl + '/note'
-    return $axios.post(url, note, { headers: { Authorization: `Bearer ${userToken}` } })
+    return $axios.post(url, note, {
+        headers: {
+            Authorization: `Bearer ${userToken}`,
+            // 'content-type' : 'multipart/form-data'
+        }
+    })
 }
 
 export function diaryCreate({ state }, diary) {

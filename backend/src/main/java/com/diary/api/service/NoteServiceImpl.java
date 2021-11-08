@@ -283,4 +283,10 @@ public class NoteServiceImpl implements NoteService{
         if(noteResList == null) return null;
         return noteResList;
     }
+
+    public List<String> getHashtagList(String userId){
+        if(noteRepositorySupport.getHashtagList(userId).isPresent())
+            return noteRepositorySupport.getHashtagList(userId).get();
+        return null;
+    }
 }
