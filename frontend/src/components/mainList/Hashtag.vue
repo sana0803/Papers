@@ -13,27 +13,7 @@
       </v-btn>
     </div>
     <div id="Hastag_List">
-      <div class="Hashtag_Item">#해시태그</div>
-      <div class="Hashtag_Item">#해시태그</div>
-      <div class="Hashtag_Item">#해시태그</div>
-      <div class="Hashtag_Item">#홍대</div>
-      <div class="Hashtag_Item">#해시태그</div>
-      <div class="Hashtag_Item">#맛집</div>
-      <div class="Hashtag_Item">#해시태그</div>
-      <div class="Hashtag_Item">#해시태그</div>
-      <div class="Hashtag_Item">#일기장</div>
-      <div class="Hashtag_Item">#해시태그</div>
-      <div class="Hashtag_Item">#해시태그</div>
-      <div class="Hashtag_Item">#반려묘</div>
-      <div class="Hashtag_Item">#해시태그</div>
-      <div class="Hashtag_Item">#해시태그</div>
-      <div class="Hashtag_Item">#해시태그</div>
-      <div class="Hashtag_Item">#해시태그</div>
-      <div class="Hashtag_Item">#해시태그</div>
-      <div class="Hashtag_Item">#해시태그</div>
-      <div class="Hashtag_Item">#해시태그</div>
-      <div class="Hashtag_Item">#해시태그</div>
-      <div class="Hashtag_Item">#해시태그</div>
+      <div @click="clickHashtag(hashtag)" v-for="(hashtag, idx) in hashtagList" :key="idx" class="Hashtag_Item">{{ hashtag }}</div>
     </div>
   </div>
 </template>
@@ -42,7 +22,8 @@
 export default {
   data () {
     return {
-      search : ""
+      search : "",
+      hashtagList: []
     }
   },
   methods: {
@@ -51,7 +32,19 @@ export default {
         console.log(res.data)
       })
     },
+    clickHashtag(hashtag) {
+      this.$store.dispatch('searchHashtag', hashtag).then((res) => {
+        console.log(res.data)
+      })
+    }
   },
+  created() {
+    this.$store.dispatch('getHashtag')
+      .then((res) => {
+        this.hashtagList = res.data
+        console.log(this.hashtagList)
+      })
+  }
 };
 </script>
 
