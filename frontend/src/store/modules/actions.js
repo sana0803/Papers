@@ -65,3 +65,11 @@ export function getDiaryContent({ state }, id) {
     const userToken = state.loginUser.userToken
     return $axios.get(url, { headers: { Authorization: `Bearer ${userToken}` } })
 }
+
+export function modifyProfile({ state }, profile) {
+  console.log('회원정보수정 action호출', state)
+  const userToken = state.loginUser.userToken
+  const url = baseUrl + '/user'
+  return $axios.put(url, profile, {headers: { Authorization: `Bearer ${userToken}` }})
+  
+}
