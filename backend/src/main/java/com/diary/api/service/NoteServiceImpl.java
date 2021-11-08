@@ -132,53 +132,62 @@ public class NoteServiceImpl implements NoteService{
         note.setUser(userRepository.findByUserId(noteReq.getWriterId()).get());
         noteRepository.save(note);
 
-        noteRepositorySupport.deleteNoteHashtag(note.getId());
-        for(String hashtag : noteReq.getNoteHashtagList()){
-            NoteHashtag noteHashtag = new NoteHashtag();
-            noteHashtag.setNote(noteRepositorySupport.getNote(note.getId()).get());
-            noteHashtag.setTagValue(hashtag);
-            noteHashtagRepository.save(noteHashtag);
+        if(noteReq.getNoteHashtagList() != null) {
+            noteRepositorySupport.deleteNoteHashtag(note.getId());
+            for (String hashtag : noteReq.getNoteHashtagList()) {
+                NoteHashtag noteHashtag = new NoteHashtag();
+                noteHashtag.setNote(noteRepositorySupport.getNote(note.getId()).get());
+                noteHashtag.setTagValue(hashtag);
+                noteHashtagRepository.save(noteHashtag);
+            }
         }
 
         noteRepositorySupport.deleteNoteMedia(note.getId());
 
-        noteRepositorySupport.setNoteMedias(noteReq.getNoteMediaList(), noteReq.getWriterId(), note.getDiary().getId());
-
-        for(MultipartFile multipartFile : noteReq.getNoteMediaList()) {
-            if(multipartFile == null) continue;
-            NoteMedia noteMedia = new NoteMedia();
-            noteMedia.setNote(noteRepositorySupport.getNote(note.getId()).get());
-            noteMedia.setMediaUrl("https://papers-bucket.s3.amazonaws.com/diary-file/"
-                    + noteReq.getWriterId() + "/" + noteReq.getDiaryId() + "/" + multipartFile.getOriginalFilename());
-            noteMedia.setMediaExtension(multipartFile.getOriginalFilename()
-                    .substring(multipartFile.getOriginalFilename().lastIndexOf(".")));
-            noteMediaRepository.save(noteMedia);
+        if(noteReq.getNoteMediaList() != null) {
+            noteRepositorySupport.setNoteMedias(noteReq.getNoteMediaList(), noteReq.getWriterId(), note.getDiary().getId());
+            for (MultipartFile multipartFile : noteReq.getNoteMediaList()) {
+                if (multipartFile == null) continue;
+                NoteMedia noteMedia = new NoteMedia();
+                noteMedia.setNote(noteRepositorySupport.getNote(note.getId()).get());
+                noteMedia.setMediaUrl("https://papers-bucket.s3.amazonaws.com/diary-file/"
+                        + noteReq.getWriterId() + "/" + noteReq.getDiaryId() + "/" + multipartFile.getOriginalFilename());
+                noteMedia.setMediaExtension(multipartFile.getOriginalFilename()
+                        .substring(multipartFile.getOriginalFilename().lastIndexOf(".")));
+                noteMediaRepository.save(noteMedia);
+            }
         }
 
-
-        for(String media : noteReq.getNoteS3MediaList()){
-            if(media == null) continue;
-            NoteMedia noteMedia = new NoteMedia();
-            noteMedia.setNote(noteRepositorySupport.getNote(note.getId()).get());
-            noteMedia.setMediaUrl(media);
-            noteMedia.setMediaExtension("." + media.split("\\.")[media.split("\\.").length - 1]);
-            noteMediaRepository.save(noteMedia);
+        if(noteReq.getNoteS3MediaList() != null) {
+            for (String media : noteReq.getNoteS3MediaList()) {
+                if (media == null) continue;
+                NoteMedia noteMedia = new NoteMedia();
+                noteMedia.setNote(noteRepositorySupport.getNote(note.getId()).get());
+                noteMedia.setMediaUrl(media);
+                noteMedia.setMediaExtension("." + media.split("\\.")[media.split("\\.").length - 1]);
+                noteMediaRepository.save(noteMedia);
+            }
         }
 
-        noteRepositorySupport.deleteNoteSticker(note.getId());
-        for(NoteStickerReq sticker : noteReq.getStickerList()){
-            NoteSticker noteSticker = new NoteSticker();
-            noteSticker.setSticker(noteRepositorySupport.getSticker(sticker.getStickerId()).get());
-            noteSticker.setNote(noteRepositorySupport.getNote(note.getId()).get());
-            noteSticker.setTopPixel(sticker.getTopPixel());
-            noteSticker.setLeftPixel(sticker.getLeftPixel());
-            noteStickerRepository.save(noteSticker);
+        if(noteReq.getStickerList() != null) {
+            noteRepositorySupport.deleteNoteSticker(note.getId());
+            for (NoteStickerReq sticker : noteReq.getStickerList()) {
+                if (sticker == null) continue;
+                NoteSticker noteSticker = new NoteSticker();
+                noteSticker.setSticker(noteRepositorySupport.getSticker(sticker.getStickerId()).get());
+                noteSticker.setNote(noteRepositorySupport.getNote(note.getId()).get());
+                noteSticker.setTopPixel(sticker.getTopPixel());
+                noteSticker.setLeftPixel(sticker.getLeftPixel());
+                noteStickerRepository.save(noteSticker);
+            }
         }
 
-        noteRepositorySupport.deleteNoteEmotion(note.getId());
-        if(noteReq.getEmotionList().size() > 0) {
-            for (NoteEmotionReq noteEmotionReq : noteReq.getEmotionList()) {
-                this.setNoteEmotion(noteEmotionReq);
+        if(noteReq.getEmotionList() != null) {
+            noteRepositorySupport.deleteNoteEmotion(note.getId());
+            if (noteReq.getEmotionList().size() > 0) {
+                for (NoteEmotionReq noteEmotionReq : noteReq.getEmotionList()) {
+                    this.setNoteEmotion(noteEmotionReq);
+                }
             }
         }
 
