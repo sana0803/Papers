@@ -87,7 +87,8 @@ export default {
         layoutId: 1,
         noteContent: this.noteContent,
         noteHashtagList: noteHashtagList,
-        noteMediaList: ["테스트"],
+        noteS3MediaList: [],
+        noteMediaList: this.noteMedia,
         noteTitle: this.noteTitle,
         stickerList: [
           {
@@ -97,7 +98,8 @@ export default {
           },
         ],
         writerId: this.loginUser.userNickname,
-      };
+      }
+      console.log(note)
       this.$store.dispatch("write", note).then(() => {
         Swal.fire({
             icon: "success",
