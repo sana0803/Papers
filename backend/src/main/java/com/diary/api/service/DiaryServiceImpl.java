@@ -176,7 +176,7 @@ public class DiaryServiceImpl implements DiaryService {
         for (String s : guestList) {
             log.info("초대 받는 사람 : " + s);
         }
-        notificationService.publishToUsers(guestList);
+        notificationService.publishToUsers(3, user, guestList);
         log.info("----------------");
         return true;
     }
