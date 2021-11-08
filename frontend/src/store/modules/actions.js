@@ -65,3 +65,9 @@ export function getDiaryContent({ state }, id) {
     const userToken = state.loginUser.userToken
     return $axios.get(url, { headers: { Authorization: `Bearer ${userToken}` } })
 }
+
+export function searchHashtag({ state }, search) {
+    const url = baseUrl + '/note/hashtag?hashtag=' + search
+    const userToken = state.loginUser.userToken
+    return $axios.get(url, { headers: { Authorization: `Bearer ${userToken}` } })
+}
