@@ -60,9 +60,8 @@ public class NotificationServiceImpl implements NotificationService{
     }
 
     @Override
-    public void publishToUsers(List<String> userIdList) {
-        String message = "알림이 발생했습니다.";
-        log.info("알림 내용 : " + message);
+    public void publishToUsers(String message, List<String> userIdList) {
+
         Set<String> deadUuids = new HashSet<>();
         Set<String> deadUserIds = new HashSet<>();
         log.info("알림 발생 시점에서 map 개 수 : " + CLIENTS.size());
