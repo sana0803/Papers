@@ -65,3 +65,10 @@ export function getDiaryContent({ state }, id) {
     const userToken = state.loginUser.userToken
     return $axios.get(url, { headers: { Authorization: `Bearer ${userToken}` } })
 }
+
+export function calenderGet({ state }, month) {
+    console.log('calenderGet action 호출', state)
+    const userToken = state.loginUser.userToken
+    const url = baseUrl + '/note/' + month
+    return $axios.get(url, { headers: { Authorization: `Bearer ${userToken}` } } )
+}

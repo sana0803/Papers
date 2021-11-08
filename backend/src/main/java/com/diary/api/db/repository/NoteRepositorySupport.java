@@ -62,8 +62,7 @@ public class NoteRepositorySupport {
     }
     public Optional<List<Note>> getMonthNote(int month, String userId) {
         List<Note> notes = jpaQueryFactory.select(qNote).from(qNote)
-                .where(qNote.noteCreateDate.month().eq(month)
-                .and(qNote.diary.id.in(
+                .where(qNote.diary.id.in(
                         jpaQueryFactory.select(qUserDiary.diary.id).from(qUserDiary)
                         .where(qUserDiary.user.userId.eq(userId)
                         .or(qUserDiary.guestId.eq(userId)))
@@ -72,7 +71,7 @@ public class NoteRepositorySupport {
                             jpaQueryFactory.select(qDiary.id).from(qDiary)
                                     .where(qDiary.user.userId.eq(userId))
                     )
-                ))).fetch();
+                )).fetch();
         if(notes == null) return Optional.empty();
         return Optional.ofNullable(notes);
     }
