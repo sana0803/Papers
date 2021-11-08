@@ -14,7 +14,7 @@
             Click&nbsp;&nbsp; >
           </v-btn>
 
-          <br>    
+          <!-- <br>    
           <v-btn
             id="connection"
             @click="connection"
@@ -34,7 +34,7 @@
             @click="close"
           >
           연결 끊기
-          </v-btn>
+          </v-btn> -->
 
         </div>
         <div v-if="!introMode" id="Login_left">
@@ -128,6 +128,9 @@ export default {
           // 알림 발생 시 이벤트 처리
           alarmEventSource.onmessage = (e) => {
             alert(e.data)
+            this.$store.commit('setNotificationState', true)
+            this.$store.commit('setNotificationMessage', e.data)
+            // this.$emit('change-notification-state', true)
           }
           this.$store.commit('setAlarmEventSource', alarmEventSource)
 
