@@ -204,8 +204,13 @@ public class NoteRepositorySupport {
                 .where(qNote.diary.id.in(
                         jpaQueryFactory.select(qUserDiary.diary.id).from(qUserDiary)
                         .where(qUserDiary.user.userId.eq(userId)
-                        .or(qUserDiary.guestId.eq(userId)))
-                )
+                        .or(qUserDiary.guestId.eq(userId))
+                        )
+
+                ).or(qNote.diary.id.in(
+                        jpaQueryFactory.select(qDiary.id).from(qDiary)
+                                .where(qDiary.user.userId.eq(userId))
+                ))
                 .and(qNoteHashtag.tagValue.eq(hashtag))).fetch();
 
         if(notes == null) return Optional.empty();
@@ -229,5 +234,21 @@ public class NoteRepositorySupport {
             }
         }
         return true;
+    }
+
+    public Optional<List<String>> getHashtagList(String userId){
+        List<String> notes = jpaQueryFactory.select(qNoteHashtag.tagValue).from(qNoteHashtag)
+                .join(qNote).on(qNote.id.eq(qNote.id))
+                .where(qNote.diary.id.in(
+                        jpaQueryFactory.select(qUserDiary.diary.id).from(qUserDiary)
+                                .where(qUserDiary.user.userId.eq(userId)
+                                        .or(qUserDiary.guestId.eq(userId))
+                                )
+                ).or(qNote.diary.id.in(
+                        jpaQueryFactory.select(qDiary.id).from(qDiary)
+                                .where(qDiary.user.userId.eq(userId))
+                ))).distinct().limit(20).fetch();
+        if(notes == null) return Optional.empty();
+        return Optional.of(notes);
     }
 }

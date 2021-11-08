@@ -18,7 +18,12 @@ export function write({ state }, note) {
     console.log('write action 호출', state)
     const userToken = state.loginUser.userToken
     const url = baseUrl + '/note'
-    return $axios.post(url, note, { headers: { Authorization: `Bearer ${userToken}` } })
+    return $axios.post(url, note, {
+        headers: {
+            Authorization: `Bearer ${userToken}`,
+            // 'content-type' : 'multipart/form-data'
+        }
+    })
 }
 
 export function diaryCreate({ state }, diary) {
@@ -62,6 +67,12 @@ export function getDiaryContent({ state }, id) {
     console.log('getDiaryContent action 호출', state)
     // console.log(id)
     const url = baseUrl + '/diary/' + id
+    const userToken = state.loginUser.userToken
+    return $axios.get(url, { headers: { Authorization: `Bearer ${userToken}` } })
+}
+
+export function searchHashtag({ state }, search) {
+    const url = baseUrl + '/note/hashtag?hashtag=' + search
     const userToken = state.loginUser.userToken
     return $axios.get(url, { headers: { Authorization: `Bearer ${userToken}` } })
 }
