@@ -199,18 +199,18 @@ public class NoteRepositorySupport {
 
     public Optional<List<Note>> getHashtagNotes(String hashtag, String userId){
         List<Note> notes = jpaQueryFactory.select(qNote).from(qNote)
-                .join(qNoteHashtag).on(qNote.id.eq(qNoteHashtag.note.id))
-                .where(qNote.diary.id.in(
+                .join(qNoteHashtag).on(qNoteHashtag.note.id.eq(qNote.id))
+                .where((qNote.diary.id.in(
                         jpaQueryFactory.select(qUserDiary.diary.id).from(qUserDiary)
                         .where(qUserDiary.user.userId.eq(userId)
                         .or(qUserDiary.guestId.eq(userId))
                         )
-
                 ).or(qNote.diary.id.in(
                         jpaQueryFactory.select(qDiary.id).from(qDiary)
                                 .where(qDiary.user.userId.eq(userId))
-                ))
-                .and(qNoteHashtag.tagValue.eq(hashtag))).fetch();
+                        )
+                    ))
+                .and(qNoteHashtag.tagValue.eq(hashtag))).distinct().fetch();
 
         if(notes == null) return Optional.empty();
         return Optional.of(notes);
@@ -237,7 +237,7 @@ public class NoteRepositorySupport {
 
     public Optional<List<String>> getHashtagList(String userId){
         List<String> notes = jpaQueryFactory.select(qNoteHashtag.tagValue).from(qNoteHashtag)
-                .join(qNote).on(qNote.id.eq(qNote.id))
+                .join(qNote).on(qNote.id.eq(qNoteHashtag.note.id))
                 .where(qNote.diary.id.in(
                         jpaQueryFactory.select(qUserDiary.diary.id).from(qUserDiary)
                                 .where(qUserDiary.user.userId.eq(userId)
