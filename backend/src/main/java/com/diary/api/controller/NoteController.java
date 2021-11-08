@@ -17,6 +17,7 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -82,6 +83,8 @@ public class NoteController {
         User user = JwtTokenUtil.getUser(authentication, userService);
         if (user == null) return ResponseEntity.status(401).body(BaseResponseBody.of(401, "잘못된 토큰"));
 
+        System.out.println(noteReq.getDesignId());
+        System.out.println(noteReq.getNoteContent());
         noteReq.setWriterId(user.getUserId());
         NoteRes noteRes = noteService.registNote(noteReq);
         if(noteRes == null) return ResponseEntity.status(500).body(BaseResponseBody.of(500, "존재하지 않거나 오류가 발생하였습니다."));
@@ -196,4 +199,17 @@ public class NoteController {
         else return ResponseEntity.status(500).build();
     }
 
+    @GetMapping("/hashtag-list")
+    @ApiOperation(value = "해시태그 목록", notes = "해시태그 목록 반환")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "해시태그 기반 일기 불러오기 성공"),
+            @ApiResponse(code = 500, message = "검색 중 오류발생")
+    })
+    public ResponseEntity<List<String>> getHashtagList(@ApiIgnore Authentication authentication){
+        User user = JwtTokenUtil.getUser(authentication, userService);
+        if (user == null) return ResponseEntity.status(401).build();
+        if(noteService.getHashtagList(user.getUserId()) != null)
+            return ResponseEntity.status(200).body(noteService.getHashtagList(user.getUserId()));
+        else return ResponseEntity.status(500).build();
+    }
 }

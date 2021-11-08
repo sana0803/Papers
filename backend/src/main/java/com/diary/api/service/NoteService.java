@@ -23,4 +23,5 @@ public interface NoteService {
     public boolean setNoteEmotion(NoteEmotionReq noteEmotionReq);
     public boolean deleteNoteEmotion(NoteEmotionReq noteEmotionReq);
     public List<NoteRes> getHashtagNotes(String hashtag, String userId);
+    public List<String> getHashtagList(String userId);
 }
