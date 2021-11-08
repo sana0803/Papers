@@ -48,9 +48,9 @@
         <v-tab> 스티커 </v-tab>
         <v-tab> 폰트 </v-tab>
         <v-tab> 커버 </v-tab>
-        <v-tab-item class="Tab"> 스티커 목록 </v-tab-item>
-        <v-tab-item class="Tab"> 폰트 목록 </v-tab-item>
-        <v-tab-item class="Tab"> 커버 목록 </v-tab-item>
+        <v-tab-item class="Tab"> 스티커 목록: {{ myStickerLsit }} </v-tab-item>
+        <v-tab-item class="Tab"> 폰트 목록: {{ myFontList }} </v-tab-item>
+        <v-tab-item class="Tab"> 커버 목록: {{ myCoverList }} </v-tab-item>
       </v-tabs>
       <div id="Mypage_Delete">
         <v-btn id="Delete_Btn" text> 회원 탈퇴 </v-btn>
@@ -84,7 +84,9 @@ export default {
         profileImg: '',
         img: ''
       },
-
+      myStickerLsit: [],
+      myCoverList: [],
+      myFontList: [],
       // profile.nickName : loginUser.nickName,
       // pwd: "123123",
       // pwdCheck: "123123",
@@ -111,6 +113,9 @@ export default {
   },
   created: function () {
     this.getProfile()
+    this.getUserFonts()
+    this.getUserStickers()
+    this.getUserCovers()
   },
   onMounted: function () {
     // this.profile.nickName = this.loginUser.userNickname;
@@ -164,7 +169,6 @@ export default {
         this.$store.commit("setLoginUser", user)
         console.log(user, '정보수정후 유저')
       })
-      
       .catch(() => {
         Swal.fire({
             icon: "error",
@@ -179,8 +183,30 @@ export default {
       this.profile.pwd = this.loginUser.userPwd
       this.profile.pwdCheck = this.loginUser.userPwd
       this.profile.profileImg = this.loginUser.userProfile
+    },
+    getUserFonts: function () {
+      this.$store.dispatch("getUserFonts")
+      .then((res) => {
+        console.log(res.data, '유저 폰트')
+        this.myFontList = res.data
+
+      })
+    },
+    getUserStickers: function () {
+      this.$store.dispatch("getUserStickers")
+      .then((res) => {
+        console.log(res.data, '유저 스티커')
+        this.myStickerLsit = res.data
+      })
+    },
+    getUserCovers: function () {
+      this.$store.dispatch("getUserCovers")
+      .then((res) => {
+        console.log(res.data, '유저 커버')
+        this.myCoverList = res.data
+      })
     }
-  },
+  }
 };
 </script>
 

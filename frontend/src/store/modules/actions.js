@@ -97,3 +97,24 @@ export function getHashtag({ state}) {
     const url = baseUrl + '/note/hashtag-list'
     return $axios.get(url, { headers: { Authorization: `Bearer ${userToken}` } })
 }
+
+export function getUserFonts({ state }) {
+	console.log('userFonts action 호출', state)
+	const userToken = state.loginUser.userToken
+	const url = baseUrl + '/user/fonts'
+	return $axios.get(url, { headers: { Authorization: `Bearer ${userToken}` } } )
+}
+
+export function getUserStickers({ state }) {
+	console.log('userStickers action 호출', state)
+	const userToken = state.loginUser.userToken
+	const url = baseUrl + '/user/stickers'
+	return $axios.get(url, { headers: { Authorization: `Bearer ${userToken}` } } )
+}
+
+export function getUserCovers({ state }) {
+	console.log('userCovers action 호출', state)
+	const userToken = state.loginUser.userToken
+	const url = baseUrl + '/user/covers'
+	return $axios.get(url, { headers: { Authorization: `Bearer ${userToken}` } } )
+}
