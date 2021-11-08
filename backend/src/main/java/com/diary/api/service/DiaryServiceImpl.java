@@ -163,20 +163,23 @@ public class DiaryServiceImpl implements DiaryService {
     @Override
     public boolean inviteDiary(User user, DiaryInviteReq diaryInviteReq) {
         List<String> guestList = diaryInviteReq.getInviteList();
+        Diary diary = diaryRepository.getOne(diaryInviteReq.getDiaryId());
 
         for (String guestId : guestList) {
             UserDiary userDiary = new UserDiary();
             userDiary.setGuestId(guestId);
             userDiary.setAccepted(false);
             userDiary.setUser(user);
-            userDiary.setDiary(diaryRepository.getOne(diaryInviteReq.getDiaryId()));
+            userDiary.setDiary(diary);
             userDiaryRepository.save(userDiary);
         }
         log.info("---diary service");
         for (String s : guestList) {
             log.info("초대 받는 사람 : " + s);
         }
-        notificationService.publishToUsers(3, user, guestList);
+
+        String message = user.getUserNickname() + "님이 " + diary.getDiaryTitle() + " 일기장에 회원님을 초대했습니다.";
+        notificationService.publishToUsers(message, guestList);
         log.info("----------------");
         return true;
     }

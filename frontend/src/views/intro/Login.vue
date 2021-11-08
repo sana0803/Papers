@@ -127,6 +127,9 @@ export default {
           // 알림 발생 시 이벤트 처리
           alarmEventSource.onmessage = (e) => {
             alert(e.data)
+            this.$store.commit('setNotificationState', true)
+            this.$store.commit('setNotificationMessage', e.data)
+            // this.$emit('change-notification-state', true)
           }
           this.$store.commit('setAlarmEventSource', alarmEventSource)
 

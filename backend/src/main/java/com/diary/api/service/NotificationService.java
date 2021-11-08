@@ -11,6 +11,6 @@ public interface NotificationService {
     void addEmitter(String uuid, AlarmDataSet alarmDataSet);
     void removeEmitter(String uuid);
     void publish(String message);
-    void publishToUsers(int type, User user, List<String> userIdList);
+    void publishToUsers(String message, List<String> userIdList);
     void removeUser(String userId);
 }

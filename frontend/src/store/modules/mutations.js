@@ -14,3 +14,12 @@ export function setAlarmEventSource(state, alarmEventSource) {
 export function setDiaryContent(state, diaryContent) {
   state.diaryContent = diaryContent
 }
+
+export function setNotificationState(state, notificationState) {
+  state.notificationState = notificationState
+  console.log(notificationState + '를 변경함')
+}
+
+export function setNotificationMessage(state, message) {
+  state.notificationMessage = message
+}

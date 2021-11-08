@@ -60,23 +60,13 @@ public class NotificationServiceImpl implements NotificationService{
     }
 
     @Override
-    public void publishToUsers(int type, User user, List<String> userIdList) {
-        String messageType = "";
-        switch (type) {
-            case 1: messageType = "일기장 초대"; break;
-            case 2: messageType = "일기장 작성"; break;
-            case 3: messageType = "일기 감정 표현"; break;
-            default: break;
-        }
+    public void publishToUsers(String message, List<String> userIdList) {
 
-        log.info("알림 내용 : " + messageType);
         Set<String> deadUuids = new HashSet<>();
         Set<String> deadUserIds = new HashSet<>();
         log.info("알림 발생 시점에서 map 개 수 : " + CLIENTS.size());
 
         log.info("초대 받는 사람 객체 : " + userIdList);
-
-        final String message = user.getUserId() + "님으로부터 " + messageType + " 알림이 도착했습니다.";
 
         userIdList.forEach((userId) -> {
             System.out.println("connected user 찍어보기 " + CONNECTED_USERS);
