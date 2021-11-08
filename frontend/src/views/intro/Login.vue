@@ -118,6 +118,7 @@ export default {
             userMileage: result.data.userMileage,
             userProfile: result.data.userProfile,
             userToken: result.data.userToken,
+            userPwd : this.userPwd,
           };
           // Store에 loginUser 정보 저장
           this.$store.commit("setLoginUser", loginUser);

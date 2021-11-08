@@ -70,6 +70,13 @@ export function getDiaryContent({ state }, id) {
     return $axios.get(url, { headers: { Authorization: `Bearer ${userToken}` } })
 }
 
+export function modifyProfile({ state }, profile) {
+	console.log('회원정보수정 action호출', state)
+	const userToken = state.loginUser.userToken
+	const url = baseUrl + '/user'
+	return $axios.put(url, profile, { headers: { Authorization: `Bearer ${userToken}` } })
+}
+
 export function calenderGet({ state }, month) {
     console.log('calenderGet action 호출', state)
     const userToken = state.loginUser.userToken
@@ -97,4 +104,25 @@ export function getCover({state }) {
     const userToken = state.loginUser.userToken
     const url = baseUrl + '/user/covers'
     return $axios.get(url, { headers: { Authorization: `Bearer ${userToken}` } } )
+}
+
+export function getUserFonts({ state }) {
+	console.log('userFonts action 호출', state)
+	const userToken = state.loginUser.userToken
+	const url = baseUrl + '/user/fonts'
+	return $axios.get(url, { headers: { Authorization: `Bearer ${userToken}` } } )
+}
+
+export function getUserStickers({ state }) {
+	console.log('userStickers action 호출', state)
+	const userToken = state.loginUser.userToken
+	const url = baseUrl + '/user/stickers'
+	return $axios.get(url, { headers: { Authorization: `Bearer ${userToken}` } } )
+}
+
+export function getUserCovers({ state }) {
+	console.log('userCovers action 호출', state)
+	const userToken = state.loginUser.userToken
+	const url = baseUrl + '/user/covers'
+	return $axios.get(url, { headers: { Authorization: `Bearer ${userToken}` } } )
 }

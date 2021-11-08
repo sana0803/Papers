@@ -10,7 +10,7 @@ import org.springframework.web.multipart.MultipartFile;
 @AllArgsConstructor
 public class UserUpdateReq {
     private MultipartFile userProfile;
-    private String userName;
+//    private String userName;
     private String userPwd;
     private String userNickname;
 }
