@@ -104,17 +104,28 @@ export default {
       const formData = new FormData()
       formData.append('designId', 1)
       formData.append('diaryId', selectDiaryId)
-      formData.append('emotionList', JSON.stringify({}))
+      formData.append('emotionList.writerId[]', '')
+      formData.append('emotionList.emotionInfoId[]', '')
+      formData.append('emotionList.noteId[]', '')
       formData.append('fontId', 1)
       formData.append('layoutId', 1)
       formData.append('noteContent', this.noteContent)
       formData.append('noteHashtagList', noteHashtagList)
-      formData.append('noteS3MediaList', [{}])
-      formData.append('noteMediaList', this.noteMedia)
+      formData.append('noteS3MediaList[]', null)
+      for(let i = 0; i < this.noteMedia.length; i++){
+        formData.append('noteMediaList[]', this.noteMedia[i])  
+      }
       formData.append('noteTitle', this.noteTitle)
-      formData.append('stickerList[]', JSON.stringify(note.stickerList[0]))
-
+      
+      for(let i = 0; i < note.stickerList.length; i++){
+        formData.append('stickerList.leftPixel[]', note.stickerList[i].leftPixel)
+        formData.append('stickerList.stickerId[]', note.stickerList[i].stickerId)
+        formData.append('stickerList.topPixel[]', note.stickerList[i].topPixel)
+      }
+      
       formData.append('writerId', this.loginUser.userNickname)
+
+      console.log(formData)
       this.$store.dispatch("write", formData).then(() => {
         Swal.fire({
             icon: "success",
