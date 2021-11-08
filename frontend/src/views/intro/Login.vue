@@ -14,7 +14,7 @@
             Click&nbsp;&nbsp; >
           </v-btn>
 
-          <br>    
+          <!-- <br>    
           <v-btn
             id="connection"
             @click="connection"
@@ -34,7 +34,7 @@
             @click="close"
           >
           연결 끊기
-          </v-btn>
+          </v-btn> -->
 
         </div>
         <div v-if="!introMode" id="Login_left">

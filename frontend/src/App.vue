@@ -3,16 +3,19 @@
     <v-main>
       <router-view />
     </v-main>
+    <Notification></Notification>
   </v-app>
 </template>
 
 <script>
 // import About from './views/About.vue';
-
+import Notification from "../src/components/notification/Notification.vue"
 export default {
   // components: { About },
   name: "App",
-
+  components: {
+    Notification,
+  },
   data: () => ({
     //
   }),
