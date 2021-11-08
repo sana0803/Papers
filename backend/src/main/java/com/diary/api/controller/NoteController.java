@@ -83,8 +83,6 @@ public class NoteController {
         if (user == null) return ResponseEntity.status(401).body(BaseResponseBody.of(401, "잘못된 토큰"));
 
         noteReq.setWriterId(user.getUserId());
-        System.out.println(noteReq.getWriterId());
-        System.out.println(noteReq.getNoteMediaList().size());
         NoteRes noteRes = noteService.registNote(noteReq);
         if(noteRes == null) return ResponseEntity.status(500).body(BaseResponseBody.of(500, "존재하지 않거나 오류가 발생하였습니다."));
         return ResponseEntity.status(200).body(noteRes);
