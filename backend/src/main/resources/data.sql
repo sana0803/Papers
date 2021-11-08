@@ -24,7 +24,8 @@ insert into user_font values (3, 3, 'test1') ON DUPLICATE KEY UPDATE id=3;
 insert into sticker_package values (1, 'package1', 50) ON DUPLICATE KEY UPDATE id=1;
 
 -- 다이어리 커버
-insert into diary_cover values (1, 'cover1', 500, 'test.com') ON DUPLICATE KEY UPDATE id=1;
+insert into diary_cover values (1, 'blue', 500, 'https://papers-bucket.s3.ap-northeast-2.amazonaws.com/diary-cover/blue.jpg') ON DUPLICATE KEY UPDATE id=1;
+insert into diary_cover values (2, 'sample', 500, 'https://papers-bucket.s3.ap-northeast-2.amazonaws.com/diary-cover/sample.png') ON DUPLICATE KEY UPDATE id=2;
 
 -- 다이어리
 insert into diary values (1, sysdate(), '다이어리 이름', 1, 'test1') ON DUPLICATE KEY UPDATE id=1;

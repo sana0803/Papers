@@ -145,6 +145,7 @@ public class NoteServiceImpl implements NoteService{
         noteRepositorySupport.setNoteMedias(noteReq.getNoteMediaList(), noteReq.getWriterId(), note.getDiary().getId());
 
         for(MultipartFile multipartFile : noteReq.getNoteMediaList()) {
+            if(multipartFile == null) continue;
             NoteMedia noteMedia = new NoteMedia();
             noteMedia.setNote(noteRepositorySupport.getNote(note.getId()).get());
             noteMedia.setMediaUrl("https://papers-bucket.s3.amazonaws.com/diary-file/"
@@ -154,7 +155,9 @@ public class NoteServiceImpl implements NoteService{
             noteMediaRepository.save(noteMedia);
         }
 
+
         for(String media : noteReq.getNoteS3MediaList()){
+            if(media == null) continue;
             NoteMedia noteMedia = new NoteMedia();
             noteMedia.setNote(noteRepositorySupport.getNote(note.getId()).get());
             noteMedia.setMediaUrl(media);
@@ -282,5 +285,11 @@ public class NoteServiceImpl implements NoteService{
         }
         if(noteResList == null) return null;
         return noteResList;
+    }
+
+    public List<String> getHashtagList(String userId){
+        if(noteRepositorySupport.getHashtagList(userId).isPresent())
+            return noteRepositorySupport.getHashtagList(userId).get();
+        return null;
     }
 }

@@ -18,7 +18,12 @@ export function write({ state }, note) {
     console.log('write action 호출', state)
     const userToken = state.loginUser.userToken
     const url = baseUrl + '/note'
-    return $axios.post(url, note, { headers: { Authorization: `Bearer ${userToken}` } })
+    return $axios.post(url, note, {
+        headers: {
+            Authorization: `Bearer ${userToken}`,
+            // 'content-type' : 'multipart/form-data'
+        }
+    })
 }
 
 export function diaryCreate({ state }, diary) {
@@ -60,16 +65,35 @@ export function noteGet({ state }) {
 
 export function getDiaryContent({ state }, id) {
     console.log('getDiaryContent action 호출', state)
-    // console.log(id)
     const url = baseUrl + '/diary/' + id
     const userToken = state.loginUser.userToken
     return $axios.get(url, { headers: { Authorization: `Bearer ${userToken}` } })
 }
 
 export function modifyProfile({ state }, profile) {
-  console.log('회원정보수정 action호출', state)
-  const userToken = state.loginUser.userToken
-  const url = baseUrl + '/user'
-  return $axios.put(url, profile, {headers: { Authorization: `Bearer ${userToken}` }})
-  
+	console.log('회원정보수정 action호출', state)
+	const userToken = state.loginUser.userToken
+	const url = baseUrl + '/user'
+	return $axios.put(url, profile, { headers: { Authorization: `Bearer ${userToken}` } })
+}
+
+export function calenderGet({ state }, month) {
+    console.log('calenderGet action 호출', state)
+    const userToken = state.loginUser.userToken
+    const url = baseUrl + '/note/' + month
+    return $axios.get(url, { headers: { Authorization: `Bearer ${userToken}` } } )
+}
+
+export function searchHashtag({ state }, search) {
+    console.log('searchHashtag action 호출', state)
+    const url = baseUrl + '/note/hashtag?hashtag=' + search
+    const userToken = state.loginUser.userToken
+    return $axios.get(url, { headers: { Authorization: `Bearer ${userToken}` } })
+}
+
+export function getHashtag({ state}) {
+    console.log('getHashtag action 호출', state)
+    const userToken = state.loginUser.userToken
+    const url = baseUrl + '/note/hashtag-list'
+    return $axios.get(url, { headers: { Authorization: `Bearer ${userToken}` } })
 }

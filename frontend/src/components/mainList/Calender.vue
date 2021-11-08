@@ -32,15 +32,52 @@
         :event-overlap-threshold="30"
         :event-color="getEventColor"
         @change="getEvents"
+        @click:event="showEvent"
       ></v-calendar>
+      <!-- @change="getEvents" -->
+       <v-menu
+          v-model="selectedOpen"
+          :close-on-content-click="false"
+          :activator="selectedElement"
+          offset-x
+        >
+          <v-card
+            color="grey lighten-4"
+            min-width="350px"
+            flat
+          >
+            <v-toolbar
+              :color="selectedEvent.color"
+              dark
+            >
+              <v-toolbar-title v-html="selectedEvent.name"></v-toolbar-title>
+              <v-spacer></v-spacer>
+            </v-toolbar>
+            <v-card-text id="select-box">
+              {{selectedEvent.content}} 
+            </v-card-text>
+            <v-card-actions>
+              <v-btn
+                text
+                color="secondary"
+                @click="selectedOpen = false"
+              >
+                닫기
+              </v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-menu>
     </v-sheet>
   </div>
 </template>
 
 <script>
+import dayjs from 'dayjs'
+
 export default {
   data() {
     return {
+      month: dayjs().format("MM"),
       value: "",
       events: [],
       colors: [
@@ -62,35 +99,57 @@ export default {
         "Conference",
         "Party",
       ],
-      calenderList: []
+      selectedEvent: {},
+      selectedElement: null,
+      selectedOpen: false,
     }
   },
   methods: {
-    getEvents({ start, end }) {
-      const events = [];
+    getEvents() {
+      this.$store.dispatch("calenderGet", this.month).then((res) => {
+        const events = []
 
-      const min = new Date(`${start.date}T00:00:00`);
-      const max = new Date(`${end.date}T23:59:59`);
-      const days = (max.getTime() - min.getTime()) / 86400000;
-      const eventCount = this.rnd(days, days + 20);
+        for(let i = 0; i < res.data.length; i++) {
+          const allDay = this.rnd(0, 3) === 0;
 
-      for (let i = 0; i < eventCount; i++) {
-        const allDay = this.rnd(0, 3) === 0;
-        const firstTimestamp = this.rnd(min.getTime(), max.getTime());
-        const first = new Date(firstTimestamp - (firstTimestamp % 900000));
-        const secondTimestamp = this.rnd(2, allDay ? 288 : 8) * 900000;
-        const second = new Date(first.getTime() + secondTimestamp);
+          const event = {
+            name : res.data[i].noteTitle,
+            id : res.data[i].noteId,
+            content: res.data[i].noteContent,
+            start: res.data[i].noteCreatedDate,
+            end: res.data[i].noteCreatedDate,
+            color: this.colors[this.rnd(0, this.colors.length - 1)],
+            timed: allDay,
+          }
+          events[i] = event
+        }
+        this.events = events;
+    });
+    
+      // const events = [];
 
-        events.push({
-          name: this.names[this.rnd(0, this.names.length - 1)],
-          start: first,
-          end: second,
-          color: this.colors[this.rnd(0, this.colors.length - 1)],
-          timed: !allDay,
-        });
-      }
+      // const min = new Date(`${start.date}T00:00:00`);
+      // const max = new Date(`${end.date}T23:59:59`);
+      // const days = (max.getTime() - min.getTime()) / 86400000;
+      // const eventCount = this.rnd(days, days + 20);
 
-      this.events = events;
+      // for (let i = 0; i < eventCount; i++) {
+      //   const allDay = this.rnd(0, 3) === 0;
+      //   const firstTimestamp = this.rnd(min.getTime(), max.getTime());
+      //   const first = new Date(firstTimestamp - (firstTimestamp % 900000));
+      //   const secondTimestamp = this.rnd(2, allDay ? 288 : 8) * 900000;
+      //   const second = new Date(first.getTime() + secondTimestamp);
+
+      //   events.push({
+      //     name: this.names[this.rnd(0, this.names.length - 1)],
+      //     start: first,
+      //     end: second,
+      //     color: this.colors[this.rnd(0, this.colors.length - 1)],
+      //     timed: !allDay,
+      //   });
+      // }
+
+      // this.events = events;
     },
     getEventColor(event) {
       return event.color;
@@ -98,11 +157,47 @@ export default {
     rnd(a, b) {
       return Math.floor((b - a + 1) * Math.random()) + a;
     },
+    prev() {
+      this.month = this.month - 1
+    },
+    next() {
+      this.month = this.month + 1
+    },
+    showEvent ({ nativeEvent, event }) {
+        const open = () => {
+          this.selectedEvent = event
+          this.selectedElement = nativeEvent.target
+          requestAnimationFrame(() => requestAnimationFrame(() => this.selectedOpen = true))
+        }
+
+        if (this.selectedOpen) {
+          this.selectedOpen = false
+          requestAnimationFrame(() => requestAnimationFrame(() => open()))
+        } else {
+          open()
+        }
+
+        nativeEvent.stopPropagation()
+      },
   },
   created() {
-    this.$store.dispatch("calenderGet").then((res) => {
-      this.calenderList = res.data.reverse()
-    });
+    // this.$store.dispatch("calenderGet", this.month).then((res) => {
+    //   // this.calenderList = res.data.reverse()
+    //   const events = []
+
+    //   for(let i = 0; i < res.data.length; i++) {
+    //     const allDay = this.rnd(0, 3) === 0;
+
+    //     const event = {
+    //       name : res.data[i].noteTitle,
+    //       // id : res.data[i].noteId,
+    //       color: this.colors[this.rnd(0, this.colors.length - 1)],
+    //       timed: !allDay,
+    //     }
+    //     events[i] = event
+    //   }
+    //   this.events = events;
+    // });
   },
 };
 </script>
@@ -111,5 +206,13 @@ export default {
 #Calender_Container {
   margin: 0 auto;
   width: 95%;
+}
+#select-box{
+  width:400px;
+  height:500px;
+  background:yellow;
+  display:flex;
+  justify-content: center;
+  align-items: center;
 }
 </style>
