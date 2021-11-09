@@ -3,19 +3,37 @@
     <v-main>
       <router-view />
     </v-main>
+    <Notification v-if="getNotificationState"></Notification>
   </v-app>
 </template>
 
 <script>
 // import About from './views/About.vue';
-
+import Notification from "../src/components/notification/Notification.vue"
+import { mapGetters } from 'vuex'
 export default {
   // components: { About },
   name: "App",
-
   data: () => ({
-    //
+    showNotification: true,
+    audio: 'https://papers-bucket.s3.ap-northeast-2.amazonaws.com/audio/melody.mp3',
   }),
+  components: {
+    Notification,
+  },
+  watch: {
+    getNotificationState() {
+      if (this.getNotificationState === true) {
+        var player = new Audio(this.audio)
+        player.play()
+      }
+    }
+  },
+  computed: {
+    ...mapGetters(["getNotificationState"]),
+  },
+  methods: {
+  }
 };
 </script>
 
