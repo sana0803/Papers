@@ -18,7 +18,8 @@ public class NotificationRepositorySupport {
 
     public Optional<List<Notification>> findAllByUserId(User user) {
         List<Notification> notifications = jpaQueryFactory.select(qNotification).from(qNotification)
-                .where(qNotification.user.userId.eq(user.getUserId())).fetch();
+                .where(qNotification.user.userId.eq(user.getUserId()))
+                .orderBy(qNotification.id.desc()).fetch();
 
         if(notifications == null) return Optional.empty();
         return Optional.of(notifications);

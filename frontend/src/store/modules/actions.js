@@ -139,3 +139,18 @@ export function getUserCovers({ state }) {
 	const url = baseUrl + '/user/covers'
 	return $axios.get(url, { headers: { Authorization: `Bearer ${userToken}` } } )
 }
+
+export function getNotifications({ state }) {
+  console.log('notifications load action 호출', state)
+	const userToken = state.loginUser.userToken
+	const url = baseUrl + '/notification'
+	return $axios.get(url, { headers: { Authorization: `Bearer ${userToken}` } } )
+}
+
+export function readNotification({ state }, notificationId) {
+  console.log('readNotification action 호출', state)
+  console.log(notificationId)
+	const userToken = state.loginUser.userToken
+	const url = baseUrl + '/notification/' + notificationId
+	return $axios.put(url, { headers: { Authorization: `Bearer ${userToken}` } } )
+}

@@ -15,6 +15,8 @@ export default function () {
     const notificationMessage = ''
     
     const notificationUserImage = ''
+    
+    const notifications = []
 
     return {
       loginUser,
@@ -24,5 +26,6 @@ export default function () {
       notificationState,
       notificationMessage,
       notificationUserImage,
+      notifications,
     }
 }

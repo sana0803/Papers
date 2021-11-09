@@ -25,3 +25,7 @@ export function getNotificationMessage(state) {
 export function getNotificationUserImage(state) {
   return state.notificationUserImage
 }
+
+export function getNotifications(state) {
+  return state.notifications
+}

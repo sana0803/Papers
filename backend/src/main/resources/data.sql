@@ -63,5 +63,5 @@ insert into notification_info values (2, '댓글 알림') ON DUPLICATE KEY UPDAT
 insert into notification_info values (3, '초대 알림') ON DUPLICATE KEY UPDATE id=3;
 
 -- 노티피케이션
-insert into notification values (1, 'giver님이 일기를 작성했습니다.', '2021-11-03', 0, '11:11:11', '타입', 1, 'test1') ON DUPLICATE KEY UPDATE id=1;
-insert into notification values (2, 'giver님이 댓글 작성했습니다.', '2021-11-03', 0, '11:11:11', '타입', 2, 'test1') ON DUPLICATE KEY UPDATE id=2;
+insert into notification values (1, 'giver님이 일기를 작성했습니다.', '2021-11-03', 0, '11:11:11', 'https://papers-bucket.s3.amazonaws.com/profile/test1/eb3df4c9-a031-42c9-9bb5-0d3562de7995landing-main.jpg', 1, 'test1') ON DUPLICATE KEY UPDATE id=1;
+insert into notification values (2, 'giver님이 댓글 작성했습니다.', '2021-11-03', 0, '11:11:11', 'https://papers-bucket.s3.amazonaws.com/profile/test1/eb3df4c9-a031-42c9-9bb5-0d3562de7995landing-main.jpg', 2, 'test1') ON DUPLICATE KEY UPDATE id=2;
