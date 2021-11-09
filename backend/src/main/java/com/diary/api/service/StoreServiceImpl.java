@@ -85,6 +85,7 @@ public class StoreServiceImpl implements StoreService {
             UserFont userFont = new UserFont();
             userFont.setFont(fontRepository.findById(fontId).get());
             userFont.setUser(userRepository.findByUserId(userId).get());
+            if(userFontRepository.findByFontId(fontId).isPresent()) return false;
             int amount = userRepository.findByUserId(userId).get().getUserMileage() - userFont.getFont().getFontPrice();
             if(amount < 0) return false;
             userFontRepository.save(userFont);
@@ -118,6 +119,7 @@ public class StoreServiceImpl implements StoreService {
             UserDiaryCover userDiaryCover = new UserDiaryCover();
             userDiaryCover.setDiaryCover(diaryCoverRepository.findById(diaryCoverId).get());
             userDiaryCover.setUser(userRepository.findByUserId(userId).get());
+            if(userDiaryCoverRepository.findByDiaryCoverId(diaryCoverId).isPresent()) return false;
             int amount = userRepository.findByUserId(userId).get().getUserMileage() - userDiaryCover.getDiaryCover().getCoverPrice();
             if(amount < 0) return false;
             userDiaryCoverRepository.save(userDiaryCover);
