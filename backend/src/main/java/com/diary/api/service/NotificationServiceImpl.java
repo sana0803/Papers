@@ -66,6 +66,11 @@ public class NotificationServiceImpl implements NotificationService{
     }
 
     @Override
+    public boolean updateNotificationRead(User user, long notificationId) {
+        return notificationRepositorySupport.updateNotificationRead(user, notificationId);
+    }
+
+    @Override
     public void publish(String message) {
 //        log.info("알림 내용 : " + message);
 //        Set<String> deadIds = new HashSet<>();

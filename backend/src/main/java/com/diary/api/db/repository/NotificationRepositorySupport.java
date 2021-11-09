@@ -5,6 +5,7 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,5 +22,16 @@ public class NotificationRepositorySupport {
 
         if(notifications == null) return Optional.empty();
         return Optional.of(notifications);
+    }
+
+    @Transactional
+    public boolean updateNotificationRead (User user, long notificationId) {
+        Long row = jpaQueryFactory.update(qNotification)
+                .set(qNotification.notificationRead, true)
+                .where(qNotification.id.eq(notificationId))
+                .execute();
+        if (row > 0)
+            return true;
+        return false;
     }
 }

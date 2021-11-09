@@ -7,8 +7,10 @@ import com.diary.api.response.NotificationRes;
 import com.diary.api.service.NotificationServiceImpl;
 import com.diary.api.service.UserService;
 import com.diary.common.util.JwtTokenUtil;
+import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -62,5 +64,16 @@ public class NotificationController {
         User user = JwtTokenUtil.getUser(authentication, userService);
         if (user == null) return ResponseEntity.notFound().build();
         return ResponseEntity.ok(notificationService.getNotifications(user));
+    }
+
+    @PutMapping("/{notificationId}")
+    public ResponseEntity updateNotificationRead(@ApiIgnore Authentication authentication, @PathVariable long notificationId) {
+        User user = JwtTokenUtil.getUser(authentication, userService);
+        if (user == null) return ResponseEntity.notFound().build();
+
+        if (notificationService.updateNotificationRead(user, notificationId)) {
+            return ResponseEntity.status(HttpStatus.OK).body(BaseResponseBody.of(200, "요청이 성공적으로 이루어졌습니다."));
+        }
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(BaseResponseBody.of(500, "요청이 정상적으로 처리되지 않았습니다. "));
     }
 }

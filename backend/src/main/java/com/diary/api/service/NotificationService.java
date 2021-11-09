@@ -16,4 +16,5 @@ public interface NotificationService {
     void publishToUsers(NotificationDetailRes notificationDetailRes, List<String> userIdList);
     void removeUser(String userId);
     List<NotificationRes> getNotifications(User user);
+    boolean updateNotificationRead(User user, long notificationId);
 }
