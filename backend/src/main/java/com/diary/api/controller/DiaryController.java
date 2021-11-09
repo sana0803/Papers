@@ -158,7 +158,7 @@ public class DiaryController {
             @ApiResponse(code = 401, message = "인증"),
             @ApiResponse(code = 500, message = "일기 조회 실패")
     })
-    public ResponseEntity<List<NoteRes>> getOneDiary(
+    public ResponseEntity<DiaryRes> getOneDiary(
             @PathVariable Long id,
             @ApiIgnore Authentication authentication
     ) {
@@ -166,7 +166,7 @@ public class DiaryController {
         if (user == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
-        return ResponseEntity.status(HttpStatus.OK).body(diaryService.getDiary(id));
+        return ResponseEntity.status(HttpStatus.OK).body(diaryService.getDiary(id, user));
     }
 
     @PostMapping("/invite")
