@@ -31,7 +31,7 @@
             v-for="(hashtag, idx) in note.noteHashtag"
             :key="idx"
           >
-            <span>{{ hashtag }}</span>
+            <span>#{{ hashtag }}</span>
           </div>          
           <div class="diary-img-wrap">
             <img src="../../assets/image/dog.jpg" alt="일기 사진" />
@@ -67,8 +67,8 @@
           <div class="emotion-right"
             v-if="note.writerId == loginUser.userId"
           >
-            <span @click="onModifyNote">수정</span>
-            <span @click="onDeleteNote">삭제</span>
+            <span @click="onModifyNote(note)">수정</span>
+            <span @click="onDeleteNote(note.noteId)">삭제</span>
           </div>
           <div class="emotion-right"
             v-else
@@ -101,8 +101,8 @@ export default {
       //   console.log(res.data)
       // })
     },
-    onDeleteNote() {
-      this.$store.dispatch("deleteNote", this.currentDiary.id)
+    onDeleteNote(id) {
+      this.$store.dispatch("deleteNote", id)
       .then(() => {
         console.log('일기 삭제')
       })

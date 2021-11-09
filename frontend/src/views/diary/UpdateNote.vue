@@ -2,21 +2,21 @@
   <div id="Write_Container">
     냐냐냥
     <write-side />
-    <div id="Write_Main">
-      <write-content />
+    <div id="update-main">
+      <UpdateContent />
     </div>
   </div>
 </template>
 
 <script>
 import WriteSide from "../../components/write/WriteSide.vue";
-import WriteContent from "../../components/write/WriteContent.vue";
+import UpdateContent from "../../components/write/WriteContent.vue";
 
 export default {
   components: {
     WriteSide,
-    WriteContent,
-  },
+    UpdateContent,
+  },  
 };
 </script>
 
@@ -24,7 +24,7 @@ export default {
 #Write_Container {
   height: 100%;
 }
-#Write_Main {
+#update-main {
   height: 100%;
   display: flex;
   justify-content: center;
