@@ -63,7 +63,7 @@ export function noteGet({ state }) {
 }
 
 export function getDiaryContent({ state }, id) {
-    console.log('getDiaryContent action 호출', state)
+    console.log('일기 받아오기 action 호출', state)
     const url = baseUrl + '/diary/' + id
     const userToken = state.loginUser.userToken
     return $axios.get(url, { headers: { Authorization: `Bearer ${userToken}` } })
