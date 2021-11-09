@@ -184,15 +184,15 @@ public class UserServiceImpl implements UserService{
 //                break;
 //            default:
 //        }
-        if (!notificationInfoRepository.findById((long)notificationReq.getNotificationInfoId()).isPresent()) {
-            return false;
-        }
-        Notification notification = new Notification();
-        notification.setNotificationContent(notificationReq.getNotificationContent());
-        notification.setNotificationInfo(notificationInfoRepository.findById((long)notificationReq.getNotificationInfoId()).get());
-        notification.setUser(user);
-        if (notificationRepository.save(notification) == null)
-            return false;
+//        if (!notificationInfoRepository.findById((long)notificationReq.getNotificationInfoId()).isPresent()) {
+//            return false;
+//        }
+//        Notification notification = new Notification();
+//        notification.setNotificationContent(notificationReq.getNotificationContent());
+//        notification.setNotificationInfo(notificationInfoRepository.findById((long)notificationReq.getNotificationInfoId()).get());
+//        notification.setUser(user);
+//        if (notificationRepository.save(notification) == null)
+//            return false;
         return true;
     }
 

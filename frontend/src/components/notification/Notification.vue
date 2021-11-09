@@ -5,7 +5,7 @@
     </div>
     <div class="noti-body" @click="notificationClick()">
       <div class="left-area">
-        <img :src="imageUrl" />
+        <img :src="getNotificationUserImage" />
       </div>
       <div align="left" class="right-area">
         {{getNotificationMessage}}
@@ -20,12 +20,12 @@ import { mapGetters } from 'vuex'
 export default {
   data() {
     return {
-      imageUrl: 'https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/cbdef037365169.573db7853cebb.jpg',
+      // imageUrl: 'https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/cbdef037365169.573db7853cebb.jpg',
       audio: 'https://papers-bucket.s3.ap-northeast-2.amazonaws.com/audio/melody.mp3'
     }
   },
   computed: {
-    ...mapGetters(["getNotificationMessage"]),
+    ...mapGetters(["getNotificationMessage", "getNotificationUserImage"]),
   },
   methods: {
     closeNotification () {

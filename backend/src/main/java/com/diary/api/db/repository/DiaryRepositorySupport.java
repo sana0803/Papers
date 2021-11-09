@@ -26,6 +26,7 @@ public class DiaryRepositorySupport {
     QDiary qDiary = QDiary.diary;
     QDiaryCover qDiaryCover = QDiaryCover.diaryCover;
 
+
     public Optional<Diary> getDiary(Long diaryId){
         Diary diary = jpaQueryFactory.select(qDiary).from(qDiary)
                 .where(qDiary.id.eq(diaryId)).fetchOne();
@@ -39,5 +40,4 @@ public class DiaryRepositorySupport {
         if(diaryCover == null) return Optional.empty();
         return Optional.ofNullable(diaryCover);
     }
-
 }

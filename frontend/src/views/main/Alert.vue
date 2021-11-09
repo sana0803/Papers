@@ -2,46 +2,22 @@
   <div id="Alert_Container">
     <div class="Alert_List">
       <p class="Alert_Day">오늘</p>      
-      <div id="alert-list-item">
+      <div class="alert-list-item" v-for="notification in getNotifications" :key="notification.id" @click="readAlert(notification.id)">
         <div class="alert-content">
+          <span v-if="notification.notificationRead" class="alert-read"></span>
+          <span v-else class="alert-read-empty"></span>
           <div class="alert-profile">
-            <img src="../../assets/image/user.png" style="width:100%; height:100%" />
+            <img :src="notification.senderImageUrl" style="width:45px; height:45px; border-radius: 25px;" />
           </div>
           <div class="alert-msg">
-            <span>싸피님이 '여행 기록 일기장'에 일기를 작성했습니다.</span>
+            <span>{{notification.notificationContent}}</span>
           </div>
         </div>
         <div class="alert-time">
-          <span>오후 7시 21분</span>
+          <span>{{notification.notificationDate}}</span>
         </div>
       </div>
-      <div id="alert-list-item">
-        <div class="alert-content">
-          <div class="alert-profile">
-            <img src="../../assets/image/user.png" style="width:100%; height:100%" />
-          </div>
-          <div class="alert-msg">
-            <span>싸피님이 '여행 기록 일기장'에 일기를 작성했습니다. 싸피님이 '여행 기록 일기장'에 일기를 작성했습니다.</span>
-          </div>
-        </div>
-        <div class="alert-time">
-          <span>오후 12시 49분</span>
-        </div>
-      </div>
-      <div id="alert-list-item">
-        <div class="alert-content">
-          <div class="alert-profile">
-            <img src="../../assets/image/user.png" style="width:100%; height:100%" />
-          </div>
-          <div class="alert-msg">
-            <span>싸피님이 '여행 기록 일기장'에 일기를 작성했습니다.</span>
-          </div>
-        </div>
-        <div class="alert-time">
-          <span>오후 7시 21분</span>
-        </div>
-      </div>
-      <div id="alert-list-item">
+      <!-- <div id="alert-list-item">
         <div class="alert-content">
           <div class="alert-profile">
             <img src="../../assets/image/user.png" style="width:100%; height:100%" />
@@ -80,12 +56,66 @@
           <span>오후 12시 49분</span>
         </div>
       </div>
+      <div id="alert-list-item">
+        <div class="alert-content">
+          <div class="alert-profile">
+            <img src="../../assets/image/user.png" style="width:100%; height:100%" />
+          </div>
+          <div class="alert-msg">
+            <span>싸피님이 '여행 기록 일기장'에 일기를 작성했습니다.</span>
+          </div>
+        </div>
+        <div class="alert-time">
+          <span>오후 7시 21분</span>
+        </div>
+      </div>
+      <div id="alert-list-item">
+        <div class="alert-content">
+          <div class="alert-profile">
+            <img src="../../assets/image/user.png" style="width:100%; height:100%" />
+          </div>
+          <div class="alert-msg">
+            <span>싸피님이 '여행 기록 일기장'에 일기를 작성했습니다. 싸피님이 '여행 기록 일기장'에 일기를 작성했습니다.</span>
+          </div>
+        </div>
+        <div class="alert-time">
+          <span>오후 12시 49분</span>
+        </div>
+      </div> -->
     </div>
   </div>
 </template>
 
 <script>
-export default {};
+import { mapGetters } from 'vuex'
+export default {
+  data() {
+    return {
+    };
+  },
+  computed: {
+    ...mapGetters(["getNotifications"]),
+  },
+  methods: {
+    readAlert(notificationId) {
+      this.$store.dispatch("readNotification", notificationId)
+      .then((res) => {
+        console.log(res.data)
+        this.$store.dispatch("getNotifications")
+          .then((response) => {
+            this.$store.commit('setNotifications', response.data)
+          }) 
+      }) 
+    }
+  },
+  mounted() {
+    this.$store.dispatch("getNotifications")
+      .then((response) => {
+        this.$store.commit('setNotifications', response.data)
+        console.log(response.data)
+      }) 
+  }
+};
 </script>
 
 <style scoped>
@@ -108,7 +138,7 @@ export default {};
   font-weight: 600;
   margin-bottom: 2px;
 }
-#alert-list-item {
+.alert-list-item {
   display: flex;
   justify-content: space-between;  
   width: 100%;
@@ -118,6 +148,7 @@ export default {};
   border-radius: 12px;
   background-color: #fff;
   box-shadow: 2px 2px 10px rgba(166, 166, 168, 0.25);
+  cursor: pointer;
 }
 .alert-content {
   display: flex;
@@ -141,5 +172,16 @@ export default {};
 }
 .alert-time span {  
   color: #9f9f9f;
+}
+.alert-read-empty {
+  width: 8px;
+  height: 8px;
+}
+.alert-read {
+  background-color: #FFB319;
+  border-radius: 20px;
+  width: 8px;
+  height: 8px;
+  margin-bottom: 40px;
 }
 </style>
