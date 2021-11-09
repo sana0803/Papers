@@ -52,7 +52,14 @@ export default {
       noteContent:'',
       noteHasgtag:'',
       noteMedia:[],
-      noteHashtag:''
+      noteHashtag:'',
+      stickerList: [
+          {
+            leftPixel: 1,
+            stickerId: 1,
+            topPixel: 1,
+          },
+        ],
     }
   },
   computed: {
@@ -78,28 +85,6 @@ export default {
         noteHashtagList[i-1] = tmp[i]
       }
 
-      const note = {
-        designId: 1,
-        diaryId: selectDiaryId,
-        emotionList:[],
-        fontId: 1,
-        layoutId: 1,
-        noteContent: this.noteContent,
-        noteHashtagList: noteHashtagList,
-        noteS3MediaList: [],
-        noteMediaList: this.noteMedia,
-        noteTitle: this.noteTitle,
-        stickerList: [
-          {
-            leftPixel: 1,
-            stickerId: 1,
-            topPixel: 1,
-          },
-        ],
-        writerId: this.loginUser.userNickname,
-      }
-      console.log(note)
-
       const formData = new FormData()
       formData.append('designId', 1)
       formData.append('diaryId', selectDiaryId)
@@ -116,15 +101,14 @@ export default {
       }
       formData.append('noteTitle', this.noteTitle)
       
-      for(let i = 0; i < note.stickerList.length; i++){
-        formData.append('stickerList.leftPixel[]', note.stickerList[i].leftPixel)
-        formData.append('stickerList.stickerId[]', note.stickerList[i].stickerId)
-        formData.append('stickerList.topPixel[]', note.stickerList[i].topPixel)
+      for(let i = 0; i < this.stickerList.length; i++){
+        formData.append('stickerList.leftPixel[]', this.stickerList[i].leftPixel)
+        formData.append('stickerList.stickerId[]', this.stickerList[i].stickerId)
+        formData.append('stickerList.topPixel[]', this.stickerList[i].topPixel)
       }
       
       formData.append('writerId', this.loginUser.userNickname)
 
-      console.log(formData)
       this.$store.dispatch("write", formData).then(() => {
         Swal.fire({
             icon: "success",
