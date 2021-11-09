@@ -71,13 +71,39 @@
             class="Search_Input"
             color="#FFB319"
             label="아이디 검색"
+            v-model="search"
+            v-on:keyup="memberSearch"
           ></v-text-field>
           <v-btn id="Search_Btn" icon>
-            <v-icon style="font-size: 2.8em">search</v-icon>
+            <v-icon @click="memberSearch" style="font-size: 2.8em">search</v-icon>
           </v-btn>
         </div>
-        <div id="Invite_List">
-          <div id="Invite_txt">검색결과가 없습니다.</div>
+        <div id="Search_List">
+          <div v-if="memberList.length === 0" id="Invite_txt">검색결과가 없습니다.</div>
+          <div v-if="memberList.length !== 0" id="member-list">
+            <div v-for="(member,idx) in memberList" :key="member.userId" class="Search_Item">
+              <div class="Search_Img">
+                <img class="Img" :src="member.userProfile" />
+              </div>
+              <span class="Search_Name">{{member.userNickname}} </span>
+              <span calss="Search_UserId">({{ member.userId }})</span>
+              
+              <!-- <div class="Search_Check"></div> -->
+              <div class="Search_Check">
+                <v-checkbox
+                  class="check"
+                  v-model="selected[idx]"
+                  :key="member.userId"
+                  :value="member.userId"
+                ></v-checkbox>
+              </div>
+            </div>
+          </div>
+          <div v-if="memberList.length !== 0" id="invite_btn">
+            <v-btn style="background: #ffb319; color: white;" class="Btn"
+            >확인
+            </v-btn>
+          </div>
         </div>
       </div>
     </div>
@@ -147,16 +173,35 @@
 
 <script>
 export default {
+  computed: {
+    currentDiary() {
+      return this.$store.getters.getCurrentDiary;
+    },
+  },
   data() {
     return {
       dialog: false,
-      coverList: []
+      search: '',
+      coverList: [],
+      memberList: [],
+      selected: [],
     };
   },
   methods: {
     back() {
       this.$router.go(-1);
     },
+    memberSearch() {
+      console.log(123)
+      this.$store.dispatch('memberSearch', this.search)
+        .then((res) => {
+          this.memberList = res.data
+          console.log(this.memberList)
+          if(this.search == '') {
+            this.memberList = []
+          }
+        })
+    }
   },
   created() {
     this.$store.dispatch('getCover')
@@ -279,14 +324,24 @@ export default {
   position: relative;
   top: -2px;
 }
-#Invite_List {
+#Search_List {
   margin-top: 22px;
-  height: 194px;
+  height: 245px;
   padding: 14px;
   border: 1px solid #d7d7d7;
+
+}
+#member-list::-webkit-scrollbar {
+  display: none;
+}
+#member-list{
+  overflow: auto;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  height:175px;
 }
 #Invite_txt {
-  line-height: 166px;
+  line-height: 215px;
   text-align: center;
   font-size: 16px;
   color: #9f9f9f;
@@ -356,5 +411,42 @@ export default {
   width:100%;
   height:100%;
   object-fit:cover;
+}
+.Search_Item {
+  height: 50px;
+  line-height: 50px;
+}
+.Search_Img {
+  float: left;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.Img {
+  width: 43px;
+  height: 43px;
+  display: inline-block;
+}
+.Search_Name {
+  margin-left: 16px;
+  font-size: 16px;
+}
+.Search_UserId {
+  color: red;
+}
+.Search_Check {
+  height:50px;
+  float: right;
+}
+.check{
+  position:relative;
+  top:-7px;
+}
+#invite_btn{
+  width:76px;
+  margin:0 auto;
+  margin-top:7px;
 }
 </style>
