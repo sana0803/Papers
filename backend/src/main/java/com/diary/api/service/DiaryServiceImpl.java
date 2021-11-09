@@ -6,6 +6,7 @@ import com.diary.api.request.DiaryInviteReq;
 import com.diary.api.request.DiaryReq;
 import com.diary.api.response.DiaryRes;
 import com.diary.api.response.NoteRes;
+import com.diary.api.response.NotificationDetailRes;
 import com.diary.api.response.UserSearchRes;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -179,7 +180,8 @@ public class DiaryServiceImpl implements DiaryService {
         }
 
         String message = user.getUserNickname() + "님이 " + diary.getDiaryTitle() + " 일기장에 회원님을 초대했습니다.";
-        notificationService.publishToUsers(message, guestList);
+        NotificationDetailRes notificationDetailRes = new NotificationDetailRes(message, user.getUserProfile());
+        notificationService.publishToUsers(notificationDetailRes, guestList);
         log.info("----------------");
         return true;
     }

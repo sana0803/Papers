@@ -3,6 +3,7 @@ package com.diary.api.service;
 import com.diary.api.db.entity.Notification;
 import com.diary.api.db.entity.User;
 import com.diary.api.response.AlarmDataSet;
+import com.diary.api.response.NotificationDetailRes;
 import com.diary.api.response.StreamDataSet;
 import org.springframework.http.MediaType;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -60,7 +61,7 @@ public class NotificationServiceImpl implements NotificationService{
     }
 
     @Override
-    public void publishToUsers(String message, List<String> userIdList) {
+    public void publishToUsers(NotificationDetailRes notificationDetailRes, List<String> userIdList) {
 
         Set<String> deadUuids = new HashSet<>();
         Set<String> deadUserIds = new HashSet<>();
@@ -79,7 +80,7 @@ public class NotificationServiceImpl implements NotificationService{
             String uuid = CONNECTED_USERS.get(userId);
             try {
                 SseEmitter emitter = CLIENTS.get(uuid);
-                emitter.send(message, MediaType.APPLICATION_JSON);
+                emitter.send(notificationDetailRes, MediaType.APPLICATION_JSON);
                 log.info("알림 클라이언트로 보냄");
             } catch (Exception e) {
                 deadUuids.add(uuid);

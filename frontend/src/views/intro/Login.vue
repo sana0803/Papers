@@ -127,9 +127,12 @@ export default {
           const alarmEventSource = new EventSource(this.API_NOTIFICATION_URL + `/notification/subscribe?uuid=${loginUser.userToken}&userId=${loginUser.userId}`);
           // 알림 발생 시 이벤트 처리
           alarmEventSource.onmessage = (e) => {
-            alert(e.data)
+            const data = JSON.parse(e.data)
+            // console.log(data.message)
+            // console.log(data.imageUrl)
             this.$store.commit('setNotificationState', true)
-            this.$store.commit('setNotificationMessage', e.data)
+            this.$store.commit('setNotificationMessage', data.message)
+            this.$store.commit('setNotificationUserImage', data.imageUrl)
             // this.$emit('change-notification-state', true)
           }
           this.$store.commit('setAlarmEventSource', alarmEventSource)

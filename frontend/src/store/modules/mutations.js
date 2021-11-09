@@ -23,3 +23,7 @@ export function setNotificationState(state, notificationState) {
 export function setNotificationMessage(state, message) {
   state.notificationMessage = message
 }
+
+export function setNotificationUserImage(state, image) {
+  state.notificationUserImage = image
+}

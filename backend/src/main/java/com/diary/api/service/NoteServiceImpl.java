@@ -7,6 +7,7 @@ import com.diary.api.request.NoteReq;
 import com.diary.api.request.NoteStickerReq;
 import com.diary.api.response.BaseResponseBody;
 import com.diary.api.response.NoteRes;
+import com.diary.api.response.NotificationDetailRes;
 import com.diary.common.util.JwtTokenUtil;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -17,6 +18,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.*;
+
+import static org.reflections.Reflections.log;
 
 @Service
 public class NoteServiceImpl implements NoteService{
@@ -56,6 +59,15 @@ public class NoteServiceImpl implements NoteService{
 
     @Autowired
     EmotionLogRepositorySupport emotionLogRepositorySupport;
+
+    @Autowired
+    UserDiaryRepository userDiaryRepository;
+
+    @Autowired
+    UserDiaryRepositorySupport userDiaryRepositorySupport;
+
+    @Autowired
+    NotificationService notificationService;
 
     public List<NoteRes> getNoteList(String userId) {
         List<Note> notes = null;
@@ -119,6 +131,7 @@ public class NoteServiceImpl implements NoteService{
         if(noteId != null)
             if(noteRepositorySupport.getNote(noteId).isPresent())
                 note = noteRepositorySupport.getNote(noteId).get();
+
 
         note.setNoteContent(noteReq.getNoteContent());
         note.setNoteDesign(noteRepositorySupport.getNoteDesign(noteReq.getDesignId()).get());
@@ -196,6 +209,44 @@ public class NoteServiceImpl implements NoteService{
         noteRes.setNoteEmotion(noteRepositorySupport.getNoteEmotions(note.getId()).get());
         noteRes.setNoteHashtag(noteRepositorySupport.getNoteHashtags(note.getId()).get());
         noteRes.setNoteMedia(noteRepositorySupport.getNoteMedias(note.getId()).get());
+
+        // ---------------------------------------------------- 알림 전송
+        long diaryId = noteReq.getDiaryId();
+        String writerId = noteReq.getWriterId();
+        List<UserDiary> userDiaryList = new ArrayList<>();
+        List<String> guestList = new ArrayList<>();
+
+        if (!userDiaryRepository.findAllByDiaryId(diaryId).isEmpty()) { // 다이어리 아이디에 해당하는 공유 정보 가져옴
+            userDiaryList = userDiaryRepository.findAllByDiaryId(diaryId);
+        }
+
+        if (userDiaryRepositorySupport.isOwner(diaryId, writerId)) { // 일기 작성자가 다이어리 주인인 경우
+            // guest들에게만 알림을 보낸다.
+            userDiaryList.forEach(userDiary -> {
+                guestList.add(userDiary.getGuestId());
+            });
+        } else { // 일기 작성자가 공유 받은 게스트 중 한 명일 경우
+            UserDiary userDiary = userDiaryRepository.findByDiaryId(diaryId).get();
+            guestList.add(userDiary.getUser().getUserId()); // 일기장 주인 추가
+
+            userDiaryList.forEach(userDiaryInfo -> {
+                if (!userDiaryInfo.getGuestId().equals(writerId)) // 자신을 제외한 guest 들에게만 알림을 보낸다.
+                    guestList.add(userDiaryInfo.getGuestId());
+            });
+        }
+
+        log.info("---note service 생성");
+        for (String s : guestList) {
+            log.info("초대 받는 사람 : " + s);
+        }
+
+        User user = userRepository.findByUserId(writerId).get();
+
+        String message = user.getUserNickname() + "님이 " + "\"" + noteReq.getNoteTitle() + "\"" + "라는 제목의 일기를 작성했습니다.";
+        NotificationDetailRes notificationDetailRes = new NotificationDetailRes(message, user.getUserProfile());
+        notificationService.publishToUsers(notificationDetailRes, guestList);
+        log.info("----------------");
+
         return noteRes;
     }
 
