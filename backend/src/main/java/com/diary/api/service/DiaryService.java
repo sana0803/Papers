@@ -16,7 +16,8 @@ public interface DiaryService {
     // 내 일기장 전체 조회
     List<DiaryRes> getDiaryList(User user);
     // 일기장 한개 조회(일기 전체 조회)
-    List<NoteRes> getDiary(Long id);
+//    List<NoteRes> getDiary(Long id);
+    DiaryRes getDiary(Long id, User user);
     // 일기장 삭제
     void deleteDiary(Long id);
     // 일기장 초대
