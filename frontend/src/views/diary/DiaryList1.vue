@@ -194,7 +194,6 @@ export default {
     console.log(this.currentDiary);
     this.$store.dispatch("getDiaryContent", this.currentDiary.id)
       .then((res) => {
-        console.log(res.data)
         this.noteList = res.data.reverse();
       })
   },
