@@ -2,7 +2,7 @@
   <div>
     <div class="Sticker_Item" v-for="stickerPackage in stickerPackageList" :key="stickerPackage.id" @click="dialogOn(stickerPackage)">
       <div class="Sticker_img">
-        <img :src="stickerPackage.stickerList[0].stickerUrl" style="width: 100%"/>
+        <img :src="stickerPackage.stickerList[0].stickerUrl" style="width: 80%; margin-top: 10px; margin-left: 10%; margin-top: 30%;"/>
       </div>
       <div class="Sticker_Title">
         <span class="Sticker_Name">{{ stickerPackage.stickerPackageName }}</span>
@@ -25,7 +25,7 @@
         <div id="Dialog_Content">
           <div id="Dialog_Title">
             <div id="Dialog_img">
-              <img :src="stickerList[0].stickerUrl" style="width: 120%; height: 150%; margin-top: -25px; margin-left: -10px;"/>
+              <img :src="stickerList[0].stickerUrl" style="width: 80%; height: 80%; margin-top: 15px; margin-left: 15px;"/>
             </div>
             <div id="Dialog_Name">
               <div id="Name_Author">작가명 아무개</div>
@@ -49,7 +49,7 @@
           </div>
           <div id="Dialog_List">
             <div class="Dialog_Item" v-for="sticker in stickerList" :key="sticker.id">
-              <img :src="sticker.stickerUrl" style="width: 100%; height: 130%; margin-top: -10px;"/>
+              <img :src="sticker.stickerUrl" style="width: 80%; height: 80%; margin-top: 10px; margin-left: 10px;"/>
             </div>
           </div>
         </div>
