@@ -44,7 +44,6 @@ export function memberSearch({ state }, search) {
     console.log('memberSearch action 호출', state)
     const  url = baseUrl + '/user/search?searchUserId=' + search
     const userToken = state.loginUser.userToken
-    console.log(url)
     return $axios.get(url,  { headers: { Authorization: `Bearer ${userToken}` } })
 }
 
@@ -88,7 +87,6 @@ export function searchHashtag({ state }, search) {
     console.log('searchHashtag action 호출', state)
     const url = baseUrl + '/note/hashtag?hashtag=' + search
     const userToken = state.loginUser.userToken
-    console.log(url)
     return $axios.get(url, { headers: { Authorization: `Bearer ${userToken}` } })
 }
 
