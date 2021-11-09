@@ -23,6 +23,7 @@ public class DiaryRes extends BaseResponseBody{
     LocalDate diaryCreatedDate;
 //    String guestId;
     List guest;
+    List Note;
 
     public DiaryRes(Diary diary) {
         this.id = diary.getId();
