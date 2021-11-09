@@ -139,3 +139,17 @@ export function getUserCovers({ state }) {
 	const url = baseUrl + '/user/covers'
 	return $axios.get(url, { headers: { Authorization: `Bearer ${userToken}` } } )
 }
+
+export function getAllFonts({ state }) {
+	console.log('font 전체 조회 호출', state)
+	const userToken = state.loginUser.userToken
+	const url = baseUrl + '/store/font'
+	return $axios.get(url, { headers: { Authorization: `Bearer ${userToken}` } } )
+}
+
+export function buyFont({ state }, fontId) {
+	console.log('font 구매 호출', state)
+	const userToken = state.loginUser.userToken
+	const url = baseUrl + '/store/font?fontId=' + fontId
+	return $axios.put(url, '', { headers: { Authorization: `Bearer ${userToken}` } } )
+}

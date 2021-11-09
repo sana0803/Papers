@@ -10,10 +10,10 @@ insert into user values ('test2', 150, '로봇', 'https://papers-bucket.s3.amazo
 insert into user values ('test3', 210, '카누', 'https://papers-bucket.s3.amazonaws.com/profile/test1/eb3df4c9-a031-42c9-9bb5-0d3562de7995landing-main.jpg', '$2a$10$9RbUeMd5zBbv1bic5Me.euAyCi1fqlwbWhKfmn0k3D7bnqJCtJhx.') ON DUPLICATE KEY UPDATE user_id='test3';
 
 -- 폰트
-insert into font values (1, 'font1', 50, 'font-url-1') ON DUPLICATE KEY UPDATE id=1;
-insert into font values (2, 'font2', 60, 'font-url-2') ON DUPLICATE KEY UPDATE id=2;
-insert into font values (3, 'font3', 70, 'font-url-3') ON DUPLICATE KEY UPDATE id=3;
-insert into font values (4, 'font4', 80, 'font-url-4') ON DUPLICATE KEY UPDATE id=4;
+insert into font values (1, '코트라 희망체', 50, 'KOTRAHOPE') ON DUPLICATE KEY UPDATE id=1;
+insert into font values (2, '교보 손글씨체', 60, 'KyoboHand') ON DUPLICATE KEY UPDATE id=2;
+insert into font values (3, '완도 희망체', 70, 'WandohopeB') ON DUPLICATE KEY UPDATE id=3;
+insert into font values (4, 'Y 너만을 비춤체', 80, 'Y_Spotlight') ON DUPLICATE KEY UPDATE id=4;
 
 -- 유저 폰트
 insert into user_font values (1, 3, 'test1') ON DUPLICATE KEY UPDATE id=1;
