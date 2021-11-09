@@ -172,3 +172,17 @@ export function memberRemove({state}, remove) {
 	const url = baseUrl + '/diary/invite/?diaryId=' + remove.diaryId + '&userId=' + remove.userId
 	return $axios.delete(url, { headers: { Authorization: `Bearer ${userToken}` } } )
 }
+
+export function getDiaryCoverList({state}) {
+    console.log('상점 다이어리 커버 목록 호출', state)
+    const userToken = state.loginUser.userToken
+    const url = baseUrl + '/store/diary-cover';
+	return $axios.get(url, { headers: { Authorization: `Bearer ${userToken}` } } )
+}
+
+export function purchaseDiaryCover({state}, id) {
+    console.log('다이어리 커버 구매 호출', state)
+    const userToken = state.loginUser.userToken
+    const url = baseUrl + '/store/diary-cover/?diaryCoverId=' + id;
+	return $axios.put(url, '', { headers: { Authorization: `Bearer ${userToken}` } } )
+}

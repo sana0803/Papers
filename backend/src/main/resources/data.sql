@@ -27,6 +27,8 @@ insert into sticker_package values (2, 'pack2', 50) ON DUPLICATE KEY UPDATE id=2
 -- 다이어리 커버
 insert into diary_cover values (1, 'blue', 500, 'https://papers-bucket.s3.ap-northeast-2.amazonaws.com/diary-cover/blue.jpg') ON DUPLICATE KEY UPDATE id=1;
 insert into diary_cover values (2, 'sample', 500, 'https://papers-bucket.s3.ap-northeast-2.amazonaws.com/diary-cover/sample.png') ON DUPLICATE KEY UPDATE id=2;
+insert into diary_cover values (3, '기린커버', 600, 'https://papers-bucket.s3.ap-northeast-2.amazonaws.com/store/diary-cover/%EA%B8%B0%EB%A6%B0%EB%AC%B4%EB%8A%AC%EC%BB%A4%EB%B2%84.png') ON DUPLICATE KEY UPDATE id=3;
+insert into diary_cover values (4, '노을커버', 600, 'https://papers-bucket.s3.ap-northeast-2.amazonaws.com/store/diary-cover/%EB%85%B8%EC%9D%84%EC%BB%A4%EB%B2%84.jpg') ON DUPLICATE KEY UPDATE id=4;
 
 -- 다이어리
 insert into diary values (1, sysdate(), '다이어리 이름', 1, 'test1') ON DUPLICATE KEY UPDATE id=1;
