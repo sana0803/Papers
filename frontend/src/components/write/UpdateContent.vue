@@ -44,6 +44,9 @@ import Swal from "sweetalert2";
 import { mapState } from 'vuex';
 
 export default {
+  props: {
+    note: Object,
+  },
   data() {
     return {
       diaryTitleList:[],
@@ -75,33 +78,33 @@ export default {
           break
         }
       }
-      const tmp = this.noteHashtag.split("#")
+      const tmp = this.noteHashtag.split(",")
       const noteHashtagList = []
       for(let i=1;i<tmp.length;i++){
         noteHashtagList[i-1] = tmp[i]
       }
 
-      const note = {
-        designId: 1,
-        diaryId: selectDiaryId,
-        emotionList:[],
-        fontId: 1,
-        layoutId: 1,
-        noteContent: this.noteContent,
-        noteHashtagList: noteHashtagList,
-        noteS3MediaList: [],
-        noteMediaList: this.noteMedia,
-        noteTitle: this.noteTitle,
-        stickerList: [
-          {
-            leftPixel: 1,
-            stickerId: 1,
-            topPixel: 1,
-          },
-        ],
-        writerId: this.loginUser.userNickname,
-      }
-      console.log(note)
+      // const note = {
+      //   designId: 1,
+      //   diaryId: selectDiaryId,
+      //   emotionList:[],
+      //   fontId: 1,
+      //   layoutId: 1,
+      //   noteContent: this.noteContent,
+      //   noteHashtagList: noteHashtagList,
+      //   noteS3MediaList: [],
+      //   noteMediaList: this.noteMedia,
+      //   noteTitle: this.noteTitle,
+      //   stickerList: [
+      //     {
+      //       leftPixel: 1,
+      //       stickerId: 1,
+      //       topPixel: 1,
+      //     },
+      //   ],
+      //   writerId: this.loginUser.userNickname,
+      // }
+      // console.log(note)
 
       const formData = new FormData()
       formData.append('designId', 1)
@@ -119,10 +122,10 @@ export default {
       }
       formData.append('noteTitle', this.noteTitle)
       
-      for(let i = 0; i < note.stickerList.length; i++){
-        formData.append('stickerList.leftPixel[]', note.stickerList[i].leftPixel)
-        formData.append('stickerList.stickerId[]', note.stickerList[i].stickerId)
-        formData.append('stickerList.topPixel[]', note.stickerList[i].topPixel)
+      for(let i = 0; i < this.stickerList.length; i++){
+        formData.append('stickerList.leftPixel[]', this.stickerList[i].leftPixel)
+        formData.append('stickerList.stickerId[]', this.stickerList[i].stickerId)
+        formData.append('stickerList.topPixel[]', this.stickerList[i].topPixel)
       }
       
       formData.append('writerId', this.loginUser.userNickname)
@@ -136,20 +139,21 @@ export default {
             confirmButtonColor: "#b0da9b",
             confirmButtonText: '<span style="font-size:18px;">확인</span>',
           });
-        this.$router.push('/main')
+        this.$router.push('diarylist1')
       });
     },
   },
-  // created() {
-  //     this.$store.dispatch("diaryGet").then((res) => {
-  //       const tmp = []
-  //       for(let i=0;i<res.data.length;i++) {
-  //         tmp[i] = res.data[i].diaryTitle
-  //       }
-  //       this.diaryTitleList = tmp
-  //       this.diaryList = res.data
-  //     });
-  //   } 
+  created() {
+      this.$store.dispatch("diaryGet").then((res) => {
+        const tmp = []
+        for(let i=0;i<res.data.length;i++) {
+          tmp[i] = res.data[i].diaryTitle
+        }
+        this.diaryTitleList = tmp
+        console.log(tmp)
+        this.diaryList = res.data
+      });
+    } 
 };
 </script>
 

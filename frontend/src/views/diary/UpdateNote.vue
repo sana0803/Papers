@@ -1,6 +1,5 @@
 <template>
   <div id="Write_Container">
-    냐냐냥
     <write-side />
     <div id="update-main">
       <UpdateContent />

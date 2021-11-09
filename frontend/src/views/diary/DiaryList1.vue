@@ -1,88 +1,108 @@
 <template>
   <div>
     <div id="Line"></div>
-    <div
-      id="diary-list-item"
-      v-for="note in noteList"
-      :key="note.noteId"
-    >
-      <div id="diary-wrap">
-        <div class="diary-content">
-          <div class="diary-title-wrap">
-            <div class="title-sec">
-              <span class="diary-title">{{ note.noteTitle }}</span>
+    <div v-if="noteList.length > 0">    
+      <div      
+        id="diary-list-item"
+        v-for="note in noteList"
+        :key="note.noteId"
+      >
+        <div id="diary-wrap">
+          <div class="diary-content">
+            <div class="diary-title-wrap">
+              <div class="title-sec">
+                <span class="diary-title">{{ note.noteTitle }}</span>
+              </div>
+              <div class="date-sec">
+                <span class="diary-writer">{{ note.writerNickName}}</span>
+                <span class="diary-date">
+                  {{ note.noteCreatedDate.slice(2, 4)}}.{{ note.noteCreatedDate.slice(5, 7)}}.{{ note.noteCreatedDate.slice(8, 10)}}
+                </span>
+              </div>
             </div>
-            <div class="date-sec">
-              <span class="diary-writer">{{ note.writerNickName}}</span>
-              <span class="diary-date">
-                {{ note.noteCreatedDate.slice(2, 4)}}.{{ note.noteCreatedDate.slice(5, 7)}}.{{ note.noteCreatedDate.slice(8, 10)}}
-              </span>
+            <div id="horizon-line"></div>
+            <div class="diary-text">
+              <span
+                >{{ note.noteContent }}
+                </span
+              >
             </div>
-          </div>
-          <div id="horizon-line"></div>
-          <div class="diary-text">
-            <span
-              >{{ note.noteContent }}
-              </span
+            <div
+              class="diary-hashtag"
+              v-for="(hashtag, idx) in note.noteHashtag"
+              :key="idx"
             >
-          </div>
-          <div
-            class="diary-hashtag"
-            v-for="(hashtag, idx) in note.noteHashtag"
-            :key="idx"
-          >
-            <span>#{{ hashtag }}</span>
-          </div>          
-          <div class="diary-img-wrap">
-            <!-- <img src="../../assets/image/dog.jpg" alt="일기 사진" /> -->          
-            <v-carousel :show-arrows="true" style="height:100%;">
-              <v-carousel-item
-                v-for="(item,i) in items"
-                :key="i"
-                :src="item.src"
-              ></v-carousel-item>
-            </v-carousel>
-          </div>
-        </div>
-        <div class="diary-emotion">
-          <div class="emotion-left">
-            <div class="emo-item">
-              <v-icon @click="clickHeart" class="emo-icon"
-                >favorite_border</v-icon
-              >
-              <div class="emotion-cnt">
-                <span>2</span>
+              <span>#{{ hashtag }}</span>
+            </div>          
+            <div class="diary-img-wrap">
+              <div v-if="note.noteMedia.length > 2">
+                <v-carousel
+                  :show-arrows="true"
+                  style="height:100%;">
+                  <v-carousel-item
+                    v-for="(img, i) in note.noteMedia"
+                    :key="i"
+                    :src="img"
+                    class="diary-content-img"
+                  ></v-carousel-item>
+                </v-carousel>
               </div>
-            </div>
-            <div class="emo-item">
-              <v-icon @click="clickSmile" class="emo-icon"
-                >sentiment_very_satisfied</v-icon
-              >
-              <div class="emotion-cnt">
-                <span>3</span>
+              <div v-else-if="note.noteMedia.length == 0" >                
               </div>
-            </div>
-            <div class="emo-item">
-              <v-icon @click="clickSad" class="emo-icon"
-                >sentiment_dissatisfied</v-icon
-              >
-              <div class="emotion-cnt">
-                <span>0</span>
+              <div v-else>
+                <img :src="note.noteMedia[0]" class="diary-content-img" alt="일기 사진" />
               </div>
             </div>
           </div>
-          <div class="emotion-right"
-            v-if="note.writerId == loginUser.userId"
-          >
-            <span @click="goUpdate(note)">수정</span>
-            <span @click="onDialog(note)">삭제</span>            
+          <div class="diary-emotion">
+            <div class="emotion-left">
+              <div class="emo-item">
+                <v-icon @click="clickHeart" class="emo-icon"
+                  >favorite_border</v-icon
+                >
+                <div class="emotion-cnt">
+                  <span>2</span>
+                </div>
+              </div>
+              <div class="emo-item">
+                <v-icon @click="clickSmile" class="emo-icon"
+                  >sentiment_very_satisfied</v-icon
+                >
+                <div class="emotion-cnt">
+                  <span>3</span>
+                </div>
+              </div>
+              <div class="emo-item">
+                <v-icon @click="clickSad" class="emo-icon"
+                  >sentiment_dissatisfied</v-icon
+                >
+                <div class="emotion-cnt">
+                  <span>0</span>
+                </div>
+              </div>
+            </div>
+            <div class="emotion-right"
+              v-if="note.writerId == loginUser.userId"
+            >
+              <span @click="goUpdate(note)">수정</span>
+              <span @click="onDialog(note)">삭제</span>            
+            </div>
+            <div class="emotion-right"
+              v-else
+            >
+            </div>
           </div>
-          <div class="emotion-right"
-            v-else
-          >
-          </div>
-        </div>
-      </div>    
+        </div>    
+      </div>
+    </div>
+    <div v-else id="diary-empty">
+      <div>
+        <img src="../../assets/image/paper.png" style="width:90px; margin-bottom:24px;"/>
+      </div>
+      <span>아직 작성한 일기가 없는 것 같아요.</span> <br>
+      <span class="go-write-btn" @click="goWrite()">
+        일기 작성하러 가기 &nbsp;&nbsp;>
+      </span>
     </div>
     <!-- Dialog -->
     <v-dialog
@@ -131,29 +151,16 @@ export default {
       noteList: [],
       hashtagList: [],
       note: [],
-      items: [
-        {
-          src: 'https://cdn.vuetifyjs.com/images/carousel/squirrel.jpg',
-        },
-        {
-          src: 'https://cdn.vuetifyjs.com/images/carousel/sky.jpg',
-        },
-        {
-          src: 'https://cdn.vuetifyjs.com/images/carousel/bird.jpg',
-        },
-        {
-          src: 'https://cdn.vuetifyjs.com/images/carousel/planet.jpg',
-        },
-      ],
     };
   },
   methods: {
     clickHeart() {},
     clickSmile() {},
     clickSad() {},
+    goWrite() {
+      this.$router.push("/write");
+    },
     goUpdate(note) {
-      // const noteContent = {}
-      // this.noteContent = note
       this.$store.commit('setNoteContent', note)
       this.$router.push("/modify");
       // this.$store.dispatch("modifyNote", this.currentDiary.id)
@@ -172,8 +179,8 @@ export default {
         this.dialog = false;
         this.$store.dispatch("getDiaryContent", this.currentDiary.id)
           .then((res) => {
-          console.log(res.data)
-          this.noteList = res.data.reverse();
+          console.log(res.data)      
+          this.noteList = res.data.note.reverse();
         })
         // this.$router.go()
       })
@@ -194,7 +201,8 @@ export default {
     console.log(this.currentDiary);
     this.$store.dispatch("getDiaryContent", this.currentDiary.id)
       .then((res) => {
-        this.noteList = res.data.reverse();
+        console.log(res.data)        
+        this.noteList = res.data.note.reverse();      
       })
   },
 };
@@ -212,6 +220,47 @@ export default {
   width: 100%;
   border-bottom: 1px solid #ccc;
   margin-bottom: 8px;
+}
+#diary-empty {
+  width: 50%;
+  font-size: 18px;
+  text-align: center;
+  margin-top: 140px;
+  // background-color: #ffb319;
+  span {
+    color: #444;
+  }
+  .go-write-btn {
+    display: inline-block;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    width: 37%;
+    color: #ffb319;
+    margin-top: 24px;
+    padding-bottom: 2px;
+    font-weight: 600;
+    // background-color: #eee;
+  }
+  .go-write-btn:after {
+    position: absolute;
+    content: '';
+    width: 0;
+    left: 0;
+    height: 2px;
+    bottom: 0px;
+    background-color: #ffb319;
+    // border-bottom: 1px solid #ffb319;
+    transition: .25s;
+  }
+  .go-write-btn:hover {
+    // border-bottom: 1px solid #ffb319;
+    transition: .25s;
+  }
+  .go-write-btn:hover:after {
+    width: 100%;
+    left: 0;
+  }
 }
 #diary-list-item {
   float: left;
@@ -283,13 +332,14 @@ export default {
   margin-top: 18px;
   max-width: 100%;
   min-height: 250px;
-  // min-height: 300px;
+  // max-height: 300px;
   overflow: hidden;
-  background-color: #bbb;
-  img {
-    max-width: 100%;
-    height: 100%;
-  }
+  background-color: #f7f7f7;  
+}
+.diary-content-img {
+  max-width: 100%;
+  height: 100%;
+  // background-color: aquamarine;
 }
 .diary-emotion {
   display: flex;
