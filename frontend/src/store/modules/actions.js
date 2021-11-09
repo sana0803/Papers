@@ -137,3 +137,10 @@ export function getUserCovers({ state }) {
 	const url = baseUrl + '/user/covers'
 	return $axios.get(url, { headers: { Authorization: `Bearer ${userToken}` } } )
 }
+
+export function memberRemove({state}, remove) {
+    console.log('memberRemove action 호출', state)
+    const userToken = state.loginUser.userToken
+	const url = baseUrl + '/diary/invite/?diaryId=' + remove.diaryId + '&userId=' + remove.userId
+	return $axios.delete(url, { headers: { Authorization: `Bearer ${userToken}` } } )
+}
