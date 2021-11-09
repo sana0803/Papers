@@ -64,7 +64,7 @@ export function noteGet({ state }) {
 }
 
 export function getDiaryContent({ state }, id) {
-    console.log('getDiaryContent action 호출', state)
+    console.log('일기 받아오기 action 호출', state)
     const url = baseUrl + '/diary/' + id
     const userToken = state.loginUser.userToken
     return $axios.get(url, { headers: { Authorization: `Bearer ${userToken}` } })
@@ -76,11 +76,11 @@ export function modifyNote({ state }, id) {
 	const url = baseUrl + '/note/' + id
 	return $axios.put(url, id, { headers: { Authorization: `Bearer ${userToken}` } })
 }
-export function deleteNote({ state }, id) {
+export function deleteNote({ state }, note, id) {
 	console.log('일기 삭제 action호출', state)
 	const userToken = state.loginUser.userToken
 	const url = baseUrl + '/note/' + id
-	return $axios.delete(url, id, { headers: { Authorization: `Bearer ${userToken}` } })
+	return $axios.delete(url, note, { headers: { Authorization: `Bearer ${userToken}` } })
 }
 
 export function modifyProfile({ state }, profile) {

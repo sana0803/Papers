@@ -34,7 +34,14 @@
             <span>#{{ hashtag }}</span>
           </div>          
           <div class="diary-img-wrap">
-            <img src="../../assets/image/dog.jpg" alt="일기 사진" />
+            <!-- <img src="../../assets/image/dog.jpg" alt="일기 사진" /> -->          
+            <v-carousel :show-arrows="true">
+              <v-carousel-item
+                v-for="(item,i) in items"
+                :key="i"
+                :src="item.src"
+              ></v-carousel-item>
+            </v-carousel>
           </div>
         </div>
         <div class="diary-emotion">
@@ -68,7 +75,7 @@
             v-if="note.writerId == loginUser.userId"
           >
             <span @click="onModifyNote(note)">수정</span>
-            <span @click="onDeleteNote(note.noteId)">삭제</span>
+            <span @click="onDeleteNote(note, note.noteId)">삭제</span>
           </div>
           <div class="emotion-right"
             v-else
@@ -87,6 +94,20 @@ export default {
     return {
       noteList: [],
       hashtagList: [],
+      items: [
+        {
+          src: 'https://cdn.vuetifyjs.com/images/carousel/squirrel.jpg',
+        },
+        {
+          src: 'https://cdn.vuetifyjs.com/images/carousel/sky.jpg',
+        },
+        {
+          src: 'https://cdn.vuetifyjs.com/images/carousel/bird.jpg',
+        },
+        {
+          src: 'https://cdn.vuetifyjs.com/images/carousel/planet.jpg',
+        },
+      ],
     };
   },
   methods: {
@@ -101,8 +122,8 @@ export default {
       //   console.log(res.data)
       // })
     },
-    onDeleteNote(id) {
-      this.$store.dispatch("deleteNote", id)
+    onDeleteNote(note, id) {
+      this.$store.dispatch("deleteNote", note, id)
       .then(() => {
         console.log('일기 삭제')
       })

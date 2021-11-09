@@ -10,7 +10,7 @@
 
 <script>
 import WriteSide from "../../components/write/WriteSide.vue";
-import UpdateContent from "../../components/write/WriteContent.vue";
+import UpdateContent from "../../components/write/UpdateContent.vue";
 
 export default {
   components: {
