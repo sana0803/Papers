@@ -9,6 +9,8 @@ export default function () {
     const alarmEventSource = {} // 알람 전송을 위한 채널
 
     const diaryContent = {}
+
+    const noteContent = {}
     
     const notificationState = false
   
@@ -19,6 +21,7 @@ export default function () {
       currentDiary,
       alarmEventSource,
       diaryContent,
+      noteContent,
       notificationState,
       notificationMessage,
     }

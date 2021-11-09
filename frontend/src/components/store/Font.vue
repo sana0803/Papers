@@ -184,7 +184,7 @@
         <div id="Dialog_Content">
           <div id="Dialog_Text">
             종이 <span style="color: #ffb319">100장</span>을 소비해
-            구매하시겠습니까 ?
+            구매하시겠습니까?
           </div>
           <div id="Dialog_Btn_Box">
             <v-btn style="background: #ffb319; color: white" class="Dialog_Btn"

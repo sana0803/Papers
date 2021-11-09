@@ -76,11 +76,11 @@ export function modifyNote({ state }, id) {
 	const url = baseUrl + '/note/' + id
 	return $axios.put(url, id, { headers: { Authorization: `Bearer ${userToken}` } })
 }
-export function deleteNote({ state }, note, id) {
+export function deleteNote({ state }, id) {
 	console.log('일기 삭제 action호출', state)
 	const userToken = state.loginUser.userToken
 	const url = baseUrl + '/note/' + id
-	return $axios.delete(url, note, { headers: { Authorization: `Bearer ${userToken}` } })
+	return $axios.delete(url, { headers: { Authorization: `Bearer ${userToken}` } })
 }
 
 export function modifyProfile({ state }, profile) {

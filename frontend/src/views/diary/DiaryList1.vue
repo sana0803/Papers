@@ -35,7 +35,7 @@
           </div>          
           <div class="diary-img-wrap">
             <!-- <img src="../../assets/image/dog.jpg" alt="일기 사진" /> -->          
-            <v-carousel :show-arrows="true">
+            <v-carousel :show-arrows="true" style="height:100%;">
               <v-carousel-item
                 v-for="(item,i) in items"
                 :key="i"
@@ -74,8 +74,8 @@
           <div class="emotion-right"
             v-if="note.writerId == loginUser.userId"
           >
-            <span @click="onModifyNote(note)">수정</span>
-            <span @click="onDeleteNote(note, note.noteId)">삭제</span>
+            <span @click="goUpdate(note)">수정</span>
+            <span @click="onDialog(note)">삭제</span>            
           </div>
           <div class="emotion-right"
             v-else
@@ -84,6 +84,41 @@
         </div>
       </div>    
     </div>
+    <!-- Dialog -->
+    <v-dialog
+      v-model="dialog"
+      persistent max-width="286"        
+    >
+      <v-card id="Dialog">
+        <div id="Dialog_Header">
+          <v-icon
+            @click="dialog = false"
+            id="Dialog_Close"
+            style="font-size: 1.5em"
+            >close</v-icon
+          >
+        </div>
+        <div id="Dialog_Content">
+          <div id="Dialog_Text">
+            일기를 <span style="color: #ffb319">삭제</span>하시겠습니까?
+          </div>
+          <div id="Dialog_Btn_Box">
+            <v-btn
+            @click="onDeleteNote(note.noteId)"
+            style="background: #ffb319; color: white"
+            class="Dialog_Btn"
+              >삭제</v-btn
+            >
+            <v-btn
+              @click="dialog = false"
+              style="background: #9f9f9f; color: white"
+              class="Dialog_Btn"
+              >취소</v-btn
+            >
+          </div>
+        </div>
+      </v-card>
+    </v-dialog>
   </div>
 </template>
 
@@ -92,8 +127,10 @@ import { mapState } from 'vuex';
 export default {
   data() {
     return {
+      dialog: false,
       noteList: [],
       hashtagList: [],
+      note: [],
       items: [
         {
           src: 'https://cdn.vuetifyjs.com/images/carousel/squirrel.jpg',
@@ -114,18 +151,31 @@ export default {
     clickHeart() {},
     clickSmile() {},
     clickSad() {},
-    onModifyNote(diary) {
-      this.$store.commit('setDiaryContent', diary)
+    goUpdate(note) {
+      // const noteContent = {}
+      // this.noteContent = note
+      this.$store.commit('setNoteContent', note)
       this.$router.push("/modify");
       // this.$store.dispatch("modifyNote", this.currentDiary.id)
       // .then((res) => {
       //   console.log(res.data)
       // })
     },
-    onDeleteNote(note, id) {
-      this.$store.dispatch("deleteNote", note, id)
+    onDialog(note) {
+      this.note = note;
+      this.dialog = true;
+    },
+    onDeleteNote(id) {
+      this.$store.dispatch("deleteNote", id)
       .then(() => {
         console.log('일기 삭제')
+        this.dialog = false;
+        this.$store.dispatch("getDiaryContent", this.currentDiary.id)
+          .then((res) => {
+          console.log(res.data)
+          this.noteList = res.data.reverse();
+        })
+        // this.$router.go()
       })
     },
   },
@@ -138,7 +188,7 @@ export default {
     },
     ...mapState([
       'loginUser'
-    ])
+    ]),
   },
   created() {
     console.log(this.currentDiary);
@@ -274,5 +324,39 @@ export default {
   span:hover {
     color: #ffb319;
   }
+}
+#Dialog {
+  height: 180px;
+}
+#Dialog_Header {
+  height: 40px;
+}
+#Dialog_Close {
+  float: right;
+  margin-top: 5px;
+  margin-right: 5px;
+}
+#Dialog_Text {
+  width: 100%;
+  height: 38px;
+  line-height: 38px;
+  // background-color: #eee;
+  margin: 0 auto;
+  margin-top: 5px;
+  font-size: 16px;
+  text-align: center;
+}
+#Dialog_Btn_Box {
+  width: 164px;
+  height: 32px;
+  display: flex;
+  justify-content: space-between;
+  margin: 0 auto;
+  margin-top: 25px;
+}
+.Dialog_Btn {
+  width: 76px;
+  height: 32px;
+  color: #585858;
 }
 </style>
