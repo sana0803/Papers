@@ -5,6 +5,7 @@ import com.diary.api.db.repository.*;
 import com.diary.api.request.NoteEmotionReq;
 import com.diary.api.request.NoteReq;
 import com.diary.api.request.NoteStickerReq;
+import com.diary.api.request.NotificationReq;
 import com.diary.api.response.BaseResponseBody;
 import com.diary.api.response.NoteRes;
 import com.diary.api.response.NotificationDetailRes;
@@ -68,6 +69,9 @@ public class NoteServiceImpl implements NoteService{
 
     @Autowired
     NotificationService notificationService;
+
+    @Autowired
+    NotificationInfoRepository notificationInfoRepository;
 
     public List<NoteRes> getNoteList(String userId) {
         List<Note> notes = null;
@@ -235,18 +239,19 @@ public class NoteServiceImpl implements NoteService{
             });
         }
 
-        log.info("---note service 생성");
-        for (String s : guestList) {
-            log.info("초대 받는 사람 : " + s);
-        }
-
         User user = userRepository.findByUserId(writerId).get();
-
         String message = user.getUserNickname() + "님이 " + "\"" + noteReq.getNoteTitle() + "\"" + "라는 제목의 일기를 작성했습니다.";
         NotificationDetailRes notificationDetailRes = new NotificationDetailRes(message, user.getUserProfile());
         notificationService.publishToUsers(notificationDetailRes, guestList);
-        log.info("----------------");
 
+        NotificationInfo notificationInfo = notificationInfoRepository.findById((long)1).get();
+        log.info("---note service 생성");
+        for (String userId : guestList) {
+            log.info("초대 받는 사람 : " + userId);
+            User receiver = userService.getUserByUserId(userId);
+            notificationService.createNotification(new NotificationReq(message, notificationInfo, user.getUserProfile(), receiver));
+        }
+        log.info("----------------");
         return noteRes;
     }
 

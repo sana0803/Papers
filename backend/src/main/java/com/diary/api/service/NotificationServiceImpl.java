@@ -4,6 +4,7 @@ import com.diary.api.db.entity.Notification;
 import com.diary.api.db.entity.User;
 import com.diary.api.db.repository.NotificationRepository;
 import com.diary.api.db.repository.NotificationRepositorySupport;
+import com.diary.api.request.NotificationReq;
 import com.diary.api.response.AlarmDataSet;
 import com.diary.api.response.NotificationDetailRes;
 import com.diary.api.response.NotificationRes;
@@ -68,6 +69,16 @@ public class NotificationServiceImpl implements NotificationService{
     @Override
     public boolean updateNotificationRead(User user, long notificationId) {
         return notificationRepositorySupport.updateNotificationRead(user, notificationId);
+    }
+
+    @Override
+    public void createNotification(NotificationReq notificationReq) {
+        Notification notification = new Notification();
+        notification.setNotificationContent(notificationReq.getNotificationContent());
+        notification.setSenderImageUrl(notificationReq.getSenderImageUrl());
+        notification.setUser(notificationReq.getUser());
+        notification.setNotificationInfo(notificationReq.getNotificationInfo());
+        notificationRepository.save(notification);
     }
 
     @Override

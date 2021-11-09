@@ -2,6 +2,7 @@ package com.diary.api.service;
 
 
 import com.diary.api.db.entity.User;
+import com.diary.api.request.NotificationReq;
 import com.diary.api.response.AlarmDataSet;
 import com.diary.api.response.NotificationDetailRes;
 import com.diary.api.response.NotificationRes;
@@ -17,4 +18,5 @@ public interface NotificationService {
     void removeUser(String userId);
     List<NotificationRes> getNotifications(User user);
     boolean updateNotificationRead(User user, long notificationId);
+    void createNotification(NotificationReq notificationReq);
 }

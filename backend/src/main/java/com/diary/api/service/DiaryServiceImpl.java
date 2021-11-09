@@ -4,6 +4,7 @@ import com.diary.api.db.entity.*;
 import com.diary.api.db.repository.*;
 import com.diary.api.request.DiaryInviteReq;
 import com.diary.api.request.DiaryReq;
+import com.diary.api.request.NotificationReq;
 import com.diary.api.response.DiaryRes;
 import com.diary.api.response.NoteRes;
 import com.diary.api.response.NotificationDetailRes;
@@ -44,6 +45,11 @@ public class DiaryServiceImpl implements DiaryService {
     @Autowired
     NotificationService notificationService;
 
+    @Autowired
+    UserService userService;
+
+    @Autowired
+    NotificationInfoRepository notificationInfoRepository;
     // 일기장 생성
     @Override
     public DiaryRes createDiary(User user, DiaryReq diaryReq) {
@@ -174,15 +180,23 @@ public class DiaryServiceImpl implements DiaryService {
             userDiary.setDiary(diary);
             userDiaryRepository.save(userDiary);
         }
-        log.info("---diary service");
-        for (String s : guestList) {
-            log.info("초대 받는 사람 : " + s);
-        }
 
+        // 알림 전송 ---------------------------------
         String message = user.getUserNickname() + "님이 " + diary.getDiaryTitle() + " 일기장에 회원님을 초대했습니다.";
         NotificationDetailRes notificationDetailRes = new NotificationDetailRes(message, user.getUserProfile());
         notificationService.publishToUsers(notificationDetailRes, guestList);
+
+
+        NotificationInfo notificationInfo = notificationInfoRepository.findById((long)3).get();
+
+        log.info("---diary service");
+        for (String userId : guestList) {
+            log.info("초대 받는 사람 : " + userId);
+            User receiver = userService.getUserByUserId(userId);
+            notificationService.createNotification(new NotificationReq(message, notificationInfo, user.getUserProfile(), receiver));
+        }
         log.info("----------------");
+
         return true;
     }
 
