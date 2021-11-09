@@ -113,7 +113,7 @@ export default {
         Swal.fire({
             icon: "success",
             title:
-              '<span style="font-size:25px;">글작성 완료.</span>',
+              '<span style="font-size:25px;">일기 작성 완료.</span>',
             confirmButtonColor: "#b0da9b",
             confirmButtonText: '<span style="font-size:18px;">확인</span>',
           });

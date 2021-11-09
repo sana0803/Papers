@@ -6,7 +6,7 @@
       :key="note.id"
       @click="detailNote(note)"
       class="note_Item"
-    >
+    >    
       <div class="note_ImgBox">
         <v-img class="note_Img" :src="note.noteMedia[0]" />
       </div>
@@ -27,6 +27,8 @@ export default {
   },
   methods: {
     detailNote(note) {
+      // this.$store.commit('setDiaryContent', diaryContent)      
+      // this.$router.push("/diary");
       console.log(note)
     }
   },
@@ -34,6 +36,11 @@ export default {
     this.$store.dispatch("noteGet").then((res) => {
       this.noteList = res.data.reverse();
     });
+    // this.$store.dispatch("getDiaryContent", this.currentDiary.id)
+    //   .then((res) => {
+    //     console.log(res.data)        
+    //     this.noteList = res.data.note.reverse();      
+    //   })
   },
 };
 </script>

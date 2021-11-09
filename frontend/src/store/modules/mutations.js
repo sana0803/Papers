@@ -15,6 +15,11 @@ export function setDiaryContent(state, diaryContent) {
   state.diaryContent = diaryContent
 }
 
+export function setNoteContent(state, note) {
+  console.log('일기 낱장 받아오기 mutation 호출', state)
+  state.noteContent = note
+}
+
 export function setNotificationState(state, notificationState) {
   state.notificationState = notificationState
   console.log(notificationState + '를 변경함')
