@@ -177,7 +177,7 @@ public class NoteServiceImpl implements NoteService{
 
         if(noteReq.getNoteS3MediaList() != null) {
             for (String media : noteReq.getNoteS3MediaList()) {
-                if (media == null) continue;
+                if (media.equals("null")) continue;
                 NoteMedia noteMedia = new NoteMedia();
                 noteMedia.setNote(noteRepositorySupport.getNote(note.getId()).get());
                 noteMedia.setMediaUrl(media);
