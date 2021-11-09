@@ -48,13 +48,14 @@
               color="#FFB319"
               label="아이디 검색"
               v-model="search"
-              v-on:keyup.enter="memberSearch"
+              v-on:keyup="memberSearch"
             ></v-text-field>
             <v-btn id="Search_Btn" icon>
               <v-icon @click="memberSearch" style="font-size: 2.8em">search</v-icon>
             </v-btn>
           </div>
           <div id="Search_List">
+            <div v-if="memberList.length === 0" id="Invite_txt">검색결과가 없습니다.</div>
             <div v-for="(member,idx) in memberList" :key="member.userId" class="Search_Item">
               <div class="Search_Img">
                 <img class="Img" :src="member.userProfile" />
@@ -143,8 +144,10 @@ export default {
       this.$store.dispatch('memberSearch', this.search)
         .then((res) => {
           this.memberList = res.data
-          console.log('user 검색')
-          console.log(this.memberList)
+
+          if(this.search == '') {
+            this.memberList = []
+          }
         })
     }
   },
@@ -304,5 +307,11 @@ export default {
 }
 #Search_List::-webkit-scrollbar {
   display: none;
+}
+#Invite_txt {
+  line-height: 166px;
+  text-align: center;
+  font-size: 16px;
+  color: #9f9f9f;
 }
 </style>

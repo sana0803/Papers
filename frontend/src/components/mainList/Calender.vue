@@ -54,9 +54,11 @@
               <v-spacer></v-spacer>
             </v-toolbar>
             <v-card-text id="select-box"> 
-              {{selectedEvent.content}}
-              <div style="height:200px;">
-                <v-img :src="selectedEvent.noteMedia" />
+              <div style="height:350px;">
+                <v-img style="height:100%;" :src="selectedEvent.noteMedia" />
+              </div>
+              <div style="padding-top:10px">
+                <span>{{selectedEvent.content}}</span>
               </div>
             </v-card-text>
             <v-card-actions>
@@ -84,23 +86,14 @@ export default {
       value: "",
       events: [],
       colors: [
-        "blue",
-        "indigo",
-        "deep-purple",
-        "cyan",
-        "green",
-        "orange",
-        "grey darken-1",
-      ],
-      names: [
-        "Meeting",
-        "Holiday",
-        "PTO",
-        "Travel",
-        "Event",
-        "Birthday",
-        "Conference",
-        "Party",
+        "rgb(177, 177, 233)",
+        "rgb(200, 178, 216)",
+        "rgb(156, 218, 218)",
+        "rgb(157, 230, 157)",
+        "rgb(236, 205, 148)",
+        "rgb(253, 187, 251)",
+        "rgb(255, 149, 149)",
+        "rgb(244, 247, 111)",
       ],
       selectedEvent: {},
       selectedElement: null,
@@ -215,7 +208,6 @@ export default {
   font-size:18px;
   width:400px;
   height:500px;
-  background:yellow;
   /* display:flex;
   justify-content: center;
   align-items: center; */

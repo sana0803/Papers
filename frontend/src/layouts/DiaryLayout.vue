@@ -7,9 +7,9 @@
       <span style="font-size: 18px">{{currentDiary.diaryTitle}}</span>
       <!-- <span class="Header_txt">김싸피 </span> -->
       <span
-        v-if="currentDiary.guest.length >= 1"
+        v-if="currentDiary.guest.length >= 0"
         class="guest-txt">
-        ({{currentDiary.guest.length}}명)
+        ({{currentDiary.guest.length + 1}}명)
       </span>
       <span v-else></span>
     </div>
