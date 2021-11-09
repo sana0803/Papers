@@ -5,9 +5,13 @@
     <div style="height: 7.5vh" />
     <div id="Diary_Header">
       <span style="font-size: 18px">{{currentDiary.diaryTitle}}</span>
-      <!-- <span class="Header_txt">김싸피 </span>
-      <span class="Header_txt">홍싸피 </span>
-      <span class="Header_txt">황싸피 </span> -->
+      <!-- <span class="Header_txt">김싸피 </span> -->
+      <span
+        v-if="currentDiary.guest.length >= 1"
+        class="guest-txt">
+        ({{currentDiary.guest.length}}명)
+      </span>
+      <span v-else></span>
     </div>
     <div id="Diary_Content">
       <div @click="goList" id="Diary_PostIt1">일기</div>
@@ -72,8 +76,10 @@ export default {
   margin-left: 175px;
   margin-top: 45px;
 }
-.Header_txt {
+.guest-txt {
+  font-size: 16px;
   color: #929292;
+  margin-left: 8px;
 }
 #Diary_Content {
   width: 922px;

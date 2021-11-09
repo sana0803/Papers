@@ -70,10 +70,23 @@ export function getDiaryContent({ state }, id) {
     return $axios.get(url, { headers: { Authorization: `Bearer ${userToken}` } })
 }
 
+export function modifyNote({ state }, id) {
+	console.log('일기 수정 action호출', state)
+	const userToken = state.loginUser.userToken
+	const url = baseUrl + '/note/' + id
+	return $axios.put(url, id, { headers: { Authorization: `Bearer ${userToken}` } })
+}
+export function deleteNote({ state }, id) {
+	console.log('일기 삭제 action호출', state)
+	const userToken = state.loginUser.userToken
+	const url = baseUrl + '/note/' + id
+	return $axios.delete(url, id, { headers: { Authorization: `Bearer ${userToken}` } })
+}
+
 export function modifyProfile({ state }, profile) {
 	console.log('회원정보수정 action호출', state)
 	const userToken = state.loginUser.userToken
-	const url = baseUrl + '/user'
+	const url = baseUrl + '/user' 
 	return $axios.put(url, profile, { headers: { Authorization: `Bearer ${userToken}` } })
 }
 
