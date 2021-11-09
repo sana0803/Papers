@@ -15,4 +15,5 @@ import java.util.Optional;
 public interface UserDiaryRepository extends JpaRepository<UserDiary, Long> {
     List<UserDiary> findByGuestId(String guestId);
     List<UserDiary> findAllByDiaryId(Long diaryId);
+    Optional<UserDiary> findByDiaryId(Long diaryId);
 }
