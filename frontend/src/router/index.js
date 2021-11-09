@@ -46,6 +46,10 @@ const routes = [
   {
     path: '/write',
     component: () => import('../views/write/Write.vue')
+  },
+  {
+    path: '/modify',
+    component: () => import('../views/diary/UpdateNote.vue')
   }
 ]
 
