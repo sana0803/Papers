@@ -21,7 +21,8 @@ insert into user_font values (2, 2, 'test1') ON DUPLICATE KEY UPDATE id=2;
 insert into user_font values (3, 3, 'test1') ON DUPLICATE KEY UPDATE id=3;
 
 -- 스티커 패키지
-insert into sticker_package values (1, 'package1', 50) ON DUPLICATE KEY UPDATE id=1;
+insert into sticker_package values (1, 'pack1', 50) ON DUPLICATE KEY UPDATE id=1;
+insert into sticker_package values (2, 'pack2', 50) ON DUPLICATE KEY UPDATE id=2;
 
 -- 다이어리 커버
 insert into diary_cover values (1, 'blue', 500, 'https://papers-bucket.s3.ap-northeast-2.amazonaws.com/diary-cover/blue.jpg') ON DUPLICATE KEY UPDATE id=1;
@@ -38,6 +39,12 @@ insert into note (id, note_content, note_create_date, note_create_time, note_tit
 insert into sticker values (1, 'sticker-url-1', 1) ON DUPLICATE KEY UPDATE id=1;
 insert into sticker values (2, 'sticker-url-2', 1) ON DUPLICATE KEY UPDATE id=2;
 insert into sticker values (3, 'sticker-url-3', 1) ON DUPLICATE KEY UPDATE id=3;
+insert into sticker values (4, 'https://papers-bucket.s3.ap-northeast-2.amazonaws.com/store/sticker/pack1/sticker1.png', 2) ON DUPLICATE KEY UPDATE id=4;
+insert into sticker values (5, 'https://papers-bucket.s3.ap-northeast-2.amazonaws.com/store/sticker/pack1/sticker2.png', 2) ON DUPLICATE KEY UPDATE id=5;
+insert into sticker values (6, 'https://papers-bucket.s3.ap-northeast-2.amazonaws.com/store/sticker/pack1/sticker3.png', 2) ON DUPLICATE KEY UPDATE id=6;
+insert into sticker values (7, 'https://papers-bucket.s3.ap-northeast-2.amazonaws.com/store/sticker/pack1/sticker4.png', 2) ON DUPLICATE KEY UPDATE id=7;
+insert into sticker values (8, 'https://papers-bucket.s3.ap-northeast-2.amazonaws.com/store/sticker/pack1/sticker5.png', 2) ON DUPLICATE KEY UPDATE id=8;
+insert into sticker values (9, 'https://papers-bucket.s3.ap-northeast-2.amazonaws.com/store/sticker/pack1/sticker6.png', 2) ON DUPLICATE KEY UPDATE id=9;
 
 -- 유저 스티커 패키지
 insert into user_sticker_package values (1, 1, 'test1') ON DUPLICATE KEY UPDATE id=1;

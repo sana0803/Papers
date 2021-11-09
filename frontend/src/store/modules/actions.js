@@ -80,7 +80,7 @@ export function deleteNote({ state }, id) {
 	console.log('일기 삭제 action호출', state)
 	const userToken = state.loginUser.userToken
 	const url = baseUrl + '/note/' + id
-	return $axios.delete(url, id, { headers: { Authorization: `Bearer ${userToken}` } })
+	return $axios.delete(url, { headers: { Authorization: `Bearer ${userToken}` } })
 }
 
 export function modifyProfile({ state }, profile) {
@@ -138,4 +138,18 @@ export function getUserCovers({ state }) {
 	const userToken = state.loginUser.userToken
 	const url = baseUrl + '/user/covers'
 	return $axios.get(url, { headers: { Authorization: `Bearer ${userToken}` } } )
+}
+
+export function getStoreStickerList({ state }) {
+	console.log('상점 스티커 목록 호출', state)
+	const userToken = state.loginUser.userToken
+	const url = baseUrl + '/store/sticker'
+	return $axios.get(url, { headers: { Authorization: `Bearer ${userToken}` } } )
+}
+
+export function purchaseStickerPackage({ state }, id) {
+	console.log('스티커 구매 호출', state)
+	const userToken = state.loginUser.userToken
+    const url = baseUrl + '/store/sticker?stickerPackageId=' + id;
+	return $axios.put(url, '', { headers: { Authorization: `Bearer ${userToken}` } } )
 }
