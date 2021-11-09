@@ -2,9 +2,13 @@ package com.diary.api.service;
 
 import com.diary.api.db.entity.Notification;
 import com.diary.api.db.entity.User;
+import com.diary.api.db.repository.NotificationRepository;
+import com.diary.api.db.repository.NotificationRepositorySupport;
 import com.diary.api.response.AlarmDataSet;
 import com.diary.api.response.NotificationDetailRes;
+import com.diary.api.response.NotificationRes;
 import com.diary.api.response.StreamDataSet;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -20,6 +24,12 @@ import static org.reflections.Reflections.log;
 public class NotificationServiceImpl implements NotificationService{
     private static final Map<String, SseEmitter> CLIENTS = new ConcurrentHashMap<>();
     private static final Map<String, String> CONNECTED_USERS = new ConcurrentHashMap<>();
+
+    @Autowired
+    NotificationRepository notificationRepository;
+
+    @Autowired
+    NotificationRepositorySupport notificationRepositorySupport;
 
     @Override
     public void addEmitter(String uuid, AlarmDataSet alarmDataSet) {
@@ -40,6 +50,19 @@ public class NotificationServiceImpl implements NotificationService{
     @Override
     public void removeUser(String userId) {
         CONNECTED_USERS.remove(userId);
+    }
+
+    @Override
+    public List<NotificationRes> getNotifications(User user) {
+        List<NotificationRes> notificationResList = new ArrayList<>();
+        if (notificationRepositorySupport.findAllByUserId(user).isPresent()) {
+            List<Notification> list = notificationRepositorySupport.findAllByUserId(user).get();
+
+            for (Notification notification : list) {
+                notificationResList.add(NotificationRes.of(notification));
+            }
+        }
+        return notificationResList;
     }
 
     @Override
