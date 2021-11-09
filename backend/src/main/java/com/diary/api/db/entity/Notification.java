@@ -15,18 +15,18 @@ import java.time.LocalTime;
 @Getter
 public class Notification extends BaseEntity {
     @ManyToOne
-    @JoinColumn(name="userId", referencedColumnName = "userId", nullable = false)
+    @JoinColumn(name="userId", referencedColumnName = "userId", nullable = false) // 알림을 받는 유저
     private User user;
 
     @ManyToOne
     @JoinColumn(name="notInfoId", referencedColumnName = "id", nullable = false)
     NotificationInfo notificationInfo;
 
-    private String notificationType;
     private LocalDate notificationDate;
     private LocalTime notificationTime;
     private String notificationContent;
     private boolean notificationRead;
+    private String senderImageUrl;
 
     @PrePersist
     public void setUp() {
