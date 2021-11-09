@@ -40,7 +40,7 @@ public class StoreController {
         if(user == null) return ResponseEntity.status(401).body(BaseResponseBody.of(200, "잘못된 토큰"));
         if(storeService.purchaseStickerPackage(stickerPackageId, user.getUserId()))
             return ResponseEntity.status(200).body(BaseResponseBody.of(200, "스티커 구매 성공"));
-        return ResponseEntity.status(500).build();
+        return ResponseEntity.status(500).body(BaseResponseBody.of(500, "마일리지가 부족합니다."));
     }
 
     @GetMapping("/sticker")
@@ -68,7 +68,7 @@ public class StoreController {
         if(user == null) return ResponseEntity.status(401).body(BaseResponseBody.of(200, "잘못된 토큰"));
         if(storeService.purchaseFont(fontId, user.getUserId()))
             return ResponseEntity.status(200).body(BaseResponseBody.of(200, "폰트 구매 성공"));
-        return ResponseEntity.status(500).build();
+        return ResponseEntity.status(500).body(BaseResponseBody.of(500, "마일리지가 부족합니다."));
     }
 
     @GetMapping("/font")
@@ -95,8 +95,8 @@ public class StoreController {
         User user = JwtTokenUtil.getUser(authentication, userService);
         if(user == null) return ResponseEntity.status(401).body(BaseResponseBody.of(200, "잘못된 토큰"));
         if(storeService.purchaseDiaryCover(diaryCoverId, user.getUserId()))
-            return ResponseEntity.status(200).body(BaseResponseBody.of(200, "스티커 구매 성공"));
-        return ResponseEntity.status(500).build();
+            return ResponseEntity.status(200).body(BaseResponseBody.of(200, "다이어리 커버 구매 성공"));
+        return ResponseEntity.status(500).body(BaseResponseBody.of(500, "마일리지가 부족합니다."));
     }
 
     @GetMapping("/diary-cover")

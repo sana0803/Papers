@@ -1,6 +1,25 @@
 <template>
   <div>
-    <div class="Font_Item">
+    <div
+    v-for="font in fontList"
+    :key="font.id"
+    class="Font_Item"
+    >
+      <div class="Font_Header">
+        <span class="font-name" :style="{ 'font-family': font.fontUrl }">{{font.fontName}}</span>
+        <span class="Font_Price">{{font.fontPrice}}장</span>
+      </div>
+      <div class="Font_Content">
+        <div class="Font_Discription" :style="{ 'font-family': font.fontUrl }">
+          즐거운 일기 쓰기! papers에서 매일매일 추억을 쌓아보아요.
+        </div>
+        <v-btn @click="[dialog = true, sendInfo(font.fontPrice, font.id)]" class="Font_Btn" color="#FFB319" outlined>구매</v-btn>
+      </div>
+
+      
+    </div>
+
+    <!-- <div class="Font_Item">
       <div class="Font_Header">
         <span class="font-name">나눔고딕체</span>
         <span class="Font_Price">100장</span>
@@ -16,11 +35,47 @@
     </div>
     <div class="Font_Item">
       <div class="Font_Header">
-        <span class="font-name">나눔고딕체</span>
+        <span class="font-name" style="font-family: 'KOTRAHOPE">코트라 희망체</span>
         <span class="Font_Price">100장</span>
       </div>
       <div class="Font_Content">
-        <div class="Font_Discription">
+        <div class="Font_Discription" style="font-family: 'KOTRAHOPE">
+          즐거운 일기 쓰기! papers에서 매일매일 추억을 쌓아보아요.
+        </div>
+        <v-btn class="Font_Btn" color="#FFB319" outlined>구매</v-btn>
+      </div>
+    </div>
+    <div class="Font_Item">
+      <div class="Font_Header">
+        <span class="font-name" style="font-family: 'InkLipquid">잉크립퀴드체</span>
+        <span class="Font_Price">100장</span>
+      </div>
+      <div class="Font_Content">
+        <div class="Font_Discription" style="font-family: 'InkLipquid">
+          즐거운 일기 쓰기! papers에서 매일매일 추억을 쌓아보아요.
+        </div>
+        <v-btn class="Font_Btn" color="#FFB319" outlined>구매</v-btn>
+      </div>
+    </div>
+    <div class="Font_Item">
+      <div class="Font_Header">
+        <span class="font-name" style="font-family: 'KyoboHand">교보 손글씨체</span>
+        <span class="Font_Price">100장</span>
+      </div>
+      <div class="Font_Content">
+        <div class="Font_Discription" style="font-family: 'KyoboHand">
+          즐거운 일기 쓰기! papers에서 매일매일 추억을 쌓아보아요.
+        </div>
+        <v-btn class="Font_Btn" color="#FFB319" outlined>구매</v-btn>
+      </div>
+    </div>
+    <div class="Font_Item">
+      <div class="Font_Header">
+        <span class="font-name" style="font-family: 'WandohopeB" >완도 희망체</span>
+        <span class="Font_Price">100장</span>
+      </div>
+      <div class="Font_Content">
+        <div class="Font_Discription" style="font-family: 'WandohopeB">
           즐거운 일기 쓰기! papers에서 매일매일 추억을 쌓아보아요.
         </div>
         <v-btn class="Font_Btn" color="#FFB319" outlined>구매</v-btn>
@@ -133,43 +188,7 @@
         </div>
         <v-btn class="Font_Btn" color="#FFB319" outlined>구매</v-btn>
       </div>
-    </div>
-    <div class="Font_Item">
-      <div class="Font_Header">
-        <span class="font-name">나눔고딕체</span>
-        <span class="Font_Price">100장</span>
-      </div>
-      <div class="Font_Content">
-        <div class="Font_Discription">
-          즐거운 일기 쓰기! papers에서 매일매일 추억을 쌓아보아요.
-        </div>
-        <v-btn class="Font_Btn" color="#FFB319" outlined>구매</v-btn>
-      </div>
-    </div>
-    <div class="Font_Item">
-      <div class="Font_Header">
-        <span class="font-name">나눔고딕체</span>
-        <span class="Font_Price">100장</span>
-      </div>
-      <div class="Font_Content">
-        <div class="Font_Discription">
-          즐거운 일기 쓰기! papers에서 매일매일 추억을 쌓아보아요.
-        </div>
-        <v-btn class="Font_Btn" color="#FFB319" outlined>구매</v-btn>
-      </div>
-    </div>
-    <div class="Font_Item">
-      <div class="Font_Header">
-        <span class="font-name">나눔고딕체</span>
-        <span class="Font_Price">100장</span>
-      </div>
-      <div class="Font_Content">
-        <div class="Font_Discription">
-          즐거운 일기 쓰기! papers에서 매일매일 추억을 쌓아보아요.
-        </div>
-        <v-btn class="Font_Btn" color="#FFB319" outlined>구매</v-btn>
-      </div>
-    </div>
+    </div> -->
     <!-- Dialog -->
     <v-dialog v-model="dialog" persistent max-width="286">
       <v-card id="Dialog">
@@ -183,11 +202,11 @@
         </div>
         <div id="Dialog_Content">
           <div id="Dialog_Text">
-            종이 <span style="color: #ffb319">100장</span>을 소비해
+            종이 <span style="color: #ffb319">{{buyFontPrice}}장</span>을 소비해
             구매하시겠습니까 ?
           </div>
           <div id="Dialog_Btn_Box">
-            <v-btn style="background: #ffb319; color: white" class="Dialog_Btn"
+            <v-btn style="background: #ffb319; color: white" class="Dialog_Btn" @click="buyFont(buyFontId)"
               >구매</v-btn
             >
             <v-btn
@@ -204,11 +223,48 @@
 </template>
 
 <script>
+import Swal from "sweetalert2";
+
 export default {
   data() {
     return {
       dialog: false,
+      fontList: [],
+      buyFontPrice: null,
+      buyFontId: null
     };
+  },
+  created () {
+    this.getAllFonts()
+  },
+  methods: {
+    getAllFonts: function () {
+      this.$store.dispatch("getAllFonts")
+      .then((res) => {
+        this.fontList = res.data
+        console.log(this.fontList, '폰트리스트')
+      })
+    },
+    sendInfo: function (price, id) {
+      console.log(price, '클릭한 폰트 가격')
+      console.log(id, '클릭한 폰트 아이디')
+      this.buyFontPrice = price
+      this.buyFontId = id
+    },
+    buyFont(fontId) {
+      console.log(fontId, '구매하려는 폰트 아이디')
+      this.$store.dispatch("buyFont", fontId)
+      .then((res) => {
+        console.log(res)
+        Swal.fire({
+          icon: "success",
+          title:
+            '<span style="font-size:25px;">성공적으로 구매되었습니다.</span>',
+          confirmButtonColor: "#b0da9b",
+          confirmButtonText: '<span style="font-size:18px;">확인</span>',
+        });
+      })
+    }
   },
 };
 </script>
