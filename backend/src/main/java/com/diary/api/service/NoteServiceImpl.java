@@ -229,7 +229,7 @@ public class NoteServiceImpl implements NoteService{
             userDiaryList.forEach(userDiary -> {
                 guestList.add(userDiary.getGuestId());
             });
-        } else { // 일기 작성자가 공유 받은 게스트 중 한 명일 경우
+        } else if (userDiaryRepository.findByDiaryId(diaryId).isPresent()){ // 일기 작성자가 공유 받은 게스트 중 한 명일 경우
             UserDiary userDiary = userDiaryRepository.findByDiaryId(diaryId).get();
             guestList.add(userDiary.getUser().getUserId()); // 일기장 주인 추가
 
@@ -237,6 +237,8 @@ public class NoteServiceImpl implements NoteService{
                 if (!userDiaryInfo.getGuestId().equals(writerId)) // 자신을 제외한 guest 들에게만 알림을 보낸다.
                     guestList.add(userDiaryInfo.getGuestId());
             });
+        } else { // 공유한 일기장이 아닌 경우
+            return noteRes;
         }
 
         User user = userRepository.findByUserId(writerId).get();
