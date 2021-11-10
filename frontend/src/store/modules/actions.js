@@ -69,11 +69,11 @@ export function getDiaryContent({ state }, id) {
     return $axios.get(url, { headers: { Authorization: `Bearer ${userToken}` } })
 }
 
-export function modifyNote({ state }, id) {
-	console.log('일기 수정 action호출', state)
+export function modifyNote({ state }, note) {
+  console.log('일기 수정 action호출', state)
 	const userToken = state.loginUser.userToken
-	const url = baseUrl + '/note/' + id
-	return $axios.put(url, id, { headers: { Authorization: `Bearer ${userToken}` } })
+	const url = baseUrl + '/note/' + note.noteId
+	return $axios.put(url, note.formData,  { headers: { Authorization: `Bearer ${userToken}` } })
 }
 export function deleteNote({ state }, id) {
 	console.log('일기 삭제 action호출', state)

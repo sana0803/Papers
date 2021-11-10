@@ -26,10 +26,10 @@ public class NoteRes extends BaseResponseBody{
     String noteContent;
     LocalDate noteCreatedDate;
     LocalTime noteCreatedTime;
-    List<String> noteHashtag;
-    List<String> noteMedia;
-    List<NoteSticker> noteSticker;
-    List<Emotion> noteEmotion;
+    List<String> noteHashtagList;
+    List<String> noteMediaList;
+    List<NoteSticker> noteStickerList;
+    List<Emotion> emotionList;
 
     public NoteRes(Note note) {
         this.noteId = note.getId();
