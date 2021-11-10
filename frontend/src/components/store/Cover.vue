@@ -1,7 +1,7 @@
 <template>
   <div>
     <div v-for="cover in coverList" :key="cover.id" class="MainList_Item"  @click="dialogOn(cover)">
-        <div v-if="cover.owned" style="position: absolute; background-color: white; margin: 10px;">소유 중</div>
+        <div class="cover-check" v-if="cover.owned">보유중</div>
         <img :src="cover.coverUrl" style="width: 100%; height: 100%;"/>
     </div>
 
@@ -93,6 +93,7 @@ export default {
   background: peachpuff;
   box-shadow: 3px 3px 11px rgba(166, 166, 168, 0.25);
   overflow: hidden;
+  position:relative;
 }
 #Dialog {
   width: 650px;
@@ -173,5 +174,17 @@ export default {
   width: 76px;
   height: 32px;
   box-shadow: none;
+}
+.cover-check{
+  position:absolute;
+  background: #ffb319;
+  color:white;
+  font-weight:300;
+  text-align: center;
+  line-height:30px;
+  width:50px;
+  height:30px;
+  top:10px;
+  left:10px;
 }
 </style>

@@ -1,8 +1,10 @@
 <template>
   <div id="Header_Container">
     <div @click="goHome" id="Header_Title">PAPERS</div>
+    <div @click="goHome" id="Header_Note">일기</div>
     <div @click="goAlbum" id="Header_Album">내 앨범</div>
     <div @click="goStore" id="Header_Store">상점</div>
+    <div id="Header_Nickname">{{ loginUser.userNickname }}님</div>
     <div id="Header_Mileage">{{ loginUser.userMileage }}장</div>
     <div id="Header_Alarm">
       <v-icon @click="goAlert" style="font-size: 3em">notifications</v-icon>
@@ -68,6 +70,12 @@ export default {
   margin-left: 15px;
   cursor: pointer;
 }
+#Header_Note{
+  line-height: 7.5vh;
+  font-size: 20px;
+  margin-left: 40px;
+  cursor: pointer;
+}
 #Header_Album {
   line-height: 7.5vh;
   font-size: 20px;
@@ -80,9 +88,15 @@ export default {
   margin-left: 40px;
   cursor: pointer;
 }
-#Header_Mileage {
+#Header_Nickname{
   margin-right: 15px;
   margin-left: auto;
+  line-height: 7.5vh;
+  font-size: 15px;
+  font-weight: 500;
+}
+#Header_Mileage {
+  margin-right: 15px;
   line-height: 7.5vh;
   color: #ffb319;
   font-size: 15px;
@@ -96,7 +110,7 @@ export default {
 #Header_Profile {
   margin-right: 15px;
   line-height: 75px;
-  float: right;
+  float: right; 
   cursor: pointer;
   display: flex;
   justify-content: center;
@@ -105,6 +119,7 @@ export default {
 #Profile_img {
   width: 2.8em;
   height: 2.8em;
+  border-radius:50px;
 }
 #Logout {
   margin-right: 15px;

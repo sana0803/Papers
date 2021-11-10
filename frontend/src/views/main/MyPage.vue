@@ -235,6 +235,7 @@ export default {
   margin-top: 20px;
 }
 #Profile_img {
+  border-radius: 50px;
   width: 45px;
   height: 45px;
 }

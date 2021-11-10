@@ -144,6 +144,8 @@ export default {
     },
   },
   created() {
+      this.selectDiary = this.currentDiary.diaryTitle
+
       this.$store.dispatch("diaryGet").then((res) => {
         const tmp = []
         for(let i=0;i<res.data.length;i++) {

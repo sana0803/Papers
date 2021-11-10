@@ -51,7 +51,6 @@ export function shareDiary({ state }, share) {
   console.log('shareDiary action 호출', state)
   const url = baseUrl + '/diary/invite'
   const userToken = state.loginUser.userToken
-  console.log(url)
   return $axios.post(url, share, { headers: { Authorization: `Bearer ${userToken}` } })
 }
 
@@ -63,27 +62,27 @@ export function noteGet({ state }) {
 }
 
 export function getDiaryContent({ state }, id) {
-    console.log('일기 받아오기 action 호출', state)
+    console.log('getDiaryContent action 호출', state)
     const url = baseUrl + '/diary/' + id
     const userToken = state.loginUser.userToken
     return $axios.get(url, { headers: { Authorization: `Bearer ${userToken}` } })
 }
 
 export function modifyNote({ state }, id) {
-	console.log('일기 수정 action호출', state)
+	console.log('modifyNote action호출', state)
 	const userToken = state.loginUser.userToken
 	const url = baseUrl + '/note/' + id
 	return $axios.put(url, id, { headers: { Authorization: `Bearer ${userToken}` } })
 }
 export function deleteNote({ state }, id) {
-	console.log('일기 삭제 action호출', state)
+	console.log('deleteNote action호출', state)
 	const userToken = state.loginUser.userToken
 	const url = baseUrl + '/note/' + id
 	return $axios.delete(url, { headers: { Authorization: `Bearer ${userToken}` } })
 }
 
 export function modifyProfile({ state }, profile) {
-	console.log('회원정보수정 action호출', state)
+	console.log('modifyProfile action호출', state)
 	const userToken = state.loginUser.userToken
 	const url = baseUrl + '/user' 
 	return $axios.put(url, profile, { headers: { Authorization: `Bearer ${userToken}` } })

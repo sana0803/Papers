@@ -161,6 +161,13 @@ export default {
       this.$router.push("/write");
     },
     goUpdate(note) {
+      var hashString = ''
+      for(let i=1; i<note.noteHashtag.length; i++){
+        console.log(note.noteHashtag[i])
+        hashString += '#' + note.noteHashtag[i]
+      }
+      console.log(hashString)
+      note.hashString = hashString
       this.$store.commit('setNoteContent', note)
       this.$router.push("/modify");
       // this.$store.dispatch("modifyNote", this.currentDiary.id)

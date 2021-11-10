@@ -15,8 +15,6 @@
         </div>
         <v-btn @click="[dialog = true, sendInfo(font.fontPrice, font.id)]" class="Font_Btn" color="#FFB319" outlined>구매</v-btn>
       </div>
-
-      
     </div>
 
     <!-- <div class="Font_Item">
@@ -263,6 +261,7 @@ export default {
           confirmButtonColor: "#b0da9b",
           confirmButtonText: '<span style="font-size:18px;">확인</span>',
         });
+        this.dialog = false
       })
     }
   },
