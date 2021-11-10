@@ -39,9 +39,12 @@ export function setNotifications(state, notifications) {
   state.notifications = notifications
 }
 
-// export function setNoteContent(state, noteContent) {
-//   state.noteContent = noteContent
-// }
+export function setMyFontList(state, fontList) {
+  state.myFontList = fontList
+  // export function setNoteContent(state, noteContent) {
+  //   state.noteContent = noteContent
+  // }
+}
 
 export function setIsUpdate(state, isUpdate) {
   state.isUpdate = isUpdate
