@@ -36,3 +36,7 @@ export function setNotificationUserImage(state, image) {
 export function setNotifications(state, notifications) {
   state.notifications = notifications
 }
+
+export function setMyFontList(state, fontList) {
+  state.myFontList = fontList
+}

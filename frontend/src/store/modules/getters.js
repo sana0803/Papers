@@ -29,3 +29,7 @@ export function getNotificationUserImage(state) {
 export function getNotifications(state) {
   return state.notifications
 }
+
+export function getMyFontList(state) {
+  return state.myFontList
+}

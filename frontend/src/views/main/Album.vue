@@ -11,10 +11,21 @@
         >
           전체
         </div>
+        <div
+          @click="select('make')"
+          id="list"
+          style="color: #222; font-weight: 600"
+          class="Head_Item"
+        >
+          앨범 만들기
+        </div>
       </div>
       <div id="Album_Content">
         <div v-if="albumMode == 'all'">
           <All />
+        </div>
+        <div>
+          <Make />
         </div>
       </div>
     </div>
@@ -23,6 +34,7 @@
 
 <script>
 import All from "../../components/album/AlbumAll.vue";
+import Make from "../../components/album/AlbumMake.vue"
 
 export default {
   data() {
@@ -32,6 +44,7 @@ export default {
   },
   components: {
     All,
+    Make
   },
   methods: {
     select(target) {

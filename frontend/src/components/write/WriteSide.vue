@@ -9,13 +9,16 @@
         </v-btn>
       </div>
       <div id="Font_Content">
-        <div class="Font_Item">
+        <!-- <div class="Font_Item">
           <v-icon class="Font_Icon" style="font-size: 1.2em; color: #ffb319"
             >done</v-icon
           >
           <span class="Font_Name">카페숑24 숑숑체</span>
+        </div> -->
+        <div v-for="myFont in myFontList" :key="myFont.id" class="Font_Item">
+          <span class="Font_Name" :style="{ 'font-family': myFont.fontUrl }" @click="selectFont(myFont.fontUrl)">{{myFont.fontName}}</span>
         </div>
-        <div class="Font_Item">
+        <!-- <div class="Font_Item">
           <span class="Font_Name">카페숑24 숑숑체</span>
         </div>
         <div class="Font_Item">
@@ -50,7 +53,7 @@
         </div>
         <div class="Font_Item">
           <span class="Font_Name">카페숑24 숑숑체</span>
-        </div>
+        </div> -->
       </div>
     </div>
     <div id="WriteSide_Bot">
@@ -97,11 +100,31 @@
 
 <script>
 export default {
+  data () {
+    return {
+      myFontList: []
+    }
+  },
   methods: {
     goStore() {
       this.$router.push("/main/store");
     },
+    getUserFonts: function () {
+      this.$store.dispatch("getUserFonts")
+      .then((res) => {
+        console.log(res.data, '유저 폰트')
+        this.myFontList = res.data
+
+      })
+    },
+    selectFont: function () {
+
+    }
   },
+  created () {
+    this.getUserFonts()
+  }
+
 };
 </script>
 
