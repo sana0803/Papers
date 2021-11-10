@@ -5,9 +5,9 @@ insert into note_design values (1, 'design-url-1') ON DUPLICATE KEY UPDATE id=1;
 insert into note_layout values (1) ON DUPLICATE KEY UPDATE id=1;
 
 -- 사용자
-insert into user values ('test1', 50, '의적', 'https://papers-bucket.s3.amazonaws.com/profile/test1/eb3df4c9-a031-42c9-9bb5-0d3562de7995landing-main.jpg', '$2a$10$9RbUeMd5zBbv1bic5Me.euAyCi1fqlwbWhKfmn0k3D7bnqJCtJhx.') ON DUPLICATE KEY UPDATE user_id='test1';
-insert into user values ('test2', 150, '로봇', 'https://papers-bucket.s3.amazonaws.com/profile/test1/eb3df4c9-a031-42c9-9bb5-0d3562de7995landing-main.jpg', '$2a$10$9RbUeMd5zBbv1bic5Me.euAyCi1fqlwbWhKfmn0k3D7bnqJCtJhx.') ON DUPLICATE KEY UPDATE user_id='test2';
-insert into user values ('test3', 210, '카누', 'https://papers-bucket.s3.amazonaws.com/profile/test1/eb3df4c9-a031-42c9-9bb5-0d3562de7995landing-main.jpg', '$2a$10$9RbUeMd5zBbv1bic5Me.euAyCi1fqlwbWhKfmn0k3D7bnqJCtJhx.') ON DUPLICATE KEY UPDATE user_id='test3';
+insert into user values ('test1', 50, '의적', 'https://papers-bucket.s3.ap-northeast-2.amazonaws.com/dummy-user/test1/%EC%9D%98%EC%A0%81.png', '$2a$10$9RbUeMd5zBbv1bic5Me.euAyCi1fqlwbWhKfmn0k3D7bnqJCtJhx.') ON DUPLICATE KEY UPDATE user_id='test1';
+insert into user values ('test2', 150, '로봇', 'https://papers-bucket.s3.ap-northeast-2.amazonaws.com/dummy-user/test2/%EB%A1%9C%EB%B4%87.jpg', '$2a$10$9RbUeMd5zBbv1bic5Me.euAyCi1fqlwbWhKfmn0k3D7bnqJCtJhx.') ON DUPLICATE KEY UPDATE user_id='test2';
+insert into user values ('test3', 210, '카누', 'https://papers-bucket.s3.ap-northeast-2.amazonaws.com/dummy-user/test3/%EC%B9%B4%EB%88%84.jpg', '$2a$10$9RbUeMd5zBbv1bic5Me.euAyCi1fqlwbWhKfmn0k3D7bnqJCtJhx.') ON DUPLICATE KEY UPDATE user_id='test3';
 
 -- 폰트
 insert into font values (1, '코트라 희망체', 50, 'KOTRAHOPE') ON DUPLICATE KEY UPDATE id=1;
@@ -31,7 +31,7 @@ insert into diary_cover values (3, '기린커버', 600, 'https://papers-bucket.s
 insert into diary_cover values (4, '노을커버', 600, 'https://papers-bucket.s3.ap-northeast-2.amazonaws.com/store/diary-cover/%EB%85%B8%EC%9D%84%EC%BB%A4%EB%B2%84.jpg') ON DUPLICATE KEY UPDATE id=4;
 
 -- 다이어리
-insert into diary values (1, sysdate(), '다이어리 이름', 1, 'test1') ON DUPLICATE KEY UPDATE id=1;
+insert into diary values (1, sysdate(), '기본 일기장', 1, 'test1') ON DUPLICATE KEY UPDATE id=1;
 
 -- 노트
 insert into note (id, note_content, note_create_date, note_create_time, note_title, diary_id, font_id, design_id, layout_id, writer_id)
