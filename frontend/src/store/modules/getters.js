@@ -29,3 +29,11 @@ export function getNotificationUserImage(state) {
 export function getNotifications(state) {
   return state.notifications
 }
+
+export function getNoteContent(state) {
+  return state.noteContent
+}
+
+export function getIsUpdate(state) {
+  return state.isUpdate
+}

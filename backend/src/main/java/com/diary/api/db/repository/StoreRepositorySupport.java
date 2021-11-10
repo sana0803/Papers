@@ -41,4 +41,28 @@ public class StoreRepositorySupport {
         }
         return Optional.of(stickerResList);
     }
+
+    public Optional<UserStickerPackage> getUserSticker(String userId, Long stickerPackageId) {
+        UserStickerPackage userStickerPackage = jpaQueryFactory.select(qUserStickerPackage).from(qUserStickerPackage)
+                .where(qUserStickerPackage.user.userId.eq(userId)
+                .and(qUserStickerPackage.stickerPackage.id.eq(stickerPackageId))).fetchOne();
+        if(userStickerPackage == null) return Optional.empty();
+        return Optional.of(userStickerPackage);
+    }
+
+    public Optional<UserFont> getUserFont(String userId, Long fontId) {
+        UserFont userFont = jpaQueryFactory.select(qUserFont).from(qUserFont)
+                .where(qUserFont.user.userId.eq(userId)
+                .and(qUserFont.font.id.eq(fontId))).fetchOne();
+        if(userFont == null) return Optional.empty();
+        return Optional.of(userFont);
+    }
+
+    public Optional<UserDiaryCover> getUserDiaryCover(String userId, Long diaryCoverId) {
+        UserDiaryCover userDiaryCover = jpaQueryFactory.select(qUserDiaryCover).from(qUserDiaryCover)
+                .where(qUserDiaryCover.user.userId.eq(userId)
+                .and(qUserDiaryCover.diaryCover.id.eq(diaryCoverId))).fetchOne();
+        if(userDiaryCover == null) return Optional.empty();
+        return Optional.of(userDiaryCover);
+    }
 }
