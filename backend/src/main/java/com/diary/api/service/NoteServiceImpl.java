@@ -18,6 +18,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.transaction.Transactional;
 import java.util.*;
 
 import static org.reflections.Reflections.log;
@@ -80,10 +81,10 @@ public class NoteServiceImpl implements NoteService{
         List<NoteRes> noteResList = new ArrayList<>();
         for(Note note : notes) {
             NoteRes noteRes = new NoteRes(note);
-            noteRes.setNoteSticker(noteRepositorySupport.getNoteStickers(note.getId()).get());
-            noteRes.setNoteEmotion(noteRepositorySupport.getNoteEmotions(note.getId()).get());
-            noteRes.setNoteHashtag(noteRepositorySupport.getNoteHashtags(note.getId()).get());
-            noteRes.setNoteMedia(noteRepositorySupport.getNoteMedias(note.getId()).get());
+            noteRes.setNoteStickerList(noteRepositorySupport.getNoteStickers(note.getId()).get());
+            noteRes.setEmotionList(noteRepositorySupport.getNoteEmotions(note.getId()).get());
+            noteRes.setNoteHashtagList(noteRepositorySupport.getNoteHashtags(note.getId()).get());
+            noteRes.setNoteMediaList(noteRepositorySupport.getNoteMedias(note.getId()).get());
             noteResList.add(noteRes);
         }
         if(noteResList == null) return null;
@@ -102,10 +103,10 @@ public class NoteServiceImpl implements NoteService{
 
         for(Note note : notes) {
             NoteRes noteRes = new NoteRes(note);
-            noteRes.setNoteSticker(noteRepositorySupport.getNoteStickers(note.getId()).get());
-            noteRes.setNoteEmotion(noteRepositorySupport.getNoteEmotions(note.getId()).get());
-            noteRes.setNoteHashtag(noteRepositorySupport.getNoteHashtags(note.getId()).get());
-            noteRes.setNoteMedia(noteRepositorySupport.getNoteMedias(note.getId()).get());
+            noteRes.setNoteStickerList(noteRepositorySupport.getNoteStickers(note.getId()).get());
+            noteRes.setEmotionList(noteRepositorySupport.getNoteEmotions(note.getId()).get());
+            noteRes.setNoteHashtagList(noteRepositorySupport.getNoteHashtags(note.getId()).get());
+            noteRes.setNoteMediaList(noteRepositorySupport.getNoteMedias(note.getId()).get());
             noteResList.add(noteRes);
         }
         return noteResList;
@@ -120,10 +121,10 @@ public class NoteServiceImpl implements NoteService{
         else return null;
 
         NoteRes noteRes = new NoteRes(note);
-        noteRes.setNoteSticker(noteRepositorySupport.getNoteStickers(note.getId()).get());
-        noteRes.setNoteEmotion(noteRepositorySupport.getNoteEmotions(note.getId()).get());
-        noteRes.setNoteHashtag(noteRepositorySupport.getNoteHashtags(note.getId()).get());
-        noteRes.setNoteMedia(noteRepositorySupport.getNoteMedias(note.getId()).get());
+        noteRes.setNoteStickerList(noteRepositorySupport.getNoteStickers(note.getId()).get());
+        noteRes.setEmotionList(noteRepositorySupport.getNoteEmotions(note.getId()).get());
+        noteRes.setNoteHashtagList(noteRepositorySupport.getNoteHashtags(note.getId()).get());
+        noteRes.setNoteMediaList(noteRepositorySupport.getNoteMedias(note.getId()).get());
         return noteRes;
     }
 
@@ -133,9 +134,10 @@ public class NoteServiceImpl implements NoteService{
 
         Note note = new Note();
         if(noteId != null)
-            if(noteRepositorySupport.getNote(noteId).isPresent())
+            if(noteRepositorySupport.getNote(noteId).isPresent()) {
                 note = noteRepositorySupport.getNote(noteId).get();
-
+                note.setId(note.getId());
+            }
 
         note.setNoteContent(noteReq.getNoteContent());
         note.setNoteDesign(noteRepositorySupport.getNoteDesign(noteReq.getDesignId()).get());
@@ -209,10 +211,10 @@ public class NoteServiceImpl implements NoteService{
         }
 
         NoteRes noteRes = new NoteRes(note);
-        noteRes.setNoteSticker(noteRepositorySupport.getNoteStickers(note.getId()).get());
-        noteRes.setNoteEmotion(noteRepositorySupport.getNoteEmotions(note.getId()).get());
-        noteRes.setNoteHashtag(noteRepositorySupport.getNoteHashtags(note.getId()).get());
-        noteRes.setNoteMedia(noteRepositorySupport.getNoteMedias(note.getId()).get());
+        noteRes.setNoteStickerList(noteRepositorySupport.getNoteStickers(note.getId()).get());
+        noteRes.setEmotionList(noteRepositorySupport.getNoteEmotions(note.getId()).get());
+        noteRes.setNoteHashtagList(noteRepositorySupport.getNoteHashtags(note.getId()).get());
+        noteRes.setNoteMediaList(noteRepositorySupport.getNoteMedias(note.getId()).get());
 
         // ---------------------------------------------------- 알림 전송
         long diaryId = noteReq.getDiaryId();
@@ -229,8 +231,8 @@ public class NoteServiceImpl implements NoteService{
             userDiaryList.forEach(userDiary -> {
                 guestList.add(userDiary.getGuestId());
             });
-        } else if (userDiaryRepository.findByDiaryId(diaryId).isPresent()){ // 일기 작성자가 공유 받은 게스트 중 한 명일 경우
-            UserDiary userDiary = userDiaryRepository.findByDiaryId(diaryId).get();
+        } else if (userDiaryRepositorySupport.findByDiaryIdAndGuestId(diaryId, writerId) != null){ // 일기 작성자가 공유 받은 게스트 중 한 명일 경우
+            UserDiary userDiary = userDiaryRepositorySupport.findByDiaryIdAndGuestId(diaryId, writerId);
             guestList.add(userDiary.getUser().getUserId()); // 일기장 주인 추가
 
             userDiaryList.forEach(userDiaryInfo -> {
@@ -344,10 +346,10 @@ public class NoteServiceImpl implements NoteService{
         List<NoteRes> noteResList = new ArrayList<>();
         for(Note note : notes) {
             NoteRes noteRes = new NoteRes(note);
-            noteRes.setNoteSticker(noteRepositorySupport.getNoteStickers(note.getId()).get());
-            noteRes.setNoteEmotion(noteRepositorySupport.getNoteEmotions(note.getId()).get());
-            noteRes.setNoteHashtag(noteRepositorySupport.getNoteHashtags(note.getId()).get());
-            noteRes.setNoteMedia(noteRepositorySupport.getNoteMedias(note.getId()).get());
+            noteRes.setNoteStickerList(noteRepositorySupport.getNoteStickers(note.getId()).get());
+            noteRes.setEmotionList(noteRepositorySupport.getNoteEmotions(note.getId()).get());
+            noteRes.setNoteHashtagList(noteRepositorySupport.getNoteHashtags(note.getId()).get());
+            noteRes.setNoteMediaList(noteRepositorySupport.getNoteMedias(note.getId()).get());
             noteResList.add(noteRes);
         }
         if(noteResList == null) return null;
