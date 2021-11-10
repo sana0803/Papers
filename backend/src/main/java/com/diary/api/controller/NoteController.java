@@ -98,7 +98,7 @@ public class NoteController {
             @ApiResponse(code = 401, message = "일기 수정 권한 없음"),
             @ApiResponse(code = 500, message = "일기 수정 오류발생")
     })
-    public ResponseEntity<? extends BaseResponseBody> updateNote(@ApiIgnore Authentication authentication, @PathVariable Long noteId, @RequestBody NoteReq noteReq) {
+    public ResponseEntity<? extends BaseResponseBody> updateNote(@ApiIgnore Authentication authentication, @PathVariable Long noteId, @ModelAttribute NoteReq noteReq) {
         User user = JwtTokenUtil.getUser(authentication, userService);
         if (user == null) return ResponseEntity.status(401).body(BaseResponseBody.of(200, "잘못된 토큰"));
         noteReq.setWriterId(user.getUserId());

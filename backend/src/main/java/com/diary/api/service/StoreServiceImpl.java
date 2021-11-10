@@ -48,7 +48,7 @@ public class StoreServiceImpl implements StoreService {
             UserStickerPackage userStickerPackage = new UserStickerPackage();
             userStickerPackage.setStickerPackage(stickerPackageRepository.findById(stickerPackageId).get());
             userStickerPackage.setUser(userRepository.findByUserId(userId).get());
-            if(userStickerPackageRepository.findByStickerPackageId(stickerPackageId).isPresent()) return false;
+            if(storeRepositorySupport.getUserSticker(userId, stickerPackageId).isPresent()) return false;
             int amount = userRepository.findByUserId(userId).get().getUserMileage() - userStickerPackage.getStickerPackage().getStickerPackagePrice();
             if(amount < 0) return false;
             userStickerPackageRepository.save(userStickerPackage);
@@ -85,7 +85,7 @@ public class StoreServiceImpl implements StoreService {
             UserFont userFont = new UserFont();
             userFont.setFont(fontRepository.findById(fontId).get());
             userFont.setUser(userRepository.findByUserId(userId).get());
-            if(userFontRepository.findByFontId(fontId).isPresent()) return false;
+            if(storeRepositorySupport.getUserFont(userId, fontId).isPresent()) return false;
             int amount = userRepository.findByUserId(userId).get().getUserMileage() - userFont.getFont().getFontPrice();
             if(amount < 0) return false;
             userFontRepository.save(userFont);
@@ -119,7 +119,7 @@ public class StoreServiceImpl implements StoreService {
             UserDiaryCover userDiaryCover = new UserDiaryCover();
             userDiaryCover.setDiaryCover(diaryCoverRepository.findById(diaryCoverId).get());
             userDiaryCover.setUser(userRepository.findByUserId(userId).get());
-            if(userDiaryCoverRepository.findByDiaryCoverId(diaryCoverId).isPresent()) return false;
+            if(storeRepositorySupport.getUserDiaryCover(userId, diaryCoverId).isPresent()) return false;
             int amount = userRepository.findByUserId(userId).get().getUserMileage() - userDiaryCover.getDiaryCover().getCoverPrice();
             if(amount < 0) return false;
             userDiaryCoverRepository.save(userDiaryCover);

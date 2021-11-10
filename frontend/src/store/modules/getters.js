@@ -33,3 +33,11 @@ export function getNotifications(state) {
 export function getMyFontList(state) {
   return state.myFontList
 }
+
+export function getNoteContent(state) {
+  return state.noteContent
+}
+
+export function getIsUpdate(state) {
+  return state.isUpdate
+}
