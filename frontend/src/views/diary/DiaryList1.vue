@@ -104,6 +104,12 @@
         일기 작성하러 가기 &nbsp;&nbsp;>
       </span>
     </div>
+    <div class="text-center">
+      <v-pagination
+        v-model="page"
+        :length="6"
+      ></v-pagination>
+    </div>
     <!-- Dialog -->
     <v-dialog
       v-model="dialog"
@@ -147,6 +153,7 @@ import { mapState } from 'vuex';
 export default {
   data() {
     return {
+      page: 1,
       dialog: false,
       noteList: [],
       hashtagList: [],
