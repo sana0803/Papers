@@ -229,8 +229,8 @@ public class NoteServiceImpl implements NoteService{
             userDiaryList.forEach(userDiary -> {
                 guestList.add(userDiary.getGuestId());
             });
-        } else if (userDiaryRepository.findByDiaryId(diaryId).isPresent()){ // 일기 작성자가 공유 받은 게스트 중 한 명일 경우
-            UserDiary userDiary = userDiaryRepository.findByDiaryId(diaryId).get();
+        } else if (userDiaryRepositorySupport.findByDiaryIdAndGuestId(diaryId, writerId) != null){ // 일기 작성자가 공유 받은 게스트 중 한 명일 경우
+            UserDiary userDiary = userDiaryRepositorySupport.findByDiaryIdAndGuestId(diaryId, writerId);
             guestList.add(userDiary.getUser().getUserId()); // 일기장 주인 추가
 
             userDiaryList.forEach(userDiaryInfo -> {
