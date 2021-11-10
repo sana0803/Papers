@@ -1,3 +1,5 @@
+
+
 export function setLoginUser(state, loginUser) {
   state.loginUser = loginUser
 }
@@ -35,4 +37,30 @@ export function setNotificationUserImage(state, image) {
 
 export function setNotifications(state, notifications) {
   state.notifications = notifications
+}
+
+// export function setNoteContent(state, noteContent) {
+//   state.noteContent = noteContent
+// }
+
+export function setIsUpdate(state, isUpdate) {
+  state.isUpdate = isUpdate
+}
+
+export function initNoteContent(state) {
+  state.noteContent = {
+    noteId: '',
+    diaryId: '',
+    fontId: '',
+    layoutId: 1,
+    designId: 1,
+    writerId: '',
+    noteTitle: '',
+    noteContent: '',
+    noteS3MediaList: [],
+    noteMediaList: [],
+    noteHashtagList: [],
+    stickerList: [],
+    emotionList: []
+  }
 }

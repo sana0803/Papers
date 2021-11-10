@@ -8,7 +8,7 @@
       class="note_Item"
     >    
       <div class="note_ImgBox">
-        <v-img class="note_Img" :src="note.noteMedia[0]" />
+        <v-img class="note_Img" :src="note.noteMediaList[0]" />
       </div>
       <div class="note-under">
         <span class="note_Name">{{ note.noteTitle }}</span>
@@ -35,6 +35,7 @@ export default {
   created() {
     this.$store.dispatch("noteGet").then((res) => {
       this.noteList = res.data.reverse();
+      console.log(this.noteList)
     });
     // this.$store.dispatch("getDiaryContent", this.currentDiary.id)
     //   .then((res) => {

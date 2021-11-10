@@ -114,7 +114,7 @@ export default {
             content: res.data[i].noteContent,
             start: res.data[i].noteCreatedDate,
             end: res.data[i].noteCreatedDate,
-            noteMedia: res.data[i].noteMedia[0],
+            noteMedia: res.data[i].noteMediaList[0],
             color: this.colors[this.rnd(0, this.colors.length - 1)],
             timed: allDay,
           }
