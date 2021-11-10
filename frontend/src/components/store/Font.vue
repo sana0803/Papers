@@ -13,10 +13,9 @@
         <div class="Font_Discription" :style="{ 'font-family': font.fontUrl }">
           즐거운 일기 쓰기! papers에서 매일매일 추억을 쌓아보아요.
         </div>
-        <v-btn @click="[dialog = true, sendInfo(font.fontPrice, font.id)]" class="Font_Btn" color="#FFB319" outlined>구매</v-btn>
+        <div v-if="font.owned"><v-btn @click="[dialog = true, sendInfo(font.fontPrice, font.id)]" class="Font_Btn" color="#FFB319" outlined disabled>보유중</v-btn></div>
+        <div v-else><v-btn @click="[dialog = true, sendInfo(font.fontPrice, font.id)]" class="Font_Btn" color="#FFB319" outlined>구매</v-btn></div>
       </div>
-
-      
     </div>
 
     <!-- <div class="Font_Item">
@@ -231,11 +230,15 @@ export default {
       dialog: false,
       fontList: [],
       buyFontPrice: null,
-      buyFontId: null
+      buyFontId: null,
+      loginUser: {
+        userMileage: '',
+      }
     };
   },
   created () {
     this.getAllFonts()
+    this.loginUser = this.$store.getters['getLoginUser'];
   },
   methods: {
     getAllFonts: function () {
@@ -256,11 +259,23 @@ export default {
       this.$store.dispatch("buyFont", fontId)
       .then((res) => {
         console.log(res)
+        this.loginUser.userMileage -= this.buyFontPrice
+        this.$store.commit('setLoginUser', this.loginUser)
+        this.$router.go()
         Swal.fire({
           icon: "success",
           title:
             '<span style="font-size:25px;">성공적으로 구매되었습니다.</span>',
           confirmButtonColor: "#b0da9b",
+          confirmButtonText: '<span style="font-size:18px;">확인</span>',
+        });
+      })
+      .catch(() => {
+        Swal.fire({
+          icon: "error",
+          title:
+            '<span style="font-size:25px;">마일리지가 부족합니다.</span>',
+          confirmButtonColor: "#f27474",
           confirmButtonText: '<span style="font-size:18px;">확인</span>',
         });
       })
