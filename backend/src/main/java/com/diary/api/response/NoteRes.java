@@ -29,7 +29,9 @@ public class NoteRes extends BaseResponseBody{
     List<String> noteHashtagList;
     List<String> noteMediaList;
     List<NoteSticker> noteStickerList;
-    List<Emotion> emotionList;
+//    List<Emotion> emotionList;
+    EmotionStatusRes emotionStatusRes;
+//    List<EmotionStatusRes> emotionStatusResList;
 
     public NoteRes(Note note) {
         this.noteId = note.getId();
@@ -43,5 +45,9 @@ public class NoteRes extends BaseResponseBody{
         this.noteContent = note.getNoteContent();
         this.noteCreatedDate = note.getNoteCreateDate();
         this.noteCreatedTime = note.getNoteCreateTime();
+
+        for (Emotion e : note.getEmotions()) {
+
+        }
     }
 }

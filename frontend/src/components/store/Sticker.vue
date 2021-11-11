@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="Sticker_Item" v-for="stickerPackage in stickerPackageList" :key="stickerPackage.id" @click="dialogOn(stickerPackage)">
+    <div class="Sticker_Item" v-for="stickerPackage in viewList" :key="stickerPackage.id" @click="dialogOn(stickerPackage)">
       <div class="sticker-check" v-if="stickerPackage.owned">보유중</div>
       <div class="Sticker_img">
         <img :src="stickerPackage.stickerList[0].stickerUrl" style="width: 80%; margin-top: 10px; margin-left: 10%; margin-top: 30%;"/>
@@ -9,6 +9,17 @@
         <span class="Sticker_Name">{{ stickerPackage.stickerPackageName }}</span>
         <span class="Sticker_Price">{{ stickerPackage.stickerPackagePrice }}장</span>
       </div>
+    </div>
+
+    <!-- 스티커 페이지네이션 -->
+    <div id="diary-pagination">
+      <v-pagination
+        style="margin-bottom:30px;"
+        v-model="page"
+        :length="Math.ceil(stickerPackageList.length/6)"
+        @input="change"
+        class="page-sec"
+      ></v-pagination>
     </div>
 
     <!-- Dialog -->
@@ -62,6 +73,8 @@
 export default {
   data() {
     return {
+      page: 1,
+      viewList: [],
       dialog: false,
       stickerPackageList: [],
       stickerList: [{
@@ -76,12 +89,30 @@ export default {
   },
   created () {
     this.$store.dispatch('getStoreStickerList').then((res) => {
-      console.log(res.data)
       this.stickerPackageList = res.data;
+      for(let i=0;i<6;i++){
+          if(this.stickerPackageList.length==i) 
+              break
+            this.viewList.push(this.stickerPackageList[i])
+        }
     })
     this.loginUser = this.$store.getters['getLoginUser'];
   },
   methods:{
+    change(num) {
+      var temp = 0
+      for(let i=1;i<this.stickerPackageList.length;i++){
+        if(i==num){
+          this.viewList = []
+          for(let i=temp;i<temp+6;i++){
+            if(this.stickerPackageList.length==i)
+              break
+            this.viewList.push(this.stickerPackageList[i])
+          }
+        }
+        temp+=6
+      }
+    },
     dialogOn(stickerPackage) {
       this.stickerPackage = stickerPackage;
       this.stickerList = stickerPackage.stickerList;
