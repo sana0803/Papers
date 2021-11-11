@@ -1,8 +1,18 @@
 <template>
   <div>
-    <div v-for="cover in coverList" :key="cover.id" class="MainList_Item"  @click="dialogOn(cover)">
-        <div v-if="cover.owned" style="position: absolute; background-color: white; margin: 10px;">소유 중</div>
+    <div v-for="cover in viewList" :key="cover.id" class="MainList_Item"  @click="dialogOn(cover)">
+        <div class="cover-check" v-if="cover.owned">보유중</div>
         <img :src="cover.coverUrl" style="width: 100%; height: 100%;"/>
+    </div>
+    <!-- 커버 페이지네이션 -->
+    <div id="diary-pagination">
+      <v-pagination
+        style="margin-bottom:30px;"
+        v-model="page"
+        :length="Math.ceil(coverList.length/6)"
+        @input="change"
+        class="page-sec"
+      ></v-pagination>
     </div>
 
     <v-dialog v-model="dialog" persistent max-width="600">
@@ -50,6 +60,8 @@
 export default {
   data() {
     return {
+      page:1,
+      viewList:[],
       dialog: false,
       cover: '',
       coverList: [],
@@ -57,12 +69,30 @@ export default {
   },
   created() {
     this.$store.dispatch('getDiaryCoverList').then((res) => {
-      console.log('hi')
-      console.log(res.data);
-      this.coverList = res.data;      
+      this.coverList = res.data;  
+      
+      for(let i=0;i<6;i++){
+          if(this.coverList.length==i) 
+              break
+            this.viewList.push(this.coverList[i])
+        }
     })
   },
   methods: {
+    change(num) {
+      var temp = 0
+      for(let i=1;i<this.coverList.length;i++){
+        if(i==num){
+          this.viewList = []
+          for(let i=temp;i<temp+6;i++){
+            if(this.coverList.length==i)
+              break
+            this.viewList.push(this.coverList[i])
+          }
+        }
+        temp+=6
+      }
+    },
     dialogOn(cover) {
       this.cover = cover;
       this.dialog = true;
@@ -93,6 +123,7 @@ export default {
   background: peachpuff;
   box-shadow: 3px 3px 11px rgba(166, 166, 168, 0.25);
   overflow: hidden;
+  position:relative;
 }
 #Dialog {
   width: 650px;
@@ -173,5 +204,17 @@ export default {
   width: 76px;
   height: 32px;
   box-shadow: none;
+}
+.cover-check{
+  position:absolute;
+  background: #ffb319;
+  color:white;
+  font-weight:300;
+  text-align: center;
+  line-height:30px;
+  width:50px;
+  height:30px;
+  top:10px;
+  left:10px;
 }
 </style>

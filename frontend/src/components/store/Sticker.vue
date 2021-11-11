@@ -1,6 +1,7 @@
 <template>
   <div>
     <div class="Sticker_Item" v-for="stickerPackage in stickerPackageList" :key="stickerPackage.id" @click="dialogOn(stickerPackage)">
+      <div class="sticker-check" v-if="stickerPackage.owned">보유중</div>
       <div class="Sticker_img">
         <img :src="stickerPackage.stickerList[0].stickerUrl" style="width: 80%; margin-top: 10px; margin-left: 10%; margin-top: 30%;"/>
       </div>
@@ -8,7 +9,6 @@
         <span class="Sticker_Name">{{ stickerPackage.stickerPackageName }}</span>
         <span class="Sticker_Price">{{ stickerPackage.stickerPackagePrice }}장</span>
       </div>
-      <div align="right" v-if="stickerPackage.owned">현재 소유중</div>
     </div>
 
     <!-- Dialog -->
@@ -108,10 +108,22 @@ export default {
   width: 286px;
   margin-bottom: 32px;
   margin-left: 32px;
-  /* background-color: cornflowerblue; */
+  position: relative;
 }
 .Sticker_Item:hover {
   opacity: 0.7;
+}
+.sticker-check{
+  position:absolute;
+  background: #ffb319;
+  color:white;
+  font-weight:300;
+  text-align: center;
+  line-height:30px;
+  width:50px;
+  height:30px;
+  top:10px;
+  left:10px;
 }
 .Sticker_img {
   width: 286px;

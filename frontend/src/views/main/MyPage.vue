@@ -189,7 +189,6 @@ export default {
       .then((res) => {
         console.log(res.data, '유저 폰트')
         this.myFontList = res.data
-
       })
     },
     getUserStickers: function () {
@@ -235,6 +234,7 @@ export default {
   margin-top: 20px;
 }
 #Profile_img {
+  border-radius: 50px;
   width: 45px;
   height: 45px;
 }

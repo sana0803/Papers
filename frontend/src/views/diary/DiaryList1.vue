@@ -1,8 +1,12 @@
 <template>
   <div style="display: relative;">
     <div id="Line"></div>
-    <div v-if="noteList.length > 0">
-      <div id="diary-list-item" v-for="note in noteList" :key="note.noteId">
+    <div v-if="noteList.length > 0">    
+      <div      
+        id="diary-list-item"
+        v-for="note in viewList"
+        :key="note.noteId"
+      >
         <div id="diary-wrap">
           <div class="diary-content">
             <div class="diary-title-wrap">
@@ -82,7 +86,12 @@
     </div>
     <!-- 일기 페이지네이션 -->
     <div id="diary-pagination">
-      <v-pagination v-model="page" :length="5" class="page-sec"></v-pagination>
+      <v-pagination
+        v-model="page"
+        :length="Math.ceil(noteList.length/2)"
+        @input="change"
+        class="page-sec"
+      ></v-pagination>
     </div>
     <!-- Dialog -->
     <v-dialog v-model="dialog" persistent max-width="286">
@@ -115,6 +124,7 @@
         page: 1,
         dialog: false,
         noteList: [],
+        viewList: [],
         hashtagList: [],
         note: [],
         emotionReq: {
@@ -124,6 +134,22 @@
       };
     },
     methods: {
+      change(num){
+      var temp = 0
+        for(let i=1;i<this.noteList.length;i++){
+          if(i==num){
+            this.viewList = []
+            if(this.noteList.length>=temp+1){
+              this.viewList.push(this.noteList[temp])
+            }
+            if(this.noteList.length>=temp+2){
+              this.viewList.push(this.noteList[temp+1]) 
+            }
+            break
+          }
+          temp+=2
+        }
+      },
       clickHeart(noteId, isPress) {
         this.emotionReq.emotionInfoId = 1
         this.emotionReq.noteId = noteId
@@ -156,8 +182,8 @@
           .then(() => {
             this.$store.dispatch("getDiaryContent", this.currentDiary.id)
               .then((res) => {
-                console.log(res.data)
                 this.noteList = res.data.note.reverse();
+                this.change(this.page)
               })
           })
       },
@@ -166,8 +192,8 @@
           .then(() => {
             this.$store.dispatch("getDiaryContent", this.currentDiary.id)
               .then((res) => {
-                console.log(res.data)
                 this.noteList = res.data.note.reverse();
+                this.change(this.page)
               })
           })
       },
@@ -217,6 +243,15 @@
               .then((res) => {
                 console.log(res.data)
                 this.noteList = res.data.note.reverse();
+
+                this.page = 1
+                this.viewList = []
+                if(this.noteList.length>=1){
+                  this.viewList.push(this.noteList[0])
+                }
+                if(this.noteList.length>=2){
+                  this.viewList.push(this.noteList[1])
+                }
               })
             // this.$router.go()
           })
@@ -237,11 +272,13 @@
       console.log(this.currentDiary);
       this.$store.dispatch("getDiaryContent", this.currentDiary.id)
         .then((res) => {
-          console.log('--------------------')
-          console.log(this.currentDiary.id)
-          console.log(res.data.note[2].emotionStatusRes)
-          console.log('--------------------')
           this.noteList = res.data.note.reverse();
+          if(this.noteList.length>=1){
+            this.viewList.push(this.noteList[0])
+          }
+          if(this.noteList.length>=2){
+            this.viewList.push(this.noteList[1])
+          }
         })
     },
   };

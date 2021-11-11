@@ -6,16 +6,21 @@
     <div id="Diary_Header">
       <span style="font-size: 18px">{{currentDiary.diaryTitle}}</span>
       <!-- <span class="Header_txt">김싸피 </span> -->
-      <span
-        v-if="currentDiary.guest.length >= 0"
+      <span 
+        v-if="currentDiary.guest.length >= 0 && currentDiary.ownerId == loginUser.userId"
         class="guest-txt">
         ({{currentDiary.guest.length + 1}}명)
+      </span>
+      <span 
+        v-if="currentDiary.guest.length >= 0 && currentDiary.ownerId != loginUser.userId"
+        class="guest-txt">
+        ({{currentDiary.guest.length + 2}}명)
       </span>
       <span v-else></span>
     </div>
     <div id="Diary_Content">
       <div @click="goList" id="Diary_PostIt1">일기</div>
-      <div @click="goManage" id="Diary_PostIt2">관리</div>
+      <div v-if="currentDiary.ownerId == loginUser.userId" @click="goManage" id="Diary_PostIt2">관리</div>
       <v-icon @click="change" id="Diary_Btn" style="font-size: 2em"
         >widgets</v-icon
       >
@@ -38,6 +43,9 @@ export default {
     currentDiary() {
       return this.$store.getters.getCurrentDiary;
     },
+    loginUser() {
+      return this.$store.getters.getLoginUser;
+    }
   },
   data() {
     return {

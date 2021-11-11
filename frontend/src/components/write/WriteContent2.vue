@@ -6,18 +6,13 @@
         :items="diaryTitleList"
         label="일기장 선택"
       ></v-combobox>
-      <v-text-field
-        label="제목입력란"
-        color="#FFB319"
-        v-model="note.noteTitle"
-      ></v-text-field>
-      <v-textarea
-          solo
-          name="input-7-4"
-          rows="15"
-          label="내용입력란"
-          v-model="note.noteContent"
-        ></v-textarea>
+      <div id="in_title">
+        <textarea name="title" id="utitle" rows="1.5" cols="70" placeholder="제목을 입력하세요" maxlength="100" v-model="note.noteTitle" :style="{ 'font-family': getMyFont.fontUrl }"></textarea>
+      </div>
+      <div id="in_content">
+        <textarea name="content" id="ucontent" rows="19" cols="70" placeholder="내용을 입력하세요" v-model="note.noteContent" :style="{ 'font-family': getMyFont.fontUrl }">
+        </textarea>
+      </div>
       <v-file-input
         v-model="note.noteMediaList"
         multiple
@@ -46,6 +41,7 @@
 
 <script>
 import Swal from "sweetalert2";
+import { mapGetters } from 'vuex';
 
 export default {
   data() {
@@ -53,7 +49,7 @@ export default {
       diaryTitleList:[],
       diaryList:[],
       selectDiary:'',
-
+      myFont: '',
       note: {
         noteId: '',
         diaryId: '',
@@ -83,9 +79,10 @@ export default {
     loginUser() {
       return this.$store.getters.getLoginUser;
     },
-    currentDiary() {
-      return this.$store.getters.getCurrentDiary;
-    },
+    // fontSetting () {
+    //   return this.$store.getters['getMyFont'];
+    // }
+    ...mapGetters(['getMyFont'])
   },
   methods: {
     back() {
@@ -99,6 +96,8 @@ export default {
           break
         }
       }
+
+      console.log(this.getMyFont.id, '폰트아이디값')
       const tmp = this.note.noteHashtagList.split("#")
       const noteHashtagList = []
       for(let i=1;i<tmp.length;i++){
@@ -113,7 +112,7 @@ export default {
         formData.append('emotionList.emotionInfoId[]', this.note.emotionList[i].emotionInfoId)
         formData.append('emotionList.noteId[]', this.note.emotionList[i].noteId)
       }
-      formData.append('fontId', 1)
+      formData.append('fontId', this.getMyFont.id)
       formData.append('layoutId', this.note.layoutId)
       formData.append('noteContent', this.note.noteContent)
       formData.append('noteHashtagList', noteHashtagList)
@@ -166,20 +165,19 @@ export default {
     },
   },
   created() {
-      // 만약 수정하는 상태이면, state에 저장된 노트 컨텐츠들 가져오기
-      if(this.$store.getters['getIsUpdate'] == true) {
-        this.note = this.$store.getters['getNoteContent']
-        console.log(this.note)
+    // 만약 수정하는 상태이면, state에 저장된 노트 컨텐츠들 가져오기
+    if(this.$store.getters['getIsUpdate'] == true) {
+      this.note = this.$store.getters['getNoteContent']
+      console.log(this.note)
+    }
+    this.$store.dispatch("diaryGet").then((res) => {
+      const tmp = []
+      for(let i=0;i<res.data.length;i++) {
+        tmp[i] = res.data[i].diaryTitle
       }
-      this.$store.dispatch("diaryGet").then((res) => {
-        const tmp = []
-        for(let i=0;i<res.data.length;i++) {
-          tmp[i] = res.data[i].diaryTitle
-        }
-        this.diaryTitleList = tmp
-        this.diaryList = res.data
-      });
-      this.selectDiary = this.currentDiary.diaryTitle
+      this.diaryTitleList = tmp
+      this.diaryList = res.data
+    });
     }
 };
 </script>
@@ -217,5 +215,17 @@ export default {
   width: 70px;
   margin-left: 12px;
   box-shadow: none;
+}
+
+textarea {
+  letter-spacing: 1px;
+}
+
+textarea {
+  padding: 10px;
+  max-width: 100%;
+  line-height: 1.5;
+  border-radius: 5px;
+  border-bottom: 1px solid #ccc;
 }
 </style>
