@@ -22,7 +22,7 @@
       class="note_Item"
     >
       <div class="note_ImgBox">
-        <v-img class="note_Img" :src="note.noteMedia[0]" />
+        <v-img class="note_Img" :src="note.noteMediaList[0]" />
       </div>
       <div class="note-under">
         <span class="note_Name">{{ note.noteTitle }}</span>

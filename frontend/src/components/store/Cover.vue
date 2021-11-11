@@ -1,8 +1,18 @@
 <template>
   <div>
-    <div v-for="cover in coverList" :key="cover.id" class="MainList_Item"  @click="dialogOn(cover)">
-        <div v-if="cover.owned" style="position: absolute; background-color: white; margin: 10px;">소유 중</div>
-        <img :src="cover.coverUrl" style="width: 100%; height: 100%;"/>
+    <div
+      v-for="cover in coverList"
+      :key="cover.id"
+      class="MainList_Item"
+      @click="dialogOn(cover)"
+    >
+      <div
+        v-if="cover.owned"
+        style="position: absolute; background-color: white; margin: 10px"
+      >
+        소유 중
+      </div>
+      <img :src="cover.coverUrl" style="width: 100%; height: 100%" />
     </div>
 
     <v-dialog v-model="dialog" persistent max-width="600">
@@ -18,7 +28,7 @@
         <div id="Dialog_Content">
           <div id="Dialog_Title">
             <div id="Dialog_img">
-              <img :src ="cover.coverUrl" style="width: 100%; height: 100%;"/>
+              <img :src="cover.coverUrl" style="width: 100%; height: 100%" />
             </div>
             <div id="Dialog_Name">
               <div id="Name_Author">작가명 아무개</div>
@@ -51,16 +61,16 @@ export default {
   data() {
     return {
       dialog: false,
-      cover: '',
+      cover: "",
       coverList: [],
-    }
+    };
   },
   created() {
-    this.$store.dispatch('getDiaryCoverList').then((res) => {
-      console.log('hi')
+    this.$store.dispatch("getDiaryCoverList").then((res) => {
+      console.log("hi");
       console.log(res.data);
-      this.coverList = res.data;      
-    })
+      this.coverList = res.data;
+    });
   },
   methods: {
     dialogOn(cover) {
@@ -68,18 +78,20 @@ export default {
       this.dialog = true;
     },
     purchaseDiaryCover(cover) {
-      this.$store.dispatch('purchaseDiaryCover', cover.id).then(() => {
-        const loginUser = this.$store.getters['getLoginUser'];
-        loginUser.userMileage -= cover.coverPrice;
-        this.$store.commit('setLoginUser', loginUser);
-        this.dialog = false;
-        this.$router.go();
-      })
-      .catch(() => {
-        alert('이미 구매하셨거나 마일리지가 부족합니다.')
-      })
-    }
-  }
+      this.$store
+        .dispatch("purchaseDiaryCover", cover.id)
+        .then(() => {
+          const loginUser = this.$store.getters["getLoginUser"];
+          loginUser.userMileage -= cover.coverPrice;
+          this.$store.commit("setLoginUser", loginUser);
+          this.dialog = false;
+          this.$router.go();
+        })
+        .catch(() => {
+          alert("이미 구매하셨거나 마일리지가 부족합니다.");
+        });
+    },
+  },
 };
 </script>
 
@@ -140,7 +152,7 @@ export default {
   background: #b8dfd8;
 }
 #Dialog_Name {
-  display: inline-block;
+  /* display: inline-block; */
   /* width:200px; */
   width: 37%;
   height: 118px;

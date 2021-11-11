@@ -2,14 +2,14 @@
   <div id="MainList_Out">
     <v-btn
       v-if="mainListMode == 'list'"
-      id="Templete_Btn"
+      id="write-diary-btn"
       @click="goTemplete"
       fab
       dark
       large
       color="#FFB319"
     >
-      <v-icon dark> mdi-plus </v-icon>
+      <v-icon dark>mdi-plus</v-icon>
     </v-btn>
     <!-- <v-btn
             id="connection"
@@ -108,10 +108,11 @@ export default {
   width: 1272px;
   position: relative;
 }
-#Templete_Btn {
+#write-diary-btn {
   position: fixed;
   left: 77.2%;
-  top: 88%;
+  top: 86.3%;
+  box-shadow: none;
 }
 #MainList_Container {
   margin: 0 auto;

@@ -35,7 +35,7 @@
               <span>#{{ hashtag }}</span>
             </div>          
             <div class="diary-img-wrap">
-              <div v-if="note.noteMediaList.length > 2">
+              <div v-if="note.noteMediaList.length > 1">
                 <v-carousel
                   :show-arrows="true"
                   style="height:100%;">
@@ -409,6 +409,7 @@ export default {
   width: 886px;
   overflow: hidden;
   background-color: #eee;
+  margin-bottom: 20px;
 }
 // .page-sec {  
   // width: 100%;
