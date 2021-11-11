@@ -1,5 +1,5 @@
 <template>
-  <div id="Alert_Container">
+  <div id="alert-container">
     <div class="Alert_List">
       <p class="Alert_Day">오늘</p>      
       <div class="alert-list-item" v-for="notification in getNotifications" :key="notification.id" @click="readAlert(notification.id)">
@@ -119,14 +119,14 @@ export default {
 </script>
 
 <style scoped>
-#Alert_Container {
+#alert-container {
   padding-top: 44px;
   height: 100vh;
   /* overflow: auto; */
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
-#Alert_Container::-webkit-scrollbar {
+#alert-container::-webkit-scrollbar {
   display: none;
 }
 .Alert_List {

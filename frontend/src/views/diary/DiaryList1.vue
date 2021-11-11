@@ -374,9 +374,12 @@ export default {
 .diary-text {
   margin-bottom: 12px;
   // background-color: lightblue;
-  overflow: hidden;
+  overflow-y: scroll;
   max-height: 95px;
   line-height: 1.4;
+}
+.diary-text::-webkit-scrollbar {
+  display: none;
 }
 .diary-hashtag {
   display: inline-block;

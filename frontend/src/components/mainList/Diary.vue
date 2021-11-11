@@ -232,7 +232,7 @@ export default {
 .Diary_Img {
   width: 284px;
   height: 394px;
-  background: #fff;
+  background: peachpuff;
   box-shadow: 3px 3px 11px rgba(166, 166, 168, 0.35);
   cursor: pointer;
 }

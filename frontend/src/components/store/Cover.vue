@@ -1,15 +1,26 @@
 <template>
   <div>
-    <div v-for="cover in viewList" :key="cover.id" class="MainList_Item"  @click="dialogOn(cover)">
-        <div class="cover-check" v-if="cover.owned">보유중</div>
-        <img :src="cover.coverUrl" style="width: 100%; height: 100%;"/>
+    <div
+      v-for="cover in viewList"
+      :key="cover.id"
+      class="MainList_Item"
+      @click="dialogOn(cover)"
+    >
+      <div class="cover-check" v-if="cover.owned">보유중</div>
+      <div class="cover-img">
+        <img :src="cover.coverUrl" />
+      </div>
+      <div class="cover-title">
+        <span class="cover-name">{{ cover.coverName }}</span>
+        <span class="cover-price">{{ cover.coverPrice }}장</span>
+      </div>
     </div>
     <!-- 커버 페이지네이션 -->
     <div id="diary-pagination">
       <v-pagination
-        style="margin-bottom:30px;"
+        style="margin-bottom: 30px"
         v-model="page"
-        :length="Math.ceil(coverList.length/6)"
+        :length="Math.ceil(coverList.length / 6)"
         @input="change"
         class="page-sec"
       ></v-pagination>
@@ -60,37 +71,36 @@
 export default {
   data() {
     return {
-      page:1,
-      viewList:[],
+      page: 1,
+      viewList: [],
       dialog: false,
       cover: "",
       coverList: [],
     };
   },
   created() {
-    this.$store.dispatch('getDiaryCoverList').then((res) => {
-      this.coverList = res.data;  
-      
-      for(let i=0;i<6;i++){
-          if(this.coverList.length==i) 
-              break
-            this.viewList.push(this.coverList[i])
-        }
-    })
+    this.$store.dispatch("getDiaryCoverList").then((res) => {
+      this.coverList = res.data;
+      console.log(this.coverList);
+
+      for (let i = 0; i < 6; i++) {
+        if (this.coverList.length == i) break;
+        this.viewList.push(this.coverList[i]);
+      }
+    });
   },
   methods: {
     change(num) {
-      var temp = 0
-      for(let i=1;i<this.coverList.length;i++){
-        if(i==num){
-          this.viewList = []
-          for(let i=temp;i<temp+6;i++){
-            if(this.coverList.length==i)
-              break
-            this.viewList.push(this.coverList[i])
+      var temp = 0;
+      for (let i = 1; i < this.coverList.length; i++) {
+        if (i == num) {
+          this.viewList = [];
+          for (let i = temp; i < temp + 6; i++) {
+            if (this.coverList.length == i) break;
+            this.viewList.push(this.coverList[i]);
           }
         }
-        temp+=6
+        temp += 6;
       }
     },
     dialogOn(cover) {
@@ -115,17 +125,13 @@ export default {
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .MainList_Item {
   display: inline-block;
-  width: 284px;
-  height: 394px;
-  margin-bottom: 31px;
-  margin-left: 31px;
-  background: peachpuff;
-  box-shadow: 3px 3px 11px rgba(166, 166, 168, 0.25);
-  overflow: hidden;
-  position:relative;
+  width: 286px;
+  margin-bottom: 32px;
+  margin-left: 32px;
+  position: relative;
 }
 #Dialog {
   width: 650px;
@@ -194,6 +200,7 @@ export default {
   position: relative;
   top: -3px;
   font-size: 18px;
+  font-weight: 600;
   color: #ffb319;
 }
 #Name_Btn_Box {
@@ -207,16 +214,39 @@ export default {
   height: 32px;
   box-shadow: none;
 }
-.cover-check{
-  position:absolute;
+.cover-check {
+  position: absolute;
   background: #ffb319;
-  color:white;
-  font-weight:300;
+  color: white;
+  font-weight: 300;
   text-align: center;
-  line-height:30px;
-  width:50px;
-  height:30px;
-  top:10px;
-  left:10px;
+  line-height: 30px;
+  width: 60px;
+  height: 30px;
+  top: 12px;
+  left: 12px;
+  border-radius: 5px;
+}
+.cover-img {
+  width: 286px;
+  height: 394px;
+  background: rgb(199, 193, 188);
+  box-shadow: 3px 3px 11px rgba(166, 166, 168, 0.35);
+  overflow: hidden;
+  cursor: pointer;
+  img {
+    width: 100%;
+    height: 100%;
+  }
+}
+.cover-title {
+  margin-top: 19px;
+  font-size: 15px;
+}
+.cover-price {
+  float: right;
+  color: #ffb319;
+  font-weight: 600;
+  font-size: 15px;
 }
 </style>

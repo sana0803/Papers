@@ -1,24 +1,28 @@
 <template>
   <div id="WriteContent_Container">
     <div id="WriteContent_Templete">
-      <v-combobox
-        v-model="selectDiary"
-        :items="diaryTitleList"
-        label="일기장 선택"
-      ></v-combobox>
-      <div id="in_title">
+      <div class="select-diary-section">
+        <v-combobox
+          v-model="selectDiary"
+          :items="diaryTitleList"
+          label="일기장 선택"
+        ></v-combobox>
+      </div>
+      <div class="title-section">
         <textarea name="title" id="utitle" rows="1.5" cols="70" placeholder="제목을 입력하세요" maxlength="100" v-model="note.noteTitle" :style="{ 'font-family': getMyFont.fontUrl }"></textarea>
       </div>
-      <div id="in_content">
+      <div class="content-section">
         <textarea name="content" id="ucontent" rows="19" cols="70" placeholder="내용을 입력하세요" v-model="note.noteContent" :style="{ 'font-family': getMyFont.fontUrl }">
         </textarea>
       </div>
-      <v-file-input
-        v-model="note.noteMediaList"
-        multiple
-        small-chips
-        truncate-length="15"
-      ></v-file-input>
+      <div class="file-section">
+        <v-file-input
+          v-model="note.noteMediaList"
+          multiple
+          small-chips
+          truncate-length="15"
+        ></v-file-input>
+      </div>
     </div>
     <div>
       <div v-for="media in note.noteS3MediaList" :key="media">
@@ -186,13 +190,31 @@ export default {
 #WriteContent_Container {
   width: 530px;
   height: 854px;
+  background-color: #bbb;
 }
-#WriteContent_Templete {
+#WriteContent_Templete {  
+  background-color: peachpuff;
   height: 684px;
+  padding: 22px;
   box-shadow: 3px 3px 11px rgba(166, 166, 168, 0.25);
+}
+.select-diary-section {
+  background-color: burlywood;
+  margin: none;
+  padding: none;
+  input {
+    padding: none;
+  }
+}
+.title-section {
+  background-color: lightblue;
+}
+.content-section {
+  background-color: lemonchiffon;
 }
 #HashTag_Input {
   margin-top: 30px;
+  background-color: #eee;
 }
 #WriteContent_Btn {
   height: 38px;
