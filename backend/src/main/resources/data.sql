@@ -18,7 +18,7 @@ insert into font values (4, 'Y 너만을 비춤체', 80, 'Y_Spotlight') ON DUPLI
 -- 유저 폰트
 insert into user_font values (1, 3, 'test1') ON DUPLICATE KEY UPDATE id=1;
 insert into user_font values (2, 2, 'test1') ON DUPLICATE KEY UPDATE id=2;
-insert into user_font values (3, 3, 'test1') ON DUPLICATE KEY UPDATE id=3;
+insert into user_font values (3, 3, 'test2') ON DUPLICATE KEY UPDATE id=3;
 
 -- 스티커 패키지
 insert into sticker_package values (1, 'pack1', 50) ON DUPLICATE KEY UPDATE id=1;

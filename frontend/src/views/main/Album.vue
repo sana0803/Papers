@@ -11,10 +11,20 @@
         >
           전체
         </div>
+        <div
+          @click="select('make')"
+          style="color: #222; font-weight: 600"
+          class="Head_Item"
+        >
+          앨범 만들기
+        </div>
       </div>
       <div id="Album_Content">
         <div v-if="albumMode == 'all'">
           <All />
+        </div>
+        <div v-else-if="albumMode == 'make'">
+          <Make />
         </div>
       </div>
     </div>
@@ -23,6 +33,7 @@
 
 <script>
 import All from "../../components/album/AlbumAll.vue";
+import Make from "../../components/album/AlbumMake.vue"
 
 export default {
   data() {
@@ -32,24 +43,31 @@ export default {
   },
   components: {
     All,
+    Make
   },
   methods: {
     select(target) {
-      this.albumMode = target;
-      var tar = document.getElementById(target);
+      if (target == 'make') {
+        this.albumMode = target;
+      }
+      if (target == 'all') {
+        this.albumMode = target;
+        var tar = document.getElementById(target);
 
-      var arr = [document.getElementById("all")];
+        var arr = [document.getElementById("list")];
+        console.log(arr)
 
-      for (let i = 0; i < 1; i++) {
-        if (tar == arr[i]) {
-          arr[i].style.color = "#222";
-          arr[i].style.fontWeight = "600";
-        } else {
-          arr[i].style.color = "#9F9F9F";
-          arr[i].style.fontWeight = "400";
+        for (let i = 0; i < 1; i++) {
+          if (tar == arr[i]) {
+            arr[i].style.color = "#222";
+            arr[i].style.fontWeight = "600";
+          } else {
+            arr[i].style.color = "#9F9F9F";
+            arr[i].style.fontWeight = "400";
+          }
         }
       }
-    },
+    }
   },
 };
 </script>
