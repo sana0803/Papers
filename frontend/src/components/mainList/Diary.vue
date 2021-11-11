@@ -121,6 +121,8 @@ export default {
       };
       this.$store.dispatch("diaryCreate", diary).then((response) => { // 다이어리 생성
         this.currentCreateDiaryId = response.data.id;
+        this.$store.dispatch("diaryGet").then((res) => { // 다이어리 가져오기
+          this.diaryList = res.data.reverse();          
           let inviteAlarmPushUser = []
           this.selected.forEach(function (item) {
             if (item != null)
@@ -146,7 +148,7 @@ export default {
           });
       });
     },
-    memberSearch() {
+    memberSearch(){
       this.$store.dispatch('memberSearch', this.search)
         .then((res) => {
           this.memberList = res.data
@@ -160,6 +162,7 @@ export default {
   created() {
     this.$store.dispatch("diaryGet").then((res) => {
       this.diaryList = res.data.reverse();
+      console.log(res.data)
     });
   },
 };

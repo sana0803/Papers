@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div style="display: relative;">
     <div id="Line"></div>
     <div v-if="noteList.length > 0">    
       <div      
@@ -104,6 +104,14 @@
         일기 작성하러 가기 &nbsp;&nbsp;>
       </span>
     </div>
+    <!-- 일기 페이지네이션 -->
+    <div id="diary-pagination">
+      <v-pagination
+        v-model="page"
+        :length="5"
+        class="page-sec"
+      ></v-pagination>
+    </div>
     <!-- Dialog -->
     <v-dialog
       v-model="dialog"
@@ -147,6 +155,7 @@ import { mapState } from 'vuex';
 export default {
   data() {
     return {
+      page: 1,
       dialog: false,
       noteList: [],
       hashtagList: [],
@@ -312,9 +321,6 @@ export default {
   align-items: center;
   margin-bottom: 3px;
 }
-// .title-sec {
-//   background-color: #bbb;
-// }
 .diary-title {
   font-size: 20px;
   font-weight: 500;
@@ -396,6 +402,19 @@ export default {
     color: #ffb319;
   }
 }
+#diary-pagination {  
+  position: absolute;
+  left: auto;
+  bottom: -50px;
+  width: 886px;
+  overflow: hidden;
+  background-color: #eee;
+}
+// .page-sec {  
+  // width: 100%;
+  // height: 50px;
+  // background-color: #ffb319;
+// }
 #Dialog {
   height: 180px;
 }

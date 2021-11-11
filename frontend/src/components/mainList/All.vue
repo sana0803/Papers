@@ -4,7 +4,7 @@
     <div
       v-for="note in noteList"
       :key="note.id"
-      @click="detailNote(note)"
+      @click="goDetailNote(note)"
       class="note_Item"
     >    
       <div class="note_ImgBox">
@@ -26,16 +26,17 @@ export default {
     }
   },
   methods: {
-    detailNote(note) {
-      // this.$store.commit('setDiaryContent', diaryContent)      
-      // this.$router.push("/diary");
-      console.log(note)
+    goDetailNote(note) {
+      this.$store.dispatch("getDiaryContent", note.diaryId)
+      this.$store.commit('setNoteContent', note) // mutaion 호출 ('뮤테이션 이름, 매개변수)
+      this.$router.push("/diary");
+      console.log(note.diaryId)
     }
   },
   created() {
     this.$store.dispatch("noteGet").then((res) => {
       this.noteList = res.data.reverse();
-      console.log(this.noteList)
+      console.log(res.data)
     });
     // this.$store.dispatch("getDiaryContent", this.currentDiary.id)
     //   .then((res) => {
