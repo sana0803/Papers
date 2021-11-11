@@ -208,9 +208,16 @@ export function emotionConfirm({state}, emotionReq) {
 	return $axios.post(url, emotionReq, { headers: { Authorization: `Bearer ${userToken}` } } )
 }
 
-export function emotionCancel({state}, emotionReq) {
+export function emotionCancel({ state }, emotionReq) {
   console.log('감정 표현 취소 호출', state)
   const userToken = state.loginUser.userToken
   const url = baseUrl + '/note/emotion?emotionInfoId=' + emotionReq.emotionInfoId + '&noteId=' + emotionReq.noteId
-	return $axios.delete(url, { headers: { Authorization: `Bearer ${userToken}` } } )
+  return $axios.delete(url, { headers: { Authorization: `Bearer ${userToken}` } })
+}
+
+export function getS3ImageList({ state }, id) {
+  console.log('S3 이미지 목록 가져오기 호출')
+  const userToken = state.loginUser.userToken
+  const url = baseUrl + '/album/' + id
+  return $axios.get(url, { headers: { Authorization: `Bearer ${userToken}` } } )
 }
