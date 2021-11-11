@@ -41,7 +41,7 @@ export default {
   methods: {
     change(num) {
       var temp = 0
-      for(let i=1;i<this.mpteList.length;i++){
+      for(let i=1;i<this.noteList.length;i++){
         if(i==num){
           this.viewList = []
           for(let i=temp;i<temp+6;i++){
