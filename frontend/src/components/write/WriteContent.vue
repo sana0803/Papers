@@ -83,6 +83,9 @@ export default {
     loginUser() {
       return this.$store.getters.getLoginUser;
     },
+    currentDiary() {
+      return this.$store.getters.getCurrentDiary;
+    },
   },
   methods: {
     back() {
@@ -176,6 +179,7 @@ export default {
         this.diaryTitleList = tmp
         this.diaryList = res.data
       });
+      this.selectDiary = this.currentDiary.diaryTitle
     }
 };
 </script>

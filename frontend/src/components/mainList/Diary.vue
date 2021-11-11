@@ -95,8 +95,6 @@
 </template>
 
 <script>
-import Swal from "sweetalert2";
-
 export default {
   data() {
     return {
@@ -128,27 +126,20 @@ export default {
             if (item != null)
               inviteAlarmPushUser.push(item)
           })
+          alert('id : ' + this.currentCreateDiaryId)
           let share = {
           'diaryId': this.currentCreateDiaryId,
           'inviteList': inviteAlarmPushUser
           }
-          this.$store.dispatch("shareDiary", share).then(() => { // 다이어리 공유 요청 보내기
-                this.$store.dispatch("diaryGet").then((res) => {
-                this.diaryList = res.data.reverse()
-                this.dialog = false;
-                this.diaryTitle = "";
-                Swal.fire({
-                  icon: "success",
-                  title:
-                    '<span style="font-size:25px;">일기장이 생성되었습니다.</span>',
-                  confirmButtonColor: "#b0da9b",
-                  confirmButtonText: '<span style="font-size:18px;">확인</span>',
-                  })
-            })
+          this.$store.dispatch("shareDiary", share).then((res) => { // 다이어리 공유 요청 보내기
+            console.log(res)
           });
+        });
       });
+      this.dialog = false;
+      this.diaryTitle = "";
     },
-    memberSearch(){
+    memberSearch() {
       this.$store.dispatch('memberSearch', this.search)
         .then((res) => {
           this.memberList = res.data

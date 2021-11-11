@@ -4,7 +4,7 @@
     <div v-if="noteList.length > 0">    
       <div      
         id="diary-list-item"
-        v-for="note in noteList"
+        v-for="note in viewList"
         :key="note.noteId"
       >
         <div id="diary-wrap">
@@ -108,7 +108,8 @@
     <div id="diary-pagination">
       <v-pagination
         v-model="page"
-        :length="5"
+        :length="Math.ceil(noteList.length/2)"
+        @input="test"
         class="page-sec"
       ></v-pagination>
     </div>
@@ -158,11 +159,28 @@ export default {
       page: 1,
       dialog: false,
       noteList: [],
+      viewList: [],
       hashtagList: [],
       note: [],
     };
   },
   methods: {
+    test(num){
+      var temp = 0
+      for(let i=1;i<this.noteList.length;i++){
+        if(i==num){
+          this.viewList = []
+          if(this.noteList.length>=temp+1){
+            this.viewList.push(this.noteList[temp])
+          }
+          if(this.noteList.length>=temp+2){
+            this.viewList.push(this.noteList[temp+1]) 
+          }
+          break
+        }
+        temp+=2
+      }
+    },
     clickHeart() {},
     clickSmile() {},
     clickSad() {},
@@ -206,16 +224,26 @@ export default {
     onDeleteNote(id) {
       this.$store.dispatch("deleteNote", id)
       .then(() => {
-        console.log('일기 삭제')
         this.dialog = false;
         this.$store.dispatch("getDiaryContent", this.currentDiary.id)
-          .then((res) => {
-          console.log(res.data)      
+          .then((res) => {     
           this.noteList = res.data.note.reverse();
+          
+          this.page = 1
+          this.viewList = []
+          if(this.noteList.length>=1){
+            this.viewList.push(this.noteList[0])
+          }
+          if(this.noteList.length>=2){
+            this.viewList.push(this.noteList[1])
+          }
         })
         // this.$router.go()
       })
     },
+    change(page){
+      console.log(page)
+    }
   },
   computed: {
     currentDiary() {
@@ -232,8 +260,13 @@ export default {
     console.log(this.currentDiary);
     this.$store.dispatch("getDiaryContent", this.currentDiary.id)
       .then((res) => {
-        console.log(res.data)        
-        this.noteList = res.data.note.reverse();      
+        this.noteList = res.data.note.reverse();
+        if(this.noteList.length>=1){
+          this.viewList.push(this.noteList[0])
+        }
+        if(this.noteList.length>=2){
+          this.viewList.push(this.noteList[1])
+        }
       })
   },
 };
