@@ -74,7 +74,7 @@ export default {
 }
 #Diary_Header {
   margin-left: 175px;
-  margin-top: 45px;
+  margin-top: 40px;
 }
 .guest-txt {
   font-size: 16px;
@@ -86,7 +86,7 @@ export default {
   height: 687px;
   border: 1px solid white;
   margin: 0 auto;
-  margin-top: 45px;
+  margin-top: 25px;
   position: relative;
 }
 #Diary_PostIt1 {
