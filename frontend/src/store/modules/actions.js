@@ -200,3 +200,10 @@ export function purchaseDiaryCover({state}, id) {
   const url = baseUrl + '/store/diary-cover/?diaryCoverId=' + id;
 	return $axios.put(url, '', { headers: { Authorization: `Bearer ${userToken}` } } )
 }
+
+export function getS3ImageList({ state }, id) {
+  console.log('S3 이미지 목록 가져오기 호출')
+  const userToken = state.loginUser.userToken
+  const url = baseUrl + '/album/' + id
+  return $axios.get(url, { headers: { Authorization: `Bearer ${userToken}` } } )
+}
