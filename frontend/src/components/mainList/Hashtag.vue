@@ -53,21 +53,21 @@ export default {
       }
 
       this.$store.dispatch('searchHashtag', this.search).then((res) => {
-        if(res.data.length != 0){
-          this.listVisible = false
-        }else{
-          this.listVisible = true
-        }
+        // if(res.data.length != 0){
+        //   this.listVisible = false
+        // }else{
+        //   this.listVisible = true
+        // }
         this.noteList = res.data.reverse()
       })
     },
     clickHashtag(hashtag) {
       this.$store.dispatch('searchHashtag', hashtag).then((res) => {
-        if(res.data.length != 0){
-          this.listVisible = false
-        }else{
-          this.listVisible = true
-        }
+        // if(res.data.length != 0){
+        //   this.listVisible = false
+        // }else{
+        //   this.listVisible = true
+        // }
         this.noteList = res.data.reverse()
       })
     },
