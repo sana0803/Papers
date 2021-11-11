@@ -197,21 +197,22 @@ export default {
         'diaryId': this.currentDiary.id,
         'inviteList': this.selected
       }
-      this.$store.dispatch("shareDiary", share).then(() => { // 다이어리 공유 요청 보내기
-            for(let i=0; i<share.inviteList.length; i++) {
-              for(let j=0; j<this.memberList.length; j++) {
-                if(share.inviteList[i] == this.memberList[j].userId) {
-                  this.shareList.push(this.memberList[j])
-                }
-              }
-            }
-            Swal.fire({
-            icon: "success",
-            title:
-              '<span style="font-size:25px;">초대가 완료되었습니다.</span>',
-            confirmButtonColor: "#b0da9b",
-            confirmButtonText: '<span style="font-size:18px;">확인</span>',
-          });
+      this.$store.dispatch("shareDiary", share)
+        .then(() => { // 다이어리 공유 요청 보내기
+            this.$store.dispatch("getDiaryContent", this.currentDiary.id)
+              .then((res) => {
+                this.shareList = res.data.guest
+                this.memberList = []
+                this.search = ''
+                this.$store.commit('setCurrentDiary', res.data)
+                Swal.fire({
+                icon: "success",
+                title:
+                  '<span style="font-size:25px;">초대가 완료되었습니다.</span>',
+                confirmButtonColor: "#b0da9b",
+                confirmButtonText: '<span style="font-size:18px;">확인</span>',
+                })
+              })
         });
     },
     removeDialog(member){
@@ -227,17 +228,19 @@ export default {
       }
       this.$store.dispatch('memberRemove', remove)
         .then(() => {
-          var tmp = this.currentDiary.guest
-          for(let i=0;i<tmp.length;i++){
-            if(tmp[i].userId == remove.userId){
-              const idx = tmp.indexOf(tmp[i])
-              if(idx>-1) tmp.splice(idx,1)
-              break
-            }
-          }
-          this.currentDiary.guest = tmp
-          this.$store.commit('setCurrentDiary', this.currentDiary)
-          this.dialog = false
+          this.$store.dispatch("getDiaryContent", diaryId)
+            .then((res) => {
+              this.shareList = res.data.guest
+              this.$store.commit('setCurrentDiary', res.data)
+              this.dialog = false
+              Swal.fire({
+                icon: "success",
+                title:
+                  '<span style="font-size:25px;">추방이 완료되었습니다.</span>',
+                confirmButtonColor: "#b0da9b",
+                confirmButtonText: '<span style="font-size:18px;">확인</span>',
+                })
+            })
         })
     }
   },

@@ -97,6 +97,7 @@ export default {
     goTemplete() {
       this.$store.commit('initNoteContent')
       this.$store.commit('setIsUpdate', false)
+      this.$store.commit('setCurrentDiary', '')
       this.$router.push("/write");
     },
   },

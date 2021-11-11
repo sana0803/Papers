@@ -36,7 +36,7 @@ export default function () {
     
     const notifications = []
     
-    const myFontList = {}
+    const myFont = {}
 
     return {
       loginUser,
@@ -49,6 +49,6 @@ export default function () {
       notificationMessage,
       notificationUserImage,
       notifications,
-      myFontList
+      myFont
     }
 }
