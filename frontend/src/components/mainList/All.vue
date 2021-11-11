@@ -2,7 +2,7 @@
   <div>
     <!-- <div v-for="note in noteList" :key="note.id" class="MainList_Item">일기 하나임</div> -->
     <div
-      v-for="note in noteList"
+      v-for="note in viewList"
       :key="note.id"
       @click="goDetailNote(note)"
       class="note_Item"
@@ -15,6 +15,17 @@
         <span class="note_Day">{{ note.noteCreatedDate }}</span>
       </div>
     </div>
+
+    <!-- 일기 페이지네이션 -->
+    <div id="diary-pagination">
+      <v-pagination
+        style="margin-bottom:30px;"
+        v-model="page"
+        :length="Math.ceil(noteList.length/6)"
+        @input="change"
+        class="page-sec"
+      ></v-pagination>
+    </div>
   </div>
 </template>
 
@@ -22,21 +33,41 @@
 export default {
   data() {
     return{
-      noteList: []
+      noteList: [],
+      viewList: [],
+      page: 1
     }
   },
   methods: {
+    change(num) {
+      var temp = 0
+      for(let i=1;i<this.mpteList.length;i++){
+        if(i==num){
+          this.viewList = []
+          for(let i=temp;i<temp+6;i++){
+            if(this.noteList.length==i)
+              break
+            this.viewList.push(this.noteList[i])
+          }
+        }
+        temp+=6
+      }
+    },
     goDetailNote(note) {
       this.$store.dispatch("getDiaryContent", note.diaryId)
       this.$store.commit('setNoteContent', note) // mutaion 호출 ('뮤테이션 이름, 매개변수)
       this.$router.push("/diary");
-      console.log(note.diaryId)
     }
   },
   created() {
     this.$store.dispatch("noteGet").then((res) => {
       this.noteList = res.data.reverse();
-      console.log(res.data)
+
+      for(let i=0;i<6;i++){
+        if(this.noteList.length==i) 
+          break
+        this.viewList.push(this.noteList[i])
+      }
     });
     // this.$store.dispatch("getDiaryContent", this.currentDiary.id)
     //   .then((res) => {

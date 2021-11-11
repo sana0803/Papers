@@ -109,7 +109,7 @@
       <v-pagination
         v-model="page"
         :length="Math.ceil(noteList.length/2)"
-        @input="test"
+        @input="change"
         class="page-sec"
       ></v-pagination>
     </div>
@@ -165,7 +165,7 @@ export default {
     };
   },
   methods: {
-    test(num){
+    change(num){
       var temp = 0
       for(let i=1;i<this.noteList.length;i++){
         if(i==num){
@@ -240,9 +240,6 @@ export default {
         })
         // this.$router.go()
       })
-    },
-    change(page){
-      console.log(page)
     }
   },
   computed: {

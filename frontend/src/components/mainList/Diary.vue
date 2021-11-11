@@ -9,7 +9,7 @@
       </div>
     </div>
     <div
-      v-for="diary in diaryList"
+      v-for="diary in viewList"
       :key="diary.id"
       @click="goDiary(diary)"
       class="Diary_Item"
@@ -19,6 +19,16 @@
         <span class="Diary_Name">{{ diary.diaryTitle }}</span>
         <span class="Diary_Day">{{ diary.diaryCreatedDate }}</span>
       </div>
+    </div>
+    <!-- 일기장 페이지네이션 -->
+    <div id="diary-pagination">
+      <v-pagination
+        style="margin-bottom:30px;"
+        v-model="page"
+        :length="Math.ceil(diaryList.length/5)"
+        @input="change"
+        class="page-sec"
+      ></v-pagination>
     </div>
     <!-- Dialog -->
     <v-dialog v-model="dialog" persistent max-width="443">
@@ -98,9 +108,11 @@
 export default {
   data() {
     return {
+      page:1,
       dialog: false,
       diaryTitle: "",
       diaryList: [],
+      viewList:[],
       search: "",
       memberList: [],
       selected: [],
@@ -108,6 +120,20 @@ export default {
     };
   },
   methods: {
+    change(num) {
+      var temp = 0
+      for(let i=1;i<this.diaryList.length;i++){
+        if(i==num){
+          this.viewList = []
+          for(let i=temp;i<temp+5;i++){
+            if(this.diaryList.length==i)
+              break
+            this.viewList.push(this.diaryList[i])
+          }
+        }
+        temp+=5
+      }
+    },
     goDiary(diary) {
       this.$store.commit('setCurrentDiary', diary) // mutaion 호출 ('뮤테이션 이름, 매개변수)
       this.$router.push("/diary");
@@ -131,13 +157,19 @@ export default {
           'diaryId': this.currentCreateDiaryId,
           'inviteList': inviteAlarmPushUser
           }
-          this.$store.dispatch("shareDiary", share).then((res) => { // 다이어리 공유 요청 보내기
-            console.log(res)
+          this.$store.dispatch("shareDiary", share).then(() => { // 다이어리 공유 요청 보내기
+            this.dialog = false;
+            this.diaryTitle = "";
+            this.page = 1
+            this.viewList = []
+            for(let i=0;i<5;i++){
+              if(this.diaryList.length==i) 
+                break
+              this.viewList.push(this.diaryList[i])
+            }
           });
         });
       });
-      this.dialog = false;
-      this.diaryTitle = "";
     },
     memberSearch() {
       this.$store.dispatch('memberSearch', this.search)
@@ -153,7 +185,12 @@ export default {
   created() {
     this.$store.dispatch("diaryGet").then((res) => {
       this.diaryList = res.data.reverse();
-      console.log(res.data)
+      
+      for(let i=0;i<5;i++){
+        if(this.diaryList.length==i) 
+          break
+        this.viewList.push(this.diaryList[i])
+      }
     });
   },
 };
