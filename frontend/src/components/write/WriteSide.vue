@@ -65,35 +65,87 @@
         </v-btn>
       </div>
       <div id="Sticker_Content">
-        <div class="Sticker_Item">
-          <div class="Sticker_Img"></div>
-          <div class="Sticker_Name">초 귀요미 스티커팩</div>
+        <div v-for="stickerPackage in stickerPackageList" :key="stickerPackage.id" @click="dialogOn(stickerPackage)" class="Sticker_Item">
+          <div class="Sticker_Img">
+            <img :src="stickerPackage.stickerList[0].stickerUrl" style="width:100%; height:100%;" />
+          </div>
+          <div class="Sticker_Name">{{ stickerPackage.stickerPackageName }}</div>
         </div>
-        <div class="Sticker_Item">
-          <div class="Sticker_Img"></div>
-          <div class="Sticker_Name">초 귀요미 스티커팩</div>
+        <div v-for="stickerPackage in stickerPackageList" :key="stickerPackage.id" class="Sticker_Item">
+          <div class="Sticker_Img">
+            <img :src="stickerPackage.stickerList[0].stickerUrl" style="width:100%; height:100%;" />
+          </div>
+          <div class="Sticker_Name">{{ stickerPackage.stickerPackageName }}</div>
         </div>
-        <div class="Sticker_Item">
-          <div class="Sticker_Img"></div>
-          <div class="Sticker_Name">초 귀요미 스티커팩</div>
+        <div v-for="stickerPackage in stickerPackageList" :key="stickerPackage.id" class="Sticker_Item">
+          <div class="Sticker_Img">
+            <img :src="stickerPackage.stickerList[0].stickerUrl" style="width:100%; height:100%;" />
+          </div>
+          <div class="Sticker_Name">{{ stickerPackage.stickerPackageName }}</div>
         </div>
-        <div class="Sticker_Item">
-          <div class="Sticker_Img"></div>
-          <div class="Sticker_Name">초 귀요미 스티커팩</div>
+        <div v-for="stickerPackage in stickerPackageList" :key="stickerPackage.id" class="Sticker_Item">
+          <div class="Sticker_Img">
+            <img :src="stickerPackage.stickerList[0].stickerUrl" style="width:100%; height:100%;" />
+          </div>
+          <div class="Sticker_Name">{{ stickerPackage.stickerPackageName }}</div>
         </div>
-        <div class="Sticker_Item">
-          <div class="Sticker_Img"></div>
-          <div class="Sticker_Name">초 귀요미 스티커팩</div>
+        <div v-for="stickerPackage in stickerPackageList" :key="stickerPackage.id" class="Sticker_Item">
+          <div class="Sticker_Img">
+            <img :src="stickerPackage.stickerList[0].stickerUrl" style="width:100%; height:100%;" />
+          </div>
+          <div class="Sticker_Name">{{ stickerPackage.stickerPackageName }}</div>
         </div>
-        <div class="Sticker_Item">
-          <div class="Sticker_Img"></div>
-          <div class="Sticker_Name">초 귀요미 스티커팩</div>
-        </div>
-        <div class="Sticker_Item">
-          <div class="Sticker_Img"></div>
-          <div class="Sticker_Name">초 귀요미 스티커팩</div>
+        <div v-for="stickerPackage in stickerPackageList" :key="stickerPackage.id" class="Sticker_Item">
+          <div class="Sticker_Img">
+            <img :src="stickerPackage.stickerList[0].stickerUrl" style="width:100%; height:100%;" />
+          </div>
+          <div class="Sticker_Name">{{ stickerPackage.stickerPackageName }}</div>
         </div>
       </div>
+      <!-- Dialog -->
+    <v-dialog v-model="dialog" persistent max-width="500">
+      <v-card id="Dialog">
+        <div id="Dialog_Header">
+          <v-icon
+            @click="dialog = false"
+            id="Dialog_Close"
+            style="font-size: 2em"
+            >close</v-icon
+          >
+        </div>
+        <div id="Dialog_Content">
+          <div id="Dialog_Title">
+            <div id="Dialog_img">
+              <img :src="stickerList[0].stickerUrl" style="width: 80%; height: 80%; margin-top: 15px; margin-left: 15px;"/>
+            </div>
+            <div id="Dialog_Name">
+              <div id="Name_Author">작가명 아무개</div>
+              <div id="Name_Name">{{ stickerPackage.stickerPackageName }}</div>
+              <div id="Name_Price">{{ stickerPackage.stickerPackagePrice }}장</div>
+              <div id="Name_Btn_Box">
+                <v-btn
+                  style="background: #ffb319; color: white"
+                  class="Name_Btn"
+                  @click="purchageStickerPackage(stickerPackage)"
+                  >구매</v-btn
+                >
+                <v-btn
+                  @click="dialog = false"
+                  style="background: #9f9f9f; color: white"
+                  class="Name_Btn"
+                  >취소</v-btn
+                >
+              </div>
+            </div>
+          </div>
+          <div id="Dialog_List">
+            <div class="Dialog_Item" v-for="sticker in stickerList" :key="sticker.id">
+              <img :src="sticker.stickerUrl" style="width: 80%; height: 80%; margin-top: 10px; margin-left: 10px;"/>
+            </div>
+          </div>
+        </div>
+      </v-card>
+    </v-dialog>
     </div>
   </div>
 </template>
@@ -102,10 +154,22 @@
 export default {
   data () {
     return {
-      myFontList: []
+      dialog:false,
+      myFontList: [],
+      stickerPackageList:[],
+      stickerList: [{
+        id: 1,
+        stickerUrl: '',
+      }],
+      stickerPackage: '',
     }
   },
   methods: {
+    dialogOn(stickerPackage) {
+      this.stickerPackage = stickerPackage;
+      this.stickerList = stickerPackage.stickerList;
+      this.dialog = true;
+    },
     goStore() {
       this.$router.push("/main/store");
     },
@@ -116,6 +180,14 @@ export default {
         this.myFontList = res.data
       })
     },
+    getUserStickers: function () {
+      this.$store.dispatch("getUserStickers")
+      .then((res) => {
+        this.stickerPackageList = res.data
+        console.log(3123123123)
+        console.log(this.stickerPackageList)
+      })
+    },
     selectFont: function (font) {
       console.log('폰트 선택함', font)
       this.$store.commit("setMyFont", font)
@@ -123,6 +195,7 @@ export default {
   },
   created () {
     this.getUserFonts()
+    this.getUserStickers()
   }
 
 };
@@ -195,9 +268,11 @@ export default {
 }
 #Sticker_Content {
   height: 574px;
+  width:85%;
+  margin:0 auto;
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-evenly;
+  justify-content: space-between;
   overflow: auto;
   -ms-overflow-style: none;
   scrollbar-width: none;
@@ -209,6 +284,10 @@ export default {
   width: 150px;
   height: 230px;
   margin-top: 27px;
+  cursor: pointer;
+}
+.Sticker_Item:hover{
+  opacity: 0.7;
 }
 .Sticker_Img {
   width: 150px;
@@ -220,5 +299,80 @@ export default {
   text-align: center;
   margin: 0 auto;
   margin-top: 9px;
+}
+#Dialog {
+  height: 610px;
+}
+#Dialog_Header {
+  height: 42px;
+  border-bottom: 1px solid #e7e7e7;
+}
+#Dialog_Close {
+  float: right;
+  line-height: 42px;
+  cursor: pointer;
+  margin-right: 7px;
+}
+#Dialog_Content {
+  height: 568px;
+  padding: 34px 46px;
+}
+#Dialog_Title {
+  height: 118px;
+}
+#Dialog_List {
+  height: 306px;
+  margin-top: 55px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+}
+.Dialog_Item {
+  width: 100px;
+  height: 100px;
+  border-radius: 50px;
+  background: #fae7cb;
+  margin-right: 10px;
+  margin-left: 10px;
+}
+#Dialog_img {
+  display: inline-block;
+  width: 118px;
+  height: 118px;
+  border-radius: 100px;
+  background: #b8dfd8;
+}
+#Dialog_Name {
+  display: inline-block;
+  /* width:200px; */
+  height: 118px;
+  margin-left: 61px;
+  overflow: hidden;
+}
+#Name_Author {
+  color: #585858;
+  font-size: 14px;
+}
+#Name_Name {
+  font-size: 21px;
+  font-weight: 600;
+}
+#Name_Price {
+  position: relative;
+  top: -3px;
+  font-size: 18px;
+  color: #ffb319;
+}
+#Name_Btn_Box {
+  width: 164px;
+  height: 32px;
+  display: flex;
+  justify-content: space-between;
+}
+.Name_Btn {
+  width: 76px;
+  height: 32px;
+  box-shadow: none;
 }
 </style>
