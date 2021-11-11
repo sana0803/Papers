@@ -43,16 +43,16 @@ export default {
             this.$router.push('/main')
         },
         goAlbum() {
-            this.$router.push('album')
+            this.$router.push('/main/album')
         },
         goStore() {
-            this.$router.push('store')
+            this.$router.push('/main/store')
         },
         goAlert() {
-            this.$router.push('alert')
+            this.$router.push('/main/alert')
         },
         goMyPage() {
-            this.$router.push('myPage')
+            this.$router.push('/main/myPage')
         },
         logout() {
             this.$store.commit('setLoginUser', {})
