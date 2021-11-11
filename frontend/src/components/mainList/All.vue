@@ -27,9 +27,10 @@ export default {
   },
   methods: {
     goDetailNote(note) {
-      this.$store.commit('setDiaryContent', note) // mutaion 호출 ('뮤테이션 이름, 매개변수)
+      this.$store.dispatch("getDiaryContent", note.diaryId)
+      this.$store.commit('setNoteContent', note) // mutaion 호출 ('뮤테이션 이름, 매개변수)
       this.$router.push("/diary");
-      console.log(note)
+      console.log(note.diaryId)
     }
   },
   created() {

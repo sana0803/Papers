@@ -388,11 +388,11 @@ export default {
   overflow: hidden;
   background-color: #eee;
 }
-.page-sec {  
+// .page-sec {  
   // width: 100%;
   // height: 50px;
   // background-color: #ffb319;
-}
+// }
 #Dialog {
   height: 180px;
 }
