@@ -2,19 +2,19 @@
   <div id="Write_Container">
     <write-side />
     <div id="Write_Main">
-      <write-content />
+      <write-content-2 />
     </div>
   </div>
 </template>
 
 <script>
 import WriteSide from "../../components/write/WriteSide.vue";
-import WriteContent from "../../components/write/WriteContent.vue";
+import WriteContent2 from "../../components/write/WriteContent2.vue";
 
 export default {
   components: {
     WriteSide,
-    WriteContent,
+    WriteContent2,
   },
 };
 </script>

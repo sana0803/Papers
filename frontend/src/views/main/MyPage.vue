@@ -189,7 +189,6 @@ export default {
       .then((res) => {
         console.log(res.data, '유저 폰트')
         this.myFontList = res.data
-
       })
     },
     getUserStickers: function () {

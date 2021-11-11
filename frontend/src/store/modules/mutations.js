@@ -39,13 +39,15 @@ export function setNotifications(state, notifications) {
   state.notifications = notifications
 }
 
-export function setMyFontList(state, fontList) {
-  state.myFontList = fontList
+export function setMyFont(state, font) {
+  state.myFont = font
+  console.log('폰트 선택 뮤테이션 들어옴', font)
+}
+
   // export function setNoteContent(state, noteContent) {
   //   state.noteContent = noteContent
   // }
-}
-
+  
 export function setIsUpdate(state, isUpdate) {
   state.isUpdate = isUpdate
 }
