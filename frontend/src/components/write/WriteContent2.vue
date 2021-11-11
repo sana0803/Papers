@@ -141,6 +141,9 @@ export default {
             });
           // console.log(res.data);
           this.$store.commit('initNoteContent')
+          const loginUser = this.$store.getters['getLoginUser']
+          loginUser.userMileage += 10;
+          this.$store.commit('setLoginUser', loginUser);
           this.$router.push('/main')
         });
       }
