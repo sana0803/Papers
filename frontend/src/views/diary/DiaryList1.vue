@@ -29,28 +29,28 @@
             </div>
             <div
               class="diary-hashtag"
-              v-for="(hashtag, idx) in note.noteHashtag"
+              v-for="(hashtag, idx) in note.noteHashtagList"
               :key="idx"
             >
               <span>#{{ hashtag }}</span>
             </div>          
             <div class="diary-img-wrap">
-              <div v-if="note.noteMedia.length > 2">
+              <div v-if="note.noteMediaList.length > 2">
                 <v-carousel
                   :show-arrows="true"
                   style="height:100%;">
                   <v-carousel-item
-                    v-for="(img, i) in note.noteMedia"
+                    v-for="(img, i) in note.noteMediaList"
                     :key="i"
                     :src="img"
                     class="diary-content-img"
                   ></v-carousel-item>
                 </v-carousel>
               </div>
-              <div v-else-if="note.noteMedia.length == 0" >                
+              <div v-else-if="note.noteMediaList.length == 0" >                
               </div>
               <div v-else>
-                <img :src="note.noteMedia[0]" class="diary-content-img" alt="일기 사진" />
+                <img :src="note.noteMediaList[0]" class="diary-content-img" alt="일기 사진" />
               </div>
             </div>
           </div>
@@ -167,11 +167,33 @@ export default {
     clickSmile() {},
     clickSad() {},
     goWrite() {
+      this.$store.commit('initNoteContent')
+      this.$store.commit('setIsUpdate', false)
       this.$router.push("/write");
     },
     goUpdate(note) {
-      this.$store.commit('setNoteContent', note)
-      this.$router.push("/modify");
+      const localNote = {
+        noteId: note.noteId,
+        diaryId: note.diaryId,
+        fontId: note.fontId,
+        layoutId: 1,
+        designId: 1,
+        writerId: note.writerId,
+        noteTitle: note.noteTitle,
+        noteContent: note.noteContent,
+        noteS3MediaList: note.noteMediaList,
+        noteMediaList: [],
+        noteHashtagList: '#' + note.noteHashtagList[0],
+        stickerList: note.noteStickerList,
+        emotionList: note.emotionList
+      }
+      for(let i = 1; i < note.noteHashtagList.length; i++){
+        localNote.noteHashtagList += ('#' + note.noteHashtagList[i])
+      }
+      this.$store.commit('setNoteContent', localNote)
+      this.$store.commit('setIsUpdate', true)
+      this.$router.push("/write");
+      // this.$router.push("/modify");
       // this.$store.dispatch("modifyNote", this.currentDiary.id)
       // .then((res) => {
       //   console.log(res.data)

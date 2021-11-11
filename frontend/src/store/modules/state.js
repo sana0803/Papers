@@ -10,7 +10,23 @@ export default function () {
 
     const diaryContent = {}
 
-    const noteContent = {}
+  const noteContent = {
+      noteId: '',
+      diaryId: '',
+      fontId: '',
+      layoutId: 1,
+      designId: 1,
+      writerId: '',
+      noteTitle: '',
+      noteContent: '',
+      noteS3MediaList: [],
+      noteMediaList: [],
+      noteHashtagList: [],
+      stickerList: [],
+      emotionList: []
+  }
+  
+    let isUpdate = false
     
     const notificationState = false
   
@@ -19,6 +35,8 @@ export default function () {
     const notificationUserImage = ''
     
     const notifications = []
+    
+    const myFontList = {}
 
     return {
       loginUser,
@@ -26,9 +44,11 @@ export default function () {
       alarmEventSource,
       diaryContent,
       noteContent,
+      isUpdate,
       notificationState,
       notificationMessage,
       notificationUserImage,
       notifications,
+      myFontList
     }
 }

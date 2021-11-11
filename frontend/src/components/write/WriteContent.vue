@@ -9,25 +9,30 @@
       <v-text-field
         label="제목입력란"
         color="#FFB319"
-        v-model="noteTitle"
+        v-model="note.noteTitle"
       ></v-text-field>
       <v-textarea
           solo
           name="input-7-4"
           rows="15"
           label="내용입력란"
-          v-model="noteContent"
+          v-model="note.noteContent"
         ></v-textarea>
       <v-file-input
-        v-model="noteMedia"
+        v-model="note.noteMediaList"
         multiple
         small-chips
         truncate-length="15"
       ></v-file-input>
     </div>
+    <div>
+      <div v-for="media in note.noteS3MediaList" :key="media">
+        <img :src="media" style="width: 100px;"/>
+      </div>
+    </div>
     <div id="HashTag_Input">
       <v-text-field
-        v-model="noteHashtag"
+        v-model="note.noteHashtagList"
         label="#여기에 #해시태그를 #입력하세요"
         color="#FFB319"
       ></v-text-field>
@@ -48,18 +53,30 @@ export default {
       diaryTitleList:[],
       diaryList:[],
       selectDiary:'',
-      noteTitle:'',
-      noteContent:'',
-      noteHasgtag:'',
-      noteMedia:[],
-      noteHashtag:'',
-      stickerList: [
-          {
-            leftPixel: 1,
-            stickerId: 1,
-            topPixel: 1,
-          },
-        ],
+
+      note: {
+        noteId: '',
+        diaryId: '',
+        fontId: '',
+        layoutId: 1,
+        designId: 1,
+        writerId: '',
+        noteTitle: '',
+        noteContent: '',
+        noteS3MediaList: [],
+        noteMediaList: [],
+        noteHashtagList: '',
+        stickerList: [{
+          leftPixel: '',
+          stickerId: '',
+          topPixel: '',
+        }],
+        emotionList: [{
+          writerId: '',
+          emotionInfoId: '',
+          noteId: '',
+        }]
+      },
     }
   },
   computed: {
@@ -79,49 +96,78 @@ export default {
           break
         }
       }
-      const tmp = this.noteHashtag.split("#")
+      const tmp = this.note.noteHashtagList.split("#")
       const noteHashtagList = []
       for(let i=1;i<tmp.length;i++){
         noteHashtagList[i-1] = tmp[i]
       }
 
       const formData = new FormData()
-      formData.append('designId', 1)
+      formData.append('designId', this.note.designId)
       formData.append('diaryId', selectDiaryId)
-      formData.append('emotionList.writerId[]', '')
-      formData.append('emotionList.emotionInfoId[]', '')
-      formData.append('emotionList.noteId[]', '')
+      for(let i = 0; i < this.note.emotionList.length; i++){
+        formData.append('emotionList.writerId[]', this.note.emotionList[i].writerId)
+        formData.append('emotionList.emotionInfoId[]', this.note.emotionList[i].emotionInfoId)
+        formData.append('emotionList.noteId[]', this.note.emotionList[i].noteId)
+      }
       formData.append('fontId', 1)
-      formData.append('layoutId', 1)
-      formData.append('noteContent', this.noteContent)
+      formData.append('layoutId', this.note.layoutId)
+      formData.append('noteContent', this.note.noteContent)
       formData.append('noteHashtagList', noteHashtagList)
-      formData.append('noteS3MediaList[]', null)
-      for(let i = 0; i < this.noteMedia.length; i++){
-        formData.append('noteMediaList[]', this.noteMedia[i])  
+      for(let i = 0; i < this.note.noteS3MediaList.length; i++){
+        formData.append('noteS3MediaList[]', this.note.noteS3MediaList[i])
+      }      
+      for(let i = 0; i < this.note.noteMediaList.length; i++){
+        formData.append('noteMediaList[]', this.note.noteMediaList[i])  
       }
-      formData.append('noteTitle', this.noteTitle)
-      
-      for(let i = 0; i < this.stickerList.length; i++){
-        formData.append('stickerList.leftPixel[]', this.stickerList[i].leftPixel)
-        formData.append('stickerList.stickerId[]', this.stickerList[i].stickerId)
-        formData.append('stickerList.topPixel[]', this.stickerList[i].topPixel)
-      }
-      
+      formData.append('noteTitle', this.note.noteTitle)      
+      for(let i = 0; i < this.note.stickerList.length; i++){
+        formData.append('stickerList.leftPixel[]', this.note.stickerList[i].leftPixel)
+        formData.append('stickerList.stickerId[]', this.note.stickerList[i].stickerId)
+        formData.append('stickerList.topPixel[]', this.note.stickerList[i].topPixel)
+      }      
       formData.append('writerId', this.loginUser.userNickname)
 
-      this.$store.dispatch("write", formData).then(() => {
-        Swal.fire({
-            icon: "success",
-            title:
-              '<span style="font-size:25px;">일기 작성 완료.</span>',
-            confirmButtonColor: "#b0da9b",
-            confirmButtonText: '<span style="font-size:18px;">확인</span>',
-          });
-        this.$router.push('/main')
-      });
+      if(this.$store.getters['getIsUpdate'] == false){
+        this.$store.dispatch("write", formData).then(() => {
+          Swal.fire({
+              icon: "success",
+              title:
+                '<span style="font-size:25px;">일기 작성 완료.</span>',
+              confirmButtonColor: "#b0da9b",
+              confirmButtonText: '<span style="font-size:18px;">확인</span>',
+            });
+          // console.log(res.data);
+          this.$store.commit('initNoteContent')
+          this.$router.push('/main')
+        });
+      }
+      else if(this.$store.getters['getIsUpdate'] == true) {
+        const note = {
+          noteId: this.note.noteId,
+          formData : formData
+        }
+        this.$store.dispatch("modifyNote", note).then(() => {
+          Swal.fire({
+              icon: "success",
+              title:
+                '<span style="font-size:25px;">일기 수정 완료.</span>',
+              confirmButtonColor: "#b0da9b",
+              confirmButtonText: '<span style="font-size:18px;">확인</span>',
+            });
+          // console.log(res.data);
+          this.$store.commit('initNoteContent')
+          this.$router.push('/main')
+        });
+      }
     },
   },
   created() {
+      // 만약 수정하는 상태이면, state에 저장된 노트 컨텐츠들 가져오기
+      if(this.$store.getters['getIsUpdate'] == true) {
+        this.note = this.$store.getters['getNoteContent']
+        console.log(this.note)
+      }
       this.$store.dispatch("diaryGet").then((res) => {
         const tmp = []
         for(let i=0;i<res.data.length;i++) {
@@ -130,7 +176,7 @@ export default {
         this.diaryTitleList = tmp
         this.diaryList = res.data
       });
-    } 
+    }
 };
 </script>
 
