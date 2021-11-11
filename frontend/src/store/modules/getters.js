@@ -30,6 +30,10 @@ export function getNotifications(state) {
   return state.notifications
 }
 
+export function getMyFontList(state) {
+  return state.myFontList
+}
+
 export function getNoteContent(state) {
   return state.noteContent
 }
