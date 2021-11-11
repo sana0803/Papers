@@ -5,16 +5,15 @@ import com.diary.api.db.repository.*;
 import com.diary.api.request.DiaryInviteReq;
 import com.diary.api.request.DiaryReq;
 import com.diary.api.request.NotificationReq;
-import com.diary.api.response.DiaryRes;
-import com.diary.api.response.NoteRes;
-import com.diary.api.response.NotificationDetailRes;
-import com.diary.api.response.UserSearchRes;
+import com.diary.api.response.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static org.reflections.Reflections.log;
 
@@ -139,7 +138,30 @@ public class DiaryServiceImpl implements DiaryService {
         for (Note note: notes) {
             NoteRes noteRes = new NoteRes(note);
             noteRes.setNoteStickerList(noteRepositorySupport.getNoteStickers(note.getId()).get());
-            noteRes.setEmotionList(noteRepositorySupport.getNoteEmotions(note.getId()).get());
+
+            Map<String, Integer> emotionMap = new HashMap<>();
+            emotionMap.put("좋아요" ,0);
+            emotionMap.put("웃겨요" ,0);
+            emotionMap.put("슬퍼요" ,0);
+            boolean isPressLike, isPressFunny, isPressSad;
+            isPressLike = isPressFunny = isPressSad = false;
+            for (Emotion e : noteRepositorySupport.getNoteEmotions(note.getId()).get()) {
+                String type = e.getEmotionInfo().getEmotionName();
+                int val = emotionMap.get(type);
+                emotionMap.put(type, val + 1);
+
+                if (user.getUserId().equals(e.getUser().getUserId())) {
+                    if (type.equals("좋아요")) {
+                        isPressLike = true;
+                    } else if (type.equals("웃겨요")) {
+                        isPressFunny = true;
+                    } else if (type.equals("슬퍼요")) {
+                        isPressSad = true;
+                    }
+                }
+            }
+            noteRes.setEmotionStatusRes(EmotionStatusRes.of(emotionMap, isPressLike, isPressFunny, isPressSad));
+//            noteRes.setEmotionList(noteRepositorySupport.getNoteEmotions(note.getId()).get());
             noteRes.setNoteHashtagList(noteRepositorySupport.getNoteHashtags(note.getId()).get());
             noteRes.setNoteMediaList(noteRepositorySupport.getNoteMedias(note.getId()).get());
             noteResList.add(noteRes);

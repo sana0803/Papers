@@ -38,22 +38,22 @@ export default {
     },
     methods: {
         goHome() {
-            this.$router.push('/main')
+            this.$router.push('/main').catch((err) => {if(err.name !== 'NavigationDuplicated') throw err; });
         },
         goDiary() {
-            this.$router.push('/main')
+            this.$router.push('/main').catch((err) => {if(err.name !== 'NavigationDuplicated') throw err; });
         },
         goAlbum() {
-            this.$router.push('album')
+            this.$router.push('/main/album')
         },
         goStore() {
-            this.$router.push('store')
+            this.$router.push('/main/store')
         },
         goAlert() {
-            this.$router.push('alert')
+            this.$router.push('/main/alert')
         },
         goMyPage() {
-            this.$router.push('myPage')
+            this.$router.push('/main/myPage')
         },
         logout() {
             this.$store.commit('setLoginUser', {})

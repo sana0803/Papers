@@ -177,10 +177,13 @@ public class NoteController {
             @ApiResponse(code = 200, message = "감정표현 취소 성공"),
             @ApiResponse(code = 500, message = "감정표현 취소 중 오류발생")
     })
-    public ResponseEntity<? extends BaseResponseBody> deleteNoteEmotion(@ApiIgnore Authentication authentication, @RequestBody NoteEmotionReq emotionReq){
+    public ResponseEntity<? extends BaseResponseBody> deleteNoteEmotion(@ApiIgnore Authentication authentication, @RequestParam Long emotionInfoId, @RequestParam Long noteId){
         User user = JwtTokenUtil.getUser(authentication, userService);
         if (user == null) return ResponseEntity.status(401).body(BaseResponseBody.of(401, "잘못된 토큰"));
+        NoteEmotionReq emotionReq = new NoteEmotionReq();
         emotionReq.setWriterId(user.getUserId());
+        emotionReq.setNoteId(noteId);
+        emotionReq.setEmotionInfoId(emotionInfoId);
         if(noteService.deleteNoteEmotion(emotionReq)) return ResponseEntity.status(200).body(BaseResponseBody.of(200, "감정취소 성공"));
         else return ResponseEntity.status(500).body(BaseResponseBody.of(500, "감정 취소 중 오류 발생"));
     }

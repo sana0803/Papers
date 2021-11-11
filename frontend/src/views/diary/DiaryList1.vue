@@ -12,6 +12,8 @@
             <div class="diary-title-wrap">
               <div class="title-sec">
                 <span class="diary-title">{{ note.noteTitle }}</span>
+                <br>
+                <span class="diary-title">{{ note.noteId }}</span>
               </div>
               <div class="date-sec">
                 <span class="diary-writer">{{ note.writerNickName}}</span>
@@ -22,18 +24,12 @@
             </div>
             <div id="horizon-line"></div>
             <div class="diary-text">
-              <span
-                >{{ note.noteContent }}
-                </span
-              >
+              <span>{{ note.noteContent }}
+              </span>
             </div>
-            <div
-              class="diary-hashtag"
-              v-for="(hashtag, idx) in note.noteHashtagList"
-              :key="idx"
-            >
+            <div class="diary-hashtag" v-for="(hashtag, idx) in note.noteHashtagList" :key="idx">
               <span>#{{ hashtag }}</span>
-            </div>          
+            </div>
             <div class="diary-img-wrap">
               <div v-if="note.noteMediaList.length > 1">
                 <v-carousel
@@ -47,7 +43,7 @@
                   ></v-carousel-item>
                 </v-carousel>
               </div>
-              <div v-else-if="note.noteMediaList.length == 0" >                
+              <div v-else-if="note.noteMediaList.length == 0">
               </div>
               <div v-else>
                 <img :src="note.noteMediaList[0]" class="diary-content-img" alt="일기 사진" />
@@ -57,47 +53,37 @@
           <div class="diary-emotion">
             <div class="emotion-left">
               <div class="emo-item">
-                <v-icon @click="clickHeart" class="emo-icon"
-                  >favorite_border</v-icon
-                >
+                <v-icon @click="clickHeart(note.noteId, note.emotionStatusRes.pressLike)" class="emo-icon" :class="{ 'like-clicked' : note.emotionStatusRes.pressLike }">favorite_border</v-icon>
                 <div class="emotion-cnt">
-                  <span>2</span>
+                  <span>{{note.emotionStatusRes.likeEmotionCount}}</span>
                 </div>
               </div>
               <div class="emo-item">
-                <v-icon @click="clickSmile" class="emo-icon"
-                  >sentiment_very_satisfied</v-icon
-                >
+                <v-icon @click="clickSmile(note.noteId, note.emotionStatusRes.pressFunny)" class="emo-icon" :class="{ 'funny-clicked' : note.emotionStatusRes.pressFunny }">sentiment_very_satisfied</v-icon>
                 <div class="emotion-cnt">
-                  <span>3</span>
+                  <span>{{note.emotionStatusRes.funnyEmotionCount}}</span>
                 </div>
               </div>
               <div class="emo-item">
-                <v-icon @click="clickSad" class="emo-icon"
-                  >sentiment_dissatisfied</v-icon
-                >
+                <v-icon @click="clickSad(note.noteId, note.emotionStatusRes.pressSad)" class="emo-icon" :class="{ 'sad-clicked' : note.emotionStatusRes.pressSad }">sentiment_dissatisfied</v-icon>
                 <div class="emotion-cnt">
-                  <span>0</span>
+                  <span>{{note.emotionStatusRes.sadEmotionCount}}</span>
                 </div>
               </div>
             </div>
-            <div class="emotion-right"
-              v-if="note.writerId == loginUser.userId"
-            >
+            <div class="emotion-right" v-if="note.writerId == loginUser.userId">
               <span @click="goUpdate(note)">수정</span>
-              <span @click="onDialog(note)">삭제</span>            
+              <span @click="onDialog(note)">삭제</span>
             </div>
-            <div class="emotion-right"
-              v-else
-            >
+            <div class="emotion-right" v-else>
             </div>
           </div>
-        </div>    
+        </div>
       </div>
     </div>
     <div v-else id="diary-empty">
       <div>
-        <img src="../../assets/image/paper.png" style="width:90px; margin-bottom:24px;"/>
+        <img src="../../assets/image/paper.png" style="width:90px; margin-bottom:24px;" />
       </div>
       <span>아직 작성한 일기가 없는 것 같아요.</span> <br>
       <span class="go-write-btn" @click="goWrite()">
@@ -114,36 +100,19 @@
       ></v-pagination>
     </div>
     <!-- Dialog -->
-    <v-dialog
-      v-model="dialog"
-      persistent max-width="286"        
-    >
+    <v-dialog v-model="dialog" persistent max-width="286">
       <v-card id="Dialog">
         <div id="Dialog_Header">
-          <v-icon
-            @click="dialog = false"
-            id="Dialog_Close"
-            style="font-size: 1.5em"
-            >close</v-icon
-          >
+          <v-icon @click="dialog = false" id="Dialog_Close" style="font-size: 1.5em">close</v-icon>
         </div>
         <div id="Dialog_Content">
           <div id="Dialog_Text">
             일기를 <span style="color: #ffb319">삭제</span>하시겠습니까?
           </div>
           <div id="Dialog_Btn_Box">
-            <v-btn
-            @click="onDeleteNote(note.noteId)"
-            style="background: #ffb319; color: white"
-            class="Dialog_Btn"
-              >삭제</v-btn
-            >
-            <v-btn
-              @click="dialog = false"
-              style="background: #9f9f9f; color: white"
-              class="Dialog_Btn"
-              >취소</v-btn
-            >
+            <v-btn @click="onDeleteNote(note.noteId)" style="background: #ffb319; color: white" class="Dialog_Btn">삭제
+            </v-btn>
+            <v-btn @click="dialog = false" style="background: #9f9f9f; color: white" class="Dialog_Btn">취소</v-btn>
           </div>
         </div>
       </v-card>
@@ -152,85 +121,164 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
-export default {
-  data() {
-    return {
-      page: 1,
-      dialog: false,
-      noteList: [],
-      viewList: [],
-      hashtagList: [],
-      note: [],
-    };
-  },
-  methods: {
-    change(num){
+  import {
+    mapState
+  } from 'vuex';
+  export default {
+    data() {
+      return {
+        page: 1,
+        dialog: false,
+        noteList: [],
+        viewList: [],
+        hashtagList: [],
+        note: [],
+        emotionReq: {
+          "emotionInfoId": 0,
+          "noteId": 0,
+        },
+      };
+    },
+    methods: {
+      change(num){
       var temp = 0
-      for(let i=1;i<this.noteList.length;i++){
-        if(i==num){
-          this.viewList = []
-          if(this.noteList.length>=temp+1){
-            this.viewList.push(this.noteList[temp])
+        for(let i=1;i<=this.noteList.length;i++){
+          if(i==num){
+            this.viewList = []
+            if(this.noteList.length>=temp+1){
+              this.viewList.push(this.noteList[temp])
+            }
+            if(this.noteList.length>=temp+2){
+              this.viewList.push(this.noteList[temp+1]) 
+            }
+            break
           }
-          if(this.noteList.length>=temp+2){
-            this.viewList.push(this.noteList[temp+1]) 
-          }
-          break
+          temp+=2
         }
-        temp+=2
-      }
+      },
+      clickHeart(noteId, isPress) {
+        this.emotionReq.emotionInfoId = 1
+        this.emotionReq.noteId = noteId
+        if (!isPress) {
+          this.emotionConfirm()
+        } else {
+          this.emotionCancel()
+        }
+      },
+      clickSmile(noteId, isPress) {
+        this.emotionReq.emotionInfoId = 2
+        this.emotionReq.noteId = noteId
+        if (!isPress) {
+          this.emotionConfirm()
+        } else {
+          this.emotionCancel()
+        }
+      },
+      clickSad(noteId, isPress) {
+        this.emotionReq.emotionInfoId = 3
+        this.emotionReq.noteId = noteId
+        if (!isPress) {
+          this.emotionConfirm()
+        } else {
+          this.emotionCancel()
+        }
+      },
+      emotionConfirm() {
+        this.$store.dispatch("emotionConfirm", this.emotionReq)
+          .then(() => {
+            this.$store.dispatch("getDiaryContent", this.currentDiary.id)
+              .then((res) => {
+                this.noteList = res.data.note.reverse();
+                this.change(this.page)
+              })
+          })
+      },
+      emotionCancel() {
+        this.$store.dispatch("emotionCancel", this.emotionReq)
+          .then(() => {
+            this.$store.dispatch("getDiaryContent", this.currentDiary.id)
+              .then((res) => {
+                this.noteList = res.data.note.reverse();
+                this.change(this.page)
+              })
+          })
+      },
+      goWrite() {
+        this.$store.commit('initNoteContent')
+        this.$store.commit('setIsUpdate', false)
+        this.$router.push("/write");
+      },
+      goUpdate(note) {
+        const localNote = {
+          noteId: note.noteId,
+          diaryId: note.diaryId,
+          fontId: note.fontId,
+          layoutId: 1,
+          designId: 1,
+          writerId: note.writerId,
+          noteTitle: note.noteTitle,
+          noteContent: note.noteContent,
+          noteS3MediaList: note.noteMediaList,
+          noteMediaList: [],
+          noteHashtagList: '#' + note.noteHashtagList[0],
+          stickerList: note.noteStickerList,
+          emotionList: note.emotionList
+        }
+        for (let i = 1; i < note.noteHashtagList.length; i++) {
+          localNote.noteHashtagList += ('#' + note.noteHashtagList[i])
+        }
+        this.$store.commit('setNoteContent', localNote)
+        this.$store.commit('setIsUpdate', true)
+        this.$router.push("/write");
+        // this.$router.push("/modify");
+        // this.$store.dispatch("modifyNote", this.currentDiary.id)
+        // .then((res) => {
+        //   console.log(res.data)
+        // })
+      },
+      onDialog(note) {
+        this.note = note;
+        this.dialog = true;
+      },
+      onDeleteNote(id) {
+        this.$store.dispatch("deleteNote", id)
+          .then(() => {
+            console.log('일기 삭제')
+            this.dialog = false;
+            this.$store.dispatch("getDiaryContent", this.currentDiary.id)
+              .then((res) => {
+                console.log(res.data)
+                this.noteList = res.data.note.reverse();
+
+                this.page = 1
+                this.viewList = []
+                if(this.noteList.length>=1){
+                  this.viewList.push(this.noteList[0])
+                }
+                if(this.noteList.length>=2){
+                  this.viewList.push(this.noteList[1])
+                }
+              })
+            // this.$router.go()
+          })
+      },
     },
-    clickHeart() {},
-    clickSmile() {},
-    clickSad() {},
-    goWrite() {
-      this.$store.commit('initNoteContent')
-      this.$store.commit('setIsUpdate', false)
-      this.$router.push("/write");
+    computed: {
+      currentDiary() {
+        return this.$store.getters.getCurrentDiary;
+      },
+      loginUser() {
+        return this.$store.getters.getLoginUser;
+      },
+      ...mapState([
+        'loginUser'
+      ]),
     },
-    goUpdate(note) {
-      const localNote = {
-        noteId: note.noteId,
-        diaryId: note.diaryId,
-        fontId: note.fontId,
-        layoutId: 1,
-        designId: 1,
-        writerId: note.writerId,
-        noteTitle: note.noteTitle,
-        noteContent: note.noteContent,
-        noteS3MediaList: note.noteMediaList,
-        noteMediaList: [],
-        noteHashtagList: '#' + note.noteHashtagList[0],
-        stickerList: note.noteStickerList,
-        emotionList: note.emotionList
-      }
-      for(let i = 1; i < note.noteHashtagList.length; i++){
-        localNote.noteHashtagList += ('#' + note.noteHashtagList[i])
-      }
-      this.$store.commit('setNoteContent', localNote)
-      this.$store.commit('setIsUpdate', true)
-      this.$router.push("/write");
-      // this.$router.push("/modify");
-      // this.$store.dispatch("modifyNote", this.currentDiary.id)
-      // .then((res) => {
-      //   console.log(res.data)
-      // })
-    },
-    onDialog(note) {
-      this.note = note;
-      this.dialog = true;
-    },
-    onDeleteNote(id) {
-      this.$store.dispatch("deleteNote", id)
-      .then(() => {
-        this.dialog = false;
-        this.$store.dispatch("getDiaryContent", this.currentDiary.id)
-          .then((res) => {     
+    created() {
+      console.log(this.currentDiary);
+      this.$store.dispatch("getDiaryContent", this.currentDiary.id)
+        .then((res) => {
           this.noteList = res.data.note.reverse();
-          
-          this.page = 1
-          this.viewList = []
           if(this.noteList.length>=1){
             this.viewList.push(this.noteList[0])
           }
@@ -238,35 +286,8 @@ export default {
             this.viewList.push(this.noteList[1])
           }
         })
-        // this.$router.go()
-      })
-    }
-  },
-  computed: {
-    currentDiary() {
-      return this.$store.getters.getCurrentDiary;
     },
-    loginUser() {
-      return this.$store.getters.getLoginUser;
-    },
-    ...mapState([
-      'loginUser'
-    ]),
-  },
-  created() {
-    console.log(this.currentDiary);
-    this.$store.dispatch("getDiaryContent", this.currentDiary.id)
-      .then((res) => {
-        this.noteList = res.data.note.reverse();
-        if(this.noteList.length>=1){
-          this.viewList.push(this.noteList[0])
-        }
-        if(this.noteList.length>=2){
-          this.viewList.push(this.noteList[1])
-        }
-      })
-  },
-};
+  };
 </script>
 
 <style lang="scss" scoped>
@@ -277,20 +298,24 @@ export default {
   top: 71px;
   left: 461px;
 }
+
 #horizon-line {
   width: 100%;
   border-bottom: 1px solid #ccc;
   margin-bottom: 8px;
 }
+
 #diary-empty {
   width: 50%;
   font-size: 18px;
   text-align: center;
   margin-top: 140px;
+
   // background-color: #ffb319;
   span {
     color: #444;
   }
+
   .go-write-btn {
     display: inline-block;
     position: relative;
@@ -303,6 +328,7 @@ export default {
     font-weight: 600;
     // background-color: #eee;
   }
+
   .go-write-btn:after {
     position: absolute;
     content: '';
@@ -314,15 +340,121 @@ export default {
     // border-bottom: 1px solid #ffb319;
     transition: .25s;
   }
+
   .go-write-btn:hover {
     // border-bottom: 1px solid #ffb319;
     transition: .25s;
   }
+
   .go-write-btn:hover:after {
     width: 100%;
     left: 0;
   }
 }
+
+#diary-list-item {
+  float: left;
+}
+
+#diary-list-item::after {
+  // content: '';
+  clear: both;
+  display: block;
+}
+
+#diary-wrap {
+  width: 371px;
+  height: 538px;
+  margin: 36px 36px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.diary-content {
+  // min-height: 480px;
+  max-height: 485px;
+  // background-color: green;
+  overflow: hidden;
+}
+
+.diary-title-wrap {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 3px;
+}
+
+.diary-title {
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 1.2;
+}
+
+.date-sec {
+  // background-color: aquamarine;
+  // margin-left: 3px;
+  min-width: 50px;
+  text-align: right;
+}
+
+.diary-writer {
+  // color: #aaa;
+  font-size: 14px;
+  margin-right: 12px;
+}
+
+.diary-date {
+  color: #929292;
+  font-size: 14px;
+}
+
+.diary-text {
+  margin-bottom: 12px;
+  // background-color: lightblue;
+  overflow: hidden;
+  max-height: 95px;
+  line-height: 1.4;
+}
+
+.diary-hashtag {
+  display: inline-block;
+  margin-right: 5px;
+  font-weight: 500;
+
+  span {
+    color: #ffb319;
+  }
+}
+
+.diary-img-wrap {
+  margin-top: 18px;
+  max-width: 100%;
+  min-height: 250px;
+  // max-height: 300px;
+  overflow: hidden;
+  background-color: #f7f7f7;
+}
+.go-write-btn:after {
+  position: absolute;
+  content: '';
+  width: 0;
+  left: 0;
+  height: 2px;
+  bottom: 0px;
+  background-color: #ffb319;
+  // border-bottom: 1px solid #ffb319;
+  transition: .25s;
+}
+.go-write-btn:hover {
+  // border-bottom: 1px solid #ffb319;
+  transition: .25s;
+}
+.go-write-btn:hover:after {
+  width: 100%;
+  left: 0;
+}
+
 #diary-list-item {
   float: left;
 }
@@ -416,21 +548,27 @@ export default {
 .emo-icon {
   cursor: pointer;
 }
+span:hover {
+  color: #ffb319;
+}
 .emotion-cnt {
   display: inline-block;
   margin: 0 10px 0 5px;
+
   span {
     color: #929292;
   }
 }
 .emotion-right {
   display: inline-block;
+
   span {
     font-size: 14px;
     color: #9f9f9f;
     margin-left: 13px;
     cursor: pointer;
   }
+
   span:hover {
     color: #ffb319;
   }
@@ -448,7 +586,7 @@ export default {
   // width: 100%;
   // height: 50px;
   // background-color: #ffb319;
-// }
+  // }
 #Dialog {
   height: 180px;
 }
@@ -482,5 +620,14 @@ export default {
   width: 76px;
   height: 32px;
   color: #585858;
+}
+.like-clicked {
+  color: #E41D35;
+}
+.funny-clicked {
+  color: #21B74B;
+}
+.sad-clicked {
+  color: #385FC7;
 }
 </style>
