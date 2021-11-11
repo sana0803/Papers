@@ -16,7 +16,7 @@
           <span class="Font_Name">카페숑24 숑숑체</span>
         </div> -->
         <div v-for="myFont in myFontList" :key="myFont.id" class="Font_Item">
-          <span class="Font_Name" :style="{ 'font-family': myFont.fontUrl }" @click="selectFont(myFont.fontUrl)">{{myFont.fontName}}</span>
+          <span class="Font_Name" :style="{ 'font-family': myFont.fontUrl }" @click="selectFont(myFont)">{{myFont.fontName}}</span>
         </div>
         <!-- <div class="Font_Item">
           <span class="Font_Name">카페숑24 숑숑체</span>
@@ -114,11 +114,11 @@ export default {
       .then((res) => {
         console.log(res.data, '유저 폰트')
         this.myFontList = res.data
-
       })
     },
-    selectFont: function () {
-
+    selectFont: function (font) {
+      console.log('폰트 선택함', font)
+      this.$store.commit("setMyFont", font)
     }
   },
   created () {
