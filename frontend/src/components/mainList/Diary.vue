@@ -4,7 +4,9 @@
       <div id="Plus_Img">
         <v-icon style="font-size: 5em; color: #ffb319">add</v-icon>
       </div>
-      <div id="Plus_Name">일기장 만들기</div>
+      <div id="plus-under">
+        <span id="Plus_Name">일기장 만들기</span>
+      </div>
     </div>
     <div
       v-for="diary in diaryList"
@@ -13,7 +15,10 @@
       class="Diary_Item"
     >
       <div class="Diary_Img"></div>
-      <div class="Diary_Name">{{ diary.diaryTitle }}</div>
+      <div class="diary-under">
+        <span class="Diary_Name">{{ diary.diaryTitle }}</span>
+        <span class="Diary_Day">{{ diary.diaryCreatedDate }}</span>
+      </div>
     </div>
     <!-- Dialog -->
     <v-dialog v-model="dialog" persistent max-width="443">
@@ -43,18 +48,21 @@
               color="#FFB319"
               label="아이디 검색"
               v-model="search"
-              v-on:keyup.enter="memberSearch"
+              v-on:keyup="memberSearch"
             ></v-text-field>
             <v-btn id="Search_Btn" icon>
               <v-icon @click="memberSearch" style="font-size: 2.8em">search</v-icon>
             </v-btn>
           </div>
           <div id="Search_List">
+            <div v-if="memberList.length === 0" id="Invite_txt">검색결과가 없습니다.</div>
             <div v-for="(member,idx) in memberList" :key="member.userId" class="Search_Item">
               <div class="Search_Img">
                 <img class="Img" :src="member.userProfile" />
               </div>
-              <span class="Search_Name">{{member.userNickname}}</span>
+              <span class="Search_Name">{{member.userNickname}} </span>
+              <span calss="Search_UserId">({{ member.userId }})</span>
+              
               <!-- <div class="Search_Check"></div> -->
               <div class="Search_Check">
                 <v-checkbox
@@ -95,39 +103,58 @@ export default {
       diaryList: [],
       search: "",
       memberList: [],
-      selected: []
+      selected: [],
+      currentCreateDiaryId: 0
     };
   },
   methods: {
     goDiary(diary) {
-      this.$store.commit('setCurrentDiary', diary)
+      this.$store.commit('setCurrentDiary', diary) // mutaion 호출 ('뮤테이션 이름, 매개변수)
       this.$router.push("/diary");
     },
     create() {
-      console.log(this.selected)
       const diary = {
         coverId: 1,
         diaryTitle: this.diaryTitle,
       };
-      this.$store.dispatch("diaryCreate", diary).then(() => {
-        this.$store.dispatch("diaryGet").then((res) => {
-          this.diaryList = res.data.reverse();
+      this.$store.dispatch("diaryCreate", diary).then((response) => { // 다이어리 생성
+        this.currentCreateDiaryId = response.data.id;
+        this.$store.dispatch("diaryGet").then((res) => { // 다이어리 가져오기
+          this.diaryList = res.data.reverse();          
+          let inviteAlarmPushUser = []
+          this.selected.forEach(function (item) {
+            if (item != null)
+              inviteAlarmPushUser.push(item)
+          })
+          alert('id : ' + this.currentCreateDiaryId)
+          let share = {
+          'diaryId': this.currentCreateDiaryId,
+          'inviteList': inviteAlarmPushUser
+          }
+          this.$store.dispatch("shareDiary", share).then((res) => { // 다이어리 공유 요청 보내기
+            console.log(res)
+          });
         });
       });
       this.dialog = false;
       this.diaryTitle = "";
+      
     },
     memberSearch() {
       this.$store.dispatch('memberSearch', this.search)
         .then((res) => {
           this.memberList = res.data
-          console.log(this.memberList)
+
+          if(this.search == '') {
+            this.memberList = []
+          }
         })
     }
   },
   created() {
     this.$store.dispatch("diaryGet").then((res) => {
       this.diaryList = res.data.reverse();
+      console.log(res.data)
     });
   },
 };
@@ -150,8 +177,12 @@ export default {
   justify-content: center;
   align-items: center;
 }
+#plus-under{
+  margin-top:12px;
+  display:flex;
+  align-items: center;
+}
 #Plus_Name {
-  margin-top: 19px;
   font-size: 15px;
 }
 .Diary_Item {
@@ -170,8 +201,18 @@ export default {
   cursor: pointer;
 }
 .Diary_Name {
-  margin-top: 19px;
+  max-width:190px;
   font-size: 15px;
+}
+.Diary_Day{
+  font-size: 15px;
+  color:#929292;
+}
+.diary-under{
+  margin-top:12px;
+  display: flex;
+  justify-content: space-between;
+  align-items:center;
 }
 #Dialog {
   height: 524px;
@@ -249,6 +290,9 @@ export default {
   margin-left: 16px;
   font-size: 16px;
 }
+.Search_UserId {
+  color: red;
+}
 .Search_Check {
   height:50px;
   float: right;
@@ -264,5 +308,11 @@ export default {
 }
 #Search_List::-webkit-scrollbar {
   display: none;
+}
+#Invite_txt {
+  line-height: 166px;
+  text-align: center;
+  font-size: 16px;
+  color: #9f9f9f;
 }
 </style>

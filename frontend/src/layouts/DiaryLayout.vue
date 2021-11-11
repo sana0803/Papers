@@ -4,10 +4,14 @@
     <Header></Header>
     <div style="height: 7.5vh" />
     <div id="Diary_Header">
-      <span style="font-size: 18px">ㅇㅇㅇㅇ일기장 (3명) </span>
-      <span class="Header_txt">김싸피 </span>
-      <span class="Header_txt">홍싸피 </span>
-      <span class="Header_txt">황싸피 </span>
+      <span style="font-size: 18px">{{currentDiary.diaryTitle}}</span>
+      <!-- <span class="Header_txt">김싸피 </span> -->
+      <span
+        v-if="currentDiary.guest.length >= 0"
+        class="guest-txt">
+        ({{currentDiary.guest.length + 1}}명)
+      </span>
+      <span v-else></span>
     </div>
     <div id="Diary_Content">
       <div @click="goList" id="Diary_PostIt1">일기</div>
@@ -29,6 +33,11 @@ import Header from "../components/Header.vue";
 export default {
   components: {
     Header,
+  },
+  computed: {
+    currentDiary() {
+      return this.$store.getters.getCurrentDiary;
+    },
   },
   data() {
     return {
@@ -61,21 +70,23 @@ export default {
   border-left: 1px solid lightgrey;
   margin: 0 auto;
   width: 1272px;
-  height: 100%;
+  height: 100vh;
 }
 #Diary_Header {
   margin-left: 175px;
-  margin-top: 45px;
+  margin-top: 40px;
 }
-.Header_txt {
+.guest-txt {
+  font-size: 16px;
   color: #929292;
+  margin-left: 8px;
 }
 #Diary_Content {
   width: 922px;
   height: 687px;
   border: 1px solid white;
   margin: 0 auto;
-  margin-top: 45px;
+  margin-top: 25px;
   position: relative;
 }
 #Diary_PostIt1 {
@@ -122,6 +133,6 @@ export default {
 #Diary_In {
   width: 886px;
   height: 610px;
-  background: #EEE;
+  background: #fff;
 }
 </style>

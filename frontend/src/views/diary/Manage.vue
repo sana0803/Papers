@@ -6,63 +6,32 @@
       <div id="Left_Box">
         <div class="Header">멤버 목록</div>
         <div id="Member_Box">
-          <div class="Member_Item">
+          <!-- member-item -->
+           <div class="Member_Item">
             <div class="Member_Img">
-              <img class="Member_Image" src="../../assets/image/user.png" />
+              <img class="Member_Image" :src="loginUser.userProfile" />
               <div class="Member_Icon">
-                <v-icon class="Icon" style="font-size: 1em; color: white"
+                <v-icon 
+                  class="Icon" style="font-size: 1em; color: white"
                   >check</v-icon
                 >
               </div>
             </div>
-            <div class="Member_Name">김싸피</div>
+            <div class="Member_Name">{{loginUser.userNickname}}</div>
           </div>
-          <div class="Member_Item">
+          <div v-for="member in shareList" :key="member.userId" class="Member_Item">
             <div class="Member_Img">
-              <img class="Member_Image" src="../../assets/image/user.png" />
+              <img class="Member_Image" :src="member.userProfile" />
               <div class="Member_Icon2">
                 <v-icon
-                  @click="dialog = true"
+                  @click="removeDialog(member)"
                   class="Icon"
                   style="font-size: 1em; color: white"
                   >remove</v-icon
                 >
               </div>
             </div>
-            <div class="Member_Name">김싸피</div>
-          </div>
-          <div class="Member_Item">
-            <div class="Member_Img">
-              <img class="Member_Image" src="../../assets/image/user.png" />
-              <div class="Member_Icon2">
-                <v-icon class="Icon" style="font-size: 1em; color: white"
-                  >remove</v-icon
-                >
-              </div>
-            </div>
-            <div class="Member_Name">김싸피</div>
-          </div>
-          <div class="Member_Item">
-            <div class="Member_Img">
-              <img class="Member_Image" src="../../assets/image/user.png" />
-              <div class="Member_Icon2">
-                <v-icon class="Icon" style="font-size: 1em; color: white"
-                  >remove</v-icon
-                >
-              </div>
-            </div>
-            <div class="Member_Name">김싸피</div>
-          </div>
-          <div class="Member_Item">
-            <div class="Member_Img">
-              <img class="Member_Image" src="../../assets/image/user.png" />
-              <div class="Member_Icon2">
-                <v-icon class="Icon" style="font-size: 1em; color: white"
-                  >remove</v-icon
-                >
-              </div>
-            </div>
-            <div class="Member_Name">김싸피</div>
+            <div class="Member_Name">{{member.userNickname}}</div>
           </div>
         </div>
         <div class="Header2">멤버 초대</div>
@@ -71,13 +40,39 @@
             class="Search_Input"
             color="#FFB319"
             label="아이디 검색"
+            v-model="search"
+            v-on:keyup="memberSearch"
           ></v-text-field>
           <v-btn id="Search_Btn" icon>
-            <v-icon style="font-size: 2.8em">search</v-icon>
+            <v-icon @click="memberSearch" style="font-size: 2.8em">search</v-icon>
           </v-btn>
         </div>
-        <div id="Invite_List">
-          <div id="Invite_txt">검색결과가 없습니다.</div>
+        <div id="Search_List">
+          <div v-if="memberList.length === 0" id="Invite_txt">검색결과가 없습니다.</div>
+          <div v-if="memberList.length !== 0" id="member-list">
+            <div v-for="(member,idx) in memberList" :key="member.userId" class="Search_Item">
+              <div class="Search_Img">
+                <img class="Img" :src="member.userProfile" />
+              </div>
+              <span class="Search_Name">{{member.userNickname}} </span>
+              <span calss="Search_UserId">({{ member.userId }})</span>
+              
+              <!-- <div class="Search_Check"></div> -->
+              <div class="Search_Check">
+                <v-checkbox
+                  class="check"
+                  v-model="selected[idx]"
+                  :key="member.userId"
+                  :value="member.userId"
+                ></v-checkbox>
+              </div>
+            </div>
+          </div>
+          <div v-if="memberList.length !== 0" id="invite_btn">
+            <v-btn @click="invite" style="background: #ffb319; color: white;" class="Btn"
+            >확인
+            </v-btn>
+          </div>
         </div>
       </div>
     </div>
@@ -86,11 +81,15 @@
       <div id="Right_Box">
         <div class="Header">타이틀 변경</div>
         <div id="Title_Input">
-          <v-text-field color="#FFB319" label="ㅇㅇㅇ일기장"></v-text-field>
+          <v-text-field color="#FFB319" v-model="diaryTitle"></v-text-field>
         </div>
         <div class="Header2">커버 편집</div>
         <div class="Header3">기본 커버</div>
-        <div class="Cover_Box"></div>
+        <div class="Cover_Box">
+          <div v-for="(item, idx) in coverList" :key="idx" class="cover-item">
+            <v-img class="cover-img" :src="item.coverUrl" />
+          </div>
+        </div>
         <div class="Header3">내 커버</div>
         <div class="Cover_Box"></div>
         <div class="Header3">사진</div>
@@ -125,7 +124,7 @@
             추방하시겠습니까?
           </div>
           <div id="Btn_Box2">
-            <v-btn style="background: #ffb319; color: white" class="Btn"
+            <v-btn @click="memberRemove" style="background: #ffb319; color: white" class="Btn"
               >확인</v-btn
             >
             <v-btn
@@ -142,17 +141,115 @@
 </template>
 
 <script>
+import Swal from "sweetalert2";
+
 export default {
+  computed: {
+    currentDiary() {
+      return this.$store.getters.getCurrentDiary;
+    },
+    loginUser() {
+      return this.$store.getters.getLoginUser;
+    }
+  },
   data() {
     return {
       dialog: false,
+      search: '',
+      coverList: [],
+      shareList: [],
+      memberList: [],
+      selected: [],
+      diaryTitle: '',
+      removeMember: ''
     };
   },
   methods: {
     back() {
       this.$router.go(-1);
     },
+    memberSearch() {
+      this.$store.dispatch('memberSearch', this.search)
+        .then((res) => {
+          console.log(this.shareList)
+          var tmp = []
+          for(let i=0;i<res.data.length;i++){
+            for(let j=0;j<this.shareList.length;j++){
+              if(res.data[i].userId==this.shareList[j].userId) {
+                break
+              }
+              if(j==this.shareList.length-1){
+                tmp.push(res.data[i])
+              }
+            }
+          }
+          this.memberList = tmp
+          if(this.shareList.length==0){
+            this.memberList = res.data
+          }
+          if(this.search == '') {
+            this.memberList = []
+          }
+        })
+    },
+    invite() {
+      const share = {
+        'diaryId': this.currentDiary.id,
+        'inviteList': this.selected
+      }
+      this.$store.dispatch("shareDiary", share).then(() => { // 다이어리 공유 요청 보내기
+            for(let i=0; i<share.inviteList.length; i++) {
+              for(let j=0; j<this.memberList.length; j++) {
+                if(share.inviteList[i] == this.memberList[j].userId) {
+                  this.shareList.push(this.memberList[j])
+                }
+              }
+            }
+            Swal.fire({
+            icon: "success",
+            title:
+              '<span style="font-size:25px;">초대가 완료되었습니다.</span>',
+            confirmButtonColor: "#b0da9b",
+            confirmButtonText: '<span style="font-size:18px;">확인</span>',
+          });
+        });
+    },
+    removeDialog(member){
+      this.dialog = true
+      this.removeMember = member
+    },
+    memberRemove() {
+      var diaryId = this.currentDiary.id
+      var userId = this.removeMember.userId
+      const remove = {
+        diaryId: diaryId,
+        userId: userId
+      }
+      this.$store.dispatch('memberRemove', remove)
+        .then(() => {
+          var tmp = this.currentDiary.guest
+          for(let i=0;i<tmp.length;i++){
+            if(tmp[i].userId == remove.userId){
+              const idx = tmp.indexOf(tmp[i])
+              if(idx>-1) tmp.splice(idx,1)
+              break
+            }
+          }
+          this.currentDiary.guest = tmp
+          this.$store.commit('setCurrentDiary', this.currentDiary)
+          this.dialog = false
+        })
+    }
   },
+  created() {
+    this.shareList = this.currentDiary.guest
+    this.$store.dispatch('getCover')
+      .then((res) => {
+        this.coverList = res.data
+      })
+
+    this.diaryTitle = this.currentDiary.diaryTitle
+  }
 };
 </script>
 
@@ -267,14 +364,24 @@ export default {
   position: relative;
   top: -2px;
 }
-#Invite_List {
+#Search_List {
   margin-top: 22px;
-  height: 194px;
+  height: 245px;
   padding: 14px;
   border: 1px solid #d7d7d7;
+
+}
+#member-list::-webkit-scrollbar {
+  display: none;
+}
+#member-list{
+  overflow: auto;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  height:175px;
 }
 #Invite_txt {
-  line-height: 166px;
+  line-height: 215px;
   text-align: center;
   font-size: 16px;
   color: #9f9f9f;
@@ -331,5 +438,55 @@ export default {
   margin-top: 5px;
   font-size: 16px;
   text-align: center;
+}
+.cover-item{
+  display:inline-block;
+  height:100%;
+  width:75px;
+  cursor: pointer;
+  overflow:hidden;
+  margin:0 auto;
+}
+.cover-img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+.Search_Item {
+  height: 50px;
+  line-height: 50px;
+}
+.Search_Img {
+  float: left;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.Img {
+  width: 43px;
+  height: 43px;
+  display: inline-block;
+}
+.Search_Name {
+  margin-left: 16px;
+  font-size: 16px;
+}
+.Search_UserId {
+  color: red;
+}
+.Search_Check {
+  height:50px;
+  float: right;
+}
+.check{
+  position:relative;
+  top:-7px;
+}
+#invite_btn{
+  width:76px;
+  margin:0 auto;
+  margin-top:7px;
 }
 </style>

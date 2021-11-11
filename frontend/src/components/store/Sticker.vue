@@ -1,75 +1,16 @@
 <template>
   <div>
-    <div @click="dialog = true" class="Sticker_Item">
-      <div class="Sticker_img"></div>
-      <div class="Sticker_Title">
-        <span class="Sticker_Name">고양이 스티커 패키지</span>
-        <span class="Sticker_Price">50장</span>
+    <div class="Sticker_Item" v-for="stickerPackage in stickerPackageList" :key="stickerPackage.id" @click="dialogOn(stickerPackage)">
+      <div class="Sticker_img">
+        <img :src="stickerPackage.stickerList[0].stickerUrl" style="width: 80%; margin-top: 10px; margin-left: 10%; margin-top: 30%;"/>
       </div>
-    </div>
-    <div class="Sticker_Item">
-      <div class="Sticker_img"></div>
       <div class="Sticker_Title">
-        <span class="Sticker_Name">고양이 스티커 패키지</span>
-        <span class="Sticker_Price">50장</span>
+        <span class="Sticker_Name">{{ stickerPackage.stickerPackageName }}</span>
+        <span class="Sticker_Price">{{ stickerPackage.stickerPackagePrice }}장</span>
       </div>
+      <div align="right" v-if="stickerPackage.owned">현재 소유중</div>
     </div>
-    <div class="Sticker_Item">
-      <div class="Sticker_img"></div>
-      <div class="Sticker_Title">
-        <span class="Sticker_Name">고양이 스티커 패키지</span>
-        <span class="Sticker_Price">50장</span>
-      </div>
-    </div>
-    <div class="Sticker_Item">
-      <div class="Sticker_img"></div>
-      <div class="Sticker_Title">
-        <span class="Sticker_Name">고양이 스티커 패키지</span>
-        <span class="Sticker_Price">50장</span>
-      </div>
-    </div>
-    <div class="Sticker_Item">
-      <div class="Sticker_img"></div>
-      <div class="Sticker_Title">
-        <span class="Sticker_Name">고양이 스티커 패키지</span>
-        <span class="Sticker_Price">50장</span>
-      </div>
-    </div>
-    <div class="Sticker_Item">
-      <div class="Sticker_img"></div>
-      <div class="Sticker_Title">
-        <span class="Sticker_Name">고양이 스티커 패키지</span>
-        <span class="Sticker_Price">50장</span>
-      </div>
-    </div>
-    <div class="Sticker_Item">
-      <div class="Sticker_img"></div>
-      <div class="Sticker_Title">
-        <span class="Sticker_Name">고양이 스티커 패키지</span>
-        <span class="Sticker_Price">50장</span>
-      </div>
-    </div>
-    <div class="Sticker_Item">
-      <div class="Sticker_img"></div>
-      <div class="Sticker_Title">
-        <span class="Sticker_Name">고양이 스티커 패키지</span>
-        <span class="Sticker_Price">50장</span>
-      </div>
-    </div>
-    <div class="Sticker_Item">
-      <div class="Sticker_img"></div>
-      <div class="Sticker_Title">
-        <span class="Sticker_Name">고양이 스티커 패키지</span>
-        <span class="Sticker_Price">50장</span>
-      </div>
-    </div>
-    <div class="Sticker_Item">
-      <div class="Sticker_img"></div>
-      <div class="Sticker_Title">
-        <span class="Sticker_Name">고양이 스티커 패키지</span>
-        <span class="Sticker_Price">50장</span>
-      </div>
-    </div>
+
     <!-- Dialog -->
     <v-dialog v-model="dialog" persistent max-width="500">
       <v-card id="Dialog">
@@ -83,15 +24,18 @@
         </div>
         <div id="Dialog_Content">
           <div id="Dialog_Title">
-            <div id="Dialog_img"></div>
+            <div id="Dialog_img">
+              <img :src="stickerList[0].stickerUrl" style="width: 80%; height: 80%; margin-top: 15px; margin-left: 15px;"/>
+            </div>
             <div id="Dialog_Name">
               <div id="Name_Author">작가명 아무개</div>
-              <div id="Name_Name">고양이 스티커 패키지</div>
-              <div id="Name_Price">50장</div>
+              <div id="Name_Name">{{ stickerPackage.stickerPackageName }}</div>
+              <div id="Name_Price">{{ stickerPackage.stickerPackagePrice }}장</div>
               <div id="Name_Btn_Box">
                 <v-btn
                   style="background: #ffb319; color: white"
                   class="Name_Btn"
+                  @click="purchageStickerPackage(stickerPackage)"
                   >구매</v-btn
                 >
                 <v-btn
@@ -104,18 +48,9 @@
             </div>
           </div>
           <div id="Dialog_List">
-            <div class="Dialog_Item"></div>
-            <div class="Dialog_Item"></div>
-            <div class="Dialog_Item"></div>
-            <div class="Dialog_Item"></div>
-            <div class="Dialog_Item"></div>
-            <div class="Dialog_Item"></div>
-            <div class="Dialog_Item"></div>
-            <div class="Dialog_Item"></div>
-            <div class="Dialog_Item"></div>
-            <div class="Dialog_Item"></div>
-            <div class="Dialog_Item"></div>
-            <div class="Dialog_Item"></div>
+            <div class="Dialog_Item" v-for="sticker in stickerList" :key="sticker.id">
+              <img :src="sticker.stickerUrl" style="width: 80%; height: 80%; margin-top: 10px; margin-left: 10px;"/>
+            </div>
           </div>
         </div>
       </v-card>
@@ -128,9 +63,43 @@ export default {
   data() {
     return {
       dialog: false,
+      stickerPackageList: [],
+      stickerList: [{
+        id: 1,
+        stickerUrl: '',
+      }],
+      stickerPackage: '',
+      loginUser: {
+        userMileage: '',
+      }
     };
   },
-};
+  created () {
+    this.$store.dispatch('getStoreStickerList').then((res) => {
+      console.log(res.data)
+      this.stickerPackageList = res.data;
+    })
+    this.loginUser = this.$store.getters['getLoginUser'];
+  },
+  methods:{
+    dialogOn(stickerPackage) {
+      this.stickerPackage = stickerPackage;
+      this.stickerList = stickerPackage.stickerList;
+      this.dialog = true;
+    },
+    purchageStickerPackage(stickerPackage) {
+      this.$store.dispatch('purchaseStickerPackage', stickerPackage.id).then(() => {
+        this.loginUser.userMileage -= stickerPackage.stickerPackagePrice;
+        this.$store.commit('setLoginUser', this.loginUser);
+        this.$router.go();
+      })
+      .catch(() => {
+        alert('마일리지가 부족하거나 이미 소유중입니다');
+        this.dialog = false;
+      })
+    }
+  }
+}
 </script>
 
 <style scoped>
@@ -190,8 +159,8 @@ export default {
   align-items: center;
 }
 .Dialog_Item {
-  width: 80px;
-  height: 80px;
+  width: 100px;
+  height: 100px;
   border-radius: 50px;
   background: #fae7cb;
   margin-right: 10px;

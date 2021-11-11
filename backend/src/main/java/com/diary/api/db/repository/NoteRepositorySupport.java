@@ -2,21 +2,30 @@ package com.diary.api.db.repository;
 
 import com.amazonaws.auth.AWSCredentials;
 import com.amazonaws.auth.BasicAWSCredentials;
+import com.amazonaws.client.builder.AwsClientBuilder;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.ObjectListing;
+import com.amazonaws.services.s3.model.ObjectMetadata;
+import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.amazonaws.services.s3.model.S3ObjectSummary;
 import com.diary.api.db.entity.*;
 import com.diary.api.request.NoteEmotionReq;
+import com.diary.common.util.S3Util;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import org.checkerframework.checker.nullness.Opt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
+import java.io.File;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Repository
 public class NoteRepositorySupport {
@@ -43,15 +52,26 @@ public class NoteRepositorySupport {
     QNoteSticker qNoteSticker = QNoteSticker.noteSticker;
     QEmotionInfo qEmotionInfo = QEmotionInfo.emotionInfo;
     QUserDiary qUserDiary = QUserDiary.userDiary;
+    QDiary qDiary = QDiary.diary;
 
+    public Optional<List<Note>> getNoteList(String userId) {
+        List<Note> notes = jpaQueryFactory.select(qNote).from(qNote)
+                .where(qNote.user.userId.eq(userId)).fetch();
+        if(notes == null) return Optional.empty();
+        return Optional.of(notes);
+    }
     public Optional<List<Note>> getMonthNote(int month, String userId) {
         List<Note> notes = jpaQueryFactory.select(qNote).from(qNote)
-                .where(qNote.noteCreateDate.month().eq(month)
-                .and(qNote.diary.id.in(
+                .where(qNote.diary.id.in(
                         jpaQueryFactory.select(qUserDiary.diary.id).from(qUserDiary)
                         .where(qUserDiary.user.userId.eq(userId)
                         .or(qUserDiary.guestId.eq(userId)))
-                ))).fetch();
+                    )
+                    .or(qNote.diary.id.in(
+                            jpaQueryFactory.select(qDiary.id).from(qDiary)
+                                    .where(qDiary.user.userId.eq(userId))
+                    )
+                )).fetch();
         if(notes == null) return Optional.empty();
         return Optional.ofNullable(notes);
     }
@@ -175,5 +195,59 @@ public class NoteRepositorySupport {
         } while (objects.isTruncated());
         urls.remove(0);
         return urls;
+    }
+
+    public Optional<List<Note>> getHashtagNotes(String hashtag, String userId){
+        List<Note> notes = jpaQueryFactory.select(qNote).from(qNote)
+                .join(qNoteHashtag).on(qNoteHashtag.note.id.eq(qNote.id))
+                .where((qNote.diary.id.in(
+                        jpaQueryFactory.select(qUserDiary.diary.id).from(qUserDiary)
+                        .where(qUserDiary.user.userId.eq(userId)
+                        .or(qUserDiary.guestId.eq(userId))
+                        )
+                ).or(qNote.diary.id.in(
+                        jpaQueryFactory.select(qDiary.id).from(qDiary)
+                                .where(qDiary.user.userId.eq(userId))
+                        )
+                    ))
+                .and(qNoteHashtag.tagValue.eq(hashtag))).distinct().fetch();
+
+        if(notes == null) return Optional.empty();
+        return Optional.of(notes);
+    }
+
+    public boolean setNoteMedias(List<MultipartFile> medias, String userId, Long diaryId) {
+
+        for(MultipartFile file : medias) {
+            try {
+                File uploadFile = S3Util.convert(file)  // 파일 변환할 수 없으면 에러
+                        .orElseThrow(() -> new IllegalArgumentException("error: MultipartFile -> File convert fail"));
+                String fileName = "diary-file/" + userId + "/" + diaryId + "/" + uploadFile.getName();
+                String uploadImageUrl = S3Util.putS3(uploadFile, fileName); // s3로 업로드
+                S3Util.removeNewFile(uploadFile);
+
+                System.out.println(uploadImageUrl);
+            } catch (Exception e) {
+                e.printStackTrace();
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public Optional<List<String>> getHashtagList(String userId){
+        List<String> notes = jpaQueryFactory.select(qNoteHashtag.tagValue).from(qNoteHashtag)
+                .join(qNote).on(qNote.id.eq(qNoteHashtag.note.id))
+                .where(qNote.diary.id.in(
+                        jpaQueryFactory.select(qUserDiary.diary.id).from(qUserDiary)
+                                .where(qUserDiary.user.userId.eq(userId)
+                                        .or(qUserDiary.guestId.eq(userId))
+                                )
+                ).or(qNote.diary.id.in(
+                        jpaQueryFactory.select(qDiary.id).from(qDiary)
+                                .where(qDiary.user.userId.eq(userId))
+                ))).distinct().limit(20).fetch();
+        if(notes == null) return Optional.empty();
+        return Optional.of(notes);
     }
 }

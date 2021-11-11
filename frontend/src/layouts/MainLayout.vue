@@ -4,14 +4,17 @@
     <Header></Header>
     <div style="height: 7.5vh" />
     <router-view />
+    <!-- <Notification></Notification> -->
   </div>
 </template>
 
 <script>
 import Header from "../components/Header.vue";
+// import Notification from "../components/notification/Notification.vue"
 export default {
   components: {
     Header,
+    // Notification,
   },
 };
 </script>

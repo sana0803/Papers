@@ -8,9 +8,11 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface UserStickerPackageRepository extends JpaRepository<UserStickerPackage, Long> {
     @Query(value = "select * from user_sticker_package where user_id = :userId", nativeQuery = true)
     List<UserStickerPackage> getStickerPackageList(@Param("userId") String userId);
+    Optional<UserStickerPackage> findByStickerPackageId(Long stickerPackageId);
 }

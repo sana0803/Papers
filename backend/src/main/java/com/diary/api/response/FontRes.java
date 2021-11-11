@@ -10,12 +10,14 @@ public class FontRes {
 
     Long id;
     String fontName;
+    String fontUrl;
     int fontPrice;
     boolean isOwned;
 
     public FontRes(Font font){
         this.id = font.getId();
         this.fontName = font.getFontName();
-        this.fontPrice = getFontPrice();
+        this.fontPrice = font.getFontPrice();
+        this.fontUrl = font.getFontUrl();
     }
 }

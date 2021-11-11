@@ -11,6 +11,12 @@
     >
       <v-icon dark> mdi-plus </v-icon>
     </v-btn>
+    <!-- <v-btn
+            id="connection"
+            @click="connection"
+          >
+          알림음 테스트
+          </v-btn> -->
     <div id="MainList_Container">
       <div id="MainList_Head">
         <span id="Head_Main">분류</span>
@@ -89,7 +95,7 @@ export default {
       }
     },
     goTemplete() {
-      this.$router.push("templete");
+      this.$router.push("/write");
     },
   },
 };

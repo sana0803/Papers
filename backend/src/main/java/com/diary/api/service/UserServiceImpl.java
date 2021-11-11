@@ -184,15 +184,15 @@ public class UserServiceImpl implements UserService{
 //                break;
 //            default:
 //        }
-        if (!notificationInfoRepository.findById((long)notificationReq.getNotificationInfoId()).isPresent()) {
-            return false;
-        }
-        Notification notification = new Notification();
-        notification.setNotificationContent(notificationReq.getNotificationContent());
-        notification.setNotificationInfo(notificationInfoRepository.findById((long)notificationReq.getNotificationInfoId()).get());
-        notification.setUser(user);
-        if (notificationRepository.save(notification) == null)
-            return false;
+//        if (!notificationInfoRepository.findById((long)notificationReq.getNotificationInfoId()).isPresent()) {
+//            return false;
+//        }
+//        Notification notification = new Notification();
+//        notification.setNotificationContent(notificationReq.getNotificationContent());
+//        notification.setNotificationInfo(notificationInfoRepository.findById((long)notificationReq.getNotificationInfoId()).get());
+//        notification.setUser(user);
+//        if (notificationRepository.save(notification) == null)
+//            return false;
         return true;
     }
 
@@ -221,11 +221,12 @@ public class UserServiceImpl implements UserService{
 
     // 유저 id로 유저 검색
     @Override
-    public List<UserSearchRes> searchUserByUserID(String userId) {
+    public List<UserSearchRes> searchUserByUserID(String userId, String searchUserId) {
         List<UserSearchRes> UserSearchResList = new ArrayList<>();
-        List<User> users = userRepository.findByUserIdContainingIgnoreCase(userId);
+        List<User> users = userRepository.findByUserIdContainingIgnoreCase(searchUserId);
         for (User user : users) {
-            UserSearchResList.add(new UserSearchRes(user));
+            if (!userId.equals(user.getUserId()))
+                UserSearchResList.add(new UserSearchRes(user));
         }
         return UserSearchResList;
     }

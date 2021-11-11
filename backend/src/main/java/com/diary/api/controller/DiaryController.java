@@ -158,7 +158,7 @@ public class DiaryController {
             @ApiResponse(code = 401, message = "인증"),
             @ApiResponse(code = 500, message = "일기 조회 실패")
     })
-    public ResponseEntity<List<NoteRes>> getOneDiary(
+    public ResponseEntity<DiaryRes> getOneDiary(
             @PathVariable Long id,
             @ApiIgnore Authentication authentication
     ) {
@@ -166,7 +166,7 @@ public class DiaryController {
         if (user == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
-        return ResponseEntity.status(HttpStatus.OK).body(diaryService.getDiary(id));
+        return ResponseEntity.status(HttpStatus.OK).body(diaryService.getDiary(id, user));
     }
 
     @PostMapping("/invite")
@@ -187,6 +187,9 @@ public class DiaryController {
 
         String userId = user.getUserId();
         Diary diary = diaryRepository.getOne(diaryInviteReq.getDiaryId());
+//        System.out.println("다이어리 가져오기");
+//        System.out.println("조회할 다이어리 아이디는 "  + diaryInviteReq.getDiaryId());
+//        System.out.println(diary);
         if (!userId.equals(diary.getUser().getUserId())) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(BaseResponseBody.of(401, "자신의 일기장만 초대할 수 있습니다."));
         }

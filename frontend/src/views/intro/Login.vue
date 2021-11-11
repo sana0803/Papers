@@ -114,19 +114,26 @@ export default {
         .then((result) => {
           const loginUser = {
             userId: result.data.userId,
-            userName: result.data.userName,
+            userNickname: result.data.userNickname,
             userMileage: result.data.userMileage,
             userProfile: result.data.userProfile,
             userToken: result.data.userToken,
+            userPwd : this.userPwd,
           };
           // Store에 loginUser 정보 저장
           this.$store.commit("setLoginUser", loginUser);
 
 
-          const alarmEventSource = new EventSource(this.API_NOTIFICATION_URL + `/notification/subscribe?uuid=${loginUser.userToken}`);
+          const alarmEventSource = new EventSource(this.API_NOTIFICATION_URL + `/notification/subscribe?uuid=${loginUser.userToken}&userId=${loginUser.userId}`);
           // 알림 발생 시 이벤트 처리
           alarmEventSource.onmessage = (e) => {
-            alert(e.data)
+            const data = JSON.parse(e.data)
+            // console.log(data.message)
+            // console.log(data.imageUrl)
+            this.$store.commit('setNotificationState', true)
+            this.$store.commit('setNotificationMessage', data.message)
+            this.$store.commit('setNotificationUserImage', data.imageUrl)
+            // this.$emit('change-notification-state', true)
           }
           this.$store.commit('setAlarmEventSource', alarmEventSource)
 

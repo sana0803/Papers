@@ -15,8 +15,9 @@ public class NotificationRes {
     private LocalDate notificationDate;
     private LocalTime notificationTime;
     private boolean notificationRead;
-    private String notificationType;
     private Long notInfoId;
+    private String senderImageUrl;
+    private String userId;
 
     public static NotificationRes of(Notification notification) {
         NotificationRes res = new NotificationRes();
@@ -25,8 +26,9 @@ public class NotificationRes {
         res.notificationDate = notification.getNotificationDate();
         res.notificationTime = notification.getNotificationTime();
         res.notificationRead = notification.isNotificationRead();
-        res.notificationType = notification.getNotificationType();
         res.notInfoId = notification.getNotificationInfo().getId();
+        res.senderImageUrl = notification.getSenderImageUrl();
+        res.setUserId(notification.getUser().getUserId());
         return res;
     }
 }
