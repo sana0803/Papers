@@ -163,12 +163,26 @@ public class NoteController {
         try{
             ObjectMapper mapper = new ObjectMapper();
             String jsonInString = mapper.writeValueAsString(params);
-            KakaoReq kakaoReq = (KakaoReq) params.get("action");
-            System.out.println(params.get("action").toString());
+            System.out.println(Arrays.toString(params.keySet().toArray(new String[0])));
+
+            Map<String, Object> object = (Map<String, Object>)params.get("action");
+            System.out.println(Arrays.toString(object.keySet().toArray(new String[0])));
+            System.out.println(object.get("params").toString());
+
+            Map<String, Object> object2 = (Map<String, Object>)object.get("params");
+
+            System.out.println(object2.get("id"));
+
+            KakaoReq kakaoReq = new KakaoReq();
+            kakaoReq.setId((String) object2.get("id"));
+            kakaoReq.setPwd((String) object2.get("pwd"));
+
             System.out.println(kakaoReq.getId());
             System.out.println(kakaoReq.getPwd());
-//            System.out.println(jsonInString);
 
+            kakaoReq.setImageList((List<MultipartFile>) object2.get("imageList"));
+            System.out.println(Arrays.toString(kakaoReq.getImageList().toArray()));
+            
             int x = 0;
         }catch (Exception e){
 
