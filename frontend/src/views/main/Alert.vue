@@ -4,8 +4,8 @@
       <p class="Alert_Day">오늘</p>      
       <div class="alert-list-item" v-for="notification in getNotifications" :key="notification.id" @click="readAlert(notification.id)">
         <div class="alert-content">
-          <span v-if="notification.notificationRead" class="alert-read"></span>
-          <span v-else class="alert-read-empty"></span>
+          <span v-if="notification.notificationRead" class="alert-read-empty"></span>
+          <span v-else class="alert-read"></span>
           <div class="alert-profile">
             <img :src="notification.senderImageUrl" style="width:45px; height:45px; border-radius: 25px;" />
           </div>
