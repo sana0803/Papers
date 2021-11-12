@@ -171,16 +171,21 @@ public class NoteController {
             System.out.println(object.get("params").toString());
 
             Map<String, Object> object2 = (Map<String, Object>)object.get("params");
+            System.out.println(object2.keySet());
 
             KakaoReq kakaoReq = new KakaoReq();
             kakaoReq.setId((String) object2.get("id"));
             kakaoReq.setPwd((String) object2.get("pwd"));
+            System.out.println("카카오 겟아이디 " + kakaoReq.getId());
+
+            System.out.println("오브젝트 2 이미지 리스트 " + object2.get("imageList"));
 
             Map<String, Object> object3 = (Map<String, Object>) object2.get("imageList");
-            System.out.println(object3.get("secureUrls"));
 
-            kakaoReq.setImageList((List<String>) object3.get("secureUrls"));
-            System.out.println(kakaoReq.getImageList().size());
+            System.out.println("시큐어 유알엘 " + object3.get("secureUrls"));
+            System.out.println("그거 클래스 " + object3.get("secureUrls").getClass());
+
+//            System.out.println(kakaoReq.getImageList().size());
 
 
             int x = 0;
