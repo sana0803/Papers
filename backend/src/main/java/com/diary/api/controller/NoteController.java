@@ -3,6 +3,7 @@ package com.diary.api.controller;
 import com.diary.api.db.entity.BaseEntity;
 import com.diary.api.db.entity.Emotion;
 import com.diary.api.db.entity.User;
+import com.diary.api.request.KakaoReq;
 import com.diary.api.request.NoteEmotionReq;
 import com.diary.api.request.NoteReq;
 import com.diary.api.response.BaseResponseBody;
@@ -11,11 +12,16 @@ import com.diary.api.service.NoteService;
 import com.diary.api.service.UserService;
 import com.diary.common.auth.PapersUserDetails;
 import com.diary.common.util.JwtTokenUtil;
+import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.util.JSONPObject;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import org.checkerframework.checker.units.qual.K;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.configurationprocessor.json.JSONObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -24,7 +30,11 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import springfox.documentation.annotations.ApiIgnore;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/note")
@@ -145,17 +155,42 @@ public class NoteController {
         return ResponseEntity.status(200).body(noteService.getImageFiles(userDetails.getUser().getUserId(), diaryId));
     }
 
-//    @PostMapping("/files")
-//    @ApiOperation(value = "클라우드에서 사진파일 목록 가져오기", notes = "클라우드에서 사진파일 목록 가져오기")
-//    @ApiResponses({
-//            @ApiResponse(code = 200, message = "사진파일 가져오기 성공"),
-//            @ApiResponse(code = 500, message = "사진파일 가져오는 중 오류발생")
-//    })
-//    public ResponseEntity<List<String>> setImageFiles(@ApiIgnore Authentication authentication, @RequestBody List<MultipartFile> files) {
-//        PapersUserDetails userDetails = (PapersUserDetails)authentication.getDetails();
-//        noteService.getImageFiles(userDetails.getUser().getUserId(), diaryId);
-//        return ResponseEntity.status(200).body(noteService.getImageFiles(userDetails.getUser().getUserId(), diaryId));
-//    }
+    @PostMapping("/files")
+    @ApiOperation(value = "클라우드로 사진파일 목록 등록하기", notes = "클라우드로 사진파일 목록 등록하기")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "사진파일 가져오기 성공"),
+            @ApiResponse(code = 500, message = "사진파일 가져오는 중 오류발생")
+    })
+    public String setImageFiles(@RequestBody Map<String, Object> params, HttpServletRequest request, HttpServletResponse response) {
+
+        try{
+            ObjectMapper mapper = new ObjectMapper();
+            String jsonInString = mapper.writeValueAsString(params);
+
+            Map<String, Object> object = (Map<String, Object>)params.get("action");
+
+            Map<String, Object> object2 = (Map<String, Object>)object.get("params");
+
+            KakaoReq kakaoReq = new KakaoReq();
+            kakaoReq.setId((String) object2.get("id"));
+            kakaoReq.setPwd((String) object2.get("pwd"));
+
+            JSONObject jsonObject = new JSONObject((String) object2.get("imageList"));
+
+            String target = jsonObject.getString("secureUrls");
+            kakaoReq.setImageList(target.substring(5, target.length() - 1).split(","));
+//            System.out.println(kakaoReq.getImageList().size());
+
+            System.out.println(kakaoReq.getId());
+            System.out.println(kakaoReq.getPwd());
+            for(String string : kakaoReq.getImageList())
+                System.out.println(string);
+
+        }catch (Exception e){
+
+        }
+        return "index";
+    }
 
     @PostMapping("/emotion")
     @ApiOperation(value = "일기장에 감정표현하기", notes = "일기장에 감정표현하기")
