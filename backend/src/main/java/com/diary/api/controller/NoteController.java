@@ -163,8 +163,10 @@ public class NoteController {
         try{
             ObjectMapper mapper = new ObjectMapper();
             String jsonInString = mapper.writeValueAsString(params);
-            System.out.println(Arrays.toString(params.keySet().toArray()));
-            System.out.println(params.get("params").toString());
+            KakaoReq kakaoReq = (KakaoReq) params.get("action");
+            System.out.println(params.get("action").toString());
+            System.out.println(kakaoReq.getId());
+            System.out.println(kakaoReq.getPwd());
 //            System.out.println(jsonInString);
 
             int x = 0;
