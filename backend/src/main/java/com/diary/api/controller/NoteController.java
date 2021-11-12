@@ -3,6 +3,7 @@ package com.diary.api.controller;
 import com.diary.api.db.entity.BaseEntity;
 import com.diary.api.db.entity.Emotion;
 import com.diary.api.db.entity.User;
+import com.diary.api.request.KakaoReq;
 import com.diary.api.request.NoteEmotionReq;
 import com.diary.api.request.NoteReq;
 import com.diary.api.response.BaseResponseBody;
@@ -145,17 +146,17 @@ public class NoteController {
         return ResponseEntity.status(200).body(noteService.getImageFiles(userDetails.getUser().getUserId(), diaryId));
     }
 
-//    @PostMapping("/files")
-//    @ApiOperation(value = "클라우드에서 사진파일 목록 가져오기", notes = "클라우드에서 사진파일 목록 가져오기")
-//    @ApiResponses({
-//            @ApiResponse(code = 200, message = "사진파일 가져오기 성공"),
-//            @ApiResponse(code = 500, message = "사진파일 가져오는 중 오류발생")
-//    })
-//    public ResponseEntity<List<String>> setImageFiles(@ApiIgnore Authentication authentication, @RequestBody List<MultipartFile> files) {
-//        PapersUserDetails userDetails = (PapersUserDetails)authentication.getDetails();
-//        noteService.getImageFiles(userDetails.getUser().getUserId(), diaryId);
-//        return ResponseEntity.status(200).body(noteService.getImageFiles(userDetails.getUser().getUserId(), diaryId));
-//    }
+    @PostMapping("/files")
+    @ApiOperation(value = "클라우드로 사진파일 목록 등록하기", notes = "클라우드로 사진파일 목록 등록하기")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "사진파일 가져오기 성공"),
+            @ApiResponse(code = 500, message = "사진파일 가져오는 중 오류발생")
+    })
+    public void setImageFiles(@ApiIgnore Authentication authentication, @ModelAttribute KakaoReq kakaoReq) {
+        System.out.println(kakaoReq.getId());
+        System.out.println(kakaoReq.getPwd());
+        System.out.println(kakaoReq.getImageList().get(0));
+    }
 
     @PostMapping("/emotion")
     @ApiOperation(value = "일기장에 감정표현하기", notes = "일기장에 감정표현하기")
