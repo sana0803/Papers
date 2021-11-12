@@ -181,8 +181,10 @@ public class NoteController {
             System.out.println(kakaoReq.getPwd());
 
             kakaoReq.setImageList((List<MultipartFile>) object2.get("imageList"));
-            System.out.println(Arrays.toString(kakaoReq.getImageList().toArray()));
-            
+            for(MultipartFile multipartFile : kakaoReq.getImageList()) {
+                System.out.println(multipartFile.getOriginalFilename());
+            }
+
             int x = 0;
         }catch (Exception e){
 
