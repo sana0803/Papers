@@ -12,6 +12,7 @@ import com.diary.api.service.NoteService;
 import com.diary.api.service.UserService;
 import com.diary.common.auth.PapersUserDetails;
 import com.diary.common.util.JwtTokenUtil;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
@@ -26,7 +27,10 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import springfox.documentation.annotations.ApiIgnore;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/note")
@@ -153,10 +157,17 @@ public class NoteController {
             @ApiResponse(code = 200, message = "사진파일 가져오기 성공"),
             @ApiResponse(code = 500, message = "사진파일 가져오는 중 오류발생")
     })
-    public String setImageFiles(@RequestBody String id, @RequestBody String pwd, @ModelAttribute List<MultipartFile> imageList) {
-        System.out.println(id);
-        System.out.println(pwd);
-        return "hi";
+    public String setImageFiles(@RequestBody Map<String, Object> params, HttpServletRequest request, HttpServletResponse response) {
+
+        try{
+            ObjectMapper mapper = new ObjectMapper();
+            String jsonInString = mapper.writeValueAsString(params);
+            System.out.println(jsonInString);
+            int x = 0;
+        }catch (Exception e){
+
+        }
+        return "index";
     }
 
     @PostMapping("/emotion")
