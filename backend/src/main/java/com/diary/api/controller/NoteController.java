@@ -159,7 +159,7 @@ public class NoteController {
             @ApiResponse(code = 200, message = "사진파일 가져오기 성공"),
             @ApiResponse(code = 500, message = "사진파일 가져오는 중 오류발생")
     })
-    public String setImageFiles(@ModelAttribute Map<String, Object> params, HttpServletRequest request, HttpServletResponse response) {
+    public String setImageFiles(@RequestBody Map<String, Object> params, HttpServletRequest request, HttpServletResponse response) {
 
         try{
             ObjectMapper mapper = new ObjectMapper();
