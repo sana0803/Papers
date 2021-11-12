@@ -11,5 +11,5 @@ import java.util.List;
 public class KakaoReq {
     String id;
     String pwd;
-    List<String> imageList;
+    String[] imageList;
 }

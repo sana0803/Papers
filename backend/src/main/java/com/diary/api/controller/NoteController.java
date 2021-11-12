@@ -166,30 +166,26 @@ public class NoteController {
         try{
             ObjectMapper mapper = new ObjectMapper();
             String jsonInString = mapper.writeValueAsString(params);
-            System.out.println(Arrays.toString(params.keySet().toArray(new String[0])));
 
             Map<String, Object> object = (Map<String, Object>)params.get("action");
-            System.out.println(Arrays.toString(object.keySet().toArray(new String[0])));
-            System.out.println(object.get("params").toString());
 
             Map<String, Object> object2 = (Map<String, Object>)object.get("params");
-            System.out.println(object2.keySet());
 
             KakaoReq kakaoReq = new KakaoReq();
             kakaoReq.setId((String) object2.get("id"));
             kakaoReq.setPwd((String) object2.get("pwd"));
-            System.out.println("카카오 겟아이디 " + kakaoReq.getId());
-
-            System.out.println("오브젝트 2 이미지 리스트 " + object2.get("imageList"));
-            System.out.println("오브젝트2 타입" + object2.get("imageList").getClass());
 
             JSONObject jsonObject = new JSONObject((String) object2.get("imageList"));
-            System.out.println("시큐어 " + jsonObject.get("secureUrls"));
-            System.out.println("시큐어타입 " + jsonObject.get("secureUrls").getClass());
+
+            String target = jsonObject.getString("secureUrls");
+            kakaoReq.setImageList(target.substring(5, target.length() - 1).split(","));
 //            System.out.println(kakaoReq.getImageList().size());
 
+            System.out.println(kakaoReq.getId());
+            System.out.println(kakaoReq.getPwd());
+            for(String string : kakaoReq.getImageList())
+                System.out.println(string);
 
-            int x = 0;
         }catch (Exception e){
 
         }
