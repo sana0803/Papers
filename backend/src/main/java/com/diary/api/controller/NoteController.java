@@ -29,6 +29,7 @@ import springfox.documentation.annotations.ApiIgnore;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -162,6 +163,7 @@ public class NoteController {
         try{
             ObjectMapper mapper = new ObjectMapper();
             String jsonInString = mapper.writeValueAsString(params);
+            System.out.println(Arrays.toString(params.keySet().toArray()));
             System.out.println(params.get("params").toString());
 //            System.out.println(jsonInString);
 
