@@ -173,11 +173,15 @@ public class NoteController {
             Map<String, Object> object2 = (Map<String, Object>)object.get("params");
 
             KakaoReq kakaoReq = new KakaoReq();
-            mapper.writeValue((JsonGenerator) object2.get("params"), kakaoReq);
+            kakaoReq.setId((String) object2.get("id"));
+            kakaoReq.setPwd((String) object2.get("pwd"));
 
-            System.out.println(kakaoReq.getId());
-            System.out.println(kakaoReq.getPwd());
+            Map<String, Object> object3 = (Map<String, Object>) object2.get("imageList");
+            System.out.println(object3.get("secureUrls"));
+
+            kakaoReq.setImageList((List<String>) object3.get("secureUrls"));
             System.out.println(kakaoReq.getImageList().size());
+
 
             int x = 0;
         }catch (Exception e){
