@@ -11,7 +11,7 @@
           <div class="diary-content">
             <div class="diary-title-wrap">
               <div class="title-sec">
-                <span class="diary-title">{{ note.noteTitle }}</span>
+                <span class="diary-title" :style="{ 'font-family': note.fontId }">{{ note.noteTitle }}</span>
                 <br>
                 <span class="diary-title">{{ note.noteId }}</span>
               </div>
@@ -24,8 +24,7 @@
             </div>
             <div id="horizon-line"></div>
             <div class="diary-text">
-              <span>{{ note.noteContent }}
-              </span>
+              <span :style="{ 'font-family': note.fontId }">{{ note.noteContent }}</span>
             </div>
             <div class="diary-hashtag" v-for="(hashtag, idx) in note.noteHashtagList" :key="idx">
               <span>#{{ hashtag }}</span>
@@ -115,9 +114,8 @@
 </template>
 
 <script>
-  import {
-    mapState
-  } from 'vuex';
+  import {mapState, mapGetters} from 'vuex';
+
   export default {
     data() {
       return {
@@ -264,15 +262,27 @@
       loginUser() {
         return this.$store.getters.getLoginUser;
       },
-      ...mapState([
-        'loginUser'
-      ]),
+      ...mapState(['loginUser']),
+      ...mapGetters(['getAllFonts'])
     },
     created() {
-      console.log(this.currentDiary);
+      console.log(this.currentDiary, 'ㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁ');
+      console.log(this.getAllFonts, '모든폰트')
       this.$store.dispatch("getDiaryContent", this.currentDiary.id)
         .then((res) => {
           this.noteList = res.data.note.reverse();
+          console.log(this.noteList, 'aaaaaaaaaaaaa')
+          for (var j=0; j<this.noteList.length; j++) {
+            console.log(this.noteList[j], 'dddddddd')
+            for (var i = 0; i < this.getAllFonts.length; i++) {
+              console.log(this.getAllFonts[i], 'sssssssssssssss')
+              if (this.getAllFonts[i].id == this.noteList[j].fontId) {
+                this.noteList[j].fontId = this.getAllFonts[i].fontUrl
+                break
+              }
+            }
+            console.log(this.noteList[j].fontId, 'yyyyyyyyyyy')
+          }
           if(this.noteList.length>=1){
             this.viewList.push(this.noteList[0])
           }

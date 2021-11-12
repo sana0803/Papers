@@ -10,10 +10,27 @@ insert into user values ('test2', 150, '로봇', 'https://papers-bucket.s3.ap-no
 insert into user values ('test3', 210, '카누', 'https://papers-bucket.s3.ap-northeast-2.amazonaws.com/dummy-user/test3/%EC%B9%B4%EB%88%84.jpg', '$2a$10$9RbUeMd5zBbv1bic5Me.euAyCi1fqlwbWhKfmn0k3D7bnqJCtJhx.') ON DUPLICATE KEY UPDATE user_id='test3';
 
 -- 폰트
-insert into font values (1, '코트라 희망체', 50, 'KOTRAHOPE') ON DUPLICATE KEY UPDATE id=1;
-insert into font values (2, '교보 손글씨체', 60, 'KyoboHand') ON DUPLICATE KEY UPDATE id=2;
-insert into font values (3, '완도 희망체', 70, 'WandohopeB') ON DUPLICATE KEY UPDATE id=3;
-insert into font values (4, 'Y 너만을 비춤체', 80, 'Y_Spotlight') ON DUPLICATE KEY UPDATE id=4;
+insert into font values (1, '기본체', 0, 'Pretendard Variable') ON DUPLICATE KEY UPDATE id=1;
+insert into font values (2, '코트라 희망체', 50, 'KOTRAHOPE') ON DUPLICATE KEY UPDATE id=2;
+insert into font values (3, '교보 손글씨체', 60, 'KyoboHand') ON DUPLICATE KEY UPDATE id=3;
+insert into font values (4, '완도 희망체', 70, 'WandohopeB') ON DUPLICATE KEY UPDATE id=4;
+insert into font values (5, '카페24 써라운드에어', 80, 'Cafe24SsurroundAir') ON DUPLICATE KEY UPDATE id=5;
+insert into font values (6, '티웨이하늘체', 80, 'twaysky') ON DUPLICATE KEY UPDATE id=6;
+insert into font values (7, 'Y이드스트릿체', 80, 'YdestreetB') ON DUPLICATE KEY UPDATE id=7;
+insert into font values (8, '정묵 바위체', 80, 'SangSangRock') ON DUPLICATE KEY UPDATE id=8;
+insert into font values (9, '서평원 꺾깎체', 80, 'SLEIGothicTTF') ON DUPLICATE KEY UPDATE id=9;
+insert into font values (10, '어비 깡자체', 80, 'UhBeeKang-Ja') ON DUPLICATE KEY UPDATE id=10;
+insert into font values (11, '조선일보 명조체', 80, 'Chosunilbo_myungjo') ON DUPLICATE KEY UPDATE id=11;
+insert into font values (12, '경기천년바탕체', 80, 'GyeonggiBatang') ON DUPLICATE KEY UPDATE id=12;
+insert into font values (13, '가나 초콜릿체', 80, 'ghanachoco') ON DUPLICATE KEY UPDATE id=13;
+insert into font values (14, '도스명조체', 80, 'DOSMyungjo') ON DUPLICATE KEY UPDATE id=14;
+insert into font values (15, '서울한강체', 80, 'SeoulHangangM') ON DUPLICATE KEY UPDATE id=15;
+insert into font values (16, '어그로체', 80, 'SBAggroB') ON DUPLICATE KEY UPDATE id=16;
+insert into font values (17, '둥근모꼴', 80, 'DungGeunMo') ON DUPLICATE KEY UPDATE id=17;
+insert into font values (18, '웰컴체', 80, 'OTWelcomeRA') ON DUPLICATE KEY UPDATE id=18;
+insert into font values (19, '고운돋음', 80, 'GowunDodum-Regular') ON DUPLICATE KEY UPDATE id=19;
+insert into font values (20, '프리텐다드', 80, 'Pretendard-Regular') ON DUPLICATE KEY UPDATE id=20;
+
 
 -- 유저 폰트
 insert into user_font values (1, 3, 'test1') ON DUPLICATE KEY UPDATE id=1;
