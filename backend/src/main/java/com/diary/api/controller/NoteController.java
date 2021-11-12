@@ -153,9 +153,9 @@ public class NoteController {
             @ApiResponse(code = 200, message = "사진파일 가져오기 성공"),
             @ApiResponse(code = 500, message = "사진파일 가져오는 중 오류발생")
     })
-    public String setImageFiles(@ModelAttribute KakaoReq kakaoReq) {
-        System.out.println(kakaoReq.getId());
-        System.out.println(kakaoReq.getPwd());
+    public String setImageFiles(@RequestBody String id, @RequestBody String pwd, @ModelAttribute List<MultipartFile> imageList) {
+        System.out.println(id);
+        System.out.println(pwd);
         return "hi";
     }
 
