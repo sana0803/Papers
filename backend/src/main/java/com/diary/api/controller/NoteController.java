@@ -179,6 +179,7 @@ public class NoteController {
             System.out.println("카카오 겟아이디 " + kakaoReq.getId());
 
             System.out.println("오브젝트 2 이미지 리스트 " + object2.get("imageList"));
+            System.out.println("오브젝트2 타입" + object2.get("imageList").getClass());
 
             Map<String, Object> object3 = (Map<String, Object>) object2.get("imageList");
             System.out.println(object3.keySet());
