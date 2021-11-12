@@ -12,6 +12,7 @@ import com.diary.api.service.NoteService;
 import com.diary.api.service.UserService;
 import com.diary.common.auth.PapersUserDetails;
 import com.diary.common.util.JwtTokenUtil;
+import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -158,7 +159,7 @@ public class NoteController {
             @ApiResponse(code = 200, message = "사진파일 가져오기 성공"),
             @ApiResponse(code = 500, message = "사진파일 가져오는 중 오류발생")
     })
-    public String setImageFiles(@RequestBody Map<String, Object> params, HttpServletRequest request, HttpServletResponse response) {
+    public String setImageFiles(@ModelAttribute Map<String, Object> params, HttpServletRequest request, HttpServletResponse response) {
 
         try{
             ObjectMapper mapper = new ObjectMapper();
@@ -171,19 +172,12 @@ public class NoteController {
 
             Map<String, Object> object2 = (Map<String, Object>)object.get("params");
 
-            System.out.println(object2.get("id"));
-
             KakaoReq kakaoReq = new KakaoReq();
-            kakaoReq.setId((String) object2.get("id"));
-            kakaoReq.setPwd((String) object2.get("pwd"));
+            mapper.writeValue((JsonGenerator) object2.get("params"), kakaoReq);
 
             System.out.println(kakaoReq.getId());
             System.out.println(kakaoReq.getPwd());
-
-            kakaoReq.setImageList((List<MultipartFile>) object2.get("imageList"));
-            for(MultipartFile multipartFile : kakaoReq.getImageList()) {
-                System.out.println(multipartFile.getOriginalFilename());
-            }
+            System.out.println(kakaoReq.getImageList().size());
 
             int x = 0;
         }catch (Exception e){
