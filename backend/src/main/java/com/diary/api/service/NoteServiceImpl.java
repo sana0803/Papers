@@ -201,14 +201,14 @@ public class NoteServiceImpl implements NoteService{
             }
         }
 
-        if(noteReq.getEmotionList() != null) {
-            noteRepositorySupport.deleteNoteEmotion(note.getId());
-            if (noteReq.getEmotionList().size() > 0) {
-                for (NoteEmotionReq noteEmotionReq : noteReq.getEmotionList()) {
-                    this.setNoteEmotion(noteEmotionReq);
-                }
-            }
-        }
+//        if(noteReq.getEmotionList() != null) {
+//            noteRepositorySupport.deleteNoteEmotion(note.getId());
+//            if (noteReq.getEmotionList().size() > 0) {
+//                for (NoteEmotionReq noteEmotionReq : noteReq.getEmotionList()) {
+//                    this.setNoteEmotion(noteEmotionReq);
+//                }
+//            }
+//        }
 
         NoteRes noteRes = new NoteRes(note);
         noteRes.setNoteStickerList(noteRepositorySupport.getNoteStickers(note.getId()).get());

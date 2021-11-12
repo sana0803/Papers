@@ -21,5 +21,5 @@ public class NoteReq {
     List<MultipartFile> noteMediaList;
     List<String> noteHashtagList;
     List<NoteStickerReq> stickerList;
-    List<NoteEmotionReq> emotionList;
+//    List<NoteEmotionReq> emotionList;
 }

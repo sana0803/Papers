@@ -134,7 +134,7 @@
     methods: {
       change(num){
       var temp = 0
-        for(let i=1;i<this.noteList.length;i++){
+        for(let i=1;i<=this.noteList.length;i++){
           if(i==num){
             this.viewList = []
             if(this.noteList.length>=temp+1){

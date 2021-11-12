@@ -54,9 +54,11 @@ export default {
       }
     },
     goDetailNote(note) {
-      this.$store.dispatch("getDiaryContent", note.diaryId)
-      this.$store.commit('setNoteContent', note) // mutaion 호출 ('뮤테이션 이름, 매개변수)
-      this.$router.push("/diary");
+      this.$store.dispatch("getDiaryContent", note.diaryId).then((res) => {
+        this.$store.commit('setCurrentDiary', res.data)
+        this.$store.commit('setNoteContent', note) // mutaion 호출 ('뮤테이션 이름, 매개변수)
+        this.$router.push("/diary");
+      })
     }
   },
   created() {

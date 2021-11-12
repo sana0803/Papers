@@ -107,11 +107,11 @@ export default {
       const formData = new FormData()
       formData.append('designId', this.note.designId)
       formData.append('diaryId', selectDiaryId)
-      for(let i = 0; i < this.note.emotionList.length; i++){
-        formData.append('emotionList.writerId[]', this.note.emotionList[i].writerId)
-        formData.append('emotionList.emotionInfoId[]', this.note.emotionList[i].emotionInfoId)
-        formData.append('emotionList.noteId[]', this.note.emotionList[i].noteId)
-      }
+      // for(let i = 0; i < this.note.emotionList.length; i++){
+      //   formData.append('emotionList.writerId[]', this.note.emotionList[i].writerId)
+      //   formData.append('emotionList.emotionInfoId[]', this.note.emotionList[i].emotionInfoId)
+      //   formData.append('emotionList.noteId[]', this.note.emotionList[i].noteId)
+      // }
       formData.append('fontId', this.getMyFont.id)
       formData.append('layoutId', this.note.layoutId)
       formData.append('noteContent', this.note.noteContent)
@@ -141,6 +141,9 @@ export default {
             });
           // console.log(res.data);
           this.$store.commit('initNoteContent')
+          const loginUser = this.$store.getters['getLoginUser']
+          loginUser.userMileage += 10;
+          this.$store.commit('setLoginUser', loginUser);
           this.$router.push('/main')
         });
       }
@@ -165,19 +168,19 @@ export default {
     },
   },
   created() {
-    // 만약 수정하는 상태이면, state에 저장된 노트 컨텐츠들 가져오기
-    if(this.$store.getters['getIsUpdate'] == true) {
-      this.note = this.$store.getters['getNoteContent']
-      console.log(this.note)
-    }
-    this.$store.dispatch("diaryGet").then((res) => {
-      const tmp = []
-      for(let i=0;i<res.data.length;i++) {
-        tmp[i] = res.data[i].diaryTitle
+      // 만약 수정하는 상태이면, state에 저장된 노트 컨텐츠들 가져오기
+      if(this.$store.getters['getIsUpdate'] == true) {
+        this.note = this.$store.getters['getNoteContent']
+        console.log(this.note)
       }
-      this.diaryTitleList = tmp
-      this.diaryList = res.data
-    });
+      this.$store.dispatch("diaryGet").then((res) => {
+        const tmp = []
+        for(let i=0;i<res.data.length;i++) {
+          tmp[i] = res.data[i].diaryTitle
+        }
+        this.diaryTitleList = tmp
+        this.diaryList = res.data
+      });
     }
 };
 </script>
