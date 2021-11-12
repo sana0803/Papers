@@ -162,7 +162,10 @@ public class NoteController {
         try{
             ObjectMapper mapper = new ObjectMapper();
             String jsonInString = mapper.writeValueAsString(params);
-            System.out.println(jsonInString);
+            System.out.println(params.get("params").toString());
+//            System.out.println(jsonInString);
+
+            mapper.
             int x = 0;
         }catch (Exception e){
 
