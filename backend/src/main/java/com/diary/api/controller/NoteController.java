@@ -14,12 +14,14 @@ import com.diary.common.auth.PapersUserDetails;
 import com.diary.common.util.JwtTokenUtil;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.util.JSONPObject;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import org.checkerframework.checker.units.qual.K;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.configurationprocessor.json.JSONObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -181,12 +183,8 @@ public class NoteController {
             System.out.println("오브젝트 2 이미지 리스트 " + object2.get("imageList"));
             System.out.println("오브젝트2 타입" + object2.get("imageList").getClass());
 
-            Map<String, Object> object3 = (Map<String, Object>) object2.get("imageList");
-            System.out.println(object3.keySet());
-
-            System.out.println("시큐어 유알엘 " + object3.get("secureUrls"));
-            System.out.println("그거 클래스 " + object3.get("secureUrls").getClass());
-
+            JSONObject jsonObject = new JSONObject((String) object2.get("imageList"));
+            System.out.println("시큐어 " + jsonObject.get("secureUrls"));
 //            System.out.println(kakaoReq.getImageList().size());
 
 
