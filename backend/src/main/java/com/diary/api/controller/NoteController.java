@@ -181,6 +181,7 @@ public class NoteController {
             System.out.println("오브젝트 2 이미지 리스트 " + object2.get("imageList"));
 
             Map<String, Object> object3 = (Map<String, Object>) object2.get("imageList");
+            System.out.println(object3.keySet());
 
             System.out.println("시큐어 유알엘 " + object3.get("secureUrls"));
             System.out.println("그거 클래스 " + object3.get("secureUrls").getClass());
