@@ -16,6 +16,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import org.checkerframework.checker.units.qual.K;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -152,8 +153,9 @@ public class NoteController {
             @ApiResponse(code = 200, message = "사진파일 가져오기 성공"),
             @ApiResponse(code = 500, message = "사진파일 가져오는 중 오류발생")
     })
-    public String setImageFiles() {
-        System.out.println("hi");
+    public String setImageFiles(@ModelAttribute KakaoReq kakaoReq) {
+        System.out.println(kakaoReq.getId());
+        System.out.println(kakaoReq.getPwd());
         return "hi";
     }
 
