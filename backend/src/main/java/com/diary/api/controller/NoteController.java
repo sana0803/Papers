@@ -185,6 +185,7 @@ public class NoteController {
 
             JSONObject jsonObject = new JSONObject((String) object2.get("imageList"));
             System.out.println("시큐어 " + jsonObject.get("secureUrls"));
+            System.out.println("시큐어타입 " + jsonObject.get("secureUrls").getClass());
 //            System.out.println(kakaoReq.getImageList().size());
 
 
