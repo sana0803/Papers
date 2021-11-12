@@ -5,7 +5,7 @@
       <div id="Mypage_Profile">
         <img :src="profile.profileImg" id="Profile_img" />
         <v-btn @click="imgLabelClick" id="Change_Btn" text> 프로필 사진 바꾸기 </v-btn>
-        <input ref="imageInput" type="file" style="display: none; opacity: 0;" @change="onChangeImages" accept=".jpg, .jpeg, .png, .gif" id="profile_img_upload">
+        <input ref="imageInput" type="file" style="opacity: 0;" @change="onChangeImages" accept=".jpg, .jpeg, .png, .gif" id="profile_img_upload">
       </div>
       <div class="Mypage_Form">
         <span class="Form_Name">닉네임</span>
@@ -48,9 +48,42 @@
         <v-tab> 스티커 </v-tab>
         <v-tab> 폰트 </v-tab>
         <v-tab> 커버 </v-tab>
-        <v-tab-item class="Tab"> 스티커 목록: {{ myStickerLsit }} </v-tab-item>
-        <v-tab-item class="Tab"> 폰트 목록: {{ myFontList }} </v-tab-item>
-        <v-tab-item class="Tab"> 커버 목록: {{ myCoverList }} </v-tab-item>
+        <v-tab-item class="Tab">
+          <p>총 {{ myStickerList.length }}개</p>
+          <div
+            v-for="(sticker, id) in myStickerList"
+            :key="id"
+            class="sticker-item"
+          >
+            <div class="stic-img">
+              <img :src="sticker.stickerList[0].stickerUrl" alt="스티커">
+            </div>
+            <div class="stic-name">
+              <span>{{ sticker.stickerPackageName }}</span>
+              <!-- <span>{{ sticker.stickerPackagePrice }}</span> -->
+            </div>
+          </div>
+        </v-tab-item>
+        <v-tab-item class="Tab">
+          폰트 목록: {{ myFontList }}
+          <p>총 {{ myFontList.length }}개</p>
+          <div
+            v-for="(font, id) in myFontList"
+            :key="id"
+            class="sticker-item"
+          >
+            <!-- <div class="stic-img">
+              <img :src="sticker.stickerList[0].stickerUrl" alt="스티커">
+            </div> -->
+            <div class="stic-name">
+              <span>{{ font.fontName }}</span>
+              <!-- <span>{{ sticker.stickerPackagePrice }}</span> -->
+            </div>
+          </div>
+        </v-tab-item>
+        <v-tab-item class="Tab">
+          커버 목록: {{ myCoverList }} 
+        </v-tab-item>
       </v-tabs>
       <div id="Mypage_Delete">
         <v-btn id="Delete_Btn" text> 회원 탈퇴 </v-btn>
@@ -84,7 +117,7 @@ export default {
         profileImg: '',
         img: ''
       },
-      myStickerLsit: [],
+      myStickerList: [],
       myCoverList: [],
       myFontList: [],
       // profile.nickName : loginUser.nickName,
@@ -195,7 +228,7 @@ export default {
       this.$store.dispatch("getUserStickers")
       .then((res) => {
         console.log(res.data, '유저 스티커')
-        this.myStickerLsit = res.data
+        this.myStickerList = res.data
       })
     },
     getUserCovers: function () {
@@ -209,7 +242,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 #MyPage_Container {
   display: flex;
   justify-content: center;
@@ -265,7 +298,41 @@ export default {
 }
 .Tab {
   height: 325px;
+  background-color: aliceblue;
   border-top: 1px solid #d7d7d7;
+  overflow: hidden;
+  padding: 20px;
+
+  p {
+    // background: burlywood;
+    color: #585858;
+    font-size: 14px;
+  }
+}
+.Tab::-webkit-scrollbar {
+  display: none;
+}
+.sticker-item {
+  background-color: lightblue;
+  display: inline-block;
+}
+.stic-img {
+  border: 1px solid green;
+  width: 100px;
+  height: 140px;
+  overflow: hidden;
+
+  img {
+    width: 100%;
+  }
+}
+.stic-name {
+  margin-top: 10px;
+
+  span:first-child {
+    font-size: 17px;
+    font-weight: 500;
+  }
 }
 #Mypage_Btn_Box {
   margin-top: 20px;

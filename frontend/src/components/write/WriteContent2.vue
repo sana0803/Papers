@@ -2,31 +2,80 @@
   <div id="WriteContent_Container">
     <div id="WriteContent_Templete">
       <div class="select-diary-section">
-        <v-combobox
+        <!-- <v-combobox
           v-model="selectDiary"
           :items="diaryTitleList"
           label="일기장 선택"
-        ></v-combobox>
+        ></v-combobox> -->
+        <v-select
+          v-model="selectDiary"
+          :items="diaryTitleList"
+          label="일기장 선택"          
+          hide-details
+          color="#FFB319"
+        ></v-select>
       </div>
       <div class="title-section">
-        <textarea name="title" id="utitle" rows="1.5" cols="70" placeholder="제목을 입력하세요" maxlength="100" v-model="note.noteTitle" :style="{ 'font-family': getMyFont.fontUrl }"></textarea>
+        <v-text-field
+          v-model="note.noteTitle"
+          :style="{ 'font-family': getMyFont.fontUrl }"
+          name="title"
+          id="utitle"
+          label="제목을 입력하세요"
+          color="#979797"
+          counter="20"
+          maxlength="20"
+          single-line
+          required
+        ></v-text-field>        
       </div>
       <div class="content-section">
-        <textarea name="content" id="ucontent" rows="19" cols="70" placeholder="내용을 입력하세요" v-model="note.noteContent" :style="{ 'font-family': getMyFont.fontUrl }">
-        </textarea>
+        <v-textarea
+          v-model="note.noteContent"
+          :style="{ 'font-family': getMyFont.fontUrl }"
+          name="content"
+          id="ucontent"
+          label="내용을 입력하세요"
+          color="#979797"
+          rows="10"
+          counter="400"
+          maxlength="400"
+          single-line
+        ></v-textarea>
+        <!-- <textarea name="content" id="ucontent" counter maxlength="120" rows="10" cols="70" placeholder="내용을 입력하세요" v-model="note.noteContent" :style="{ 'font-family': getMyFont.fontUrl }"> -->
+        <!-- </textarea> -->
       </div>
       <div class="file-section">
         <v-file-input
           v-model="note.noteMediaList"
+          id="file"
+          label="사진을 등록하세요 (최대 4장, 각 용량 2MB 이하)"
+          color="#979797"
+          counter
           multiple
+          show-size
           small-chips
           truncate-length="15"
-        ></v-file-input>
-      </div>
-    </div>
-    <div>
-      <div v-for="media in note.noteS3MediaList" :key="media">
-        <img :src="media" style="width: 100px;"/>
+          prepend-icon="mdi-camera"
+        >
+        </v-file-input>
+        <input type="file" id="file" ref="files" @change="onImgUpload" multiple />
+        <div>
+          <div
+            v-for="(file, idx) in files"
+            :key="idx"
+            class="img-preview"
+          >
+            <img :src="file.preview" />
+          </div>
+        </div>
+        <div
+          class="img-section"
+          v-for="(media, idx) in note.noteS3MediaList"
+          :key="idx"
+        >
+          <img :src="media"/>
+        </div>
       </div>
     </div>
     <div id="HashTag_Input">
@@ -54,6 +103,9 @@ export default {
       diaryList:[],
       selectDiary:'',
       myFont: '',
+      files: [], //업로드용 파일
+      filesPreview: [],
+      uploadImageIndex: 0, // 이미지 업로드를 위한 변수
       note: {
         noteId: '',
         diaryId: '',
@@ -89,6 +141,34 @@ export default {
     ...mapGetters(['getMyFont'])
   },
   methods: {
+    onImgUpload () {
+      console.log(this.$refs.files.files);
+      // this.files = [...this.files, this.$refs.files.files];
+      //하나의 배열로 넣기
+      let num = -1;
+      for (let i = 0; i < this.$refs.files.files.length; i++) {
+        this.files = [
+          ...this.files,
+          //이미지 업로드
+          {
+            //실제 파일
+            file: this.$refs.files.files[i],
+            //이미지 프리뷰
+            preview: URL.createObjectURL(this.$refs.files.files[i]),
+            //삭제및 관리를 위한 number
+            number: i
+          }
+        ];
+        num = i;
+        //이미지 업로드용 프리뷰
+        // this.filesPreview = [
+        //   ...this.filesPreview,
+        //   { file: URL.createObjectURL(this.$refs.files.files[i]), number: i }
+        // ];
+      }
+      this.uploadImageIndex = num + 1; //이미지 index의 마지막 값 + 1 저장
+      console.log(this.files);
+    },
     back() {
       this.$router.go(-1);
     },
@@ -100,7 +180,6 @@ export default {
           break
         }
       }
-
       console.log(this.getMyFont.id, '폰트아이디값')
       const tmp = this.note.noteHashtagList.split("#")
       const noteHashtagList = []
@@ -193,31 +272,80 @@ export default {
 #WriteContent_Container {
   width: 530px;
   height: 854px;
-  background-color: #bbb;
+  // background-color: #bbb;
 }
 #WriteContent_Templete {  
-  background-color: peachpuff;
+  background-color: #FFF;
+  overflow: hidden;
   height: 684px;
   padding: 22px;
   box-shadow: 3px 3px 11px rgba(166, 166, 168, 0.25);
 }
 .select-diary-section {
-  background-color: burlywood;
+  // background-color: burlywood;
+  width: 40%;
   margin: none;
   padding: none;
-  input {
+  div {
+    // background-color: red;
     padding: none;
+    margin: none;
+    cursor: pointer;
   }
 }
+.v-input__control {
+  background-color: red;
+  padding: none;
+}
 .title-section {
-  background-color: lightblue;
+  // background-color: lightblue;
+  margin: none;
+  padding: none;
 }
 .content-section {
-  background-color: lemonchiffon;
+  // background-color: lemonchiffon;
+  height: 325px;
+  overflow: hidden;
+}
+.file-section {
+  background-color: #fff;
+  // height: 100%;
+}
+.img-preview {
+  background: lightsteelblue;
+  display: inline-block;
+  margin-top: 10px;
+  margin-right: 10px;
+  border-radius: 4px;
+  overflow: hidden;
+  z-index: 10;
+  width: 80px;
+  height: 80px; 
+  
+  img {
+    width: 100%;
+    height: auto;
+  }
+}
+.img-section {
+  background: lightpink;
+  display: inline-block;
+  margin-top: 10px;
+  margin-right: 10px;
+  border-radius: 4px;
+  overflow: hidden;
+  width: 80px;
+  height: 80px;
+  
+  img {
+    width: 100%;
+    // height: 100%;
+    // background: green;
+  }
 }
 #HashTag_Input {
   margin-top: 30px;
-  background-color: #eee;
+  // background-color: #eee;
 }
 #WriteContent_Btn {
   height: 38px;

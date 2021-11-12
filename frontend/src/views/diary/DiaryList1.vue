@@ -13,7 +13,7 @@
               <div class="title-sec">
                 <span class="diary-title">{{ note.noteTitle }}</span>
                 <br>
-                <span class="diary-title">{{ note.noteId }}</span>
+                <span class="diary-writer">{{ note.noteId }}</span>
               </div>
               <div class="date-sec">
                 <span class="diary-writer">{{ note.writerNickName}}</span>
@@ -230,11 +230,6 @@
         this.$store.commit('setNoteContent', localNote)
         this.$store.commit('setIsUpdate', true)
         this.$router.push("/write");
-        // this.$router.push("/modify");
-        // this.$store.dispatch("modifyNote", this.currentDiary.id)
-        // .then((res) => {
-        //   console.log(res.data)
-        // })
       },
       onDialog(note) {
         this.note = note;
@@ -259,7 +254,6 @@
                   this.viewList.push(this.noteList[1])
                 }
               })
-            // this.$router.go()
           })
       },
     },
@@ -547,9 +541,6 @@
 }
 .emo-icon {
   cursor: pointer;
-}
-span:hover {
-  color: #ffb319;
 }
 .emotion-cnt {
   display: inline-block;
