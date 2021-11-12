@@ -165,7 +165,6 @@ public class NoteController {
             System.out.println(params.get("params").toString());
 //            System.out.println(jsonInString);
 
-            mapper.
             int x = 0;
         }catch (Exception e){
 
