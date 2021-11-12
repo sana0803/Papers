@@ -1,5 +1,6 @@
 package com.diary.api.controller;
 
+import ch.qos.logback.core.util.FileUtil;
 import com.diary.api.db.entity.BaseEntity;
 import com.diary.api.db.entity.Emotion;
 import com.diary.api.db.entity.User;
@@ -32,9 +33,16 @@ import springfox.documentation.annotations.ApiIgnore;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.File;
+import java.io.InputStream;
+import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/note")
@@ -166,6 +174,7 @@ public class NoteController {
         try{
             ObjectMapper mapper = new ObjectMapper();
             String jsonInString = mapper.writeValueAsString(params);
+            System.out.println(jsonInString);
 
             Map<String, Object> object = (Map<String, Object>)params.get("action");
 
@@ -181,11 +190,14 @@ public class NoteController {
             kakaoReq.setImageList(target.substring(5, target.length() - 1).split(","));
 //            System.out.println(kakaoReq.getImageList().size());
 
-            System.out.println(kakaoReq.getId());
-            System.out.println(kakaoReq.getPwd());
-            for(String string : kakaoReq.getImageList())
-                System.out.println(string);
 
+//            for(String imageUrl : kakaoReq.getImageList()) {
+//                try(InputStream in = new URL(imageUrl).openStream()){
+//                    Path imagePath = Paths.get(System.getProperty("user.dir") + "/" + UUID.randomUUID());
+//                    Files.copy(in, imagePath);
+//                }
+//            }
+//            MultipartFile multipartFile =
         }catch (Exception e){
 
         }
