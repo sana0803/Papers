@@ -345,6 +345,19 @@ public class NoteServiceImpl implements NoteService{
                         guestList.add(userDiaryInfo.getGuestId());
                 });
             }
+            Note note = noteRepositorySupport.getNote(noteEmotionReq.getNoteId()).get();
+            String message = user.getUserNickname() + "님이" + " \'" + note.getNoteTitle() + "\" " + "에 감정을 표현했습니다.";
+            NotificationDetailRes notificationDetailRes = new NotificationDetailRes(message, user.getUserProfile());
+            notificationService.publishToUsers(notificationDetailRes, guestList);
+
+            NotificationInfo notificationInfo = notificationInfoRepository.findById((long)2).get();
+            log.info("--- note service 생성 : 감정표현");
+            for (String userId : guestList) {
+                log.info("감정 표현 알림 받는 사람 : " + userId);
+                User receiver = userService.getUserByUserId(userId);
+                notificationService.createNotification(new NotificationReq(message, notificationInfo, user.getUserProfile(), receiver));
+            }
+            log.info("----------------");
             return true;
         }catch (Exception e) {
             e.printStackTrace();
