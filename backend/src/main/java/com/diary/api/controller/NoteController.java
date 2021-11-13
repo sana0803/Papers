@@ -7,6 +7,7 @@ import com.diary.api.db.entity.User;
 import com.diary.api.request.KakaoReq;
 import com.diary.api.request.NoteEmotionReq;
 import com.diary.api.request.NoteReq;
+import com.diary.api.request.UserLoginReq;
 import com.diary.api.response.BaseResponseBody;
 import com.diary.api.response.NoteRes;
 import com.diary.api.service.NoteService;
@@ -14,6 +15,7 @@ import com.diary.api.service.UserService;
 import com.diary.common.auth.PapersUserDetails;
 import com.diary.common.util.JwtTokenUtil;
 import com.diary.common.util.S3Util;
+import com.sun.org.apache.regexp.internal.RE;
 import org.apache.commons.io.FileUtils;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -33,8 +35,10 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import springfox.documentation.annotations.ApiIgnore;
 
+import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.InputStream;
 import java.net.URL;
@@ -171,46 +175,35 @@ public class NoteController {
             @ApiResponse(code = 200, message = "사진파일 가져오기 성공"),
             @ApiResponse(code = 500, message = "사진파일 가져오는 중 오류발생")
     })
-    public String setImageFiles(@RequestBody Map<String, Object> params, HttpServletRequest request, HttpServletResponse response) {
+    public ResponseEntity<? extends BaseResponseBody> setImageFiles(@RequestBody Map<String, Object> params, HttpServletRequest request, HttpServletResponse response) {
 
         try{
             ObjectMapper mapper = new ObjectMapper();
             String jsonInString = mapper.writeValueAsString(params);
-            System.out.println(jsonInString);
-
             Map<String, Object> object = (Map<String, Object>)params.get("action");
-
             Map<String, Object> object2 = (Map<String, Object>)object.get("params");
+
+            UserLoginReq userLoginReq = new UserLoginReq();
+            userLoginReq.setUserId((String) object2.get("id"));
+            userLoginReq.setUserPwd((String) object2.get("pwd"));
+
+            if(new AuthController().login(userLoginReq).getBody().getStatusCode() != 200) {
+                return ResponseEntity.status(401).body(BaseResponseBody.of(401, "잘못된 유저 정보입니다."));
+            }
 
             KakaoReq kakaoReq = new KakaoReq();
             kakaoReq.setId((String) object2.get("id"));
             kakaoReq.setPwd((String) object2.get("pwd"));
-
             JSONObject jsonObject = new JSONObject((String) object2.get("imageList"));
-
             String target = jsonObject.getString("secureUrls");
             kakaoReq.setImageList(target.substring(5, target.length() - 1).split(","));
-//            System.out.println(kakaoReq.getImageList().size());
 
-
-            for(String imageUrl : kakaoReq.getImageList()) {
-                try(InputStream in = new URL(imageUrl).openStream()){
-                    File file = Paths.get(new URL(imageUrl).toURI()).toFile();
-//                    FileUtils.copyURLToFile(new URL(imageUrl), file);
-//                    Path imagePath = Paths.get(System.getProperty("user.dir") + "/" + UUID.randomUUID());
-//                    Files.copy(in, imagePath);
-
-//                    File file = new File(String.valueOf(imagePath));
-                    String fileName = "kakao-file/" + kakaoReq.getId() + "/" + UUID.randomUUID();
-                    System.out.println(fileName);
-
-                    S3Util.putS3(file, fileName);
-                }
-            }
+            noteService.setImageFiles(kakaoReq);
+            return ResponseEntity.status(200).body(BaseResponseBody.of(200, "사진 정보 저장 성공"));
         }catch (Exception e){
-
+            e.printStackTrace();
+            return ResponseEntity.status(500).body(BaseResponseBody.of(500, "사진 저장 중 오류 발생."));
         }
-        return "index";
     }
 
     @PostMapping("/emotion")
