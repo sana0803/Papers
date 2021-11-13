@@ -166,7 +166,7 @@ public class NoteController {
             userLoginReq.setUserId((String) object2.get("id"));
             userLoginReq.setUserPwd((String) object2.get("pwd"));
 
-            if(new AuthController().login(userLoginReq).getBody().getStatusCode() != 200) {
+            if(userService.authenticate(userLoginReq) == null) {
                 return ResponseEntity.status(401).body(BaseResponseBody.of(401, "잘못된 유저 정보입니다."));
             }
 
