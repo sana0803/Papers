@@ -130,6 +130,7 @@
         emotionReq: {
           "emotionInfoId": 0,
           "noteId": 0,
+          "diaryId": 0,
         },
       };
     },
@@ -183,6 +184,7 @@
             this.$store.dispatch("getDiaryContent", this.currentDiary.id)
               .then((res) => {
                 this.noteList = res.data.note.reverse();
+                this.emotionReq.diaryId = this.noteList[0].diaryId
                 this.change(this.page)
               })
           })
@@ -193,6 +195,7 @@
             this.$store.dispatch("getDiaryContent", this.currentDiary.id)
               .then((res) => {
                 this.noteList = res.data.note.reverse();
+                this.emotionReq.diaryId = this.noteList[0].diaryId
                 this.change(this.page)
               })
           })
@@ -243,7 +246,7 @@
               .then((res) => {
                 console.log(res.data)
                 this.noteList = res.data.note.reverse();
-
+                this.emotionReq.diaryId = this.noteList[0].diaryId
                 this.page = 1
                 this.viewList = []
                 if(this.noteList.length>=1){
@@ -273,6 +276,7 @@
       this.$store.dispatch("getDiaryContent", this.currentDiary.id)
         .then((res) => {
           this.noteList = res.data.note.reverse();
+          this.emotionReq.diaryId = this.noteList[0].diaryId
           if(this.noteList.length>=1){
             this.viewList.push(this.noteList[0])
           }

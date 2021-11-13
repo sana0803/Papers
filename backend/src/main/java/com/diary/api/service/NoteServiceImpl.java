@@ -322,11 +322,35 @@ public class NoteServiceImpl implements NoteService{
                 emotionLogRepository.save(new EmotionLog(user, noteRepositorySupport.getNote(noteEmotionReq.getNoteId()).get()));
                 userService.updateMileage(user, user.getUserMileage() + 2);
             }
+
+            long diaryId = noteEmotionReq.getDiaryId();
+            String writerId = noteEmotionReq.getWriterId();
+            List<UserDiary> userDiaryList = new ArrayList<>();
+            List<String> guestList = new ArrayList<>();
+
+            if (!userDiaryRepository.findAllByDiaryId(diaryId).isEmpty()) {
+                userDiaryList = userDiaryRepository.findAllByDiaryId(diaryId);
+            }
+
+            if (userDiaryRepositorySupport.isOwner(diaryId, writerId)) {
+                userDiaryList.forEach(userDiary -> {
+                    guestList.add(userDiary.getGuestId());
+                });
+            } else if (userDiaryRepositorySupport.findByDiaryIdAndGuestId(diaryId, writerId) != null) {
+                UserDiary userDiary = userDiaryRepositorySupport.findByDiaryIdAndGuestId(diaryId, writerId);
+                guestList.add(userDiary.getUser().getUserId());
+
+                userDiaryList.forEach(userDiaryInfo -> {
+                    if (!userDiaryInfo.getGuestId().equals(writerId))
+                        guestList.add(userDiaryInfo.getGuestId());
+                });
+            }
             return true;
         }catch (Exception e) {
             e.printStackTrace();
             return false;
         }
+
     }
 
     // 감정표현 취소
