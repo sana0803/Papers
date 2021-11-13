@@ -201,7 +201,7 @@ public class NoteController {
 //                    Files.copy(in, imagePath);
 
 //                    File file = new File(String.valueOf(imagePath));
-                    String fileName = "kakao-file/" + kakaoReq.getId() + "/" + file.getName();
+                    String fileName = "kakao-file/" + kakaoReq.getId() + "/" + UUID.randomUUID();
                     System.out.println(fileName);
 
                     S3Util.putS3(file, fileName);
