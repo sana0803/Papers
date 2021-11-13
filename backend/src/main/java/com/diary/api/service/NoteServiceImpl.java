@@ -330,11 +330,48 @@ public class NoteServiceImpl implements NoteService{
                 emotionLogRepository.save(new EmotionLog(user, noteRepositorySupport.getNote(noteEmotionReq.getNoteId()).get()));
                 userService.updateMileage(user, user.getUserMileage() + 2);
             }
+
+            long diaryId = noteEmotionReq.getDiaryId();
+            String writerId = noteEmotionReq.getWriterId();
+            List<UserDiary> userDiaryList = new ArrayList<>();
+            List<String> guestList = new ArrayList<>();
+
+            if (!userDiaryRepository.findAllByDiaryId(diaryId).isEmpty()) {
+                userDiaryList = userDiaryRepository.findAllByDiaryId(diaryId);
+            }
+
+            if (userDiaryRepositorySupport.isOwner(diaryId, writerId)) {
+                userDiaryList.forEach(userDiary -> {
+                    guestList.add(userDiary.getGuestId());
+                });
+            } else if (userDiaryRepositorySupport.findByDiaryIdAndGuestId(diaryId, writerId) != null) {
+                UserDiary userDiary = userDiaryRepositorySupport.findByDiaryIdAndGuestId(diaryId, writerId);
+                guestList.add(userDiary.getUser().getUserId());
+
+                userDiaryList.forEach(userDiaryInfo -> {
+                    if (!userDiaryInfo.getGuestId().equals(writerId))
+                        guestList.add(userDiaryInfo.getGuestId());
+                });
+            }
+            Note note = noteRepositorySupport.getNote(noteEmotionReq.getNoteId()).get();
+            String message = user.getUserNickname() + "님이" + " \'" + note.getNoteTitle() + "\" " + "에 감정을 표현했습니다.";
+            NotificationDetailRes notificationDetailRes = new NotificationDetailRes(message, user.getUserProfile());
+            notificationService.publishToUsers(notificationDetailRes, guestList);
+
+            NotificationInfo notificationInfo = notificationInfoRepository.findById((long)2).get();
+            log.info("--- note service 생성 : 감정표현");
+            for (String userId : guestList) {
+                log.info("감정 표현 알림 받는 사람 : " + userId);
+                User receiver = userService.getUserByUserId(userId);
+                notificationService.createNotification(new NotificationReq(message, notificationInfo, user.getUserProfile(), receiver));
+            }
+            log.info("----------------");
             return true;
         }catch (Exception e) {
             e.printStackTrace();
             return false;
         }
+
     }
 
     // 감정표현 취소
