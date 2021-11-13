@@ -1,8 +1,5 @@
 package com.diary.api.controller;
 
-import ch.qos.logback.core.util.FileUtil;
-import com.diary.api.db.entity.BaseEntity;
-import com.diary.api.db.entity.Emotion;
 import com.diary.api.db.entity.User;
 import com.diary.api.request.KakaoReq;
 import com.diary.api.request.NoteEmotionReq;
@@ -14,41 +11,23 @@ import com.diary.api.service.NoteService;
 import com.diary.api.service.UserService;
 import com.diary.common.auth.PapersUserDetails;
 import com.diary.common.util.JwtTokenUtil;
-import com.diary.common.util.S3Util;
-import com.sun.org.apache.regexp.internal.RE;
-import org.apache.commons.io.FileUtils;
-import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.util.JSONPObject;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
-import org.checkerframework.checker.units.qual.K;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.configurationprocessor.json.JSONObject;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 import springfox.documentation.annotations.ApiIgnore;
 
-import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.InputStream;
-import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/note")
