@@ -13,6 +13,7 @@ import com.diary.api.service.NoteService;
 import com.diary.api.service.UserService;
 import com.diary.common.auth.PapersUserDetails;
 import com.diary.common.util.JwtTokenUtil;
+import com.diary.common.util.S3Util;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.util.JSONPObject;
@@ -191,13 +192,18 @@ public class NoteController {
 //            System.out.println(kakaoReq.getImageList().size());
 
 
-//            for(String imageUrl : kakaoReq.getImageList()) {
-//                try(InputStream in = new URL(imageUrl).openStream()){
-//                    Path imagePath = Paths.get(System.getProperty("user.dir") + "/" + UUID.randomUUID());
-//                    Files.copy(in, imagePath);
-//                }
-//            }
-//            MultipartFile multipartFile =
+            for(String imageUrl : kakaoReq.getImageList()) {
+                try(InputStream in = new URL(imageUrl).openStream()){
+                    Path imagePath = Paths.get(System.getProperty("user.dir") + "/" + UUID.randomUUID());
+                    Files.copy(in, imagePath);
+
+                    File file = new File(String.valueOf(imagePath));
+                    String fileName = "kakao-file/" + kakaoReq.getId() + "/" + file.getName();
+                    System.out.println(fileName);
+
+                    S3Util.putS3(file, fileName);
+                }
+            }
         }catch (Exception e){
 
         }
