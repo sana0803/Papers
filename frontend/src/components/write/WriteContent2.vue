@@ -42,6 +42,7 @@
 <script>
 import Swal from "sweetalert2";
 import { mapGetters } from 'vuex';
+import EventBus from '../../eventBus'
 
 export default {
   data() {
@@ -168,6 +169,7 @@ export default {
     },
   },
   created() {
+
       // 만약 수정하는 상태이면, state에 저장된 노트 컨텐츠들 가져오기
       if(this.$store.getters['getIsUpdate'] == true) {
         this.note = this.$store.getters['getNoteContent']
@@ -181,6 +183,25 @@ export default {
         this.diaryTitleList = tmp
         this.diaryList = res.data
       });
+
+      EventBus.$on('createSticker', (sticker) => {
+        const box = document.getElementById('WriteContent_Templete')
+
+        const div = document.createElement('div')
+        const img = document.createElement('img')
+
+        div.append(img)
+
+        img.src = sticker.stickerUrl
+
+        img.style.width = '75px'
+        img.style.height = '75px'
+        img.style.position = 'absolute'
+        img.style.top = '10px'
+        img.style.left = '10px'
+        
+        box.append(div)
+      })
     }
 };
 </script>
@@ -191,6 +212,7 @@ export default {
   height: 854px;
 }
 #WriteContent_Templete {
+  position:relative;
   height: 684px;
   box-shadow: 3px 3px 11px rgba(166, 166, 168, 0.25);
 }
