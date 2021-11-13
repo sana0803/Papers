@@ -33,7 +33,8 @@ export default {
       this.$store.commit('setNotificationState', false)
     },
     notificationClick () {
-      this.$router.push('alert')
+      // this.$router.push('alert')
+      this.$router.push('/main/alert')
       // this.$emit('change-notification-state', false)
       this.$store.commit('setNotificationState', false)
     }

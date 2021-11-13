@@ -9,4 +9,5 @@ public class NoteEmotionReq {
     String writerId;
     Long emotionInfoId;
     Long noteId;
+    Long diaryId;
 }
