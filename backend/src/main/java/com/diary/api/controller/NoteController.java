@@ -195,8 +195,8 @@ public class NoteController {
 
             for(String imageUrl : kakaoReq.getImageList()) {
                 try(InputStream in = new URL(imageUrl).openStream()){
-                    File file = new File("../" + UUID.randomUUID());
-                    FileUtils.copyURLToFile(new URL(imageUrl), file);
+                    File file = Paths.get(new URL(imageUrl).toURI()).toFile();
+//                    FileUtils.copyURLToFile(new URL(imageUrl), file);
 //                    Path imagePath = Paths.get(System.getProperty("user.dir") + "/" + UUID.randomUUID());
 //                    Files.copy(in, imagePath);
 
