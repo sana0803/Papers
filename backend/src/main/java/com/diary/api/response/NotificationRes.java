@@ -18,6 +18,8 @@ public class NotificationRes {
     private Long notInfoId;
     private String senderImageUrl;
     private String userId;
+    private Long diaryId;
+    private Long noteId;
 
     public static NotificationRes of(Notification notification) {
         NotificationRes res = new NotificationRes();
@@ -29,6 +31,8 @@ public class NotificationRes {
         res.notInfoId = notification.getNotificationInfo().getId();
         res.senderImageUrl = notification.getSenderImageUrl();
         res.setUserId(notification.getUser().getUserId());
+        res.setDiaryId(notification.getDiaryId());
+        res.setNoteId(notification.getNoteId());
         return res;
     }
 }
