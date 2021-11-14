@@ -16,9 +16,10 @@
     <div id="contents" ref="pdfarea" >
       <div class="albumContent"  style="height: 100%; overflow: auto;">        
         <div class="picContents" v-for="(image, idx) in imageList" :key="idx" style="float: left; display: inline-block">
-          <div class="picContentsheader">Click here to move</div>
-          <img :src="image" @click="dialogOn(idx)" style="width: 80%;"/>
-          <textarea name="content" id="ucontent" rows="19" cols="70" placeholder="내용을 입력하세요" style="width: 400px; height: 100px; display: block;" 
+          <div class="picContentsheader" data-html2canvas-ignore="true">Click here to move</div>
+          <img :src="image" @click="dialogOn(idx)" style="width: 80%; margin-top: 20px;"/>
+          <textarea name="content" id="ucontent" rows="19" cols="70" placeholder="내용을 입력하세요" 
+            style="width: 80%; height: 33px; display: block; margin: auto; margin-bottom: 20px;" 
             :style="{ 'font-family': getMyFont.fontUrl }"/>
         </div>
       </div>
@@ -79,12 +80,12 @@ export default {
         this.target = th;
       },
       exportToPDF () {
-          // window.scrollTo(0, 0);
+          // window.scrollTo(50, 0);
           html2pdf(this.$refs.pdfarea, {
               // margin: [0, 0, 0, 20],
               filename: 'document.pdf',
-              image: {type:"jpg", quality: 0.95},
-              html2canvas: { scale:1, dpi: 300, letterRendering: true, allowTaint: true , useCORS: true },
+              image: {type:"jpg", quality: 1.0},
+              html2canvas: { scale:1, dpi: 300, letterRendering: true, allowTaint: true , useCORS: true, scrollY: 0 },
               jsPDF: { orientation: 'l', unit: 'mm', format: 'letter', compressPDF: true }
           })
       },
@@ -193,15 +194,8 @@ export default {
     fetch( imageUrl )
       .then(response => response.blob())
       .then(blob => {
-          console.log( "객체는? " )
-          //this.images.selfie = URL.createObjectURL(blob);
           this.testImage = URL.createObjectURL(blob);
-      })   
-      
-    var classes = document.getElementsByClassName('picContents')
-    for(let i = 0; i < classes.length; i++){
-      this.dragElement(classes[i])
-    }
+      })
   },
   updated() {
     this.excuteDragElement()
@@ -216,25 +210,30 @@ export default {
 }
 .albumContent {
   width: 1055px;
-  max-height: 215mm;
-  min-height: 215mm;
+  max-height: 215.62mm;
+  min-height: 215.62mm;
   padding: 20px;
-  border : 1px solid black;
+  /* border : 1px solid black; */
+  background-image: url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQZxvAs9BUbg9L63w_cwVIy-YabpJp3uSnfJw&usqp=CAU);
+  background-size: cover;
+  align-content: center;
 }
 #contents {
-  width: 100%;
+  width: 1055px;
   overflow: visible;
   position: relative;
+  /* left: -4%; */
 }
 
 .picContents {
   position: absolute;
   /* z-index: 9; */
-  background-color: #f1f1f1;
+  background-color: #faa6f6;
   text-align: center;
-  border: 1px solid black;
+  /* border: 1px solid black; */
   resize: both;
   overflow: auto;
+  /* box-shadow: grey 6px 8px 10px 5px; */
 }
 
 .picContentsheader {
