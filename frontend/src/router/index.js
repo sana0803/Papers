@@ -21,6 +21,7 @@ const routes = [
     ]
   },
   {
+    name: 'main',
     path: '/main',
     component: () => import('../layouts/MainLayout.vue'),
     redirect: 'main/mainList',
@@ -34,6 +35,7 @@ const routes = [
     ]
   },
   {
+    name: 'diary',
     path: '/diary',
     component: () => import('../layouts/DiaryLayout.vue'),
     redirect: 'diary/diaryList1',

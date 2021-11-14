@@ -272,6 +272,27 @@
       ]),
     },
     created() {
+      const diaryIdQuery = this.$route.query.diaryId
+      const noteIdQuery = this.$route.query.noteId
+      if (diaryIdQuery && noteIdQuery) {
+        // alert('다이어리 아이디는 ' + diaryIdQuery)
+        // alert('노트 아이디는 ' + noteIdQuery)
+        this.$store.dispatch("getDiaryContent", diaryIdQuery)
+        .then((res) => {
+          this.noteList = res.data.note.reverse();
+          this.emotionReq.diaryId = this.noteList[0].diaryId
+
+          for (let i = 0; i < this.noteList.length; i++) {
+            if (this.noteList[i].noteId === noteIdQuery) {
+              this.page = parseInt(i / 2) + 1
+              this.change(this.page)
+              break
+            }
+          }
+        })
+        return
+      }
+      
       console.log(this.currentDiary);
       this.$store.dispatch("getDiaryContent", this.currentDiary.id)
         .then((res) => {

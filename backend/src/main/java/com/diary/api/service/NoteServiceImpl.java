@@ -257,11 +257,14 @@ public class NoteServiceImpl implements NoteService{
         notificationService.publishToUsers(notificationDetailRes, guestList);
 
         NotificationInfo notificationInfo = notificationInfoRepository.findById((long)1).get();
+
+        Long currentSavedNoteId = noteRepository.findFirstByOrderByIdDesc().getId();
+
         log.info("---note service 생성");
         for (String userId : guestList) {
             log.info("초대 받는 사람 : " + userId);
             User receiver = userService.getUserByUserId(userId);
-            notificationService.createNotification(new NotificationReq(message, notificationInfo, user.getUserProfile(), receiver));
+            notificationService.createNotification(new NotificationReq(message, notificationInfo, user.getUserProfile(), receiver, noteReq.getDiaryId(), currentSavedNoteId));
         }
         log.info("----------------");
         return noteRes;
@@ -363,7 +366,7 @@ public class NoteServiceImpl implements NoteService{
             for (String userId : guestList) {
                 log.info("감정 표현 알림 받는 사람 : " + userId);
                 User receiver = userService.getUserByUserId(userId);
-                notificationService.createNotification(new NotificationReq(message, notificationInfo, user.getUserProfile(), receiver));
+                notificationService.createNotification(new NotificationReq(message, notificationInfo, user.getUserProfile(), receiver, diaryId, noteEmotionReq.getNoteId()));
             }
             log.info("----------------");
             return true;

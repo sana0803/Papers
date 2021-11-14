@@ -235,7 +235,7 @@ public class DiaryServiceImpl implements DiaryService {
         for (String userId : guestList) {
             log.info("초대 받는 사람 : " + userId);
             User receiver = userService.getUserByUserId(userId);
-            notificationService.createNotification(new NotificationReq(message, notificationInfo, user.getUserProfile(), receiver));
+            notificationService.createNotification(new NotificationReq(message, notificationInfo, user.getUserProfile(), receiver, diaryInviteReq.getDiaryId(), (long)0));
         }
         log.info("----------------");
 
