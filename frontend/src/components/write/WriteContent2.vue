@@ -63,17 +63,14 @@ export default {
         noteS3MediaList: [],
         noteMediaList: [],
         noteHashtagList: '',
-        stickerList: [{
-          leftPixel: '',
-          stickerId: '',
-          topPixel: '',
-        }],
+        stickerList: [],
         emotionList: [{
           writerId: '',
           emotionInfoId: '',
           noteId: '',
         }]
       },
+      stickerNum: 1
     }
   },
   computed: {
@@ -97,8 +94,16 @@ export default {
           break
         }
       }
+      for(let i=1;i<this.stickerNum;i++){
+        var temp = document.getElementById('sticker' + i) 
+        var item = {
+          leftPixel: temp.style.left,
+          stickerId: temp.className,
+          topPixel: temp.style.top
+        }
+        this.note.stickerList.push(item)
+      }
 
-      console.log(this.getMyFont.id, '폰트아이디값')
       const tmp = this.note.noteHashtagList.split("#")
       const noteHashtagList = []
       for(let i=1;i<tmp.length;i++){
@@ -125,11 +130,14 @@ export default {
       }
       formData.append('noteTitle', this.note.noteTitle)      
       for(let i = 0; i < this.note.stickerList.length; i++){
-        formData.append('stickerList.leftPixel[]', this.note.stickerList[i].leftPixel)
-        formData.append('stickerList.stickerId[]', this.note.stickerList[i].stickerId)
-        formData.append('stickerList.topPixel[]', this.note.stickerList[i].topPixel)
+        formData.append('stickerList[' + i + '].leftPixel', this.note.stickerList[i].leftPixel)
+        formData.append('stickerList[' + i + '].stickerId', this.note.stickerList[i].stickerId)
+        formData.append('stickerList[' + i + '].topPixel', this.note.stickerList[i].topPixel)
       }      
       formData.append('writerId', this.loginUser.userNickname)
+
+
+      console.log(formData)
 
       if(this.$store.getters['getIsUpdate'] == false){
         this.$store.dispatch("write", formData).then(() => {
@@ -167,6 +175,46 @@ export default {
         });
       }
     },
+    dragElement(elmnt) {
+          var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+          if (document.getElementById(elmnt.id)) {
+            /* if present, the header is where you move the DIV from:*/
+            document.getElementById(elmnt.id).onmousedown = dragMouseDown;
+          } else {
+            /* otherwise, move the DIV from anywhere inside the DIV:*/
+            elmnt.onmousedown = dragMouseDown;
+          }
+
+          function dragMouseDown(e) {
+            e = e || window.event;
+            e.preventDefault();
+            // get the mouse cursor position at startup:
+            pos3 = e.clientX;
+            pos4 = e.clientY;
+            document.onmouseup = closeDragElement;
+            // call a function whenever the cursor moves:
+            document.onmousemove = elementDrag;
+          }
+
+          function elementDrag(e) {
+            e = e || window.event;
+            e.preventDefault();
+            // calculate the new cursor position:
+            pos1 = pos3 - e.clientX;
+            pos2 = pos4 - e.clientY;
+            pos3 = e.clientX;
+            pos4 = e.clientY;
+            // set the element's new position:
+            elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
+            elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
+          }
+
+          function closeDragElement() {
+            /* stop moving when mouse button is released:*/
+            document.onmouseup = null;
+            document.onmousemove = null;
+          }
+        }
   },
   created() {
 
@@ -187,20 +235,28 @@ export default {
       EventBus.$on('createSticker', (sticker) => {
         const box = document.getElementById('WriteContent_Templete')
 
-        const div = document.createElement('div')
+        // const div = document.createElement('div')
         const img = document.createElement('img')
 
-        div.append(img)
+        img.id = 'sticker' + this.stickerNum
+        this.stickerNum++
+
+        // div.append(img)
 
         img.src = sticker.stickerUrl
 
-        img.style.width = '75px'
-        img.style.height = '75px'
+        img.style.width = '50px'
+        img.style.height = '50px'
         img.style.position = 'absolute'
         img.style.top = '10px'
         img.style.left = '10px'
+        img.style.cursor = 'pointer'
         
-        box.append(div)
+        img.className = sticker.id
+
+        box.append(img)
+
+        this.dragElement(img);
       })
     }
 };
@@ -252,5 +308,11 @@ textarea {
   line-height: 1.5;
   border-radius: 5px;
   border-bottom: 1px solid #ccc;
+}
+
+.sticker{
+  border:3px solid red;
+  width:300px;
+  height:300px;
 }
 </style>

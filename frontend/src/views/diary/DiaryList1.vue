@@ -40,7 +40,10 @@
               <div v-else-if="note.noteMediaList.length == 0">
               </div>
               <div v-else>
-                <img :src="note.noteMediaList[0]" class="diary-content-img" alt="일기 사진" />
+                <div style="position:relative;">
+                  <img :src="note.noteMediaList[0]" class="diary-content-img" alt="일기 사진" />
+                  <img v-for="sticker in note.noteStickerList" :key="sticker.id" :src="sticker.sticker.stickerUrl" :style="{top:sticker.topPixel, left:sticker.leftPixel}" class="sticker" />
+                </div> 
               </div>
             </div>
           </div>
@@ -566,5 +569,12 @@
 
   .sad-clicked {
     color: blue;
+  }
+
+  .sticker{
+    width:50px; 
+    height:50px; 
+    position:absolute;
+    z-index:100;
   }
 </style>

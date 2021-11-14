@@ -7,6 +7,6 @@ import lombok.Setter;
 @Setter
 public class NoteStickerReq {
     Long stickerId;
-    int topPixel;
-    int leftPixel;
+    String topPixel;
+    String leftPixel;
 }
