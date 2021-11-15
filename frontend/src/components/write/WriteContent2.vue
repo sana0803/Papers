@@ -102,17 +102,18 @@
     </div>
 
     <!-- 다이얼로그 --> 
-    <v-dialog v-model="dialog">
+    <v-dialog v-model="dialog" max-width="920px" id="targetDialog">
       <img 
         v-for="image in getS3result" 
         :key="image" 
         :src="image" 
         @click="selectImage(image)"
-        style="width: 300px; display: inline-block; float: left;"/>
+        style="width: 300px; "
+        />
       <br>
       <v-btn @click="dialog=false">닫기</v-btn>
     </v-dialog>
-  </div>
+  </div>  
 </template>
 
 <script>
@@ -175,8 +176,8 @@ export default {
       this.dialog = false;
     },
     uploadS3Images() {
+      this.getS3result = []
       this.$store.dispatch('getKakaoImageList').then((res) => {
-        // console.log(res.data)
         for(let i = 0; i < res.data.length; i++){
           this.getS3result.push(res.data[i])
           this.dialog = true;
@@ -521,7 +522,8 @@ textarea {
   width:300px;
   height:300px;
 }
-.v-dialog {
-  width: 920px !important;
+
+#targetDialog::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera*/
 }
 </style>
