@@ -316,6 +316,10 @@ public class NoteServiceImpl implements NoteService{
         return noteRepositorySupport.getImageFiles(userId, diaryId);
     }
 
+    public List<String> getKakaoImageFiles(String userId){
+        return noteRepositorySupport.getKakaoImageFiles(userId);
+    }
+
     // 일기에 감정표현 남기기
     public boolean setNoteEmotion(NoteEmotionReq noteEmotionReq){
         try {
