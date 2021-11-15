@@ -102,15 +102,7 @@ export default {
       .then((res) => {
         this.fontList = res.data
         console.log(this.fontList, '폰트리스트')
-        for (var i=0; i < this.fontList.length; i++) {
-          console.log(this.fontList[i].owned + '폰트리스트의 i')
-          if (this.fontList[i].owned) {
-            this.myFontList.push(this.fontList[i])
-          }
-        }
-        console.log(this.myFontList, '마이폰트리스트')
-        this.$store.commit('setMyFont', this.myFontList)
-        
+  
         for(let i=0;i<9;i++){
           if(this.fontList.length==i) 
               break

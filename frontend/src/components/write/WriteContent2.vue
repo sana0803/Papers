@@ -146,9 +146,9 @@ export default {
       uploadImageIndex: 0, // 이미지 업로드를 위한 변수
       onPreview: false,
       note: {
-        noteId: "",
-        diaryId: "",
-        fontId: "",
+        noteId: '',
+        diaryId: '',
+        fontId: 1,
         layoutId: 1,
         designId: 1,
         writerId: "",

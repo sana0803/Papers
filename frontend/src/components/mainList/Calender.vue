@@ -1,6 +1,15 @@
 <template>
   <div id="Calender_Container">
     <v-sheet tile height="45" class="d-flex">
+      <!-- 오늘 날짜로 가기 -->
+      <v-btn
+        outlined
+        class="mr-4"
+        color="grey darken-2"
+        @click="setToday"
+      >
+        Today
+      </v-btn>
       <!-- 뒤로 가기 -->
       <v-btn
         icon
@@ -11,6 +20,9 @@
       >
         <v-icon>mdi-chevron-left</v-icon>
       </v-btn>
+      <v-toolbar-title v-if="$refs.calendar">
+        {{ $refs.calendar.title }}
+      </v-toolbar-title>
       <!-- 앞으로 가기 -->
       <v-btn
         icon
@@ -21,18 +33,48 @@
       >
         <v-icon>mdi-chevron-right</v-icon>
       </v-btn>
+      <v-spacer></v-spacer>
+      <!-- 달력 형태 -->
+      <v-menu
+        bottom
+        right
+      >
+        <template v-slot:activator="{ on, attrs }">
+          <v-btn
+            outlined
+            color="grey darken-2"
+            v-bind="attrs"
+            v-on="on"
+          >
+            <span>{{ typeToLabel[type] }}</span>
+            <v-icon right>
+              mdi-menu-down
+            </v-icon>
+          </v-btn>
+        </template>
+        <v-list>
+          <v-list-item @click="type = 'day'">
+            <v-list-item-title>Day</v-list-item-title>
+          </v-list-item>
+          <v-list-item @click="type = 'month'">
+            <v-list-item-title>Month</v-list-item-title>
+          </v-list-item>
+        </v-list>
+      </v-menu>
     </v-sheet>
     <!-- 달력 -->
     <v-sheet height="600">
       <v-calendar
         ref="calendar"
-        v-model="value"
+        v-model="focus"
         :events="events"
-        :event-overlap-mode="mode"
+        :type="type"
         :event-overlap-threshold="30"
         :event-color="getEventColor"
         @change="getEvents"
         @click:event="showEvent"
+        @click:date="viewDay"
+        @click:more="viewDay"
       ></v-calendar>
       <!-- @change="getEvents" -->
       <v-menu
@@ -41,21 +83,32 @@
         :activator="selectedElement"
         offset-x
       >
-        <v-card color="grey lighten-4" min-width="350px" flat>
-          <v-toolbar :color="selectedEvent.color" dark>
+        <v-card
+          color="grey lighten-4"
+          min-width="350px"
+          flat
+        >
+          <v-toolbar
+            :color="selectedEvent.color"
+            dark
+          >
             <v-toolbar-title v-html="selectedEvent.name"></v-toolbar-title>
             <v-spacer></v-spacer>
           </v-toolbar>
-          <v-card-text id="select-box">
-            <div style="height: 350px">
-              <v-img style="height: 100%" :src="selectedEvent.noteMedia" alt="일기 사진" />
+          <v-card-text id="select-box"> 
+            <div style="height:350px;">
+              <v-img style="height:100%;" :src="selectedEvent.noteMedia" alt="일기 사진"/>
             </div>
-            <div style="padding-top: 10px">
-              <span>{{ selectedEvent.content }}</span>
+            <div style="padding-top:10px">
+              <span>{{selectedEvent.content}}</span>
             </div>
           </v-card-text>
           <v-card-actions>
-            <v-btn text color="secondary" @click="selectedOpen = false">
+            <v-btn
+              text
+              color="secondary"
+              @click="selectedOpen = false"
+            >
               닫기
             </v-btn>
           </v-card-actions>
@@ -71,8 +124,14 @@ import dayjs from "dayjs";
 export default {
   data() {
     return {
+      focus: '',
+      type: 'month',
+      typeToLabel: {
+        month: 'Month',
+        day: 'Day',
+      },
       month: dayjs().format("MM"),
-      value: "",
+      // value: "",
       events: [],
       colors: [
         "rgb(177, 177, 233)",
@@ -92,10 +151,10 @@ export default {
   methods: {
     getEvents() {
       this.$store.dispatch("calenderGet", this.month).then((res) => {
-        const events = [];
-        console.log(res.data);
-        for (let i = 0; i < res.data.length; i++) {
-          const allDay = this.rnd(0, 3) === 0;
+        const events = []
+        console.log(res.data)
+        for(let i = 0; i < res.data.length; i++) {
+          // const allDay = this.rnd(0, 3) === 0;
 
           const event = {
             name: res.data[i].noteTitle,
@@ -105,9 +164,10 @@ export default {
             end: res.data[i].noteCreatedDate,
             noteMedia: res.data[i].noteMediaList[0],
             color: this.colors[this.rnd(0, this.colors.length - 1)],
-            timed: allDay,
-          };
-          events[i] = event;
+            timed: true,
+            // time: res.data[i].noteCreatedTime
+          }
+          events[i] = event
         }
         this.events = events;
       });
@@ -149,23 +209,30 @@ export default {
     next() {
       this.month = this.month + 1;
     },
-    showEvent({ nativeEvent, event }) {
+    showEvent ({ nativeEvent, event }) {
       const open = () => {
-        this.selectedEvent = event;
-        this.selectedElement = nativeEvent.target;
-        requestAnimationFrame(() =>
-          requestAnimationFrame(() => (this.selectedOpen = true))
-        );
-      };
-
-      if (this.selectedOpen) {
-        this.selectedOpen = false;
-        requestAnimationFrame(() => requestAnimationFrame(() => open()));
-      } else {
-        open();
+        this.selectedEvent = event
+        this.selectedElement = nativeEvent.target
+        requestAnimationFrame(() => requestAnimationFrame(() => this.selectedOpen = true))
       }
 
-      nativeEvent.stopPropagation();
+      if (this.selectedOpen) {
+        this.selectedOpen = false
+        requestAnimationFrame(() => requestAnimationFrame(() => open()))
+      } else {
+        open()
+      }
+
+      nativeEvent.stopPropagation()
+    },
+    // 일별로 보기
+    viewDay ({ date }) {
+      this.focus = date
+      this.type = 'day'
+    },
+    // 오늘 날짜로 이동
+    setToday () {
+      this.focus = ''
     },
   },
   created() {

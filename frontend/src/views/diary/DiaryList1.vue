@@ -11,7 +11,7 @@
           <div class="diary-content">
             <div class="diary-title-wrap">
               <div class="title-sec">
-                <span class="diary-title">{{ note.noteTitle }}</span>
+                <span class="diary-title" :style="{ 'font-family': note.fontId }">{{ note.noteTitle }}</span>
                 <br>
                 <span class="diary-writer">{{ note.noteId }}</span>
               </div>
@@ -24,8 +24,7 @@
             </div>
             <div id="horizon-line"></div>
             <div class="diary-text">
-              <span>{{ note.noteContent }}
-              </span>
+              <span :style="{ 'font-family': note.fontId }">{{ note.noteContent }}</span>
             </div>
             <div class="diary-hashtag" v-for="(hashtag, idx) in note.noteHashtagList" :key="idx">
               <span>#{{ hashtag }}</span>
@@ -124,9 +123,8 @@
 </template>
 
 <script>
-  import {
-    mapState
-  } from 'vuex';
+  import {mapState, mapGetters} from 'vuex';
+
   export default {
     data() {
       return {
@@ -270,11 +268,30 @@
       loginUser() {
         return this.$store.getters.getLoginUser;
       },
+      ...mapState(['loginUser']),
+      ...mapGetters(['getAllFonts']),
+      noteContent() {
+        return this.$store.getters.getNoteContent;
+      },
       ...mapState([
         'loginUser'
       ]),
     },
     created() {
+      this.$store.dispatch("getDiaryContent", this.currentDiary.id)
+        .then((res) => {
+          this.noteList = res.data.note.reverse();
+          console.log(res.data, 'zzzzzzz')
+          // 일기의 폰트 id값에 맞춰 폰트url값으로 변경
+          for (var j=0; j<this.noteList.length; j++) {
+            for (var i = 0; i < this.getAllFonts.length; i++) {
+              if (this.getAllFonts[i].id == this.noteList[j].fontId) {
+                this.noteList[j].fontId = this.getAllFonts[i].fontUrl
+                break
+              }
+            }
+          }
+        })
       const diaryIdQuery = this.$route.query.diaryId
       const noteIdQuery = this.$route.query.noteId
       if (diaryIdQuery && noteIdQuery) {
@@ -296,17 +313,42 @@
         return
       }
       
-      console.log(this.currentDiary);
       this.$store.dispatch("getDiaryContent", this.currentDiary.id)
         .then((res) => {
           this.noteList = res.data.note.reverse();
           this.emotionReq.diaryId = this.noteList[0].diaryId
-          if(this.noteList.length>=1){
-            this.viewList.push(this.noteList[0])
+          
+          this.viewList = []
+          var page = 1
+          for(let i=0;i<this.noteList.length;i++){
+            if(i>0 && i%2==0){
+              page++
+            }
+
+            if(this.noteContent.noteId == this.noteList[i].noteId) {
+              if(i==this.noteList.length-1 && i%2==0){
+                this.viewList.push(this.noteList[i])
+              }
+              else if(i%2==0 && i<this.noteList.length-1){
+                this.viewList.push(this.noteList[i])
+                this.viewList.push(this.noteList[i+1])
+              }
+              else{
+                this.viewList.push(this.noteList[i-1])
+                this.viewList.push(this.noteList[i])
+              }
+              this.page = page
+
+              break
+            }
           }
-          if(this.noteList.length>=2){
-            this.viewList.push(this.noteList[1])
-          }
+          
+          // if(this.noteList.length>=1){
+          //   this.viewList.push(this.noteList[0])
+          // }
+          // if(this.noteList.length>=2){
+          //   this.viewList.push(this.noteList[1])
+          // }
         })
     },
   };

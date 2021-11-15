@@ -136,7 +136,12 @@ export default {
     },
     goDiary(diary) {
       this.$store.commit('setCurrentDiary', diary) // mutaion 호출 ('뮤테이션 이름, 매개변수)
-      this.$router.push("/diary");
+      
+      this.$store.dispatch('getDiaryContent', diary.id)
+        .then((res) => {
+          this.$store.commit('setNoteContent', res.data.note[0])
+          this.$router.push("/diary");
+        })
     },
     create() {
       const diary = {
@@ -184,7 +189,6 @@ export default {
   created() {
     this.$store.dispatch("diaryGet").then((res) => {
       this.diaryList = res.data.reverse();
-      
       for(let i=0;i<5;i++){
         if(this.diaryList.length==i) 
           break
