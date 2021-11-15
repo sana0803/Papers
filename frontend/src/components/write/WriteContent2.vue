@@ -39,11 +39,17 @@
             maxlength="400"
             single-line
           ></v-textarea>
-        </div>        
-        <label for="file">
-          <span style="font-weight: 600; cursor: pointer;">내 컴퓨터에서 업로드  ></span>
-        </label>
-        <v-btn style="right: 10px;" @click="uploadS3Images">S3에서 업로드</v-btn>
+        </div>
+        <div class="file-up-wrap">
+          <div>
+            <label for="file">
+              <span style="font-weight: 600; cursor: pointer;">내 컴퓨터에서 업로드  ></span>
+            </label>
+          </div>
+          <div>
+            <span style="font-weight: 600; cursor: pointer;" @click="uploadS3Images">S3에서 업로드  ></span>
+          </div>      
+        </div>      
         <div class="file-input">
           <input
             type="file"
@@ -54,8 +60,28 @@
             style="opacity: 0; cursor: pointer; visibility: none; background: red"
           />
         </div>
+          <!-- <v-file-input
+            v-model="note.noteMediaList"
+            class="target-file"
+            label="사진을 등록하세요 (최대 4장, 각 용량 2MB 이하)"
+            color="#979797"
+            counter
+            multiple
+            show-size
+            small-chips
+            truncate-length="11"
+            prepend-icon="mdi-camera"
+            @change="onImgUpload"
+          > -->          
         <div class="file-section">
-          <div v-if="note.noteS3MediaList.length > 0" style="height: 300px">
+          <div v-if="note.noteS3MediaList.length > 0">
+            <img :src="note.noteS3MediaList[0].media" class="img-preview">
+          </div>
+          <div v-else-if="files.length > 0">
+            <img :src="files[0].preview" class="img-preview">
+          </div>
+        </div>
+          <!-- <div v-if="note.noteS3MediaList > 0" sytle="height:300px;">
             <v-carousel
               hide-delimiters
               style="height:100%;">
@@ -68,34 +94,21 @@
               <v-carousel-item
                 v-for="(file, idx) in files"
                 :key="idx"
-              >
-                <img :src="file.preview" class="img-preview" style="width: 100%; height: 300px;"/>
-              </v-carousel-item>
-            </v-carousel>
-          </div>
-          <div v-else style="height:300px;">
-            <v-carousel
-              hide-delimiters
-              style="height:100%;">
-              <v-carousel-item
-                v-for="(file, idx) in files"
-                :key="idx"
-              >
-                <img :src="file.preview" class="img-preview" style="width: 100%; height: 300px;"/>
-              </v-carousel-item>
-            </v-carousel>
-          </div>
-          </div>
-        </div>
-        <div id="HashTag_Input">
-          <v-text-field
-            hide-details
-            v-model="note.noteHashtagList"
-            label="#여기에 #해시태그를 #입력하세요"
-            color="#FFB319"
-          ></v-text-field>
-        </div>
+                :src="file.preview"
+                class="img-preview"
+              ></v-carousel-item>
+            </v-carousel>            
+          </div> -->   
       </div>
+    <div id="HashTag_Input">
+      <v-text-field
+        hide-details
+        v-model="note.noteHashtagList"
+        label="#여기에 #해시태그를 #입력하세요"
+        color="#FFB319"
+      ></v-text-field>
+    </div>
+    </div>
     <div id="WriteContent_Btn">
       <v-btn @click="writeFin" id="Write_Btn">작성</v-btn>
       <v-btn @click="back" id="Back_Btn">취소</v-btn>
@@ -406,7 +419,7 @@ export default {
   position:relative;
   // height: 684px;
   height: 610px;
-  padding: 14px 36px 36px 30px;
+  padding: 14px 36px 30px 36px;
   box-shadow: 3px 3px 11px rgba(166, 166, 168, 0.25);
 }
 .select-diary-section {
@@ -435,13 +448,16 @@ export default {
   height: 125px;
   overflow: hidden;
 }
+.file-up-wrap {
+  display: flex;
+  justify-content: space-between;
+}
 .file-section {
   background-color: #f7f7f7;
   width: 100%;
   height: 300px;
   margin-top: 5px;
   overflow: hidden;
-  // height: 100%;
 }
 .file-input {
   // background-color: greenyellow;
@@ -453,20 +469,16 @@ export default {
 }
 .img-preview {
   // background: #eee;
-  display: inline-block;
-  // margin-top: 12px;
-  // margin-right: 10px;
-  // border-radius: 4px;
-  // width: 80px;
+  display: inline-block;  
   width: 100%;
 
   img {
-    width: 100%;
+    width: 100%;    
+    object-fit: cover;
     // height: auto;
   }
 }
 .img-section {
-  background: lightpink;
   display: inline-block;
   margin-top: 10px;
   margin-right: 10px;
@@ -478,18 +490,17 @@ export default {
   img {
     width: 100%;
     // height: 100%;
-    // background: green;
   }
 }
 #HashTag_Input {
-  margin-top: 10px;
+  margin-top: 20px;
   // background-color: #eee;
 }
 #WriteContent_Btn {
   height: 38px;
   width: 152px;
   margin: 0 auto;
-  margin-top: 84px;
+  margin-top: 90px;
   box-shadow: none;  
 }
 #Write_Btn {
@@ -518,7 +529,7 @@ textarea {
   border-bottom: 1px solid #ccc;
 }
 .sticker{
-  border:3px solid red;
+  // border:3px solid red;
   width:300px;
   height:300px;
 }

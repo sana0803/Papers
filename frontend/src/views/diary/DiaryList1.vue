@@ -534,6 +534,7 @@
 }
 #diary-pagination {  
   position: absolute;
+  // margin-top: 50px;
   left: auto;
   bottom: -50px;
   width: 886px;
