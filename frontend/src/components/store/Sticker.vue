@@ -191,9 +191,12 @@ export default {
 #Dialog_Content {
   height: 568px;
   padding: 34px 46px;
+  /* background-color: lightpink; */
 }
 #Dialog_Title {
   height: 118px;
+  background-color: #eee;
+  overflow: hidden;
 }
 #Dialog_List {
   height: 306px;

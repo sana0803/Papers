@@ -35,49 +35,38 @@
         @click:event="showEvent"
       ></v-calendar>
       <!-- @change="getEvents" -->
-       <v-menu
-          v-model="selectedOpen"
-          :close-on-content-click="false"
-          :activator="selectedElement"
-          offset-x
-        >
-          <v-card
-            color="grey lighten-4"
-            min-width="350px"
-            flat
-          >
-            <v-toolbar
-              :color="selectedEvent.color"
-              dark
-            >
-              <v-toolbar-title v-html="selectedEvent.name"></v-toolbar-title>
-              <v-spacer></v-spacer>
-            </v-toolbar>
-            <v-card-text id="select-box"> 
-              <div style="height:350px;">
-                <v-img style="height:100%;" :src="selectedEvent.noteMedia" />
-              </div>
-              <div style="padding-top:10px">
-                <span>{{selectedEvent.content}}</span>
-              </div>
-            </v-card-text>
-            <v-card-actions>
-              <v-btn
-                text
-                color="secondary"
-                @click="selectedOpen = false"
-              >
-                닫기
-              </v-btn>
-            </v-card-actions>
-          </v-card>
-        </v-menu>
+      <v-menu
+        v-model="selectedOpen"
+        :close-on-content-click="false"
+        :activator="selectedElement"
+        offset-x
+      >
+        <v-card color="grey lighten-4" min-width="350px" flat>
+          <v-toolbar :color="selectedEvent.color" dark>
+            <v-toolbar-title v-html="selectedEvent.name"></v-toolbar-title>
+            <v-spacer></v-spacer>
+          </v-toolbar>
+          <v-card-text id="select-box">
+            <div style="height: 350px">
+              <v-img style="height: 100%" :src="selectedEvent.noteMedia" alt="일기 사진" />
+            </div>
+            <div style="padding-top: 10px">
+              <span>{{ selectedEvent.content }}</span>
+            </div>
+          </v-card-text>
+          <v-card-actions>
+            <v-btn text color="secondary" @click="selectedOpen = false">
+              닫기
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-menu>
     </v-sheet>
   </div>
 </template>
 
 <script>
-import dayjs from 'dayjs'
+import dayjs from "dayjs";
 
 export default {
   data() {
@@ -98,31 +87,31 @@ export default {
       selectedEvent: {},
       selectedElement: null,
       selectedOpen: false,
-    }
+    };
   },
   methods: {
     getEvents() {
       this.$store.dispatch("calenderGet", this.month).then((res) => {
-        const events = []
-        console.log(res.data)
-        for(let i = 0; i < res.data.length; i++) {
+        const events = [];
+        console.log(res.data);
+        for (let i = 0; i < res.data.length; i++) {
           const allDay = this.rnd(0, 3) === 0;
 
           const event = {
-            name : res.data[i].noteTitle,
-            id : res.data[i].noteId,
+            name: res.data[i].noteTitle,
+            id: res.data[i].noteId,
             content: res.data[i].noteContent,
             start: res.data[i].noteCreatedDate,
             end: res.data[i].noteCreatedDate,
             noteMedia: res.data[i].noteMediaList[0],
             color: this.colors[this.rnd(0, this.colors.length - 1)],
             timed: allDay,
-          }
-          events[i] = event
+          };
+          events[i] = event;
         }
         this.events = events;
-    });
-    
+      });
+
       // const events = [];
 
       // const min = new Date(`${start.date}T00:00:00`);
@@ -155,36 +144,36 @@ export default {
       return Math.floor((b - a + 1) * Math.random()) + a;
     },
     prev() {
-      this.month = this.month - 1
+      this.month = this.month - 1;
     },
     next() {
-      this.month = this.month + 1
+      this.month = this.month + 1;
     },
-    showEvent ({ nativeEvent, event }) {
-        const open = () => {
-          this.selectedEvent = event
-          this.selectedElement = nativeEvent.target
-          requestAnimationFrame(() => requestAnimationFrame(() => this.selectedOpen = true))
-        }
+    showEvent({ nativeEvent, event }) {
+      const open = () => {
+        this.selectedEvent = event;
+        this.selectedElement = nativeEvent.target;
+        requestAnimationFrame(() =>
+          requestAnimationFrame(() => (this.selectedOpen = true))
+        );
+      };
 
-        if (this.selectedOpen) {
-          this.selectedOpen = false
-          requestAnimationFrame(() => requestAnimationFrame(() => open()))
-        } else {
-          open()
-        }
+      if (this.selectedOpen) {
+        this.selectedOpen = false;
+        requestAnimationFrame(() => requestAnimationFrame(() => open()));
+      } else {
+        open();
+      }
 
-        nativeEvent.stopPropagation()
-      },
+      nativeEvent.stopPropagation();
+    },
   },
   created() {
     // this.$store.dispatch("calenderGet", this.month).then((res) => {
     //   // this.calenderList = res.data.reverse()
     //   const events = []
-
     //   for(let i = 0; i < res.data.length; i++) {
     //     const allDay = this.rnd(0, 3) === 0;
-
     //     const event = {
     //       name : res.data[i].noteTitle,
     //       // id : res.data[i].noteId,
@@ -204,10 +193,10 @@ export default {
   margin: 0 auto;
   width: 95%;
 }
-#select-box{
-  font-size:18px;
-  width:400px;
-  height:500px;
+#select-box {
+  font-size: 18px;
+  width: 400px;
+  height: 500px;
   /* display:flex;
   justify-content: center;
   align-items: center; */

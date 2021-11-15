@@ -1,105 +1,45 @@
 <template>
   <div id="WriteContent_Container">
     <div id="WriteContent_Templete">
-      <div class="select-diary-section">
-        <v-select
-          v-model="selectDiary"
-          :items="diaryTitleList"
-          label="일기장 선택"          
-          hide-details
-          height="25px"
-          color="#FFB319"
-        ></v-select>
-      </div>
-      <div class="title-section">
-        <v-text-field
-          :style="{ 'font-family': getMyFont.fontUrl }"          
-          v-model="note.noteTitle"          
+      <v-combobox
+        v-model="selectDiary"
+        :items="diaryTitleList"
+        label="일기장 선택"
+      ></v-combobox>
+      <div id="in_title">
+        <textarea
           name="title"
           id="utitle"
-          label="제목을 입력하세요"
-          color="#979797"
-          counter="20"
-          maxlength="20"
-          single-line
-          required
-        ></v-text-field>        
-      </div>          
-      <div class="content-section">
-          <!-- class="target-font" -->
-        <v-textarea
+          rows="1.5"
+          cols="70"
+          placeholder="제목을 입력하세요"
+          maxlength="100"
+          v-model="note.noteTitle"
           :style="{ 'font-family': getMyFont.fontUrl }"
-          v-model="note.noteContent"
-          name="content"
-          id="ucontent"
-          label="내용을 입력하세요"
-          color="#979797"
-          rows="7"
-          counter="400"
-          maxlength="400"
-          single-line
-        ></v-textarea>
-        <!-- <textarea
-          style="font-family: Gulim;"
-          name="content"
-          id="ucontent"
-          counter maxlength="120" rows="10" cols="70"
-          placeholder="내용을 입력하세요"
-          v-model="note.noteContent" 
-        </textarea> -->        
-          <!-- :style="{ 'font-family': getMyFont.fontUrl }" -->
+        ></textarea>
       </div>
-      <div class="file-section">
-        <span style="font-weight: 500;">내 컴퓨터에서 업로드</span>
-        <v-file-input
-          v-model="note.noteMediaList"
-          class="target-file"
-          id="file"
-          label="사진을 등록하세요 (최대 4장, 각 용량 2MB 이하)"
-          color="#979797"
-          @change="onImgUpload"
-          counter
-          multiple
-          show-size
-          small-chips
-          height="30px"
-          truncate-length="13"
-          prepend-icon="mdi-camera"
+      <div id="in_content">
+        <v-textarea
+          name="content"
+          id="ucontent"
+          rows="19"
+          cols="70"
+          placeholder="내용을 입력하세요"
+          v-model="note.noteContent"
+          class="target-font"
         >
-        </v-file-input>
-        <span style="font-weight: 500;">내 드라이브에서 업로드</span>
-        <v-file-input
-          v-model="note.noteMediaList"
-          class="target-file"
-          id="file"
-          label="사진을 등록하세요 (최대 4장, 각 용량 2MB 이하)"
-          color="#979797"
-          counter
-          multiple
-          show-size
-          small-chips
-          height="30px"
-          truncate-length="13"
-          prepend-icon="mdi-camera"
-        >
-        </v-file-input>
-        <input type="file" id="file" ref="files" @change="onImgUpload" multiple />
-        <div>
-          <div
-            v-for="(file, idx) in files"
-            :key="idx"
-            class="img-preview"
-          >
-            <img :src="file.preview" />
-          </div>
-        </div>
-        <div
-          class="img-section"
-          v-for="(media, idx) in note.noteS3MediaList"
-          :key="idx"
-        >
-          <img :src="media"/>
-        </div>
+        </v-textarea>
+      </div>
+      <v-file-input
+        v-model="note.noteMediaList"
+        multiple
+        small-chips
+        truncate-length="15"
+      ></v-file-input>
+    </div>
+    <div>
+      <div v-for="media in note.noteS3MediaList" :key="media">
+        <img :src="media" style="width: 100px" />
       </div>
     </div>
     <div id="HashTag_Input">
@@ -118,7 +58,7 @@
 
 <script>
 import Swal from "sweetalert2";
-// import { mapGetters } from "vuex";
+// import { mapGetters } from 'vuex';
 
 export default {
   data() {
@@ -127,9 +67,6 @@ export default {
       diaryList: [],
       selectDiary: "",
       myFont: "",
-      files: [], //업로드용 파일
-      filesPreview: [],
-      uploadImageIndex: 0, // 이미지 업로드를 위한 변수
       note: {
         noteId: "",
         diaryId: "",
@@ -166,7 +103,7 @@ export default {
     // fontSetting () {
     //   return this.$store.getters['getMyFont'];
     // }
-    // ...mapGetters(["getMyFont"]),
+    // ...mapGetters(['getMyFont']),
     getMyFont() {
       console.log("폰트 적용");
       const target = document.getElementsByClassName("v-text-field__slot");
@@ -179,64 +116,6 @@ export default {
     },
   },
   methods: {
-    onImgUpload() {
-      console.log(this.$refs.files.files);
-      const target = document.getElementsByClassName("target-file")
-      // this.files = [...this.files, this.$refs.files.files];
-      //하나의 배열로 넣기
-      let num = -1;
-      for (let i = 0; i < target.length; i++) {
-        this.files = [
-          ...this.files,
-          //이미지 업로드
-          {
-            //실제 파일
-            file: target.files[i],
-            //이미지 프리뷰
-            preview: URL.createObjectURL(target.files[i]),
-            //삭제및 관리를 위한 number
-            number: i,
-          },
-        ];
-        num = i;
-        //이미지 업로드용 프리뷰
-        // this.filesPreview = [
-        //   ...this.filesPreview,
-        //   { file: URL.createObjectURL(this.$refs.files.files[i]), number: i }
-        // ];
-      }
-      this.uploadImageIndex = num + 1; //이미지 index의 마지막 값 + 1 저장
-      console.log(this.files);
-    },
-    // onImgUpload() {
-    //   console.log(this.$refs.files.files);
-    //   const target = document.getElementsByClassName("target-file")
-    //   // this.files = [...this.files, this.$refs.files.files];
-    //   //하나의 배열로 넣기
-    //   let num = -1;
-    //   for (let i = 0; i < this.$refs.files.files.length; i++) {
-    //     this.files = [
-    //       ...this.files,
-    //       //이미지 업로드
-    //       {
-    //         //실제 파일
-    //         file: this.$refs.files.files[i],
-    //         //이미지 프리뷰
-    //         preview: URL.createObjectURL(this.$refs.files.files[i]),
-    //         //삭제및 관리를 위한 number
-    //         number: i,
-    //       },
-    //     ];
-    //     num = i;
-    //     //이미지 업로드용 프리뷰
-    //     // this.filesPreview = [
-    //     //   ...this.filesPreview,
-    //     //   { file: URL.createObjectURL(this.$refs.files.files[i]), number: i }
-    //     // ];
-    //   }
-    //   this.uploadImageIndex = num + 1; //이미지 index의 마지막 값 + 1 저장
-    //   console.log(this.files);
-    // },
     back() {
       this.$router.go(-1);
     },
@@ -248,6 +127,7 @@ export default {
           break;
         }
       }
+
       console.log(this.getMyFont.id, "폰트아이디값");
       const tmp = this.note.noteHashtagList.split("#");
       const noteHashtagList = [];
@@ -346,80 +226,13 @@ export default {
 #WriteContent_Container {
   width: 530px;
   height: 854px;
-  // background-color: #bbb;
 }
 #WriteContent_Templete {
-  // background-color: #eee;
   height: 684px;
-  padding: 22px;
   box-shadow: 3px 3px 11px rgba(166, 166, 168, 0.25);
-}
-.select-diary-section {
-  // background-color: burlywood;
-  width: 40%;
-  margin: none;
-  padding: none;
-  div {
-    // background-color: red;
-    padding: none;
-    margin: none;
-    cursor: pointer;
-  }
-}
-.v-input__control {
-  background-color: red;
-  padding: none;
-}
-.title-section {
-  // background-color: lightblue;
-  margin: none;
-  padding: none;
-}
-.content-section {
-  // background-color: lemonchiffon;
-  height: 240px;
-  overflow: hidden;
-}
-.file-section {
-  background-color: #fff;
-  margin-top: 3px;
-  // height: 100%;
-}
-.img-preview {
-  background: lightsteelblue;
-  display: inline-block;
-  margin-top: 10px;
-  margin-right: 10px;
-  border-radius: 4px;
-  overflow: hidden;
-  z-index: 10;
-  width: 80px;
-  height: 80px;
-
-  img {
-    width: 100%;
-    height: auto;
-  }
-}
-.img-section {
-  background: lightpink;
-  display: inline-block;
-  margin-top: 10px;
-  margin-right: 10px;
-  border-radius: 4px;
-  overflow: hidden;
-  width: 80px;
-  height: 80px;
-
-  img {
-    width: 100%;
-    // height: 100%;
-    // background: green;
-  }
 }
 #HashTag_Input {
   margin-top: 30px;
-  // background-color: #eee;
 }
 #WriteContent_Btn {
   height: 38px;
