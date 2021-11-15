@@ -1,16 +1,18 @@
 <template>
   <div id="MyPage_Container">
     <div id="Mypage_Content">
-      <div id="Mypage_Title">기본 프로필 편집</div>
+      <div id="Mypage_Title">
+        <span>기본 프로필 편집</span>  
+      </div>
       <div id="Mypage_Profile">
         <img :src="profile.profileImg" id="Profile_img" />
-        <v-btn @click="imgLabelClick" id="Change_Btn" text> 프로필 사진 바꾸기 </v-btn>
-        <input ref="imageInput" type="file" style="display: none; opacity: 0;" @change="onChangeImages" accept=".jpg, .jpeg, .png, .gif" id="profile_img_upload">
+        <span @click="imgLabelClick" id="Change_Btn"> 프로필 사진 바꾸기 </span>
+        <input ref="imageInput" type="file" style="opacity: 0;" @change="onChangeImages" accept=".jpg, .jpeg, .png, .gif" id="profile_img_upload">
       </div>
       <div class="Mypage_Form">
         <span class="Form_Name">닉네임</span>
         <v-text-field
-          style="margin-left: 84px"
+          style="margin-left: 88px"
           class="Form_Input"
           color="#FFB319"
           v-model="profile.nickName"
@@ -20,7 +22,7 @@
       <div class="Mypage_Form">
         <span class="Form_Name">비밀번호</span>
         <v-text-field
-          style="margin-left: 70px"
+          style="margin-left: 74px"
           class="Form_Input"
           type="password"
           color="#FFB319"
@@ -31,7 +33,7 @@
       <div class="Mypage_Form">
         <span class="Form_Name">비밀번호 확인</span>
         <v-text-field
-          style="margin-left: 39px"
+          style="margin-left: 43px"
           class="Form_Input"
           type="password"
           color="#FFB319"
@@ -42,28 +44,93 @@
       <div id="Mypage_Title2">내 구매 목록</div>
       <v-tabs
         fixed-tabs
-        style="border: 1px solid #d7d7d7; margin-top: 10px; height: 375px"
+        style="border: 1px solid #d7d7d7; margin-top: 12px;"
+        background-color="transparent"
         color="#FFB319"
       >
+        <v-tabs-slider color="#FFB319"></v-tabs-slider>
         <v-tab> 스티커 </v-tab>
-        <v-tab> 폰트 </v-tab>
+        <v-tab > 폰트 </v-tab>
         <v-tab> 커버 </v-tab>
-        <v-tab-item class="Tab"> 스티커 목록: {{ myStickerLsit }} </v-tab-item>
-        <v-tab-item class="Tab"> 폰트 목록: {{ myFontList }} </v-tab-item>
-        <v-tab-item class="Tab"> 커버 목록: {{ myCoverList }} </v-tab-item>
+        <v-tab-item class="Tab">
+          <div v-if="myStickerList.length == 0">
+            <p style="font-size: 16px; color: #333;">아직 구매한 스티커가 없습니다.</p>
+          </div>
+          <div v-else>   
+            <p>총 {{ myStickerList.length }}개</p>
+            <div
+              v-for="(sticker, id) in myStickerList"
+              :key="id"
+              class="my-item"
+            >
+              <div class="item-img">
+                <img :src="sticker.stickerList[0].stickerUrl" alt="스티커팩 이미지">
+              </div>
+              <div class="my-item-name">
+                <span>{{ sticker.stickerPackageName }}</span>
+                <!-- <span>{{ sticker.stickerPackagePrice }}</span> -->
+              </div>
+            </div>
+          </div>
+        </v-tab-item>
+        <v-tab-item class="Tab">
+          <div v-if="myFontList.length == 0">
+            <p style="font-size: 16px; color: #333;">아직 구매한 폰트가 없습니다.</p>
+          </div>
+          <div v-else>
+            <p>총 {{ myFontList.length }}개</p>
+            <div
+              v-for="(myfont, id) in myFontList"
+              :key="id"
+              class="my-item"
+            >
+              <div class="my-font-name">
+                <span :style="{ 'font-family': myfont.fontUrl }">
+                  {{ myfont.fontName }}
+                </span>
+              </div>
+            </div>
+          </div>
+        </v-tab-item>
+        <v-tab-item class="Tab">
+          <div v-if="myCoverList.length == 0">
+            <p style="font-size: 16px; color: #333;">아직 구매한 커버가 없습니다.</p>
+          </div>
+          <div v-else>          
+            <p>총 {{ myCoverList.length }}개</p>
+            <div
+              v-for="(mycover, id) in myCoverList"
+              :key="id"
+              class="my-item"
+            >
+              <div class="item-img">
+                <img :src="mycover.coverUrl" alt="내 커버">
+              </div>
+              <div class="my-item-name">
+                <span>{{ mycover.coverName }}</span>
+              </div>
+            </div>
+          </div>
+        </v-tab-item>
       </v-tabs>
       <div id="Mypage_Delete">
-        <v-btn id="Delete_Btn" text> 회원 탈퇴 </v-btn>
+        <v-btn id="Delete_Btn" height="32px" text> 회원 탈퇴 </v-btn>
       </div>
       <div id="Mypage_Btn_Box">
-        <v-btn @click="modify" class="Mypage_Btn" color="#FFB319" style="color: white"
+        <v-btn
+          @click="modify"
+          class="Mypage_Btn"
+          color="#FFB319"
+          style="color: white; font-size: 16px;"
+          height="32px"
           >수정</v-btn
         >
         <v-btn
           @click="back"
           class="Mypage_Btn"
           color="#9F9F9F"
-          style="color: white"
+          style="color: white; font-size: 16px;"
+          height="32px"
           >취소</v-btn
         >
       </div>
@@ -84,7 +151,7 @@ export default {
         profileImg: '',
         img: ''
       },
-      myStickerLsit: [],
+      myStickerList: [],
       myCoverList: [],
       myFontList: [],
       // profile.nickName : loginUser.nickName,
@@ -195,7 +262,7 @@ export default {
       this.$store.dispatch("getUserStickers")
       .then((res) => {
         console.log(res.data, '유저 스티커')
-        this.myStickerLsit = res.data
+        this.myStickerList = res.data
       })
     },
     getUserCovers: function () {
@@ -209,21 +276,23 @@ export default {
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 #MyPage_Container {
   display: flex;
-  justify-content: center;
-  align-items: center;
+  // justify-content: center;
+  // align-items: center;
   margin: 0 auto;
   margin-top: 34px;
-  width: 600px;
+  padding: 36px;
+  width: 604px;
   height: 800px;
   border-radius: 15px;
   box-shadow: 3px 3px 11px rgba(166, 166, 168, 0.25);
 }
 #Mypage_Content {
-  width: 528px;
-  height: 728px;
+  width: 100%;
+  height: 100%;
+  // background-color:beige;
 }
 #Mypage_Title {
   font-size: 18px;
@@ -231,23 +300,27 @@ export default {
 }
 #Mypage_Profile {
   height: 45px;
-  margin-top: 20px;
+  margin-top: 18px;
+  // background-color: aquamarine;
 }
 #Profile_img {
-  border-radius: 50px;
-  width: 45px;
-  height: 45px;
+  border-radius: 46px;
+  width: 46px;
+  height: 46px;
 }
 #Change_Btn {
-  width: 130px;
   font-size: 15px;
+  font-weight: 500;
   margin-left: 80px;
   position: relative;
   top: -19px;
+  cursor: pointer;
+}
+#Change_Btn:hover {
+  color: #FFB319;
 }
 .Mypage_Form {
   height: 45px;
-  /* border:1px solid red; */
 }
 .Form_Name {
   font-size: 16px;
@@ -256,35 +329,89 @@ export default {
   display: inline-block;
   width: 400px;
   position: relative;
-  top: -8px;
+  top: -4px;
 }
 #Mypage_Title2 {
   font-size: 18px;
   font-weight: 600;
-  margin-top: 24px;
+  margin-top: 30px;
 }
 .Tab {
   height: 325px;
+  // background-color: aliceblue;
   border-top: 1px solid #d7d7d7;
+  overflow: hidden;
+  padding: 22px;
+  overflow-y: auto;
+
+  p {
+    color: #585858;
+    font-size: 14px;
+    margin-bottom: 16px;
+  }
 }
+.Tab::-webkit-scrollbar {
+  display: none;
+}
+.my-item {
+  // background-color: lightblue;
+  float: left;
+  margin-right: 15px;
+  margin-bottom: 15px;
+}
+.my-item::after {
+  content: '';
+  clear: both;
+  display: block;
+}
+.item-img {
+  // border: 1px solid #ccc;
+  background: #eee;
+  width: 110px;
+  height: 150px;
+  overflow: hidden;
+
+  img {
+    width: 100%;
+  }
+}
+.my-item-name {
+  margin-top: 8px;
+
+  span:first-child {
+    font-size: 16px;
+    font-weight: 500;
+  }
+}
+.my-font-name {
+  padding: 8px;
+
+  span:first-child {
+    font-size: 21px;
+    font-weight: 500;
+  }
+}
+
 #Mypage_Btn_Box {
   margin-top: 20px;
-  height: 30px;
   float: right;
 }
 .Mypage_Btn {
-  margin-left: 10px;
+  width: 60px;
+  height: 30px;
+  margin-left: 11px;
+  box-shadow: none;
+  font-size: 20px;
 }
 #Mypage_Delete {
   float: left;
-  height: 30px;
   margin-top: 20px;
 }
 #Delete_Btn {
   color: #9f9f9f;
   width: 50px;
-  font-size: 15px;
+  font-size: 14px;
   position: relative;
-  left: -1px;
+  left: -2px;
 }
 </style>

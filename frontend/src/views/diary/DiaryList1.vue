@@ -13,7 +13,7 @@
               <div class="title-sec">
                 <span class="diary-title" :style="{ 'font-family': note.fontId }">{{ note.noteTitle }}</span>
                 <br>
-                <span class="diary-title">{{ note.noteId }}</span>
+                <span class="diary-writer">{{ note.noteId }}</span>
               </div>
               <div class="date-sec">
                 <span class="diary-writer">{{ note.writerNickName}}</span>
@@ -30,10 +30,16 @@
               <span>#{{ hashtag }}</span>
             </div>
             <div class="diary-img-wrap">
-              <div v-if="note.noteMediaList.length > 2">
-                <v-carousel :show-arrows="true" style="height:100%;">
-                  <v-carousel-item v-for="(img, i) in note.noteMediaList" :key="i" :src="img" class="diary-content-img">
-                  </v-carousel-item>
+              <div v-if="note.noteMediaList.length > 1">
+                <v-carousel
+                  :show-arrows="true"
+                  style="height:100%;">
+                  <v-carousel-item
+                    v-for="(img, i) in note.noteMediaList"
+                    :key="i"
+                    :src="img"
+                    class="diary-content-img"
+                  ></v-carousel-item>
                 </v-carousel>
               </div>
               <div v-else-if="note.noteMediaList.length == 0">
@@ -228,11 +234,6 @@
         this.$store.commit('setNoteContent', localNote)
         this.$store.commit('setIsUpdate', true)
         this.$router.push("/write");
-        // this.$router.push("/modify");
-        // this.$store.dispatch("modifyNote", this.currentDiary.id)
-        // .then((res) => {
-        //   console.log(res.data)
-        // })
       },
       onDialog(note) {
         this.note = note;
@@ -257,7 +258,6 @@
                   this.viewList.push(this.noteList[1])
                 }
               })
-            // this.$router.go()
           })
       },
     },
@@ -355,268 +355,346 @@
 </script>
 
 <style lang="scss" scoped>
-  #Line {
-    height: 590px;
-    border: 1px solid #e7e7e7;
+#Line {
+  height: 590px;
+  border: 1px solid #e7e7e7;
+  position: absolute;
+  top: 71px;
+  left: 461px;
+}
+
+#horizon-line {
+  width: 100%;
+  border-bottom: 1px solid #ccc;
+  margin-bottom: 8px;
+}
+
+#diary-empty {
+  width: 50%;
+  font-size: 18px;
+  text-align: center;
+  margin-top: 140px;
+
+  // background-color: #ffb319;
+  span {
+    color: #444;
+  }
+
+  .go-write-btn {
+    display: inline-block;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    width: 37%;
+    color: #ffb319;
+    margin-top: 24px;
+    padding-bottom: 2px;
+    font-weight: 600;
+    // background-color: #eee;
+  }
+
+  .go-write-btn:after {
     position: absolute;
-    top: 71px;
-    left: 461px;
+    content: '';
+    width: 0;
+    left: 0;
+    height: 2px;
+    bottom: 0px;
+    background-color: #ffb319;
+    // border-bottom: 1px solid #ffb319;
+    transition: .25s;
   }
 
-  #horizon-line {
+  .go-write-btn:hover {
+    // border-bottom: 1px solid #ffb319;
+    transition: .25s;
+  }
+
+  .go-write-btn:hover:after {
     width: 100%;
-    border-bottom: 1px solid #ccc;
-    margin-bottom: 8px;
+    left: 0;
   }
+}
 
-  #diary-empty {
-    width: 50%;
-    font-size: 18px;
-    text-align: center;
-    margin-top: 140px;
+#diary-list-item {
+  float: left;
+}
 
-    // background-color: #ffb319;
-    span {
-      color: #444;
-    }
+#diary-list-item::after {
+  // content: '';
+  clear: both;
+  display: block;
+}
 
-    .go-write-btn {
-      display: inline-block;
-      position: relative;
-      overflow: hidden;
-      cursor: pointer;
-      width: 37%;
-      color: #ffb319;
-      margin-top: 24px;
-      padding-bottom: 2px;
-      font-weight: 600;
-      // background-color: #eee;
-    }
+#diary-wrap {
+  width: 371px;
+  height: 538px;
+  margin: 36px 36px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
 
-    .go-write-btn:after {
-      position: absolute;
-      content: '';
-      width: 0;
-      left: 0;
-      height: 2px;
-      bottom: 0px;
-      background-color: #ffb319;
-      // border-bottom: 1px solid #ffb319;
-      transition: .25s;
-    }
+.diary-content {
+  // min-height: 480px;
+  max-height: 485px;
+  // background-color: green;
+  overflow: hidden;
+}
 
-    .go-write-btn:hover {
-      // border-bottom: 1px solid #ffb319;
-      transition: .25s;
-    }
+.diary-title-wrap {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 3px;
+}
 
-    .go-write-btn:hover:after {
-      width: 100%;
-      left: 0;
-    }
+.diary-title {
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 1.2;
+}
+
+.date-sec {
+  // background-color: aquamarine;
+  // margin-left: 3px;
+  min-width: 50px;
+  text-align: right;
+}
+
+.diary-writer {
+  // color: #aaa;
+  font-size: 14px;
+  margin-right: 12px;
+}
+
+.diary-date {
+  color: #929292;
+  font-size: 14px;
+}
+
+.diary-text {
+  margin-bottom: 12px;
+  // background-color: lightblue;
+  overflow: hidden;
+  max-height: 95px;
+  line-height: 1.4;
+}
+
+.diary-hashtag {
+  display: inline-block;
+  margin-right: 5px;
+  font-weight: 500;
+
+  span {
+    color: #ffb319;
   }
+}
 
-  #diary-list-item {
-    float: left;
+.diary-img-wrap {
+  margin-top: 18px;
+  max-width: 100%;
+  min-height: 250px;
+  // max-height: 300px;
+  overflow: hidden;
+  background-color: #f7f7f7;
+}
+.go-write-btn:after {
+  position: absolute;
+  content: '';
+  width: 0;
+  left: 0;
+  height: 2px;
+  bottom: 0px;
+  background-color: #ffb319;
+  // border-bottom: 1px solid #ffb319;
+  transition: .25s;
+}
+.go-write-btn:hover {
+  // border-bottom: 1px solid #ffb319;
+  transition: .25s;
+}
+.go-write-btn:hover:after {
+  width: 100%;
+  left: 0;
+}
+
+#diary-list-item {
+  float: left;
+}
+#diary-list-item::after {
+  // content: '';
+  clear: both;
+  display: block;
+}
+#diary-wrap {
+  width: 371px;
+  height: 538px;
+  margin: 36px 36px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.diary-content {
+  // min-height: 480px;
+  max-height: 485px;
+  // background-color: green;
+  overflow: hidden;
+}
+.diary-title-wrap {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 3px;
+}
+.diary-title {
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 1.2;
+}
+.date-sec {
+  // background-color: aquamarine;
+  // margin-left: 3px;
+  min-width: 50px;
+  text-align: right;
+}
+.diary-writer {
+  // color: #aaa;
+  font-size: 14px;
+  margin-right: 12px;
+}
+.diary-date {
+  color: #929292;
+  font-size: 14px;
+}
+.diary-text {
+  margin-bottom: 12px;
+  // background-color: lightblue;
+  overflow-y: scroll;
+  max-height: 95px;
+  line-height: 1.4;
+}
+.diary-text::-webkit-scrollbar {
+  display: none;
+}
+.diary-hashtag {
+  display: inline-block;
+  margin-right: 5px;
+  font-weight: 500;    
+  span {
+    color: #ffb319;
   }
+}
+.diary-img-wrap {
+  margin-top: 18px;
+  max-width: 100%;
+  min-height: 250px;
+  // max-height: 300px;
+  overflow: hidden;
+  background-color: #f7f7f7;  
+}
+.diary-content-img {
+  max-width: 100%;
+  height: 100%;
+  // background-color: aquamarine;
+}
+.diary-emotion {
+  display: flex;
+  justify-content: space-between;
+}
+.emotion-left {
+  color: #929292;
+  // background-color:cornflowerblue;
+}
+.emo-item {
+  display: inline-block;
+}
+.emo-icon {
+  cursor: pointer;
+}
+.emotion-cnt {
+  display: inline-block;
+  margin: 0 10px 0 5px;
 
-  #diary-list-item::after {
-    // content: '';
-    clear: both;
-    display: block;
-  }
-
-  #diary-wrap {
-    width: 371px;
-    height: 538px;
-    margin: 36px 36px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-  }
-
-  .diary-content {
-    // min-height: 480px;
-    max-height: 485px;
-    // background-color: green;
-    overflow: hidden;
-  }
-
-  .diary-title-wrap {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 3px;
-  }
-
-  .diary-title {
-    font-size: 20px;
-    font-weight: 500;
-    line-height: 1.2;
-  }
-
-  .date-sec {
-    // background-color: aquamarine;
-    // margin-left: 3px;
-    min-width: 50px;
-    text-align: right;
-  }
-
-  .diary-writer {
-    // color: #aaa;
-    font-size: 14px;
-    margin-right: 12px;
-  }
-
-  .diary-date {
+  span {
     color: #929292;
+  }
+}
+.emotion-right {
+  display: inline-block;
+
+  span {
     font-size: 14px;
-  }
-
-  .diary-text {
-    margin-bottom: 12px;
-    // background-color: lightblue;
-    overflow: hidden;
-    max-height: 95px;
-    line-height: 1.4;
-  }
-
-  .diary-hashtag {
-    display: inline-block;
-    margin-right: 5px;
-    font-weight: 500;
-
-    span {
-      color: #ffb319;
-    }
-  }
-
-  .diary-img-wrap {
-    margin-top: 18px;
-    max-width: 100%;
-    min-height: 250px;
-    // max-height: 300px;
-    overflow: hidden;
-    background-color: #f7f7f7;
-  }
-
-  .diary-content-img {
-    max-width: 100%;
-    height: 100%;
-    // background-color: aquamarine;
-  }
-
-  .diary-emotion {
-    display: flex;
-    justify-content: space-between;
-  }
-
-  .emotion-left {
-    color: #929292;
-    // background-color:cornflowerblue;
-  }
-
-  .emo-item {
-    display: inline-block;
-  }
-
-  .emo-icon {
+    color: #9f9f9f;
+    margin-left: 13px;
     cursor: pointer;
   }
 
-  .emotion-cnt {
-    display: inline-block;
-    margin: 0 10px 0 5px;
-
-    span {
-      color: #929292;
-    }
+  span:hover {
+    color: #ffb319;
   }
-
-  .emotion-right {
-    display: inline-block;
-
-    span {
-      font-size: 14px;
-      color: #9f9f9f;
-      margin-left: 13px;
-      cursor: pointer;
-    }
-
-    span:hover {
-      color: #ffb319;
-    }
-  }
-
-  #diary-pagination {
-    position: absolute;
-    left: auto;
-    bottom: -50px;
-    width: 886px;
-    overflow: hidden;
-    background-color: #eee;
-  }
-
-  // .page-sec {  
+}
+#diary-pagination {  
+  position: absolute;
+  left: auto;
+  bottom: -50px;
+  width: 886px;
+  overflow: hidden;
+  background-color: #eee;
+  margin-bottom: 20px;
+}
+// .page-sec {  
   // width: 100%;
   // height: 50px;
   // background-color: #ffb319;
   // }
-  #Dialog {
-    height: 180px;
-  }
-
-  #Dialog_Header {
-    height: 40px;
-  }
-
-  #Dialog_Close {
-    float: right;
-    margin-top: 5px;
-    margin-right: 5px;
-  }
-
-  #Dialog_Text {
-    width: 100%;
-    height: 38px;
-    line-height: 38px;
-    // background-color: #eee;
-    margin: 0 auto;
-    margin-top: 5px;
-    font-size: 16px;
-    text-align: center;
-  }
-
-  #Dialog_Btn_Box {
-    width: 164px;
-    height: 32px;
-    display: flex;
-    justify-content: space-between;
-    margin: 0 auto;
-    margin-top: 25px;
-  }
-
-  .Dialog_Btn {
-    width: 76px;
-    height: 32px;
-    color: #585858;
-  }
-  .like-clicked {
-    color: red;
-  }
-
-  .funny-clicked {
-    color: green;
-  }
-
-  .sad-clicked {
-    color: blue;
-  }
-
-  .sticker{
-    width:50px; 
-    height:50px; 
-    position:absolute;
-    z-index:100;
-  }
+#Dialog {
+  height: 180px;
+}
+#Dialog_Header {
+  height: 40px;
+}
+#Dialog_Close {
+  float: right;
+  margin-top: 5px;
+  margin-right: 5px;
+}
+#Dialog_Text {
+  width: 100%;
+  height: 38px;
+  line-height: 38px;
+  // background-color: #eee;
+  margin: 0 auto;
+  margin-top: 5px;
+  font-size: 16px;
+  text-align: center;
+}
+#Dialog_Btn_Box {
+  width: 164px;
+  height: 32px;
+  display: flex;
+  justify-content: space-between;
+  margin: 0 auto;
+  margin-top: 25px;
+}
+.Dialog_Btn {
+  width: 76px;
+  height: 32px;
+  color: #585858;
+}
+.like-clicked {
+  color: #E41D35;
+}
+.funny-clicked {
+  color: #21B74B;
+}
+.sad-clicked {
+  color: #385FC7;
+}
+.sticker{
+  width:50px; 
+  height:50px; 
+  position:absolute;
+  z-index:100;
+}
 </style>
