@@ -109,6 +109,9 @@ export default {
         userId: this.userId,
         userPwd: this.userPwd,
       };
+
+      localStorage.setItem('userId', this.userId)
+      
       this.$store
         .dispatch("login", user)
         .then((result) => {

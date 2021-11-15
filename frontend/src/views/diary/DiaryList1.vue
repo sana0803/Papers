@@ -637,11 +637,9 @@
 #diary-pagination {  
   position: absolute;
   left: auto;
-  bottom: -50px;
+  bottom: -60px;
   width: 886px;
   overflow: hidden;
-  background-color: #eee;
-  margin-bottom: 20px;
 }
 // .page-sec {  
   // width: 100%;

@@ -59,6 +59,7 @@ export default {
             this.$store.commit('setLoginUser', {})
             this.$router.push('/')
             console.log(this.getAlarmEventSource + '로그아웃 시 event close')
+            localStorage.removeItem('userId')
             this.getAlarmEventSource.close()
         }
     }
