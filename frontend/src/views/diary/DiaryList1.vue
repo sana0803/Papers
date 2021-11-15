@@ -270,6 +270,9 @@
       loginUser() {
         return this.$store.getters.getLoginUser;
       },
+      noteContent() {
+        return this.$store.getters.getNoteContent;
+      },
       ...mapState([
         'loginUser'
       ]),
@@ -296,17 +299,42 @@
         return
       }
       
-      console.log(this.currentDiary);
       this.$store.dispatch("getDiaryContent", this.currentDiary.id)
         .then((res) => {
           this.noteList = res.data.note.reverse();
           this.emotionReq.diaryId = this.noteList[0].diaryId
-          if(this.noteList.length>=1){
-            this.viewList.push(this.noteList[0])
+          
+          this.viewList = []
+          var page = 1
+          for(let i=0;i<this.noteList.length;i++){
+            if(i>0 && i%2==0){
+              page++
+            }
+
+            if(this.noteContent.noteId == this.noteList[i].noteId) {
+              if(i==this.noteList.length-1 && i%2==0){
+                this.viewList.push(this.noteList[i])
+              }
+              else if(i%2==0 && i<this.noteList.length-1){
+                this.viewList.push(this.noteList[i])
+                this.viewList.push(this.noteList[i+1])
+              }
+              else{
+                this.viewList.push(this.noteList[i-1])
+                this.viewList.push(this.noteList[i])
+              }
+              this.page = page
+
+              break
+            }
           }
-          if(this.noteList.length>=2){
-            this.viewList.push(this.noteList[1])
-          }
+          
+          // if(this.noteList.length>=1){
+          //   this.viewList.push(this.noteList[0])
+          // }
+          // if(this.noteList.length>=2){
+          //   this.viewList.push(this.noteList[1])
+          // }
         })
     },
   };
