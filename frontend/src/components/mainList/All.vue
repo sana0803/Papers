@@ -64,6 +64,13 @@ export default {
     }
   },
   created() {
+    const diaryIdQuery = this.$route.query.diaryId
+    const mainListModeQuery = this.$route.query.mainListMode
+    if (diaryIdQuery && mainListModeQuery) {
+      this.$emit('showDiaryList')
+      this.$emit('selectDairy')
+      return
+    }
     this.$store.dispatch("noteGet").then((res) => {
       this.noteList = res.data.reverse();
 
