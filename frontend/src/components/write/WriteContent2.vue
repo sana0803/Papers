@@ -27,7 +27,6 @@
           ></v-text-field>        
         </div>          
         <div class="content-section">
-            <!-- class="target-font" -->
           <v-textarea
             :style="{ 'font-family': getMyFont.fontUrl }"
             v-model="note.noteContent"
@@ -40,10 +39,19 @@
             maxlength="400"
             single-line
           ></v-textarea>
-        </div>        
-        <label for="file">
-          <span style="font-weight: 600; cursor: pointer;">내 컴퓨터에서 업로드  ></span>
-        </label>
+        </div>
+        <div class="file-up-wrap">
+          <div>
+            <label for="file">
+              <span style="font-weight: 600; cursor: pointer;">내 컴퓨터에서 업로드  ></span>
+            </label>
+          </div>
+          <div>
+            <!-- <label for="file"> -->
+              <span style="font-weight: 600; cursor: pointer;">드라이브에서 업로드  ></span>
+            <!-- </label> -->    
+          </div>      
+        </div>      
         <div class="file-input">
           <input
             type="file"
@@ -66,26 +74,16 @@
             truncate-length="11"
             prepend-icon="mdi-camera"
             @change="onImgUpload"
-          >
-          </v-file-input> -->
-          <!-- <label for="file"> -->
-            <!-- <span style="font-weight: 500;">내 드라이브에서 업로드</span> -->
-          <!-- </label> -->
-          <!-- <v-file-input
-            v-model="note.noteMediaList"
-            class="target-file"
-            label="사진을 등록하세요 (최대 4장, 각 용량 2MB 이하)"
-            color="#979797"
-            counter
-            multiple
-            show-size
-            small-chips
-            truncate-length="11"
-            prepend-icon="mdi-camera"
-          >
-          </v-file-input> -->
+          > -->          
         <div class="file-section">
-          <div v-if="note.noteS3MediaList > 0" sytle="height:300px;">
+          <div v-if="note.noteS3MediaList.length > 0">
+            <img :src="note.noteS3MediaList[0].media" class="img-preview">
+          </div>
+          <div v-else-if="files.length > 0">
+            <img :src="files[0].preview" class="img-preview">
+          </div>
+        </div>
+          <!-- <div v-if="note.noteS3MediaList > 0" sytle="height:300px;">
             <v-carousel
               hide-delimiters
               style="height:100%;">
@@ -101,64 +99,22 @@
                 :src="file.preview"
                 class="img-preview"
               ></v-carousel-item>
-            </v-carousel>
-            <!-- <div
-              class="img-section"
-              v-for="(media, idx) in note.noteS3MediaList"
-              :key="idx"
-            >
-              <img :src="media"/>
-            </div> -->
-            <!-- <div
-              v-for="(file, idx) in files"
-              :key="idx"
-              class="img-preview"
-            >
-              <img :src="file.preview" />
-            </div> -->
-          </div>
-          <div v-else style="height:300px;">
-            <v-carousel
-              hide-delimiters
-              style="height:100%;">
-              <v-carousel-item
-                v-for="(file, idx) in files"
-                :key="idx"
-                :src="file.preview"
-                class="img-preview"
-              ></v-carousel-item>
-                <!-- class="diary-content-img" -->
-            </v-carousel>
-            <!-- <div
-              v-for="(file, idx) in files"
-              :key="idx"
-              class="img-preview"
-            >
-              <img :src="file.preview" />
-            </div> -->
-          </div>
-          </div>
-        </div>
-        <div id="HashTag_Input">
-          <v-text-field
-            hide-details
-            v-model="note.noteHashtagList"
-            label="#여기에 #해시태그를 #입력하세요"
-            color="#FFB319"
-          ></v-text-field>
-        </div>
+            </v-carousel>            
+          </div> -->   
       </div>
+    <div id="HashTag_Input">
+      <v-text-field
+        hide-details
+        v-model="note.noteHashtagList"
+        label="#여기에 #해시태그를 #입력하세요"
+        color="#FFB319"
+      ></v-text-field>
+    </div>
+    </div>
     <div id="WriteContent_Btn">
       <v-btn @click="writeFin" id="Write_Btn">작성</v-btn>
       <v-btn @click="back" id="Back_Btn">취소</v-btn>
     </div>
-    <!-- <div id="prev-wrap" v-show="onPreview">
-      <PreviewContent />
-    </div>
-    <div v-if="!onPreview" id="WriteContent_Btn">
-      <v-btn @click="write" id="Write_Btn">다음</v-btn>
-      <v-btn @click="back" id="Back_Btn"> 취소 </v-btn>
-    </div> -->
   </div>
 </template>
 
@@ -169,9 +125,6 @@ import EventBus from '../../eventBus'
 // import PreviewContent from "../../components/write/PreviewContent.vue";
 
 export default {
-  components: {
-    // PreviewContent,
-  },
   data() {
     return {
       diaryTitleList: [],
@@ -208,10 +161,6 @@ export default {
     loginUser() {
       return this.$store.getters.getLoginUser;
     },
-    // fontSetting () {
-    //   return this.$store.getters['getMyFont'];
-    // }
-    // ...mapGetters(["getMyFont"]),
     getMyFont() {
       // v-text-field에 폰트 적용하기
       const target = document.getElementsByClassName("v-text-field__slot")
@@ -223,37 +172,7 @@ export default {
       return this.$store.getters["getMyFont"];
     },
   },
-  methods: {    
-    // onImgUpload() {
-    //   // console.log(this.$refs.files.files);
-    //   const target = document.getElementsByClassName("target-file")
-    //   console.log(target.files)
-    //   // this.files = [...this.files, this.$refs.files.files];
-    //   //하나의 배열로 넣기
-    //   let num = -1;
-    //   for (let i = 0; i < target.length; i++) {
-    //     this.files = [
-    //       ...this.files,
-    //       //이미지 업로드
-    //       {
-    //         //실제 파일
-    //         file: target.files[i],
-    //         //이미지 프리뷰
-    //         preview: URL.createObjectURL(target.files[i]),
-    //         //삭제및 관리를 위한 number
-    //         number: i,
-    //       },
-    //     ];
-    //     num = i;
-    //     //이미지 업로드용 프리뷰
-    //     // this.filesPreview = [
-    //     //   ...this.filesPreview,
-    //     //   { file: URL.createObjectURL(this.$refs.files.files[i]), number: i }
-    //     // ];
-    //   }
-    //   this.uploadImageIndex = num + 1; //이미지 index의 마지막 값 + 1 저장
-    //   console.log(this.files);
-    // },
+  methods: {        
     onImgUpload(e) {
       console.log(e.target.files)
       console.log(this.$refs.files.files);
@@ -613,7 +532,7 @@ export default {
   position:relative;
   // height: 684px;
   height: 610px;
-  padding: 14px 36px 36px 30px;
+  padding: 14px 36px 30px 36px;
   box-shadow: 3px 3px 11px rgba(166, 166, 168, 0.25);
 }
 .select-diary-section {
@@ -642,13 +561,16 @@ export default {
   height: 125px;
   overflow: hidden;
 }
+.file-up-wrap {
+  display: flex;
+  justify-content: space-between;
+}
 .file-section {
   background-color: #f7f7f7;
   width: 100%;
   height: 300px;
   margin-top: 5px;
   overflow: hidden;
-  // height: 100%;
 }
 .file-input {
   // background-color: greenyellow;
@@ -660,20 +582,16 @@ export default {
 }
 .img-preview {
   // background: #eee;
-  display: inline-block;
-  // margin-top: 12px;
-  // margin-right: 10px;
-  // border-radius: 4px;
-  // width: 80px;
+  display: inline-block;  
   width: 100%;
 
   img {
-    width: 100%;
+    width: 100%;    
+    object-fit: cover;
     // height: auto;
   }
 }
 .img-section {
-  background: lightpink;
   display: inline-block;
   margin-top: 10px;
   margin-right: 10px;
@@ -685,7 +603,6 @@ export default {
   img {
     width: 100%;
     // height: 100%;
-    // background: green;
   }
 }
 #HashTag_Input {
@@ -725,7 +642,7 @@ textarea {
   border-bottom: 1px solid #ccc;
 }
 .sticker{
-  border:3px solid red;
+  // border:3px solid red;
   width:300px;
   height:300px;
 }
