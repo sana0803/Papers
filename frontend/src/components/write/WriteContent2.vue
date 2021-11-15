@@ -493,14 +493,14 @@ export default {
   }
 }
 #HashTag_Input {
-  margin-top: 10px;
+  margin-top: 20px;
   // background-color: #eee;
 }
 #WriteContent_Btn {
   height: 38px;
   width: 152px;
   margin: 0 auto;
-  margin-top: 84px;
+  margin-top: 90px;
   box-shadow: none;  
 }
 #Write_Btn {
