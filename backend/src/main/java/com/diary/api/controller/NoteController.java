@@ -86,9 +86,6 @@ public class NoteController {
         User user = JwtTokenUtil.getUser(authentication, userService);
         if (user == null) return ResponseEntity.status(401).body(BaseResponseBody.of(401, "잘못된 토큰"));
 
-        for(int i = 0; i < noteReq.getStickerList().size(); i++){
-            System.out.println(noteReq.getStickerList().get(i).getTopPixel());
-        }
         noteReq.setWriterId(user.getUserId());
         NoteRes noteRes = noteService.registNote(noteReq);
         if(noteRes == null) return ResponseEntity.status(500).body(BaseResponseBody.of(500, "존재하지 않거나 오류가 발생하였습니다."));
