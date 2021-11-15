@@ -14,4 +14,6 @@ public class NotificationReq {
     private NotificationInfo notificationInfo;
     private String senderImageUrl;
     private User user;
+    private Long diaryId;
+    private Long noteId;
 }

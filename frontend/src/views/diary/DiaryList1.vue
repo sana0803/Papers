@@ -39,7 +39,10 @@
               <div v-else-if="note.noteMediaList.length == 0">
               </div>
               <div v-else>
-                <img :src="note.noteMediaList[0]" class="diary-content-img" alt="일기 사진" />
+                <div style="position:relative;">
+                  <img :src="note.noteMediaList[0]" class="diary-content-img" alt="일기 사진" />
+                  <img v-for="sticker in note.noteStickerList" :key="sticker.id" :src="sticker.sticker.stickerUrl" :style="{top:sticker.topPixel, left:sticker.leftPixel}" class="sticker" />
+                </div> 
               </div>
             </div>
           </div>
@@ -128,6 +131,7 @@
         emotionReq: {
           "emotionInfoId": 0,
           "noteId": 0,
+          "diaryId": 0,
         },
       };
     },
@@ -181,6 +185,7 @@
             this.$store.dispatch("getDiaryContent", this.currentDiary.id)
               .then((res) => {
                 this.noteList = res.data.note.reverse();
+                this.emotionReq.diaryId = this.noteList[0].diaryId
                 this.change(this.page)
               })
           })
@@ -191,6 +196,7 @@
             this.$store.dispatch("getDiaryContent", this.currentDiary.id)
               .then((res) => {
                 this.noteList = res.data.note.reverse();
+                this.emotionReq.diaryId = this.noteList[0].diaryId
                 this.change(this.page)
               })
           })
@@ -241,7 +247,7 @@
               .then((res) => {
                 console.log(res.data)
                 this.noteList = res.data.note.reverse();
-
+                this.emotionReq.diaryId = this.noteList[0].diaryId
                 this.page = 1
                 this.viewList = []
                 if(this.noteList.length>=1){
@@ -279,6 +285,33 @@
               }
             }
           }
+        })
+      const diaryIdQuery = this.$route.query.diaryId
+      const noteIdQuery = this.$route.query.noteId
+      if (diaryIdQuery && noteIdQuery) {
+        // alert('다이어리 아이디는 ' + diaryIdQuery)
+        // alert('노트 아이디는 ' + noteIdQuery)
+        this.$store.dispatch("getDiaryContent", diaryIdQuery)
+        .then((res) => {
+          this.noteList = res.data.note.reverse();
+          this.emotionReq.diaryId = this.noteList[0].diaryId
+
+          for (let i = 0; i < this.noteList.length; i++) {
+            if (this.noteList[i].noteId === noteIdQuery) {
+              this.page = parseInt(i / 2) + 1
+              this.change(this.page)
+              break
+            }
+          }
+        })
+        return
+      }
+      
+      console.log(this.currentDiary);
+      this.$store.dispatch("getDiaryContent", this.currentDiary.id)
+        .then((res) => {
+          this.noteList = res.data.note.reverse();
+          this.emotionReq.diaryId = this.noteList[0].diaryId
           if(this.noteList.length>=1){
             this.viewList.push(this.noteList[0])
           }
@@ -547,5 +580,12 @@
 
   .sad-clicked {
     color: blue;
+  }
+
+  .sticker{
+    width:50px; 
+    height:50px; 
+    position:absolute;
+    z-index:100;
   }
 </style>

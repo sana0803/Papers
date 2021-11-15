@@ -78,6 +78,8 @@ public class NotificationServiceImpl implements NotificationService{
         notification.setSenderImageUrl(notificationReq.getSenderImageUrl());
         notification.setUser(notificationReq.getUser());
         notification.setNotificationInfo(notificationReq.getNotificationInfo());
+        notification.setDiaryId(notificationReq.getDiaryId());
+        notification.setNoteId(notificationReq.getNoteId());
         notificationRepository.save(notification);
     }
 

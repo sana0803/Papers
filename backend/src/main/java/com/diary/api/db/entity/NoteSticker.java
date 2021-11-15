@@ -13,8 +13,8 @@ import javax.persistence.ManyToOne;
 @Entity
 public class NoteSticker extends BaseEntity {
 
-    int topPixel;
-    int leftPixel;
+    String topPixel;
+    String leftPixel;
 
     @ManyToOne
     @JoinColumn(name = "noteId", referencedColumnName = "id", nullable = false)

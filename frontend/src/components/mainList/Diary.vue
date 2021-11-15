@@ -152,7 +152,6 @@ export default {
             if (item != null)
               inviteAlarmPushUser.push(item)
           })
-          alert('id : ' + this.currentCreateDiaryId)
           let share = {
           'diaryId': this.currentCreateDiaryId,
           'inviteList': inviteAlarmPushUser

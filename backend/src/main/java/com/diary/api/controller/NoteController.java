@@ -1,31 +1,33 @@
 package com.diary.api.controller;
 
-import com.diary.api.db.entity.BaseEntity;
-import com.diary.api.db.entity.Emotion;
 import com.diary.api.db.entity.User;
 import com.diary.api.request.KakaoReq;
 import com.diary.api.request.NoteEmotionReq;
 import com.diary.api.request.NoteReq;
+import com.diary.api.request.UserLoginReq;
 import com.diary.api.response.BaseResponseBody;
 import com.diary.api.response.NoteRes;
 import com.diary.api.service.NoteService;
 import com.diary.api.service.UserService;
 import com.diary.common.auth.PapersUserDetails;
 import com.diary.common.util.JwtTokenUtil;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.configurationprocessor.json.JSONObject;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 import springfox.documentation.annotations.ApiIgnore;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/note")
@@ -84,8 +86,9 @@ public class NoteController {
         User user = JwtTokenUtil.getUser(authentication, userService);
         if (user == null) return ResponseEntity.status(401).body(BaseResponseBody.of(401, "잘못된 토큰"));
 
-        System.out.println(noteReq.getDesignId());
-        System.out.println(noteReq.getNoteContent());
+        for(int i = 0; i < noteReq.getStickerList().size(); i++){
+            System.out.println(noteReq.getStickerList().get(i).getTopPixel());
+        }
         noteReq.setWriterId(user.getUserId());
         NoteRes noteRes = noteService.registNote(noteReq);
         if(noteRes == null) return ResponseEntity.status(500).body(BaseResponseBody.of(500, "존재하지 않거나 오류가 발생하였습니다."));
@@ -152,9 +155,35 @@ public class NoteController {
             @ApiResponse(code = 200, message = "사진파일 가져오기 성공"),
             @ApiResponse(code = 500, message = "사진파일 가져오는 중 오류발생")
     })
-    public String setImageFiles() {
-        System.out.println("hi");
-        return "hi";
+    public ResponseEntity<? extends BaseResponseBody> setImageFiles(@RequestBody Map<String, Object> params, HttpServletRequest request, HttpServletResponse response) {
+
+        try{
+            ObjectMapper mapper = new ObjectMapper();
+            String jsonInString = mapper.writeValueAsString(params);
+            Map<String, Object> object = (Map<String, Object>)params.get("action");
+            Map<String, Object> object2 = (Map<String, Object>)object.get("params");
+
+            UserLoginReq userLoginReq = new UserLoginReq();
+            userLoginReq.setUserId((String) object2.get("id"));
+            userLoginReq.setUserPwd((String) object2.get("pwd"));
+
+            if(userService.authenticate(userLoginReq) == null) {
+                return ResponseEntity.status(401).body(BaseResponseBody.of(401, "잘못된 유저 정보입니다."));
+            }
+
+            KakaoReq kakaoReq = new KakaoReq();
+            kakaoReq.setId((String) object2.get("id"));
+            kakaoReq.setPwd((String) object2.get("pwd"));
+            JSONObject jsonObject = new JSONObject((String) object2.get("imageList"));
+            String target = jsonObject.getString("secureUrls");
+            kakaoReq.setImageList(target.substring(5, target.length() - 1).split(","));
+
+            noteService.setImageFiles(kakaoReq);
+            return ResponseEntity.status(200).body(BaseResponseBody.of(200, "사진 정보 저장 성공"));
+        }catch (Exception e){
+            e.printStackTrace();
+            return ResponseEntity.status(500).body(BaseResponseBody.of(500, "사진 저장 중 오류 발생."));
+        }
     }
 
     @PostMapping("/emotion")

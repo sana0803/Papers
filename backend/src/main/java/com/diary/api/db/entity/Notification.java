@@ -27,6 +27,8 @@ public class Notification extends BaseEntity {
     private String notificationContent;
     private boolean notificationRead;
     private String senderImageUrl;
+    private Long diaryId;
+    private Long noteId;
 
     @PrePersist
     public void setUp() {
