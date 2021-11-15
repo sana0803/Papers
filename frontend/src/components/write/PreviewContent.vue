@@ -98,6 +98,7 @@ export default {
     note: Object,
   },
   data() {
+    return {}
   },
   methods: {    
     cancel() {

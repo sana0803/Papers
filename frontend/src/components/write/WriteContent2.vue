@@ -213,13 +213,13 @@ export default {
     // }
     // ...mapGetters(["getMyFont"]),
     getMyFont() {
-      console.log("폰트 적용");
-      const target = document.getElementsByClassName("v-text-field__slot");
-      for (let i = 0; i < target.length; i++) {
+      // v-text-field에 폰트 적용하기
+      const target = document.getElementsByClassName("v-text-field__slot")
+      // 해시태그에 폰트적용 빼기위해서 -1함
+      for (let i = 0; i < target.length-1; i++) {
         target[i].style.fontFamily = this.$store.getters.getMyFont.fontUrl;
         console.log(target[i]);
       }
-      // document.getElementsByClassName("target-font").style.fontFamily = "KOTRAHOPE";
       return this.$store.getters["getMyFont"];
     },
   },

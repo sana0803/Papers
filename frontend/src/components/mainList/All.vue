@@ -23,7 +23,8 @@
         v-model="page"
         :length="Math.ceil(noteList.length/6)"
         @input="change"
-        class="page-sec"
+        circle
+        color="#FFB300"
       ></v-pagination>
     </div>
   </div>

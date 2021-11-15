@@ -99,6 +99,8 @@
         v-model="page"
         :length="Math.ceil(noteList.length/2)"
         @input="change"
+        circle
+        color="#FFB300"
         class="page-sec"
       ></v-pagination>
     </div>
@@ -536,14 +538,13 @@
   bottom: -50px;
   width: 886px;
   overflow: hidden;
-  background-color: #eee;
-  margin-bottom: 20px;
+  // background-color: #eee;
+  // margin-bottom: 20px;
 }
-// .page-sec {  
-  // width: 100%;
-  // height: 50px;
-  // background-color: #ffb319;
-  // }
+.page-sec {  
+  width: 100%;
+  height: 50px;
+  }
 #Dialog {
   height: 180px;
 }
