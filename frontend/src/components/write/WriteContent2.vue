@@ -85,10 +85,11 @@
           >
           </v-file-input> -->
         <div class="file-section">
-          <div v-if="note.noteS3MediaList > 0" sytle="height:300px;">
+          <div v-if="note.noteS3MediaList.length > 0" sytle="height:300px;">
             <v-carousel
               hide-delimiters
-              style="height:100%;">
+              height="300"
+              style="height:300px;">
               <v-carousel-item
                 v-for="(media, idx) in note.noteS3MediaList"
                 :key="idx"
@@ -120,7 +121,8 @@
           <div v-else style="height:300px;">
             <v-carousel
               hide-delimiters
-              style="height:100%;">
+              height="300"
+              style="height:300px;">
               <v-carousel-item
                 v-for="(file, idx) in files"
                 :key="idx"
@@ -665,8 +667,10 @@ export default {
   // margin-right: 10px;
   // border-radius: 4px;
   // width: 80px;
+  object-fit: contain;
+  height:300px;
   width: 100%;
-
+  
   img {
     width: 100%;
     // height: auto;
@@ -725,7 +729,6 @@ textarea {
   border-bottom: 1px solid #ccc;
 }
 .sticker{
-  border:3px solid red;
   width:300px;
   height:300px;
 }

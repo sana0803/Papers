@@ -32,9 +32,10 @@
             <div class="diary-img-wrap">
               <div v-if="note.noteMediaList.length > 1">
                 <v-carousel
+                  height="300"
                   hide-delimiters
                   :show-arrows="true"
-                  style="height:100%;">
+                  style="height:300px;">
                   <v-carousel-item
                     v-for="(img, i) in note.noteMediaList"
                     :key="i"
@@ -47,7 +48,7 @@
               </div>
               <div v-else>
                 <div style="position:relative;">
-                  <img :src="note.noteMediaList[0]" class="diary-content-img" alt="일기 사진" />
+                  <img :src="note.noteMediaList[0]" class="diary-content-img" alt="일기 사진" style="width:371px;"/>
                   <img v-for="sticker in note.noteStickerList" :key="sticker.id" :src="sticker.sticker.stickerUrl" :style="{top:sticker.topPixel, left:sticker.leftPixel}" class="sticker" />
                 </div> 
               </div>
@@ -485,15 +486,14 @@
 }
 .diary-img-wrap {
   margin-top: 18px;
-  max-width: 100%;
+  // max-width: 100%;
   min-height: 250px;
   // max-height: 300px;
   overflow: hidden;
   background-color: #f7f7f7;
 }
 .diary-content-img {
-  max-width: 100%;
-  height: 100%;
+  height: 300px;
   // background-color: aquamarine;
 }
 .diary-emotion {
