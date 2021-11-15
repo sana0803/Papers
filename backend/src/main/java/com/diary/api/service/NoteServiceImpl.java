@@ -2,23 +2,31 @@ package com.diary.api.service;
 
 import com.diary.api.db.entity.*;
 import com.diary.api.db.repository.*;
-import com.diary.api.request.NoteEmotionReq;
-import com.diary.api.request.NoteReq;
-import com.diary.api.request.NoteStickerReq;
-import com.diary.api.request.NotificationReq;
+import com.diary.api.request.*;
 import com.diary.api.response.BaseResponseBody;
 import com.diary.api.response.NoteRes;
 import com.diary.api.response.NotificationDetailRes;
 import com.diary.common.util.JwtTokenUtil;
+import com.diary.common.util.S3Util;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.configurationprocessor.json.JSONObject;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.imageio.ImageIO;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.transaction.Transactional;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.*;
 
 import static org.reflections.Reflections.log;
@@ -249,11 +257,14 @@ public class NoteServiceImpl implements NoteService{
         notificationService.publishToUsers(notificationDetailRes, guestList);
 
         NotificationInfo notificationInfo = notificationInfoRepository.findById((long)1).get();
+
+        Long currentSavedNoteId = noteRepository.findFirstByOrderByIdDesc().getId();
+
         log.info("---note service 생성");
         for (String userId : guestList) {
             log.info("초대 받는 사람 : " + userId);
             User receiver = userService.getUserByUserId(userId);
-            notificationService.createNotification(new NotificationReq(message, notificationInfo, user.getUserProfile(), receiver));
+            notificationService.createNotification(new NotificationReq(message, notificationInfo, user.getUserProfile(), receiver, noteReq.getDiaryId(), currentSavedNoteId));
         }
         log.info("----------------");
         return noteRes;
@@ -322,11 +333,48 @@ public class NoteServiceImpl implements NoteService{
                 emotionLogRepository.save(new EmotionLog(user, noteRepositorySupport.getNote(noteEmotionReq.getNoteId()).get()));
                 userService.updateMileage(user, user.getUserMileage() + 2);
             }
+
+            long diaryId = noteEmotionReq.getDiaryId();
+            String writerId = noteEmotionReq.getWriterId();
+            List<UserDiary> userDiaryList = new ArrayList<>();
+            List<String> guestList = new ArrayList<>();
+
+            if (!userDiaryRepository.findAllByDiaryId(diaryId).isEmpty()) {
+                userDiaryList = userDiaryRepository.findAllByDiaryId(diaryId);
+            }
+
+            if (userDiaryRepositorySupport.isOwner(diaryId, writerId)) {
+                userDiaryList.forEach(userDiary -> {
+                    guestList.add(userDiary.getGuestId());
+                });
+            } else if (userDiaryRepositorySupport.findByDiaryIdAndGuestId(diaryId, writerId) != null) {
+                UserDiary userDiary = userDiaryRepositorySupport.findByDiaryIdAndGuestId(diaryId, writerId);
+                guestList.add(userDiary.getUser().getUserId());
+
+                userDiaryList.forEach(userDiaryInfo -> {
+                    if (!userDiaryInfo.getGuestId().equals(writerId))
+                        guestList.add(userDiaryInfo.getGuestId());
+                });
+            }
+            Note note = noteRepositorySupport.getNote(noteEmotionReq.getNoteId()).get();
+            String message = user.getUserNickname() + "님이" + " \'" + note.getNoteTitle() + "\" " + "에 감정을 표현했습니다.";
+            NotificationDetailRes notificationDetailRes = new NotificationDetailRes(message, user.getUserProfile());
+            notificationService.publishToUsers(notificationDetailRes, guestList);
+
+            NotificationInfo notificationInfo = notificationInfoRepository.findById((long)2).get();
+            log.info("--- note service 생성 : 감정표현");
+            for (String userId : guestList) {
+                log.info("감정 표현 알림 받는 사람 : " + userId);
+                User receiver = userService.getUserByUserId(userId);
+                notificationService.createNotification(new NotificationReq(message, notificationInfo, user.getUserProfile(), receiver, diaryId, noteEmotionReq.getNoteId()));
+            }
+            log.info("----------------");
             return true;
         }catch (Exception e) {
             e.printStackTrace();
             return false;
         }
+
     }
 
     // 감정표현 취소
@@ -360,5 +408,23 @@ public class NoteServiceImpl implements NoteService{
         if(noteRepositorySupport.getHashtagList(userId).isPresent())
             return noteRepositorySupport.getHashtagList(userId).get();
         return null;
+    }
+
+    // 카카오 API로 전송된 사진들을 S3에 저장하는 작업
+    public boolean setImageFiles(KakaoReq kakaoReq) {
+        try {
+            for(String imageUrl : kakaoReq.getImageList()) {
+                BufferedImage img = ImageIO.read(new URL(imageUrl));
+                File file = new File("../kakao-files/" + UUID.randomUUID() + ".jpg");
+                if(!file.exists()) file.mkdirs();
+                ImageIO.write(img, "jpg", file);
+                String fileName = "kakao-file/" + kakaoReq.getId() + "/" + UUID.randomUUID() + ".jpg";
+                S3Util.putS3(file, fileName);
+            }
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 }

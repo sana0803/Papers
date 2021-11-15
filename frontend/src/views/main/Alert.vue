@@ -2,10 +2,10 @@
   <div id="alert-container">
     <div class="Alert_List">
       <p class="Alert_Day">오늘</p>      
-      <div class="alert-list-item" v-for="notification in getNotifications" :key="notification.id" @click="readAlert(notification.id)">
+      <div class="alert-list-item" v-for="notification in getNotifications" :key="notification.id" @click="readAlert(notification.id, notification.diaryId, notification.noteId)">
         <div class="alert-content">
-          <span v-if="notification.notificationRead" class="alert-read"></span>
-          <span v-else class="alert-read-empty"></span>
+          <span v-if="notification.notificationRead" class="alert-read-empty"></span>
+          <span v-else class="alert-read"></span>
           <div class="alert-profile">
             <img :src="notification.senderImageUrl" style="width:45px; height:45px; border-radius: 25px;" />
           </div>
@@ -97,14 +97,15 @@ export default {
     ...mapGetters(["getNotifications"]),
   },
   methods: {
-    readAlert(notificationId) {
-      this.$store.dispatch("readNotification", notificationId)
+    readAlert(notificationId, diaryId, noteId) {
+      this.$store.dispatch("readNotification", notificationId) // 읽음 처리 put method
       .then((res) => {
         console.log(res.data)
-        this.$store.dispatch("getNotifications")
-          .then((response) => {
-            this.$store.commit('setNotifications', response.data)
-          }) 
+        if (noteId === 0) { // 노트 아이디가 없는 것은 일기장 생성에 대한 알림
+          this.$router.push({name: 'main', query: {diaryId: 0, mainListMode: 'diary'}})
+          return
+        }
+        this.$router.push({name: 'diary', query: {diaryId: diaryId, noteId: noteId}})
       }) 
     }
   },

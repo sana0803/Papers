@@ -18,42 +18,6 @@
         <div v-for="myFont in myFontList" :key="myFont.id" class="Font_Item">
           <span class="Font_Name" :style="{ 'font-family': myFont.fontUrl }" @click="selectFont(myFont)">{{myFont.fontName}}</span>
         </div>
-        <!-- <div class="Font_Item">
-          <span class="Font_Name">카페숑24 숑숑체</span>
-        </div>
-        <div class="Font_Item">
-          <span class="Font_Name">카페숑24 숑숑체</span>
-        </div>
-        <div class="Font_Item">
-          <span class="Font_Name">카페숑24 숑숑체</span>
-        </div>
-        <div class="Font_Item">
-          <span class="Font_Name">카페숑24 숑숑체</span>
-        </div>
-        <div class="Font_Item">
-          <span class="Font_Name">카페숑24 숑숑체</span>
-        </div>
-        <div class="Font_Item">
-          <span class="Font_Name">카페숑24 숑숑체</span>
-        </div>
-        <div class="Font_Item">
-          <span class="Font_Name">카페숑24 숑숑체</span>
-        </div>
-        <div class="Font_Item">
-          <span class="Font_Name">카페숑24 숑숑체</span>
-        </div>
-        <div class="Font_Item">
-          <span class="Font_Name">카페숑24 숑숑체</span>
-        </div>
-        <div class="Font_Item">
-          <span class="Font_Name">카페숑24 숑숑체</span>
-        </div>
-        <div class="Font_Item">
-          <span class="Font_Name">카페숑24 숑숑체</span>
-        </div>
-        <div class="Font_Item">
-          <span class="Font_Name">카페숑24 숑숑체</span>
-        </div> -->
       </div>
     </div>
     <div id="WriteSide_Bot">
@@ -66,36 +30,6 @@
       </div>
       <div id="Sticker_Content">
         <div v-for="stickerPackage in stickerPackageList" :key="stickerPackage.id" @click="dialogOn(stickerPackage)" class="Sticker_Item">
-          <div class="Sticker_Img">
-            <img :src="stickerPackage.stickerList[0].stickerUrl" style="width:100%; height:100%;" />
-          </div>
-          <div class="Sticker_Name">{{ stickerPackage.stickerPackageName }}</div>
-        </div>
-        <div v-for="stickerPackage in stickerPackageList" :key="stickerPackage.id" class="Sticker_Item">
-          <div class="Sticker_Img">
-            <img :src="stickerPackage.stickerList[0].stickerUrl" style="width:100%; height:100%;" />
-          </div>
-          <div class="Sticker_Name">{{ stickerPackage.stickerPackageName }}</div>
-        </div>
-        <div v-for="stickerPackage in stickerPackageList" :key="stickerPackage.id" class="Sticker_Item">
-          <div class="Sticker_Img">
-            <img :src="stickerPackage.stickerList[0].stickerUrl" style="width:100%; height:100%;" />
-          </div>
-          <div class="Sticker_Name">{{ stickerPackage.stickerPackageName }}</div>
-        </div>
-        <div v-for="stickerPackage in stickerPackageList" :key="stickerPackage.id" class="Sticker_Item">
-          <div class="Sticker_Img">
-            <img :src="stickerPackage.stickerList[0].stickerUrl" style="width:100%; height:100%;" />
-          </div>
-          <div class="Sticker_Name">{{ stickerPackage.stickerPackageName }}</div>
-        </div>
-        <div v-for="stickerPackage in stickerPackageList" :key="stickerPackage.id" class="Sticker_Item">
-          <div class="Sticker_Img">
-            <img :src="stickerPackage.stickerList[0].stickerUrl" style="width:100%; height:100%;" />
-          </div>
-          <div class="Sticker_Name">{{ stickerPackage.stickerPackageName }}</div>
-        </div>
-        <div v-for="stickerPackage in stickerPackageList" :key="stickerPackage.id" class="Sticker_Item">
           <div class="Sticker_Img">
             <img :src="stickerPackage.stickerList[0].stickerUrl" style="width:100%; height:100%;" />
           </div>
@@ -139,7 +73,7 @@
             </div>
           </div>
           <div id="Dialog_List">
-            <div class="Dialog_Item" v-for="sticker in stickerList" :key="sticker.id">
+            <div class="Dialog_Item" @click="selectSticker(sticker)" v-for="sticker in stickerList" :key="sticker.id">
               <img :src="sticker.stickerUrl" style="width: 80%; height: 80%; margin-top: 10px; margin-left: 10px;"/>
             </div>
           </div>
@@ -151,6 +85,8 @@
 </template>
 
 <script>
+import EventBus from '../../eventBus'
+
 export default {
   data () {
     return {
@@ -191,6 +127,10 @@ export default {
     selectFont: function (font) {
       console.log('폰트 선택함', font)
       this.$store.commit("setMyFont", font)
+    },
+    selectSticker(sticker) {
+      EventBus.$emit('createSticker', sticker)
+      this.dialog = false
     }
   },
   created () {
@@ -335,6 +275,7 @@ export default {
   background: #fae7cb;
   margin-right: 10px;
   margin-left: 10px;
+  cursor:pointer;
 }
 #Dialog_img {
   display: inline-block;

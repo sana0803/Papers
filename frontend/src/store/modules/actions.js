@@ -149,7 +149,7 @@ export function readNotification({ state }, notificationId) {
   console.log(notificationId)
   const userToken = state.loginUser.userToken
   const url = baseUrl + '/notification/' + notificationId
-  return $axios.put(url, { headers: { Authorization: `Bearer ${userToken}` } })
+  return $axios.put(url, '', { headers: { Authorization: `Bearer ${userToken}` } })
 }
 
 export function getAllFonts({ state }) {
