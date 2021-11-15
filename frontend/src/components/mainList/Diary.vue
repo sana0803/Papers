@@ -27,7 +27,8 @@
         v-model="page"
         :length="Math.ceil(diaryList.length/5)"
         @input="change"
-        class="page-sec"
+        circle
+        color="#FFB300"
       ></v-pagination>
     </div>
     <!-- Dialog -->
