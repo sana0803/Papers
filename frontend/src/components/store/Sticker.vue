@@ -18,7 +18,8 @@
         v-model="page"
         :length="Math.ceil(stickerPackageList.length/6)"
         @input="change"
-        class="page-sec"
+        circle
+        color="#FFB300"
       ></v-pagination>
     </div>
 
@@ -145,22 +146,24 @@ export default {
   opacity: 0.7;
 }
 .sticker-check{
-  position:absolute;
+  position: absolute;
   background: #ffb319;
-  color:white;
-  font-weight:300;
+  color: white;
+  font-weight: 300;
   text-align: center;
-  line-height:30px;
-  width:50px;
-  height:30px;
-  top:10px;
-  left:10px;
+  line-height: 30px;
+  width: 60px;
+  height: 30px;
+  top: 12px;
+  left: 12px;
+  border-radius: 4px;
 }
 .Sticker_img {
   width: 286px;
   height: 394px;
-  background: rgb(199, 193, 188);
-  box-shadow: 3px 3px 11px rgba(166, 166, 168, 0.25);
+  background: #fff;
+  box-shadow: 3px 3px 11px rgba(166, 166, 168, 0.35);
+  overflow: hidden;
   cursor: pointer;
 }
 .Sticker_Title {
@@ -189,9 +192,12 @@ export default {
 #Dialog_Content {
   height: 568px;
   padding: 34px 46px;
+  /* background-color: lightpink; */
 }
 #Dialog_Title {
   height: 118px;
+  background-color: #eee;
+  overflow: hidden;
 }
 #Dialog_List {
   height: 306px;
@@ -235,6 +241,7 @@ export default {
   position: relative;
   top: -3px;
   font-size: 18px;
+  font-weight: 600;
   color: #ffb319;
 }
 #Name_Btn_Box {

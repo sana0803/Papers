@@ -14,7 +14,9 @@
       @click="goDiary(diary)"
       class="Diary_Item"
     >
-      <div class="Diary_Img"></div>
+      <div class="Diary_Img">
+        <img :src="diary.diaryCover.coverUrl" />
+      </div>
       <div class="diary-under">
         <span class="Diary_Name">{{ diary.diaryTitle }}</span>
         <span class="Diary_Day">{{ diary.diaryCreatedDate }}</span>
@@ -27,7 +29,8 @@
         v-model="page"
         :length="Math.ceil(diaryList.length/5)"
         @input="change"
-        class="page-sec"
+        circle
+        color="#FFB300"
       ></v-pagination>
     </div>
     <!-- Dialog -->
@@ -136,7 +139,12 @@ export default {
     },
     goDiary(diary) {
       this.$store.commit('setCurrentDiary', diary) // mutaion 호출 ('뮤테이션 이름, 매개변수)
-      this.$router.push("/diary");
+      
+      this.$store.dispatch('getDiaryContent', diary.id)
+        .then((res) => {
+          this.$store.commit('setNoteContent', res.data.note[0])
+          this.$router.push("/diary");
+        })
     },
     create() {
       const diary = {
@@ -183,19 +191,20 @@ export default {
   },
   created() {
     this.$store.dispatch("diaryGet").then((res) => {
+      console.log(res.data, 'zzzzzz')
       this.diaryList = res.data.reverse();
-      
       for(let i=0;i<5;i++){
         if(this.diaryList.length==i) 
           break
         this.viewList.push(this.diaryList[i])
       }
+      console.log(this.viewList[0].diaryCover.coverUrl, '뷰리스트')
     });
   },
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 #Plus_Item {
   display: inline-block;
   width: 284px;
@@ -231,9 +240,13 @@ export default {
 .Diary_Img {
   width: 284px;
   height: 394px;
-  background: rgb(176, 247, 135);
-  box-shadow: 2px 3px 12px 2px rgba(35, 35, 35, 0.25);
+  /* background: peachpuff; */
+  box-shadow: 3px 3px 11px rgba(166, 166, 168, 0.35);
   cursor: pointer;
+  img {
+    width: 100%;
+    height: 100%;
+  }
 }
 .Diary_Name {
   max-width:190px;
