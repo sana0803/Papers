@@ -20,6 +20,7 @@ export default {
     onPreview: Boolean,
   },
   data() {
+    return {}
   },
   methods: {    
     cancel() {
