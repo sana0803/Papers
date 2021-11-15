@@ -235,8 +235,8 @@ export default {
 .Diary_Img {
   width: 284px;
   height: 394px;
-  background: rgb(176, 247, 135);
-  box-shadow: 2px 3px 12px 2px rgba(35, 35, 35, 0.25);
+  background: peachpuff;
+  box-shadow: 3px 3px 11px rgba(166, 166, 168, 0.35);
   cursor: pointer;
 }
 .Diary_Name {

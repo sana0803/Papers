@@ -1,5 +1,5 @@
 <template>
-  <div id="Templete_Out">
+  <div id="templete-out">
     <v-btn id="Write_Btn" @click="goWrite" fab dark large color="#FFB319">
       <v-icon dark> mdi-plus </v-icon>
     </v-btn>
@@ -29,7 +29,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-#Templete_Out {
+#templete-out {
   width: 1272px;
   position: relative;
 }

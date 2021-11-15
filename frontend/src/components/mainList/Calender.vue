@@ -97,7 +97,7 @@
           </v-toolbar>
           <v-card-text id="select-box"> 
             <div style="height:350px;">
-              <v-img style="height:100%;" :src="selectedEvent.noteMedia" />
+              <v-img style="height:100%;" :src="selectedEvent.noteMedia" alt="일기 사진"/>
             </div>
             <div style="padding-top:10px">
               <span>{{selectedEvent.content}}</span>
@@ -119,7 +119,7 @@
 </template>
 
 <script>
-import dayjs from 'dayjs'
+import dayjs from "dayjs";
 
 export default {
   data() {
@@ -146,7 +146,7 @@ export default {
       selectedEvent: {},
       selectedElement: null,
       selectedOpen: false,
-    }
+    };
   },
   methods: {
     getEvents() {
@@ -157,8 +157,8 @@ export default {
           // const allDay = this.rnd(0, 3) === 0;
 
           const event = {
-            name : res.data[i].noteTitle,
-            id : res.data[i].noteId,
+            name: res.data[i].noteTitle,
+            id: res.data[i].noteId,
             content: res.data[i].noteContent,
             start: res.data[i].noteCreatedDate,
             end: res.data[i].noteCreatedDate,
@@ -170,8 +170,8 @@ export default {
           events[i] = event
         }
         this.events = events;
-    });
-    
+      });
+
       // const events = [];
 
       // const min = new Date(`${start.date}T00:00:00`);
@@ -204,10 +204,10 @@ export default {
       return Math.floor((b - a + 1) * Math.random()) + a;
     },
     prev() {
-      this.month = this.month - 1
+      this.month = this.month - 1;
     },
     next() {
-      this.month = this.month + 1
+      this.month = this.month + 1;
     },
     showEvent ({ nativeEvent, event }) {
       const open = () => {
@@ -239,10 +239,8 @@ export default {
     // this.$store.dispatch("calenderGet", this.month).then((res) => {
     //   // this.calenderList = res.data.reverse()
     //   const events = []
-
     //   for(let i = 0; i < res.data.length; i++) {
     //     const allDay = this.rnd(0, 3) === 0;
-
     //     const event = {
     //       name : res.data[i].noteTitle,
     //       // id : res.data[i].noteId,
@@ -262,10 +260,10 @@ export default {
   margin: 0 auto;
   width: 95%;
 }
-#select-box{
-  font-size:18px;
-  width:400px;
-  height:500px;
+#select-box {
+  font-size: 18px;
+  width: 400px;
+  height: 500px;
   /* display:flex;
   justify-content: center;
   align-items: center; */
