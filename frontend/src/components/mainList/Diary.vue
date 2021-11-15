@@ -12,9 +12,9 @@
       v-for="diary in viewList"
       :key="diary.id"
       @click="goDiary(diary)"
-      class="Diary_Item"
+      class="Diary_Item" 
     >
-      <div class="Diary_Img"></div>
+      <div class="Diary_Img" :class="{ 'highlight' : highlightDiaryId === diary.id }"></div>
       <div class="diary-under">
         <span class="Diary_Name">{{ diary.diaryTitle }}</span>
         <span class="Diary_Day">{{ diary.diaryCreatedDate }}</span>
@@ -116,7 +116,8 @@ export default {
       search: "",
       memberList: [],
       selected: [],
-      currentCreateDiaryId: 0
+      currentCreateDiaryId: 0,
+      highlightDiaryId: 0,
     };
   },
   methods: {
@@ -191,6 +192,9 @@ export default {
         this.viewList.push(this.diaryList[i])
       }
     });
+  },
+  mounted() {
+    this.highlightDiaryId = this.$route.query.diaryId
   },
 };
 </script>
@@ -349,5 +353,24 @@ export default {
   text-align: center;
   font-size: 16px;
   color: #9f9f9f;
+}
+.highlight {
+  background: white;
+  animation-name: backdiv;
+  animation-duration: 2.4s; 
+  animation-iteration-count: infinite;
+}
+@keyframes backdiv {
+  50% {
+    background: #f0df81;
+  }
+}
+@keyframes beat {
+  0% {
+    transform: scale(1) rotate(-45deg);
+  }
+  50% {
+    transform: scale(0.6) rotate(-45deg);
+  }
 }
 </style>
