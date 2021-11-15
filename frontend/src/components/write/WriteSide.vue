@@ -56,7 +56,7 @@
               <div id="Name_Author">작가명 아무개</div>
               <div id="Name_Name">{{ stickerPackage.stickerPackageName }}</div>
               <div id="Name_Price">{{ stickerPackage.stickerPackagePrice }}장</div>
-              <div id="Name_Btn_Box">
+              <!-- <div id="Name_Btn_Box">
                 <v-btn
                   style="background: #ffb319; color: white"
                   class="Name_Btn"
@@ -69,7 +69,7 @@
                   class="Name_Btn"
                   >취소</v-btn
                 >
-              </div>
+              </div> -->
             </div>
           </div>
           <div id="Dialog_List">
@@ -285,6 +285,8 @@ export default {
   background: #b8dfd8;
 }
 #Dialog_Name {
+  // border:1px solid red;
+  padding-top:30px;
   display: inline-block;
   /* width:200px; */
   height: 118px;

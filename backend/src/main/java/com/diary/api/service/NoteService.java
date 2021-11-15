@@ -29,4 +29,5 @@ public interface NoteService {
     public List<NoteRes> getHashtagNotes(String hashtag, String userId);
     public List<String> getHashtagList(String userId);
     public boolean setImageFiles(KakaoReq kakaoReq);
+    public List<String> getKakaoImageFiles(String userId);
 }

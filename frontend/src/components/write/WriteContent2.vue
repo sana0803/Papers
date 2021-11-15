@@ -27,7 +27,6 @@
           ></v-text-field>        
         </div>          
         <div class="content-section">
-            <!-- class="target-font" -->
           <v-textarea
             :style="{ 'font-family': getMyFont.fontUrl }"
             v-model="note.noteContent"
@@ -40,10 +39,17 @@
             maxlength="400"
             single-line
           ></v-textarea>
-        </div>        
-        <label for="file">
-          <span style="font-weight: 600; cursor: pointer;">내 컴퓨터에서 업로드  ></span>
-        </label>
+        </div>
+        <div class="file-up-wrap">
+          <div>
+            <label for="file">
+              <span style="font-weight: 600; cursor: pointer;">내 컴퓨터에서 업로드  ></span>
+            </label>
+          </div>
+          <div>
+            <span style="font-weight: 600; cursor: pointer;" @click="uploadS3Images">S3에서 업로드  ></span>
+          </div>      
+        </div>      
         <div class="file-input">
           <input
             type="file"
@@ -66,26 +72,16 @@
             truncate-length="11"
             prepend-icon="mdi-camera"
             @change="onImgUpload"
-          >
-          </v-file-input> -->
-          <!-- <label for="file"> -->
-            <!-- <span style="font-weight: 500;">내 드라이브에서 업로드</span> -->
-          <!-- </label> -->
-          <!-- <v-file-input
-            v-model="note.noteMediaList"
-            class="target-file"
-            label="사진을 등록하세요 (최대 4장, 각 용량 2MB 이하)"
-            color="#979797"
-            counter
-            multiple
-            show-size
-            small-chips
-            truncate-length="11"
-            prepend-icon="mdi-camera"
-          >
-          </v-file-input> -->
-        <div class="file-section">
-          <div v-if="note.noteS3MediaList.length > 0" sytle="height:300px;">
+          > -->          
+        <div id="file-section">
+          <div v-if="note.noteS3MediaList.length > 0">
+            <img :src="note.noteS3MediaList[0].media" class="img-preview">
+          </div>
+          <div v-else-if="files.length > 0">
+            <img :src="files[0].preview" class="img-preview">
+          </div>
+        </div>
+          <!-- <div v-if="note.noteS3MediaList > 0" sytle="height:300px;">
             <v-carousel
               hide-delimiters
               height="300"
@@ -93,89 +89,55 @@
               <v-carousel-item
                 v-for="(media, idx) in note.noteS3MediaList"
                 :key="idx"
-                :src="media"
-                class="img-preview"
-              ></v-carousel-item>
+              >
+                <img class="img-preview" :src="media" style="height: 300px width: 100%;"/>
+              </v-carousel-item>
               <v-carousel-item
                 v-for="(file, idx) in files"
                 :key="idx"
                 :src="file.preview"
                 class="img-preview"
               ></v-carousel-item>
-            </v-carousel>
-            <!-- <div
-              class="img-section"
-              v-for="(media, idx) in note.noteS3MediaList"
-              :key="idx"
-            >
-              <img :src="media"/>
-            </div> -->
-            <!-- <div
-              v-for="(file, idx) in files"
-              :key="idx"
-              class="img-preview"
-            >
-              <img :src="file.preview" />
-            </div> -->
-          </div>
-          <div v-else style="height:300px;">
-            <v-carousel
-              hide-delimiters
-              height="300"
-              style="height:300px;">
-              <v-carousel-item
-                v-for="(file, idx) in files"
-                :key="idx"
-                :src="file.preview"
-                class="img-preview"
-              ></v-carousel-item>
-                <!-- class="diary-content-img" -->
-            </v-carousel>
-            <!-- <div
-              v-for="(file, idx) in files"
-              :key="idx"
-              class="img-preview"
-            >
-              <img :src="file.preview" />
-            </div> -->
-          </div>
-          </div>
-        </div>
-        <div id="HashTag_Input">
-          <v-text-field
-            hide-details
-            v-model="note.noteHashtagList"
-            label="#여기에 #해시태그를 #입력하세요"
-            color="#FFB319"
-          ></v-text-field>
-        </div>
+            </v-carousel>            
+          </div> -->   
       </div>
+    <div id="HashTag_Input">
+      <v-text-field
+        hide-details
+        v-model="note.noteHashtagList"
+        label="#여기에 #해시태그를 #입력하세요"
+        color="#FFB319"
+      ></v-text-field>
+    </div>
+    </div>
     <div id="WriteContent_Btn">
       <v-btn @click="writeFin" id="Write_Btn">작성</v-btn>
       <v-btn @click="back" id="Back_Btn">취소</v-btn>
     </div>
-    <!-- <div id="prev-wrap" v-show="onPreview">
-      <PreviewContent />
-    </div>
-    <div v-if="!onPreview" id="WriteContent_Btn">
-      <v-btn @click="write" id="Write_Btn">다음</v-btn>
-      <v-btn @click="back" id="Back_Btn"> 취소 </v-btn>
-    </div> -->
-  </div>
+
+    <!-- 다이얼로그 --> 
+    <v-dialog v-model="dialog" max-width="920px" id="targetDialog">
+      <img 
+        v-for="image in getS3result" 
+        :key="image" 
+        :src="image" 
+        @click="selectImage(image)"
+        style="width: 300px; "
+        />
+      <br>
+      <v-btn @click="dialog=false">닫기</v-btn>
+    </v-dialog>
+  </div>  
 </template>
 
 <script>
 import Swal from "sweetalert2";
-// import { mapGetters } from 'vuex';
 import EventBus from '../../eventBus'
-// import PreviewContent from "../../components/write/PreviewContent.vue";
 
 export default {
-  components: {
-    // PreviewContent,
-  },
   data() {
     return {
+      dialog: false,
       diaryTitleList: [],
       diaryList: [],
       selectDiary: "",
@@ -184,6 +146,7 @@ export default {
       filesPreview: [],
       uploadImageIndex: 0, // 이미지 업로드를 위한 변수
       onPreview: false,
+      getS3result: [],
       note: {
         noteId: '',
         diaryId: '',
@@ -210,10 +173,6 @@ export default {
     loginUser() {
       return this.$store.getters.getLoginUser;
     },
-    // fontSetting () {
-    //   return this.$store.getters['getMyFont'];
-    // }
-    // ...mapGetters(["getMyFont"]),
     getMyFont() {
       // v-text-field에 폰트 적용하기
       const target = document.getElementsByClassName("v-text-field__slot")
@@ -225,41 +184,21 @@ export default {
       return this.$store.getters["getMyFont"];
     },
   },
-  methods: {    
-    // onImgUpload() {
-    //   // console.log(this.$refs.files.files);
-    //   const target = document.getElementsByClassName("target-file")
-    //   console.log(target.files)
-    //   // this.files = [...this.files, this.$refs.files.files];
-    //   //하나의 배열로 넣기
-    //   let num = -1;
-    //   for (let i = 0; i < target.length; i++) {
-    //     this.files = [
-    //       ...this.files,
-    //       //이미지 업로드
-    //       {
-    //         //실제 파일
-    //         file: target.files[i],
-    //         //이미지 프리뷰
-    //         preview: URL.createObjectURL(target.files[i]),
-    //         //삭제및 관리를 위한 number
-    //         number: i,
-    //       },
-    //     ];
-    //     num = i;
-    //     //이미지 업로드용 프리뷰
-    //     // this.filesPreview = [
-    //     //   ...this.filesPreview,
-    //     //   { file: URL.createObjectURL(this.$refs.files.files[i]), number: i }
-    //     // ];
-    //   }
-    //   this.uploadImageIndex = num + 1; //이미지 index의 마지막 값 + 1 저장
-    //   console.log(this.files);
-    // },
-    onImgUpload(e) {
-      console.log(e.target.files)
-      console.log(this.$refs.files.files);
-      // this.files = [...this.files, this.$refs.files.files];
+  methods: {
+    selectImage(image) {
+      this.note.noteS3MediaList.push(image);
+      this.dialog = false;
+    },
+    uploadS3Images() {
+      this.getS3result = []
+      this.$store.dispatch('getKakaoImageList').then((res) => {
+        for(let i = 0; i < res.data.length; i++){
+          this.getS3result.push(res.data[i])
+          this.dialog = true;
+        }
+      })
+    },
+    onImgUpload() {
       //하나의 배열로 넣기
       let num = -1;
       for (let i = 0; i < this.$refs.files.files.length; i++) {
@@ -276,124 +215,12 @@ export default {
           },
         ];
         num = i;
-        //이미지 업로드용 프리뷰
-        // this.filesPreview = [
-        //   ...this.filesPreview,
-        //   { file: URL.createObjectURL(this.$refs.files.files[i]), number: i }
-        // ];
       }
       this.uploadImageIndex = num + 1; //이미지 index의 마지막 값 + 1 저장
-      console.log(this.files);
     },
     back() {
       this.$router.go(-1);
     },
-    // write() {
-    //   var selectDiaryId = -1;
-    //   for (let i = 0; i < this.diaryList.length; i++) {
-    //     if (this.selectDiary == this.diaryList[i].diaryTitle) {
-    //       selectDiaryId = this.diaryList[i].id;
-    //       break;
-    //     }
-    //   }
-    //   for(let i=1;i<this.stickerNum;i++){
-    //     var temp = document.getElementById('sticker' + i) 
-    //     var item = {
-    //       leftPixel: temp.style.left,
-    //       stickerId: temp.className,
-    //       topPixel: temp.style.top
-    //     }
-    //     this.note.stickerList.push(item)
-    //   }
-
-    //   const tmp = this.note.noteHashtagList.split("#")
-    //   const noteHashtagList = []
-    //   for(let i=1;i<tmp.length;i++){
-    //     noteHashtagList[i-1] = tmp[i]
-    //   }
-
-    //   const formData = new FormData();
-    //   formData.append("designId", this.note.designId);
-    //   formData.append("diaryId", selectDiaryId);
-    //   // for(let i = 0; i < this.note.emotionList.length; i++){
-    //   //   formData.append('emotionList.writerId[]', this.note.emotionList[i].writerId)
-    //   //   formData.append('emotionList.emotionInfoId[]', this.note.emotionList[i].emotionInfoId)
-    //   //   formData.append('emotionList.noteId[]', this.note.emotionList[i].noteId)
-    //   // }
-    //   formData.append("fontId", this.getMyFont.id);
-    //   formData.append("layoutId", this.note.layoutId);
-    //   formData.append("noteContent", this.note.noteContent);
-    //   formData.append("noteHashtagList", noteHashtagList);
-    //   for (let i = 0; i < this.note.noteS3MediaList.length; i++) {
-    //     formData.append("noteS3MediaList[]", this.note.noteS3MediaList[i]);
-    //   }
-    //   for (let i = 0; i < this.$refs.files.files.length; i++) {
-    //     formData.append("noteMediaList[]", this.$refs.files.files[i]);
-    //   }
-    //   formData.append("noteTitle", this.note.noteTitle);
-    //   for (let i = 0; i < this.note.stickerList.length; i++) {
-    //     formData.append(
-    //       "stickerList.leftPixel[]",
-    //       this.note.stickerList[i].leftPixel
-    //     );
-    //     formData.append(
-    //       "stickerList.stickerId[]",
-    //       this.note.stickerList[i].stickerId
-    //     );
-    //     formData.append(
-    //       "stickerList.topPixel[]",
-    //       this.note.stickerList[i].topPixel
-    //     );
-    //   }
-    //   formData.append('noteTitle', this.note.noteTitle)      
-    //   for(let i = 0; i < this.note.stickerList.length; i++){
-    //     formData.append('stickerList[' + i + '].leftPixel', this.note.stickerList[i].leftPixel)
-    //     formData.append('stickerList[' + i + '].stickerId', this.note.stickerList[i].stickerId)
-    //     formData.append('stickerList[' + i + '].topPixel', this.note.stickerList[i].topPixel)
-    //   }      
-    //   formData.append('writerId', this.loginUser.userNickname)
-
-    //   console.log(formData)
-    //   console.log('프리뷰 띄우기') 
-    //   this.onPreview = true;    
-
-    //   if(this.$store.getters['getIsUpdate'] == false){
-    //     this.$store.dispatch("write", formData).then(() => {
-    //       Swal.fire({
-    //         icon: "success",
-    //         title: '<span style="font-size:25px;">일기 작성 완료.</span>',
-    //         confirmButtonColor: "#b0da9b",
-    //         confirmButtonText: '<span style="font-size:18px;">확인</span>',
-    //       });
-    //       // console.log(res.data);
-    //       this.$store.commit("initNoteContent");
-    //       const loginUser = this.$store.getters["getLoginUser"];
-    //       loginUser.userMileage += 10;
-    //       this.$store.commit("setLoginUser", loginUser);
-    //     });
-    //   } else if (this.$store.getters["getIsUpdate"] == true) {
-    //     const note = {
-    //       noteId: this.note.noteId,
-    //       formData: formData,
-    //     };
-    //     this.$store.dispatch("modifyNote", note).then(() => {
-    //       Swal.fire({
-    //         icon: "success",
-    //         title: '<span style="font-size:25px;">일기 수정 완료.</span>',
-    //         confirmButtonColor: "#b0da9b",
-    //         confirmButtonText: '<span style="font-size:18px;">확인</span>',
-    //       });
-    //       // console.log(res.data);
-    //       this.$store.commit("initNoteContent");
-    //     });
-    //   }
-    //   // this.$store.dispatch("getDiaryContent", this.note.diaryId).then((res) => {
-    //   //   // this.$store.commit('setCurrentDiary', res.data)
-    //   //   this.$store.commit('setNoteContent', this.note) // mutaion 호출 ('뮤테이션 이름, 매개변수)        
-    //   //   console.log('프리뷰 노트 가져오기')
-    //   //   console.log(res.data)
-    //   // });    
-    // },
     writeFin() {
       var selectDiaryId = -1;
       for (let i = 0; i < this.diaryList.length; i++) {
@@ -418,50 +245,30 @@ export default {
         noteHashtagList[i-1] = tmp[i]
       }
 
+      // 리퀘스트 객체 작성
       const formData = new FormData();
-      formData.append("designId", this.note.designId);
-      formData.append("diaryId", selectDiaryId);
-      // for(let i = 0; i < this.note.emotionList.length; i++){
-      //   formData.append('emotionList.writerId[]', this.note.emotionList[i].writerId)
-      //   formData.append('emotionList.emotionInfoId[]', this.note.emotionList[i].emotionInfoId)
-      //   formData.append('emotionList.noteId[]', this.note.emotionList[i].noteId)
-      // }
-      formData.append("fontId", this.getMyFont.id);
-      formData.append("layoutId", this.note.layoutId);
-      formData.append("noteContent", this.note.noteContent);
-      formData.append("noteHashtagList", noteHashtagList);
-      for (let i = 0; i < this.note.noteS3MediaList.length; i++) {
+      formData.append("designId", this.note.designId);  // 디자인 ID
+      formData.append("diaryId", selectDiaryId);  // 다이어리 ID
+      formData.append("fontId", this.getMyFont.id); // 폰트 ID
+      formData.append("layoutId", this.note.layoutId);  // 레이아웃 ID
+      formData.append("noteContent", this.note.noteContent);  // 일기 내용
+      formData.append("noteHashtagList", noteHashtagList);  // 해시태그 리스트
+      for (let i = 0; i < this.note.noteS3MediaList.length; i++) {  // S3 리스트 (버튼 활용 예정)
         formData.append("noteS3MediaList[]", this.note.noteS3MediaList[i]);
       }
+      formData.append("noteS3MediaList[]", []); // 로컬 파일 가져오기
       for (let i = 0; i < this.$refs.files.files.length; i++) {
         formData.append("noteMediaList[]", this.$refs.files.files[i]);
       }
-      formData.append("noteTitle", this.note.noteTitle);
-      for (let i = 0; i < this.note.stickerList.length; i++) {
-        formData.append(
-          "stickerList.leftPixel[]",
-          this.note.stickerList[i].leftPixel
-        );
-        formData.append(
-          "stickerList.stickerId[]",
-          this.note.stickerList[i].stickerId
-        );
-        formData.append(
-          "stickerList.topPixel[]",
-          this.note.stickerList[i].topPixel
-        );
-      }
-      formData.append('noteTitle', this.note.noteTitle)      
-      for(let i = 0; i < this.note.stickerList.length; i++){
+      formData.append("noteTitle", this.note.noteTitle);    // 타이틀
+      for(let i = 0; i < this.note.stickerList.length; i++){  // 스티커 리스트
         formData.append('stickerList[' + i + '].leftPixel', this.note.stickerList[i].leftPixel)
         formData.append('stickerList[' + i + '].stickerId', this.note.stickerList[i].stickerId)
         formData.append('stickerList[' + i + '].topPixel', this.note.stickerList[i].topPixel)
       }      
-      formData.append('writerId', this.loginUser.userNickname)
+      formData.append('writerId', this.loginUser.userNickname)   // 작성자
 
-      console.log(formData)
-
-      if(this.$store.getters['getIsUpdate'] == false){
+      if(this.$store.getters['getIsUpdate'] == false){  //  일기 작성
         this.$store.dispatch("write", formData).then(() => {
           Swal.fire({
             icon: "success",
@@ -469,14 +276,13 @@ export default {
             confirmButtonColor: "#b0da9b",
             confirmButtonText: '<span style="font-size:18px;">확인</span>',
           });
-          // console.log(res.data);
           this.$store.commit("initNoteContent");
           const loginUser = this.$store.getters["getLoginUser"];
           loginUser.userMileage += 10;
           this.$store.commit("setLoginUser", loginUser);
           this.$router.push("/main");
         });
-      } else if (this.$store.getters["getIsUpdate"] == true) {
+      } else if (this.$store.getters["getIsUpdate"] == true) {  // 일기 수정
         const note = {
           noteId: this.note.noteId,
           formData: formData,
@@ -488,7 +294,6 @@ export default {
             confirmButtonColor: "#b0da9b",
             confirmButtonText: '<span style="font-size:18px;">확인</span>',
           });
-          // console.log(res.data);
           this.$store.commit("initNoteContent");
           this.$router.push("/main");
         });
@@ -551,8 +356,8 @@ export default {
       });
 
       EventBus.$on('createSticker', (sticker) => {
-        const box = document.getElementById('WriteContent_Templete')
-
+        const box = document.getElementById('file-section')
+        console.log('312312313',box)
         // const div = document.createElement('div')
         const img = document.createElement('img')
 
@@ -615,7 +420,7 @@ export default {
   position:relative;
   // height: 684px;
   height: 610px;
-  padding: 14px 36px 36px 30px;
+  padding: 14px 36px 30px 36px;
   box-shadow: 3px 3px 11px rgba(166, 166, 168, 0.25);
 }
 .select-diary-section {
@@ -644,13 +449,17 @@ export default {
   height: 125px;
   overflow: hidden;
 }
-.file-section {
+.file-up-wrap {
+  display: flex;
+  justify-content: space-between;
+}
+#file-section {
   background-color: #f7f7f7;
   width: 100%;
   height: 300px;
   margin-top: 5px;
   overflow: hidden;
-  // height: 100%;
+  position:relative;
 }
 .file-input {
   // background-color: greenyellow;
@@ -662,22 +471,17 @@ export default {
 }
 .img-preview {
   // background: #eee;
-  display: inline-block;
-  // margin-top: 12px;
-  // margin-right: 10px;
-  // border-radius: 4px;
-  // width: 80px;
-  object-fit: contain;
-  height:300px;
+  display: inline-block;  
   width: 100%;
+  height:300px;
   
   img {
-    width: 100%;
+    width: 100%;    
+    object-fit: cover;
     // height: auto;
   }
 }
 .img-section {
-  background: lightpink;
   display: inline-block;
   margin-top: 10px;
   margin-right: 10px;
@@ -689,18 +493,17 @@ export default {
   img {
     width: 100%;
     // height: 100%;
-    // background: green;
   }
 }
 #HashTag_Input {
-  margin-top: 10px;
+  margin-top: 20px;
   // background-color: #eee;
 }
 #WriteContent_Btn {
   height: 38px;
   width: 152px;
   margin: 0 auto;
-  margin-top: 84px;
+  margin-top: 90px;
   box-shadow: none;  
 }
 #Write_Btn {
@@ -729,7 +532,12 @@ textarea {
   border-bottom: 1px solid #ccc;
 }
 .sticker{
+  // border:3px solid red;
   width:300px;
   height:300px;
+}
+
+#targetDialog::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera*/
 }
 </style>

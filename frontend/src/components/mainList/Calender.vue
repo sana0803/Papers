@@ -263,7 +263,7 @@ export default {
 #select-box {
   font-size: 18px;
   width: 400px;
-  height: 500px;
+  height: 430px;
   /* display:flex;
   justify-content: center;
   align-items: center; */
