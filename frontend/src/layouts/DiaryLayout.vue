@@ -111,7 +111,6 @@ export default {
   position: absolute;
   left: 66px;
   line-height: 60px;
-  color: white;
   font-size: 14px;
   text-align: center;
   cursor: pointer;

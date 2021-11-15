@@ -21,7 +21,7 @@
             label="제목을 입력하세요"
             color="#979797"
             counter="20"
-            maxlength="20"
+            maxlength="20"            
             single-line
             required
           ></v-text-field>        
@@ -35,16 +35,25 @@
             id="ucontent"
             label="내용을 입력하세요"
             color="#979797"
-            rows="6"
+            rows="3"
             counter="400"
             maxlength="400"
             single-line
           ></v-textarea>
+        </div>        
+        <label for="file">
+          <span style="font-weight: 600; cursor: pointer;">내 컴퓨터에서 업로드  ></span>
+        </label>
+        <div class="file-input">
+          <input
+            type="file"
+            id="file"
+            ref="files"
+            multiple
+            @change="onImgUpload"
+            style="opacity: 0; cursor: pointer; visibility: none; background: red"
+          />
         </div>
-        <div class="file-section">
-          <label for="file">
-            <span style="font-weight: 600; cursor: pointer;">내 컴퓨터에서 업로드  ></span>
-          </label>
           <!-- <v-file-input
             v-model="note.noteMediaList"
             class="target-file"
@@ -75,53 +84,81 @@
             prepend-icon="mdi-camera"
           >
           </v-file-input> -->
-          <input
-            type="file"
-            id="file"
-            ref="files"
-            multiple
-            @change="onImgUpload"
-            style="opacity: 0; cursor: pointer;"
-          />
-          <div>
-            <div
+        <div class="file-section">
+          <div v-if="note.noteS3MediaList > 0" sytle="height:300px;">
+            <v-carousel
+              hide-delimiters
+              style="height:100%;">
+              <v-carousel-item
+                v-for="(media, idx) in note.noteS3MediaList"
+                :key="idx"
+                :src="media"
+                class="img-preview"
+              ></v-carousel-item>
+              <v-carousel-item
+                v-for="(file, idx) in files"
+                :key="idx"
+                :src="file.preview"
+                class="img-preview"
+              ></v-carousel-item>
+            </v-carousel>
+            <!-- <div
+              class="img-section"
+              v-for="(media, idx) in note.noteS3MediaList"
+              :key="idx"
+            >
+              <img :src="media"/>
+            </div> -->
+            <!-- <div
               v-for="(file, idx) in files"
               :key="idx"
               class="img-preview"
             >
               <img :src="file.preview" />
-            </div>
+            </div> -->
           </div>
-          <div
-            class="img-section"
-            v-for="(media, idx) in note.noteS3MediaList"
-            :key="idx"
-          >
-            <img :src="media"/>
+          <div v-else style="height:300px;">
+            <v-carousel
+              hide-delimiters
+              style="height:100%;">
+              <v-carousel-item
+                v-for="(file, idx) in files"
+                :key="idx"
+                :src="file.preview"
+                class="img-preview"
+              ></v-carousel-item>
+                <!-- class="diary-content-img" -->
+            </v-carousel>
+            <!-- <div
+              v-for="(file, idx) in files"
+              :key="idx"
+              class="img-preview"
+            >
+              <img :src="file.preview" />
+            </div> -->
+          </div>
           </div>
         </div>
+        <div id="HashTag_Input">
+          <v-text-field
+            hide-details
+            v-model="note.noteHashtagList"
+            label="#여기에 #해시태그를 #입력하세요"
+            color="#FFB319"
+          ></v-text-field>
+        </div>
       </div>
-      <div id="HashTag_Input">
-        <v-text-field
-          v-model="note.noteHashtagList"
-          label="#여기에 #해시태그를 #입력하세요"
-          color="#FFB319"
-        ></v-text-field>
-      </div>
+    <div id="WriteContent_Btn">
+      <v-btn @click="writeFin" id="Write_Btn">작성</v-btn>
+      <v-btn @click="back" id="Back_Btn">취소</v-btn>
     </div>
-    <div id="prev-wrap" v-show="onPreview">
-      <PreviewContent
-        :onPreview="this.onPreview"
-      />
+    <!-- <div id="prev-wrap" v-show="onPreview">
+      <PreviewContent />
     </div>
     <div v-if="!onPreview" id="WriteContent_Btn">
       <v-btn @click="write" id="Write_Btn">다음</v-btn>
       <v-btn @click="back" id="Back_Btn"> 취소 </v-btn>
-    </div>
-    <div v-else id="WriteContent_Btn">
-      <v-btn @click="writeFin" id="Write_Btn">작성</v-btn>
-      <v-btn @click="back" id="Back_Btn">뒤로가기</v-btn>
-    </div>
+    </div> -->
   </div>
 </template>
 
@@ -129,11 +166,11 @@
 import Swal from "sweetalert2";
 // import { mapGetters } from 'vuex';
 import EventBus from '../../eventBus'
-import PreviewContent from "../../components/write/PreviewContent.vue";
+// import PreviewContent from "../../components/write/PreviewContent.vue";
 
 export default {
   components: {
-    PreviewContent,
+    // PreviewContent,
   },
   data() {
     return {
@@ -176,13 +213,13 @@ export default {
     // }
     // ...mapGetters(["getMyFont"]),
     getMyFont() {
-      console.log("폰트 적용");
-      const target = document.getElementsByClassName("v-text-field__slot");
-      for (let i = 0; i < target.length; i++) {
+      // v-text-field에 폰트 적용하기
+      const target = document.getElementsByClassName("v-text-field__slot")
+      // 해시태그에 폰트적용 빼기위해서 -1함
+      for (let i = 0; i < target.length-1; i++) {
         target[i].style.fontFamily = this.$store.getters.getMyFont.fontUrl;
         console.log(target[i]);
       }
-      // document.getElementsByClassName("target-font").style.fontFamily = "KOTRAHOPE";
       return this.$store.getters["getMyFont"];
     },
   },
@@ -249,105 +286,112 @@ export default {
     back() {
       this.$router.go(-1);
     },
-    write() {
-      var selectDiaryId = -1;
-      for (let i = 0; i < this.diaryList.length; i++) {
-        if (this.selectDiary == this.diaryList[i].diaryTitle) {
-          selectDiaryId = this.diaryList[i].id;
-          break;
-        }
-      }
-      for(let i=1;i<this.stickerNum;i++){
-        var temp = document.getElementById('sticker' + i) 
-        var item = {
-          leftPixel: temp.style.left,
-          stickerId: temp.className,
-          topPixel: temp.style.top
-        }
-        this.note.stickerList.push(item)
-      }
+    // write() {
+    //   var selectDiaryId = -1;
+    //   for (let i = 0; i < this.diaryList.length; i++) {
+    //     if (this.selectDiary == this.diaryList[i].diaryTitle) {
+    //       selectDiaryId = this.diaryList[i].id;
+    //       break;
+    //     }
+    //   }
+    //   for(let i=1;i<this.stickerNum;i++){
+    //     var temp = document.getElementById('sticker' + i) 
+    //     var item = {
+    //       leftPixel: temp.style.left,
+    //       stickerId: temp.className,
+    //       topPixel: temp.style.top
+    //     }
+    //     this.note.stickerList.push(item)
+    //   }
 
-      const tmp = this.note.noteHashtagList.split("#")
-      const noteHashtagList = []
-      for(let i=1;i<tmp.length;i++){
-        noteHashtagList[i-1] = tmp[i]
-      }
+    //   const tmp = this.note.noteHashtagList.split("#")
+    //   const noteHashtagList = []
+    //   for(let i=1;i<tmp.length;i++){
+    //     noteHashtagList[i-1] = tmp[i]
+    //   }
 
-      const formData = new FormData();
-      formData.append("designId", this.note.designId);
-      formData.append("diaryId", selectDiaryId);
-      // for(let i = 0; i < this.note.emotionList.length; i++){
-      //   formData.append('emotionList.writerId[]', this.note.emotionList[i].writerId)
-      //   formData.append('emotionList.emotionInfoId[]', this.note.emotionList[i].emotionInfoId)
-      //   formData.append('emotionList.noteId[]', this.note.emotionList[i].noteId)
-      // }
-      formData.append("fontId", this.getMyFont.id);
-      formData.append("layoutId", this.note.layoutId);
-      formData.append("noteContent", this.note.noteContent);
-      formData.append("noteHashtagList", noteHashtagList);
-      for (let i = 0; i < this.note.noteS3MediaList.length; i++) {
-        formData.append("noteS3MediaList[]", this.note.noteS3MediaList[i]);
-      }
-      for (let i = 0; i < this.$refs.files.files.length; i++) {
-        formData.append("noteMediaList[]", this.$refs.files.files[i]);
-      }
-      formData.append("noteTitle", this.note.noteTitle);
-      for (let i = 0; i < this.note.stickerList.length; i++) {
-        formData.append(
-          "stickerList.leftPixel[]",
-          this.note.stickerList[i].leftPixel
-        );
-        formData.append(
-          "stickerList.stickerId[]",
-          this.note.stickerList[i].stickerId
-        );
-        formData.append(
-          "stickerList.topPixel[]",
-          this.note.stickerList[i].topPixel
-        );
-      }
-      formData.append('noteTitle', this.note.noteTitle)      
-      for(let i = 0; i < this.note.stickerList.length; i++){
-        formData.append('stickerList[' + i + '].leftPixel', this.note.stickerList[i].leftPixel)
-        formData.append('stickerList[' + i + '].stickerId', this.note.stickerList[i].stickerId)
-        formData.append('stickerList[' + i + '].topPixel', this.note.stickerList[i].topPixel)
-      }      
-      formData.append('writerId', this.loginUser.userNickname)
+    //   const formData = new FormData();
+    //   formData.append("designId", this.note.designId);
+    //   formData.append("diaryId", selectDiaryId);
+    //   // for(let i = 0; i < this.note.emotionList.length; i++){
+    //   //   formData.append('emotionList.writerId[]', this.note.emotionList[i].writerId)
+    //   //   formData.append('emotionList.emotionInfoId[]', this.note.emotionList[i].emotionInfoId)
+    //   //   formData.append('emotionList.noteId[]', this.note.emotionList[i].noteId)
+    //   // }
+    //   formData.append("fontId", this.getMyFont.id);
+    //   formData.append("layoutId", this.note.layoutId);
+    //   formData.append("noteContent", this.note.noteContent);
+    //   formData.append("noteHashtagList", noteHashtagList);
+    //   for (let i = 0; i < this.note.noteS3MediaList.length; i++) {
+    //     formData.append("noteS3MediaList[]", this.note.noteS3MediaList[i]);
+    //   }
+    //   for (let i = 0; i < this.$refs.files.files.length; i++) {
+    //     formData.append("noteMediaList[]", this.$refs.files.files[i]);
+    //   }
+    //   formData.append("noteTitle", this.note.noteTitle);
+    //   for (let i = 0; i < this.note.stickerList.length; i++) {
+    //     formData.append(
+    //       "stickerList.leftPixel[]",
+    //       this.note.stickerList[i].leftPixel
+    //     );
+    //     formData.append(
+    //       "stickerList.stickerId[]",
+    //       this.note.stickerList[i].stickerId
+    //     );
+    //     formData.append(
+    //       "stickerList.topPixel[]",
+    //       this.note.stickerList[i].topPixel
+    //     );
+    //   }
+    //   formData.append('noteTitle', this.note.noteTitle)      
+    //   for(let i = 0; i < this.note.stickerList.length; i++){
+    //     formData.append('stickerList[' + i + '].leftPixel', this.note.stickerList[i].leftPixel)
+    //     formData.append('stickerList[' + i + '].stickerId', this.note.stickerList[i].stickerId)
+    //     formData.append('stickerList[' + i + '].topPixel', this.note.stickerList[i].topPixel)
+    //   }      
+    //   formData.append('writerId', this.loginUser.userNickname)
 
-      console.log(formData)      
-      this.onPreview = true;
+    //   console.log(formData)
+    //   console.log('프리뷰 띄우기') 
+    //   this.onPreview = true;    
 
-      if(this.$store.getters['getIsUpdate'] == false){
-        this.$store.dispatch("write", formData).then(() => {
-          Swal.fire({
-            icon: "success",
-            title: '<span style="font-size:25px;">일기 작성 완료.</span>',
-            confirmButtonColor: "#b0da9b",
-            confirmButtonText: '<span style="font-size:18px;">확인</span>',
-          });
-          // console.log(res.data);
-          this.$store.commit("initNoteContent");
-          const loginUser = this.$store.getters["getLoginUser"];
-          loginUser.userMileage += 10;
-          this.$store.commit("setLoginUser", loginUser);
-        });
-      } else if (this.$store.getters["getIsUpdate"] == true) {
-        const note = {
-          noteId: this.note.noteId,
-          formData: formData,
-        };
-        this.$store.dispatch("modifyNote", note).then(() => {
-          Swal.fire({
-            icon: "success",
-            title: '<span style="font-size:25px;">일기 수정 완료.</span>',
-            confirmButtonColor: "#b0da9b",
-            confirmButtonText: '<span style="font-size:18px;">확인</span>',
-          });
-          // console.log(res.data);
-          this.$store.commit("initNoteContent");
-        });
-      }
-    },
+    //   if(this.$store.getters['getIsUpdate'] == false){
+    //     this.$store.dispatch("write", formData).then(() => {
+    //       Swal.fire({
+    //         icon: "success",
+    //         title: '<span style="font-size:25px;">일기 작성 완료.</span>',
+    //         confirmButtonColor: "#b0da9b",
+    //         confirmButtonText: '<span style="font-size:18px;">확인</span>',
+    //       });
+    //       // console.log(res.data);
+    //       this.$store.commit("initNoteContent");
+    //       const loginUser = this.$store.getters["getLoginUser"];
+    //       loginUser.userMileage += 10;
+    //       this.$store.commit("setLoginUser", loginUser);
+    //     });
+    //   } else if (this.$store.getters["getIsUpdate"] == true) {
+    //     const note = {
+    //       noteId: this.note.noteId,
+    //       formData: formData,
+    //     };
+    //     this.$store.dispatch("modifyNote", note).then(() => {
+    //       Swal.fire({
+    //         icon: "success",
+    //         title: '<span style="font-size:25px;">일기 수정 완료.</span>',
+    //         confirmButtonColor: "#b0da9b",
+    //         confirmButtonText: '<span style="font-size:18px;">확인</span>',
+    //       });
+    //       // console.log(res.data);
+    //       this.$store.commit("initNoteContent");
+    //     });
+    //   }
+    //   // this.$store.dispatch("getDiaryContent", this.note.diaryId).then((res) => {
+    //   //   // this.$store.commit('setCurrentDiary', res.data)
+    //   //   this.$store.commit('setNoteContent', this.note) // mutaion 호출 ('뮤테이션 이름, 매개변수)        
+    //   //   console.log('프리뷰 노트 가져오기')
+    //   //   console.log(res.data)
+    //   // });    
+    // },
     writeFin() {
       var selectDiaryId = -1;
       for (let i = 0; i < this.diaryList.length; i++) {
@@ -546,7 +590,7 @@ export default {
 #write-wrap {
   width: 100%;
   height: 100vh;
-  padding-top: 3%;
+  padding-top: 8%;
   position: relative;
   // background-color: lightblue;
 }
@@ -554,19 +598,22 @@ export default {
   position: absolute;
   top: 0;
   left: auto;
-  background-color: #eee;
+  // background-color: lightpink;
   width: 100%;
 }
 #WriteContent_Container {
   margin: 0 auto;
-  width: 530px;
-  height: 854px;
+  // width: 530px;
+  width: 443px;
+  // height: 804px;
+  height: 610px;
   background-color: #fff;
 }
 #WriteContent_Templete {
   position:relative;
-  height: 684px;
-  padding: 20px;
+  // height: 684px;
+  height: 610px;
+  padding: 14px 36px 36px 30px;
   box-shadow: 3px 3px 11px rgba(166, 166, 168, 0.25);
 }
 .select-diary-section {
@@ -592,28 +639,37 @@ export default {
 }
 .content-section {
   // background-color: lemonchiffon;
-  height: 210px;
+  height: 125px;
   overflow: hidden;
 }
 .file-section {
-  background-color: #fff;
-  margin-top: 3px;
+  background-color: #f7f7f7;
+  width: 100%;
+  height: 300px;
+  margin-top: 5px;
+  overflow: hidden;
   // height: 100%;
 }
+.file-input {
+  // background-color: greenyellow;
+  position: absolute;
+  width: 5px;
+  height: 5px;
+  right: 0;
+  top: 0;
+}
 .img-preview {
-  background: lightsteelblue;
+  // background: #eee;
   display: inline-block;
-  margin-top: 10px;
-  margin-right: 10px;
-  border-radius: 4px;
-  overflow: hidden;
-  z-index: 10;
-  width: 80px;
-  height: 80px;
+  // margin-top: 12px;
+  // margin-right: 10px;
+  // border-radius: 4px;
+  // width: 80px;
+  width: 100%;
 
   img {
     width: 100%;
-    height: auto;
+    // height: auto;
   }
 }
 .img-section {
@@ -633,15 +689,15 @@ export default {
   }
 }
 #HashTag_Input {
-  margin-top: 30px;
+  margin-top: 10px;
   // background-color: #eee;
 }
 #WriteContent_Btn {
   height: 38px;
   width: 152px;
   margin: 0 auto;
-  margin-top: 30px;
-  box-shadow: none;
+  margin-top: 84px;
+  box-shadow: none;  
 }
 #Write_Btn {
   background: #ffb319;
