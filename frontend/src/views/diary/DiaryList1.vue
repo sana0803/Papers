@@ -266,22 +266,18 @@
       ...mapGetters(['getAllFonts'])
     },
     created() {
-      console.log(this.currentDiary, 'ㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁ');
-      console.log(this.getAllFonts, '모든폰트')
       this.$store.dispatch("getDiaryContent", this.currentDiary.id)
         .then((res) => {
           this.noteList = res.data.note.reverse();
-          console.log(this.noteList, 'aaaaaaaaaaaaa')
+          console.log(res.data, 'zzzzzzz')
+          // 일기의 폰트 id값에 맞춰 폰트url값으로 변경
           for (var j=0; j<this.noteList.length; j++) {
-            console.log(this.noteList[j], 'dddddddd')
             for (var i = 0; i < this.getAllFonts.length; i++) {
-              console.log(this.getAllFonts[i], 'sssssssssssssss')
               if (this.getAllFonts[i].id == this.noteList[j].fontId) {
                 this.noteList[j].fontId = this.getAllFonts[i].fontUrl
                 break
               }
             }
-            console.log(this.noteList[j].fontId, 'yyyyyyyyyyy')
           }
           if(this.noteList.length>=1){
             this.viewList.push(this.noteList[0])
