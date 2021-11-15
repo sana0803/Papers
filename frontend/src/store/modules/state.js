@@ -10,21 +10,21 @@ export default function () {
 
     const diaryContent = {}
 
-  const noteContent = {
-      noteId: '',
-      diaryId: '',
-      fontId: '',
-      layoutId: 1,
-      designId: 1,
-      writerId: '',
-      noteTitle: '',
-      noteContent: '',
-      noteS3MediaList: [],
-      noteMediaList: [],
-      noteHashtagList: [],
-      stickerList: [],
-      emotionList: []
-  }
+    const noteContent = {
+        noteId: '',
+        diaryId: '',
+        fontId: '',
+        layoutId: 1,
+        designId: 1,
+        writerId: '',
+        noteTitle: '',
+        noteContent: '',
+        noteS3MediaList: [],
+        noteMediaList: [],
+        noteHashtagList: [],
+        stickerList: [],
+        emotionList: []
+    }
   
     let isUpdate = false
     
@@ -38,6 +38,10 @@ export default function () {
     
     const myFont = {}
 
+    const allFonts = []
+
+    const myFontList = []
+
     return {
       loginUser,
       currentDiary,
@@ -49,6 +53,8 @@ export default function () {
       notificationMessage,
       notificationUserImage,
       notifications,
-      myFont
+      myFont,
+      allFonts,
+      myFontList
     }
 }

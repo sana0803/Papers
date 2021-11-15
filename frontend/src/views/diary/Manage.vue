@@ -7,7 +7,7 @@
         <div class="Header">멤버 목록</div>
         <div id="Member_Box">
           <!-- member-item -->
-           <div class="Member_Item">
+          <div class="Member_Item">
             <div class="Member_Img">
               <img class="Member_Image" :src="loginUser.userProfile" />
               <div class="Member_Icon">
@@ -70,7 +70,7 @@
           </div>
           <div v-if="memberList.length !== 0" id="invite_btn">
             <v-btn @click="invite" style="background: #ffb319; color: white;" class="Btn"
-            >확인
+            >초대하기
             </v-btn>
           </div>
         </div>
@@ -81,22 +81,22 @@
       <div id="Right_Box">
         <div class="Header">타이틀 변경</div>
         <div id="Title_Input">
-          <v-text-field color="#FFB319" v-model="diaryTitle"></v-text-field>
+          <v-text-field color="#FFB319" v-model="diaryInfo.diaryTitle"></v-text-field>
         </div>
         <div class="Header2">커버 편집</div>
         <div class="Header3">기본 커버</div>
         <div class="Cover_Box">
-          <div v-for="(item, idx) in coverList" :key="idx" class="cover-item">
+          <div v-for="(item, idx) in coverList" :key="idx" class="cover-item" @click="selectCover(item.id)">
             <v-img class="cover-img" :src="item.coverUrl" />
           </div>
         </div>
         <div class="Header3">내 커버</div>
         <div class="Cover_Box"></div>
-        <div class="Header3">사진</div>
-        <div class="Cover_Box"></div>
+        <!-- <div class="Header3">사진</div>
+        <div class="Cover_Box"></div> -->
         <div id="Btn_Box">
-          <v-btn style="background: #ffb319; color: white" class="Btn"
-            >확인</v-btn
+          <v-btn style="background: #ffb319; color: white" class="Btn" @click="modifyDiary"
+            >수정</v-btn
           >
           <v-btn
             @click="back"
@@ -142,12 +142,14 @@
 
 <script>
 import Swal from "sweetalert2";
+import { mapGetters } from 'vuex';
 
 export default {
   computed: {
-    currentDiary() {
-      return this.$store.getters.getCurrentDiary;
-    },
+    ...mapGetters(['getCurrentDiary']),
+    // currentDiary() {
+    //   return this.$store.getters.getCurrentDiary;
+    // },
     loginUser() {
       return this.$store.getters.getLoginUser;
     }
@@ -161,7 +163,11 @@ export default {
       memberList: [],
       selected: [],
       diaryTitle: '',
-      removeMember: ''
+      removeMember: '',
+      diaryInfo: {
+        diaryTitle: '',
+        coverId: ''
+      },
     };
   },
   methods: {
@@ -194,12 +200,12 @@ export default {
     },
     invite() {
       const share = {
-        'diaryId': this.currentDiary.id,
+        'diaryId': this.getCurrentDiary.id,
         'inviteList': this.selected
       }
       this.$store.dispatch("shareDiary", share)
         .then(() => { // 다이어리 공유 요청 보내기
-            this.$store.dispatch("getDiaryContent", this.currentDiary.id)
+            this.$store.dispatch("getDiaryContent", this.getCurrentDiary.id)
               .then((res) => {
                 this.shareList = res.data.guest
                 this.memberList = []
@@ -220,7 +226,7 @@ export default {
       this.removeMember = member
     },
     memberRemove() {
-      var diaryId = this.currentDiary.id
+      var diaryId = this.getCurrentDiary.id
       var userId = this.removeMember.userId
       const remove = {
         diaryId: diaryId,
@@ -242,16 +248,41 @@ export default {
                 })
             })
         })
+    },
+    selectCover(id) {
+      this.diaryInfo.coverId = id
+    },
+    modifyDiary() {
+      console.log('다이어리 수정')
+      const diary= {
+        diaryId: this.getCurrentDiary.id,
+        diaryInfo: this.diaryInfo
+      }
+      this.$store.dispatch("modifyDiary", diary)
+      .then(() => {
+        const nowDiary = this.$store.getters['getCurrentDiary']
+        nowDiary.diaryTitle = diary.diaryInfo.diaryTitle
+        nowDiary.diaryCover = diary.diaryInfo.coverId
+        this.$store.commit("setCurrentDiary", nowDiary)
+        Swal.fire({
+          icon: "success",
+            title:
+              '<span style="font-size:25px;">수정되었습니다.</span>',
+            confirmButtonColor: "#b0da9b",
+            confirmButtonText: '<span style="font-size:18px;">확인</span>',
+        })
+        this.$router.push("/diary/diaryList1");
+      })
     }
   },
   created() {
-    this.shareList = this.currentDiary.guest
+    this.shareList = this.getCurrentDiary.guest
     this.$store.dispatch('getCover')
       .then((res) => {
         this.coverList = res.data
       })
 
-    this.diaryTitle = this.currentDiary.diaryTitle
+    this.diaryInfo.diaryTitle = this.getCurrentDiary.diaryTitle
   }
 };
 </script>
@@ -399,8 +430,8 @@ export default {
   color: #585858;
 }
 .Cover_Box {
-  height: 70px;
-  border: 1px solid red;
+  height: 125px;
+  border: 1px solid#d7d7d7;
 }
 #Btn_Box {
   width: 164px;
@@ -445,7 +476,7 @@ export default {
 .cover-item{
   display:inline-block;
   height:100%;
-  width:75px;
+  width:90px;
   cursor: pointer;
   overflow:hidden;
   margin:0 auto;
@@ -454,6 +485,7 @@ export default {
   width:100%;
   height:100%;
   object-fit:cover;
+  margin-right: 8px;
 }
 .Search_Item {
   height: 50px;
