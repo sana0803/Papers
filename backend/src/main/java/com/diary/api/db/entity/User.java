@@ -23,6 +23,14 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     Set<EmotionLog> emotionLogs = new HashSet<>();
 
+    @JsonIgnore
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    Set<Note> notes = new HashSet<>();
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    Set<Diary> diaries = new HashSet<>();
+
     @PrePersist
     public void setUp(){
         this.userMileage = 50;

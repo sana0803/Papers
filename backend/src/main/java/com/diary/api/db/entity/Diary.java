@@ -2,6 +2,7 @@ package com.diary.api.db.entity;
 
 
 import com.diary.api.db.repository.DiaryCoverRepository;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,9 +30,11 @@ public class Diary extends BaseEntity {
     @JoinColumn(name = "coverId", referencedColumnName = "id", nullable = false)
     DiaryCover diaryCover;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "diary", cascade = CascadeType.ALL)
     private Set<Note> notes = new HashSet<>();
 
+    @JsonIgnore
     @OneToMany(mappedBy = "diary", cascade = CascadeType.ALL)
     private Set<UserDiary> userDiaries = new HashSet<>();
 

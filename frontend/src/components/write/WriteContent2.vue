@@ -75,7 +75,7 @@
           > -->          
         <div id="file-section">
           <div v-if="note.noteS3MediaList.length > 0">
-            <img :src="note.noteS3MediaList[0].media" class="img-preview">
+            <img :src="note.noteS3MediaList[0]" class="img-preview">
           </div>
           <div v-else-if="files.length > 0">
             <img :src="files[0].preview" class="img-preview">

@@ -79,7 +79,6 @@ public class NoteRepositorySupport {
     public Optional<List<NoteSticker>> getNoteStickers(Long noteId){
         List<NoteSticker> stickers = jpaQueryFactory.select(qNoteSticker).from(qNoteSticker)
                 .where(qNoteSticker.note.id.eq(noteId)).fetch();
-        for(NoteSticker noteSticker : stickers) noteSticker.setNote(null);
         if(stickers == null) return Optional.empty();
         return Optional.ofNullable(stickers);
     }
@@ -87,7 +86,6 @@ public class NoteRepositorySupport {
     public Optional<List<Emotion>> getNoteEmotions(Long noteId){
         List<Emotion> emotions = jpaQueryFactory.select(qEmotion).from(qEmotion)
                 .where(qEmotion.note.id.eq(noteId)).fetch();
-        for(Emotion emotion : emotions) emotion.setNote(null);
         if(emotions == null) return Optional.empty();
         return Optional.ofNullable(emotions);
     }
