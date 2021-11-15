@@ -548,13 +548,13 @@ export default {
   height: 100vh;
   padding-top: 3%;
   position: relative;
-  background-color: lightblue;
+  // background-color: lightblue;
 }
 #prev-wrap {
   position: absolute;
   top: 0;
   left: auto;
-  background-color: lightpink;
+  background-color: #eee;
   width: 100%;
 }
 #WriteContent_Container {

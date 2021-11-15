@@ -2,7 +2,7 @@
 <div id="preview-back">
   <div id="preview-content-container">
     <div id="preview-templete">
-
+      테스트중
     </div>
     <!-- <div id="WriteContent_Btn">
       <v-btn @click="write" id="Write_Btn">작성</v-btn>
@@ -13,7 +13,7 @@
 </template>
 
 <script>
-import Swal from "sweetalert2";
+// import Swal from "sweetalert2";
 
 export default {
   props: {
