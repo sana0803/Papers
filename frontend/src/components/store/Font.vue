@@ -24,7 +24,8 @@
         v-model="page"
         :length="Math.ceil(fontList.length/9)"
         @input="change"
-        class="page-sec"
+        circle
+        color="#FFB300"
       ></v-pagination>
     </div>
     <!-- Dialog -->

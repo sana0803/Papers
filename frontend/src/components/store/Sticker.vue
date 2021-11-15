@@ -18,7 +18,8 @@
         v-model="page"
         :length="Math.ceil(stickerPackageList.length/6)"
         @input="change"
-        class="page-sec"
+        circle
+        color="#FFB300"
       ></v-pagination>
     </div>
 
