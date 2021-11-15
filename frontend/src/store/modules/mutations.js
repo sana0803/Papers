@@ -41,7 +41,6 @@ export function setNotifications(state, notifications) {
 
 export function setMyFont(state, font) {
   state.myFont = font
-  console.log('폰트 선택 뮤테이션 들어옴', font)
 }
 
   // export function setNoteContent(state, noteContent) {
@@ -50,6 +49,14 @@ export function setMyFont(state, font) {
   
 export function setIsUpdate(state, isUpdate) {
   state.isUpdate = isUpdate
+}
+
+export function setAllFonts(state, fonts) {
+  state.allFonts = fonts
+}
+
+export function setMyFonts(state, fonts) {
+  state.myFontList = fonts
 }
 
 export function initNoteContent(state) {

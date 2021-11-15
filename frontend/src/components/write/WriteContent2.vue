@@ -54,7 +54,7 @@ export default {
       note: {
         noteId: '',
         diaryId: '',
-        fontId: '',
+        fontId: 1,
         layoutId: 1,
         designId: 1,
         writerId: '',

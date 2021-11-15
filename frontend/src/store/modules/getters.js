@@ -41,3 +41,11 @@ export function getNoteContent(state) {
 export function getIsUpdate(state) {
   return state.isUpdate
 }
+
+export function getAllFonts(state) {
+  return state.allFonts
+}
+
+export function getMyFonts(state) {
+  return state.myFontList
+}
