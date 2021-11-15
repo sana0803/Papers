@@ -221,3 +221,17 @@ export function getS3ImageList({ state }, id) {
   const url = baseUrl + '/album/' + id
   return $axios.get(url, { headers: { Authorization: `Bearer ${userToken}` } } )
 }
+
+export function modifyDiary({ state }, diary) {
+  console.log('일기장 수정 action호출', state)
+	const userToken = state.loginUser.userToken
+	const url = baseUrl + '/diary/' + diary.diaryId
+	return $axios.put(url, diary.diaryInfo,  { headers: { Authorization: `Bearer ${userToken}` } })
+}
+
+export function getKakaoImageList({ state }) {
+  console.log('일기장 수정 action호출', state)
+	const userToken = state.loginUser.userToken
+	const url = baseUrl + '/note/kakao-files' 
+	return $axios.get(url, { headers: { Authorization: `Bearer ${userToken}` } })
+}

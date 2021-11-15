@@ -17,11 +17,12 @@
         <span>{{ loginUser.userMileage }}장</span>    
       </div>  
     </div>    
-    <div id="Header_Alarm">
-      <v-icon @click="goAlert" style="font-size: 2em">notifications</v-icon>
+    <div id="Header_Alarm">      
+      <v-icon @click="goAlert" style="font-size: 2em">notifications_none</v-icon>      
     </div>    
     <div id="logout">
-      <span id="logout-btn" @click="logout" text> 로그아웃 </span>
+      <v-icon @click="logout" style="font-size: 1.9em">logout</v-icon>
+      <!-- <span id="logout-btn" @click="logout" text> 로그아웃 </span> -->
     </div>
   </div>
 </template>
@@ -58,6 +59,7 @@ export default {
             this.$store.commit('setLoginUser', {})
             this.$router.push('/')
             console.log(this.getAlarmEventSource + '로그아웃 시 event close')
+            localStorage.removeItem('userId')
             this.getAlarmEventSource.close()
         }
     }

@@ -197,6 +197,22 @@ public class NoteRepositorySupport {
         return urls;
     }
 
+    public List<String> getKakaoImageFiles(String userId){
+        AWSCredentials crd = new BasicAWSCredentials(ACCESS_KEY, SECRET_KEY);
+        AmazonS3 s3 = new AmazonS3Client(crd);
+        ObjectListing objects = s3.listObjects("papers-bucket", "kakao-file/" + userId);
+
+        List<String> urls = new ArrayList<>();
+        do {
+            for (S3ObjectSummary objectSummary : objects.getObjectSummaries()) {
+                urls.add(S3_IMAGE_URL + objectSummary.getKey());
+            }
+//            objects = s3.listNextBatchOfObjects(objects);
+        } while (objects.isTruncated());
+        urls.remove(0);
+        return urls;
+    }
+
     public Optional<List<Note>> getHashtagNotes(String hashtag, String userId){
         List<Note> notes = jpaQueryFactory.select(qNote).from(qNote)
                 .join(qNoteHashtag).on(qNoteHashtag.note.id.eq(qNote.id))

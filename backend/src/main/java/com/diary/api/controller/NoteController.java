@@ -86,9 +86,6 @@ public class NoteController {
         User user = JwtTokenUtil.getUser(authentication, userService);
         if (user == null) return ResponseEntity.status(401).body(BaseResponseBody.of(401, "잘못된 토큰"));
 
-        for(int i = 0; i < noteReq.getStickerList().size(); i++){
-            System.out.println(noteReq.getStickerList().get(i).getTopPixel());
-        }
         noteReq.setWriterId(user.getUserId());
         NoteRes noteRes = noteService.registNote(noteReq);
         if(noteRes == null) return ResponseEntity.status(500).body(BaseResponseBody.of(500, "존재하지 않거나 오류가 발생하였습니다."));
@@ -147,6 +144,19 @@ public class NoteController {
         PapersUserDetails userDetails = (PapersUserDetails)authentication.getDetails();
         noteService.getImageFiles(userDetails.getUser().getUserId(), diaryId);
         return ResponseEntity.status(200).body(noteService.getImageFiles(userDetails.getUser().getUserId(), diaryId));
+    }
+
+    @GetMapping("/kakao-files")
+    @ApiOperation(value = "클라우드에서 카카오 사진파일 목록 가져오기", notes = "클라우드에서 카카오 사진파일 목록 가져오기")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "카카오 사진파일 가져오기 성공"),
+            @ApiResponse(code = 500, message = "카카오 사진파일 가져오는 중 오류발생")
+    })
+    public ResponseEntity<List<String>> getKakaoImageFiles(@ApiIgnore Authentication authentication) {
+        User user = JwtTokenUtil.getUser(authentication, userService);
+        if (user == null) return ResponseEntity.status(401).build();
+        noteService.getKakaoImageFiles(user.getUserId());
+        return ResponseEntity.status(200).body(noteService.getKakaoImageFiles(user.getUserId()));
     }
 
     @PostMapping("/files")

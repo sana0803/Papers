@@ -16,6 +16,12 @@ export default {
     Header,
     // Notification,
   },
+  created(){
+    const loginCheck = localStorage.getItem('userId')
+    if(loginCheck==null){
+      this.$router.push('/')
+    }
+  }
 };
 </script>
 
