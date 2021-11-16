@@ -109,6 +109,8 @@
 </template>
 
 <script>
+import Swal from "sweetalert2";
+
 export default {
   data() {
     return {
@@ -176,6 +178,14 @@ export default {
                 break
               this.viewList.push(this.diaryList[i])
             }
+
+            Swal.fire({
+              icon: "success",
+              title:
+                '<span style="font-size:25px;">일기장 생성 완료.</span>',
+              confirmButtonColor: "#b0da9b",
+              confirmButtonText: '<span style="font-size:18px;">확인</span>',
+            });
           });
         });
       });

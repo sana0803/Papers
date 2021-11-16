@@ -43,7 +43,7 @@
               <img :src="cover.coverUrl" style="width: 100%; height: 100%" />
             </div>
             <div id="Dialog_Name">
-              <div id="Name_Author">작가명 아무개</div>
+              <div id="Name_Author">Papers</div>
               <div id="Name_Name">{{ cover.coverName }}</div>
               <div id="Name_Price">{{ cover.coverPrice }}장</div>
               <div id="Name_Btn_Box">
@@ -69,6 +69,8 @@
 </template>
 
 <script>
+import Swal from "sweetalert2";
+
 export default {
   data() {
     return {
@@ -115,8 +117,20 @@ export default {
           const loginUser = this.$store.getters["getLoginUser"];
           loginUser.userMileage -= cover.coverPrice;
           this.$store.commit("setLoginUser", loginUser);
-          this.dialog = false;
-          this.$router.go();
+          
+          this.$store.dispatch("getDiaryCoverList").then((res) => {
+            this.coverList = res.data;
+            this.change(this.page)
+            Swal.fire({
+              icon: "success",
+              title:
+                '<span style="font-size:25px;">성공적으로 구매되었습니다.</span>',
+              confirmButtonColor: "#b0da9b",
+              confirmButtonText: '<span style="font-size:18px;">확인</span>',
+            });
+            this.dialog = false;
+          });
+          // this.$router.go();
         })
         .catch(() => {
           alert("이미 구매하셨거나 마일리지가 부족합니다.");
@@ -169,16 +183,22 @@ export default {
 }
 #Dialog_Name {
   width: 37%;
-  height: 118px;
+  height: 150px;
   margin-left: 61px;
+  overflow: hidden;
+  float: right;
+  margin-top: 22%;
+  // border:1px solid red;
 }
 #Name_Author {
   color: #585858;
   font-size: 14px;
+  margin-bottom: 7px;
 }
 #Name_Name {
   font-size: 21px;
   font-weight: 600;
+  margin-bottom: 7px;
 }
 #Name_Price {
   position: relative;
@@ -186,6 +206,7 @@ export default {
   font-size: 18px;
   font-weight: 600;
   color: #ffb319;
+  margin-bottom: 7px;
 }
 #Name_Btn_Box {
   width: 164px;

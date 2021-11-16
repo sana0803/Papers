@@ -173,6 +173,9 @@ export default {
     loginUser() {
       return this.$store.getters.getLoginUser;
     },
+    currentDiary() {
+      return this.$store.getters.getCurrentDiary;
+    },
     getMyFont() {
       // v-text-field에 폰트 적용하기
       const target = document.getElementsByClassName("v-text-field__slot")
@@ -351,7 +354,8 @@ export default {
   },
   mounted() {
       // 만약 수정하는 상태이면, state에 저장된 노트 컨텐츠들 가져오기
-      
+      this.selectDiary = this.currentDiary.diaryTitle
+
       if(this.$store.getters['getIsUpdate'] == true) {
         const stickerList = this.$store.getters.getStickerList;
         this.note = this.$store.getters['getNoteContent']
