@@ -1,19 +1,27 @@
 <template>
   <div>
     <div class="input-area">
-      <v-text-field v-model="previewText"></v-text-field>
+      <v-text-field
+        v-model="previewText"
+        color="#FFB319"
+        placeholder="이곳에 텍스트를 입력해보세요"
+      ></v-text-field>
     </div>
     <div
-    v-for="font in viewList"
-    :key="font.id"
-    class="Font_Item"
+      v-for="font in viewList"
+      :key="font.id"
+      class="Font_Item"
     >
-      <div class="Font_Header">
-        <span class="font-name" :style="{ 'font-family': font.fontUrl }">{{font.fontName}}</span>
-        <span class="Font_Price">{{font.fontPrice}}장</span>
+      <div class="font-header">
+        <div class="font-name">
+          <span :style="{ 'font-family': font.fontUrl }">{{ font.fontName }}</span>
+        </div>
+        <div class="font-price">
+          <span >{{ font.fontPrice }}장</span>
+        </div>
       </div>
       <div class="Font_Content">
-        <div class="Font_Discription" :style="{ 'font-family': font.fontUrl }">
+        <div class="font-desc" :style="{ 'font-family': font.fontUrl }">
           <!-- 즐거운 일기 쓰기! papers에서 매일매일 추억을 쌓아보아요. -->
           {{previewText}}
         </div>
@@ -214,18 +222,18 @@ export default {
     color: #ffb319;
   }
 }
-.Font_Discription {
-  /* width: 243px; */
-  height: 44px;
+.font-desc {
+  height: 60px;
   margin: 16px 16px 0 16px;
   font-size: 15px;
   color: #585858;
-  /* background-color: aquamarine; */
+  overflow: hidden;
+  // background-color: aquamarine;
 }
 .Font_Btn {
   width: 70px;
   height: 32px;
-  margin-top: 21px;
+  margin-top: 5px;
   margin-right: 16px;
   float: right;
   font-size: 15px;
@@ -264,8 +272,9 @@ export default {
   color: #585858;
 }
 .input-area {
-  width: 90%; 
-  margin-left:5%; 
+  // background: #ccc;
+  width: 45%; 
+  margin-left: 34px; 
   margin-top: -20px;
 }
 </style>
