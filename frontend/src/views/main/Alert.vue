@@ -105,7 +105,12 @@ export default {
           this.$router.push({name: 'main', query: {diaryId: diaryId, mainListMode: 'diary'}})
           return
         }
-        this.$router.push({name: 'diary', query: {diaryId: diaryId, noteId: noteId}})
+
+        this.$store.dispatch('getDiaryContent', diaryId)
+          .then((res) => {
+            this.$store.commit('setCurrentDiary', res.data)
+            this.$router.push({name: 'diary', query: {diaryId: diaryId, noteId: noteId}})
+          })
       }) 
     }
   },
@@ -122,7 +127,7 @@ export default {
 <style scoped>
 #alert-container {
   padding-top: 44px;
-  height: 100vh;
+  height: 100%;
   /* overflow: auto; */
   -ms-overflow-style: none;
   scrollbar-width: none;
@@ -133,6 +138,7 @@ export default {
 .Alert_List {
   width: 604px;
   margin: 0 auto;
+  padding-bottom: 50px;
 }
 .Alert_Day {
   font-size: 16px;
