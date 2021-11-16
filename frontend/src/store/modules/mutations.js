@@ -76,3 +76,7 @@ export function initNoteContent(state) {
     emotionList: []
   }
 }
+
+export function setStickerList(state, stickerList) {
+  state.stickerList = stickerList
+}
