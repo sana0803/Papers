@@ -2,7 +2,7 @@
   <div id="Header_Container">
     <div @click="goHome" id="header-title">PAPERS</div>
     <div @click="goDiary" id="header-diary">내 일기</div>
-    <div @click="goAlbum" id="header-album">내 앨범</div>
+    <div @click="goAlbum" id="header-album">앨범화</div>
     <div @click="goStore" id="header-store">상점</div>
     
     <div id="Header_Profile">

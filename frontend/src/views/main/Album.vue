@@ -1,7 +1,7 @@
 <template>
   <div id="Album_Out">
     <div id="Album_Container">
-      <div id="Album_Head">
+      <!-- <div id="Album_Head">
         <span id="Head_Main">분류</span>
         <div
           @click="select('all')"
@@ -18,12 +18,13 @@
         >
           앨범 만들기
         </div>
-      </div>
+      </div> -->
       <div id="Album_Content">
-        <div v-if="albumMode == 'all'">
+        <!-- <div v-if="albumMode == 'all'">
           <All />
-        </div>
-        <div v-else-if="albumMode == 'make'">
+        </div> -->
+        <!-- <div v-else-if="albumMode == 'make'"> -->
+        <div>
           <Make />
         </div>
       </div>
@@ -32,7 +33,7 @@
 </template>
 
 <script>
-import All from "../../components/album/AlbumAll.vue";
+// import All from "../../components/album/AlbumAll.vue";
 import Make from "../../components/album/AlbumMake.vue"
 
 export default {
@@ -42,7 +43,7 @@ export default {
     };
   },
   components: {
-    All,
+    // All,
     Make
   },
   methods: {
