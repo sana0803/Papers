@@ -7,8 +7,16 @@
       @click="goDetailNote(note)"
       class="note_Item"
     >    
-      <div class="note_ImgBox">
-        <v-img class="note_Img" :src="note.noteMediaList[0]" />
+      <div v-if="note.noteMediaList[0]" class="note_ImgBox" align="center" :style="{ 'font-family': getAllFonts[note.fontId - 1].fontUrl }">
+          <v-img class="note_Img" :src="note.noteMediaList[0]" /><br>
+          {{note.noteContent}}
+      </div>
+      <div v-else align="center">
+        <div class="note-detail" >
+          <div class="note-detail-area" :style="{ 'font-family': getAllFonts[note.fontId - 1].fontUrl }">
+            {{note.noteContent}}
+          </div>
+        </div>
       </div>
       <div class="note-under">
         <span class="note_Name">{{ note.noteTitle }}</span>
@@ -31,6 +39,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 export default {
   data() {
     return{
@@ -38,6 +47,9 @@ export default {
       viewList: [],
       page: 1
     }
+  },
+  computed: {
+    ...mapGetters(['getAllFonts'])
   },
   methods: {
     change(num) {
@@ -73,7 +85,7 @@ export default {
     }
     this.$store.dispatch("noteGet").then((res) => {
       this.noteList = res.data.reverse();
-
+      console.log(this.noteList)
       for(let i=0;i<6;i++){
         if(this.noteList.length==i) 
           break
@@ -105,9 +117,24 @@ export default {
   cursor: pointer;
   overflow:hidden;
   margin:0 auto;
+  display: inline-block;
+  justify-content: center;
+  align-items: center;
+}
+.note-detail {
+  width: 284px;
+  height: 394px;
+  background: #fff;
+  box-shadow: 3px 3px 11px rgba(166, 166, 168, 0.35);
+  cursor: pointer;
+  overflow:hidden;
+  margin:0 auto;
   display: flex;
   justify-content: center;
   align-items: center;
+}
+.note-detail-area {
+  width: 250px;
 }
 .note_Img{
   /* width:100%;
