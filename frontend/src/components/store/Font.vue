@@ -116,6 +116,13 @@ export default {
         }
       })
     },
+    getAllFonts2: function (page) {
+      this.$store.dispatch("getAllFonts")
+      .then((res) => {
+        this.fontList = res.data
+        this.change(page)
+      })
+    },
     sendInfo: function (price, id) {
       console.log(price, '클릭한 폰트 가격')
       console.log(id, '클릭한 폰트 아이디')
@@ -129,7 +136,9 @@ export default {
         console.log(res)
         this.loginUser.userMileage -= this.buyFontPrice
         this.$store.commit('setLoginUser', this.loginUser)
-        this.$router.go()
+        this.viewList = []
+        this.getAllFonts2(this.page)
+        // this.$router.go()
         Swal.fire({
           icon: "success",
           title:

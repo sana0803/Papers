@@ -16,6 +16,9 @@
           <span class="Font_Name">카페숑24 숑숑체</span>
         </div> -->
         <div v-for="myFont in myFontList" :key="myFont.id" class="Font_Item">
+          <v-icon v-if="myFont.fontName == select" class="Font_Icon" style="font-size: 1.2em; color: #ffb319"
+            >done</v-icon
+          >
           <span class="Font_Name" :style="{ 'font-family': myFont.fontUrl }" @click="selectFont(myFont)">{{myFont.fontName}}</span>
         </div>
       </div>
@@ -91,6 +94,7 @@ export default {
   data () {
     return {
       dialog:false,
+      select: '기본체',
       myFontList: [],
       stickerPackageList:[],
       stickerList: [{
@@ -120,12 +124,11 @@ export default {
       this.$store.dispatch("getUserStickers")
       .then((res) => {
         this.stickerPackageList = res.data
-        console.log(3123123123)
-        console.log(this.stickerPackageList)
       })
     },
     selectFont: function (font) {
       console.log('폰트 선택함', font)
+      this.select = font.fontName
       this.$store.commit("setMyFont", font)
     },
     selectSticker(sticker) {
