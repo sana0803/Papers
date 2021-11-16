@@ -54,7 +54,7 @@ export default {
 }
 .MainList_Item {
   display: inline-block;
-  width: 284px;
+  width: 286px;
   height: 394px;
   margin-bottom: 31px;
   margin-left: 31px;
