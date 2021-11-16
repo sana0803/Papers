@@ -89,7 +89,7 @@ public class NoteServiceImpl implements NoteService{
         List<NoteRes> noteResList = new ArrayList<>();
         for(Note note : notes) {
             NoteRes noteRes = new NoteRes(note);
-            noteRes.setNoteStickerList(noteRepositorySupport.getNoteStickers(note.getId()).get());
+            noteRes.setStickerList(noteRepositorySupport.getNoteStickers(note.getId()).get());
 //            noteRes.setEmotionList(noteRepositorySupport.getNoteEmotions(note.getId()).get());
             noteRes.setNoteHashtagList(noteRepositorySupport.getNoteHashtags(note.getId()).get());
             noteRes.setNoteMediaList(noteRepositorySupport.getNoteMedias(note.getId()).get());
@@ -111,7 +111,7 @@ public class NoteServiceImpl implements NoteService{
 
         for(Note note : notes) {
             NoteRes noteRes = new NoteRes(note);
-            noteRes.setNoteStickerList(noteRepositorySupport.getNoteStickers(note.getId()).get());
+            noteRes.setStickerList(noteRepositorySupport.getNoteStickers(note.getId()).get());
 //            noteRes.setEmotionList(noteRepositorySupport.getNoteEmotions(note.getId()).get());
             noteRes.setNoteHashtagList(noteRepositorySupport.getNoteHashtags(note.getId()).get());
             noteRes.setNoteMediaList(noteRepositorySupport.getNoteMedias(note.getId()).get());
@@ -129,7 +129,7 @@ public class NoteServiceImpl implements NoteService{
         else return null;
 
         NoteRes noteRes = new NoteRes(note);
-        noteRes.setNoteStickerList(noteRepositorySupport.getNoteStickers(note.getId()).get());
+        noteRes.setStickerList(noteRepositorySupport.getNoteStickers(note.getId()).get());
 //        noteRes.setEmotionList(noteRepositorySupport.getNoteEmotions(note.getId()).get());
         noteRes.setNoteHashtagList(noteRepositorySupport.getNoteHashtags(note.getId()).get());
         noteRes.setNoteMediaList(noteRepositorySupport.getNoteMedias(note.getId()).get());
@@ -219,7 +219,7 @@ public class NoteServiceImpl implements NoteService{
 //        }
 
         NoteRes noteRes = new NoteRes(note);
-        noteRes.setNoteStickerList(noteRepositorySupport.getNoteStickers(note.getId()).get());
+        noteRes.setStickerList(noteRepositorySupport.getNoteStickers(note.getId()).get());
 //        noteRes.setEmotionList(noteRepositorySupport.getNoteEmotions(note.getId()).get());
         noteRes.setNoteHashtagList(noteRepositorySupport.getNoteHashtags(note.getId()).get());
         noteRes.setNoteMediaList(noteRepositorySupport.getNoteMedias(note.getId()).get());
@@ -398,7 +398,7 @@ public class NoteServiceImpl implements NoteService{
         List<NoteRes> noteResList = new ArrayList<>();
         for(Note note : notes) {
             NoteRes noteRes = new NoteRes(note);
-            noteRes.setNoteStickerList(noteRepositorySupport.getNoteStickers(note.getId()).get());
+            noteRes.setStickerList(noteRepositorySupport.getNoteStickers(note.getId()).get());
 //            noteRes.setEmotionList(noteRepositorySupport.getNoteEmotions(note.getId()).get());
             noteRes.setNoteHashtagList(noteRepositorySupport.getNoteHashtags(note.getId()).get());
             noteRes.setNoteMediaList(noteRepositorySupport.getNoteMedias(note.getId()).get());
