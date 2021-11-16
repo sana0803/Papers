@@ -71,7 +71,7 @@ export default {
   },
   created(){
     const loginCheck = localStorage.getItem('userId')
-    if(loginCheck==null){
+    if(loginCheck == null){
       this.$router.push('/')
     }
   }
