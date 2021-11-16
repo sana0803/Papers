@@ -191,7 +191,7 @@ public class NoteRepositorySupport {
             }
 //            objects = s3.listNextBatchOfObjects(objects);
         } while (objects.isTruncated());
-        urls.remove(0);
+//        urls.remove(0);
         return urls;
     }
 
@@ -207,7 +207,7 @@ public class NoteRepositorySupport {
             }
 //            objects = s3.listNextBatchOfObjects(objects);
         } while (objects.isTruncated());
-        urls.remove(0);
+//        urls.remove(0);
         return urls;
     }
 

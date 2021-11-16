@@ -422,6 +422,7 @@ public class NoteServiceImpl implements NoteService{
                 File file = new File("../kakao-files/" + UUID.randomUUID() + ".jpg");
                 if(!file.exists()) file.mkdirs();
                 ImageIO.write(img, "jpg", file);
+                System.out.println(kakaoReq.getId());
                 String fileName = "kakao-file/" + kakaoReq.getId() + "/" + UUID.randomUUID() + ".jpg";
                 S3Util.putS3(file, fileName);
             }
