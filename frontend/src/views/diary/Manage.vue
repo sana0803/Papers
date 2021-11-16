@@ -88,7 +88,7 @@
         <div class="Header3">기본 커버</div>
         <div class="Cover_Box">
           <div v-for="(item, idx) in coverList" :key="idx" class="cover-item" @click="selectCover(item.id)">
-            <v-img class="cover-img" :src="item.coverUrl" />
+            <v-img class="cover-img" :src="item.coverUrl" @click="clickCover(item)"/>
           </div>
         </div>
         <div class="Header3">내 커버</div>
@@ -144,6 +144,7 @@
 <script>
 import Swal from "sweetalert2";
 import { mapGetters } from 'vuex';
+import EventBus from '../../eventBus'
 
 export default {
   computed: {
@@ -274,6 +275,9 @@ export default {
         })
         this.$router.push("/diary/diaryList1");
       })
+    },
+    clickCover(cover) {
+      EventBus.$emit('changeCover', cover)
     }
   },
   created() {
