@@ -137,7 +137,7 @@ public class DiaryServiceImpl implements DiaryService {
 
         for (Note note: notes) {
             NoteRes noteRes = new NoteRes(note);
-            noteRes.setNoteStickerList(noteRepositorySupport.getNoteStickers(note.getId()).get());
+            noteRes.setStickerList(noteRepositorySupport.getNoteStickers(note.getId()).get());
 
             Map<String, Integer> emotionMap = new HashMap<>();
             emotionMap.put("좋아요" ,0);
