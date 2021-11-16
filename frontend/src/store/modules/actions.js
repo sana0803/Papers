@@ -75,6 +75,15 @@ export function modifyNote({ state }, note) {
 	const url = baseUrl + '/note/' + note.noteId
 	return $axios.put(url, note.formData,  { headers: { Authorization: `Bearer ${userToken}` } })
 }
+
+export function moveNote({ state }, moveList) {
+  console.log('일기 옮기기 action호출', state)
+  console.log(moveList)
+	const userToken = state.loginUser.userToken
+	const url = baseUrl + '/note/change-diary/' + moveList.id
+	return $axios.put(url, moveList.list,  { headers: { Authorization: `Bearer ${userToken}` } })
+}
+
 export function deleteNote({ state }, id) {
 	console.log('deleteNote action호출', state)
 	const userToken = state.loginUser.userToken
@@ -235,4 +244,12 @@ export function getKakaoImageList({ state }) {
 	const userToken = state.loginUser.userToken
 	const url = baseUrl + '/note/kakao-files' 
 	return $axios.get(url, { headers: { Authorization: `Bearer ${userToken}` } })
+}
+
+export function getNote({state}, noteId) {
+  console.log('getNote action 호출', state)
+  const userToken = state.loginUser.userToken
+	const url = baseUrl + '/note?noteId=' + noteId
+  console.log(noteId, url)
+  return $axios.get(url, { headers: { Authorization: `Bearer ${userToken}` } })
 }
