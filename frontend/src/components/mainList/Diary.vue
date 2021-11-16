@@ -142,7 +142,7 @@ export default {
       
       this.$store.dispatch('getDiaryContent', diary.id)
         .then((res) => {
-          this.$store.commit('setNoteContent', res.data.note[0])
+          this.$store.commit('setNoteContent', res.data.note[res.data.note.length-1])
           this.$router.push("/diary");
         })
     },
