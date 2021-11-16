@@ -1,48 +1,46 @@
 <template>
   <div>
-    <!-- 작성한 일기 없는경우  -->
-    <div v-if="viewList.length == 0" class="empty">
-      <div >
-        <img src="../../assets/image/paper.png" style="width:90px; margin-bottom:24px;" />
+    <!-- <div v-for="note in noteList" :key="note.id" class="MainList_Item">일기 하나임</div> -->
+    <div
+      v-for="note in viewList"
+      :key="note.id"
+      @click="goDetailNote(note)"
+      class="note_Item"
+    >    
+      <div v-if="note.noteMediaList[0]" class="note_ImgBox" align="center" :style="{ 'font-family': getAllFonts[note.fontId - 1].fontUrl }">
+          <v-img class="note_Img" :src="note.noteMediaList[0]" /><br>
+          <!-- {{note.noteContent}} -->
+          <span v-html="note.noteContent"></span>
       </div>
-      <h2>아직 작성한 일기가 없어요!</h2>
-      <!-- <span class="go-write-btn" @click="goWrite()">
-        일기 작성하러 가기 &nbsp;&nbsp;>
-      </span> -->
+      <div v-else align="center">
+        <div class="note-detail" >
+          <div class="note-detail-area" :style="{ 'font-family': getAllFonts[note.fontId - 1].fontUrl }" v-html="note.noteContent">
+          </div>
+        </div>
+      </div>
+      <div class="note-under">
+        <span class="note_Name">{{ note.noteTitle }}</span>
+        <span class="note_Day">{{ note.noteCreatedDate }}</span>
+      </div>
     </div>
-    <div v-else>
-      <!-- <div v-for="note in noteList" :key="note.id" class="MainList_Item">일기 하나임</div> -->
-      <div
-        v-for="note in viewList"
-        :key="note.id"
-        @click="goDetailNote(note)"
-        class="note_Item"
-      >    
-        <div class="note_ImgBox">
-          <v-img class="note_Img" :src="note.noteMediaList[0]" />
-        </div>
-        <div class="note-under">
-          <span class="note_Name">{{ note.noteTitle }}</span>
-          <span class="note_Day">{{ note.noteCreatedDate }}</span>
-        </div>
-      </div>
+    
+    <!-- 일기 페이지네이션 -->
+    <div id="diary-pagination">
+      <v-pagination
+        style="margin-bottom:30px;"
+        v-model="page"
+        :length="Math.ceil(noteList.length/6)"
+        @input="change"
+        circle
+        color="#FFB300"
+      ></v-pagination>
+    </div>
 
-      <!-- 일기 페이지네이션 -->
-      <div id="diary-pagination">
-        <v-pagination
-          style="margin-bottom:30px;"
-          v-model="page"
-          :length="Math.ceil(noteList.length/6)"
-          @input="change"
-          circle
-          color="#FFB300"
-        ></v-pagination>
-      </div>
-    </div>
   </div>
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 export default {
   data() {
     return{
@@ -50,6 +48,14 @@ export default {
       viewList: [],
       page: 1
     }
+  },
+  computed: {
+    ...mapGetters(['getAllFonts']),
+  },
+  filters: {
+      test (value) {
+          return value.replace("\n", "<br />")
+      }
   },
   methods: {
     change(num) {
@@ -60,6 +66,7 @@ export default {
           for(let i=temp;i<temp+6;i++){
             if(this.noteList.length==i)
               break
+            this.noteList[i].noteContent = this.noteList[i].noteContent.replace(/\n/g, "<br />")
             this.viewList.push(this.noteList[i])
           }
         }
@@ -85,10 +92,11 @@ export default {
     }
     this.$store.dispatch("noteGet").then((res) => {
       this.noteList = res.data.reverse();
-
+      console.log(this.noteList)
       for(let i=0;i<6;i++){
         if(this.noteList.length==i) 
           break
+        this.noteList[i].noteContent = this.noteList[i].noteContent.replace(/\n/g, "<br />")
         this.viewList.push(this.noteList[i])
       }
     });
@@ -101,7 +109,7 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
 .note_Item {
   display: inline-block;
   width: 284px;
@@ -117,9 +125,24 @@ export default {
   cursor: pointer;
   overflow:hidden;
   margin:0 auto;
+  display: inline-block;
+  justify-content: center;
+  align-items: center;
+}
+.note-detail {
+  width: 284px;
+  height: 394px;
+  background: #fff;
+  box-shadow: 3px 3px 11px rgba(166, 166, 168, 0.35);
+  cursor: pointer;
+  overflow:hidden;
+  margin:0 auto;
   display: flex;
   justify-content: center;
   align-items: center;
+}
+.note-detail-area {
+  width: 250px;
 }
 .note_Img{
   /* width:100%;
@@ -139,15 +162,5 @@ export default {
   display: flex;
   justify-content: space-between;
   align-items:center;
-}
-
-.empty {
-  font-size: 18px;
-  text-align: center;
-  margin-top: 140px;
-
-  h2 {
-    color: #444;
-  }
 }
 </style>

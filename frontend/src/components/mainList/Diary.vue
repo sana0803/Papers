@@ -83,6 +83,7 @@
                   v-model="selected[idx]"
                   :key="member.userId"
                   :value="member.userId"
+                  color="orange"
                 ></v-checkbox>
               </div>
             </div>
@@ -143,7 +144,7 @@ export default {
       
       this.$store.dispatch('getDiaryContent', diary.id)
         .then((res) => {
-          this.$store.commit('setNoteContent', res.data.note[0])
+          this.$store.commit('setNoteContent', res.data.note[res.data.note.length-1])
           this.$router.push("/diary");
         })
     },
@@ -214,13 +215,13 @@ export default {
 <style lang="scss" scoped>
 #Plus_Item {
   display: inline-block;
-  width: 284px;
+  width: 286px;
   height: 432px;
   margin-bottom: 31px;
   margin-left: 31px;
 }
 #Plus_Img {
-  width: 284px;
+  width: 286px;
   height: 394px;
   box-shadow: 3px 3px 11px rgba(166, 166, 168, 0.25);  
   cursor: pointer;
@@ -239,13 +240,13 @@ export default {
 .Diary_Item {
   display: inline-block;
   /* border:1px solid red; */
-  width: 284px;
+  width: 286px;
   height: 432px;
   margin-bottom: 31px;
   margin-left: 31px;
 }
 .Diary_Img {
-  width: 284px;
+  width: 286px;
   height: 394px;
   /* background: peachpuff; */
   box-shadow: 3px 3px 11px rgba(166, 166, 168, 0.35);

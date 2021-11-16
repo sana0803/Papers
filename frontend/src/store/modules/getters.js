@@ -49,3 +49,7 @@ export function getAllFonts(state) {
 export function getMyFonts(state) {
   return state.myFontList
 }
+
+export function getStickerList(state) {
+  return state.stickerList
+}

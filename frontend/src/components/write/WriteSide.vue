@@ -112,7 +112,6 @@ export default {
     getUserFonts: function () {
       this.$store.dispatch("getUserFonts")
       .then((res) => {
-        console.log(res.data, '유저 폰트')
         this.myFontList = res.data
       })
     },
@@ -120,12 +119,9 @@ export default {
       this.$store.dispatch("getUserStickers")
       .then((res) => {
         this.stickerPackageList = res.data
-        console.log(3123123123)
-        console.log(this.stickerPackageList)
       })
     },
     selectFont: function (font) {
-      console.log('폰트 선택함', font)
       this.$store.commit("setMyFont", font)
     },
     selectSticker(sticker) {
