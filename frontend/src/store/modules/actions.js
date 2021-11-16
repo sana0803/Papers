@@ -1,6 +1,7 @@
 import $axios from 'axios'
 
-const baseUrl = 'https://localhost/api'
+// const baseUrl = 'https://localhost/api'
+const baseUrl = 'https://k5b102.p.ssafy.io/api'
 
 export function signUp({ state }, user) {
     console.log('signUp action 호출', state, user)
