@@ -1,5 +1,8 @@
 <template>
   <div>
+    <div class="input-area">
+      <v-text-field v-model="previewText"></v-text-field>
+    </div>
     <div
     v-for="font in viewList"
     :key="font.id"
@@ -11,7 +14,8 @@
       </div>
       <div class="Font_Content">
         <div class="Font_Discription" :style="{ 'font-family': font.fontUrl }">
-          즐거운 일기 쓰기! papers에서 매일매일 추억을 쌓아보아요.
+          <!-- 즐거운 일기 쓰기! papers에서 매일매일 추억을 쌓아보아요. -->
+          {{previewText}}
         </div>
         <div v-if="font.owned"><v-btn @click="[dialog = true, sendInfo(font.fontPrice, font.id)]" class="Font_Btn" color="#FFB319" outlined disabled>보유중</v-btn></div>
         <div v-else><v-btn @click="[dialog = true, sendInfo(font.fontPrice, font.id)]" class="Font_Btn" color="#FFB319" outlined>구매</v-btn></div>
@@ -76,7 +80,8 @@ export default {
       loginUser: {
         userMileage: '',
       },
-      myFontList: []
+      myFontList: [],
+      previewText: '즐거운 일기 쓰기! papers에서 매일매일 추억을 쌓아보아요.',
     };
   },
   created () {
@@ -227,5 +232,10 @@ export default {
   width: 76px;
   height: 32px;
   color: #585858;
+}
+.input-area {
+  width: 90%; 
+  margin-left:5%; 
+  margin-top: -20px;
 }
 </style>
