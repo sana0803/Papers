@@ -83,6 +83,7 @@
                   v-model="selected[idx]"
                   :key="member.userId"
                   :value="member.userId"
+                  color="orange"
                 ></v-checkbox>
               </div>
             </div>
