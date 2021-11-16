@@ -1,31 +1,43 @@
 <template>
   <div>
-    <!-- <div v-for="note in noteList" :key="note.id" class="MainList_Item">일기 하나임</div> -->
-    <div
-      v-for="note in viewList"
-      :key="note.id"
-      @click="goDetailNote(note)"
-      class="note_Item"
-    >    
-      <div class="note_ImgBox">
-        <v-img class="note_Img" :src="note.noteMediaList[0]" />
+    <!-- 작성한 일기 없는경우  -->
+    <div v-if="viewList.length == 0" class="empty">
+      <div >
+        <img src="../../assets/image/paper.png" style="width:90px; margin-bottom:24px;" />
       </div>
-      <div class="note-under">
-        <span class="note_Name">{{ note.noteTitle }}</span>
-        <span class="note_Day">{{ note.noteCreatedDate }}</span>
-      </div>
+      <h2>아직 작성한 일기가 없어요!</h2>
+      <!-- <span class="go-write-btn" @click="goWrite()">
+        일기 작성하러 가기 &nbsp;&nbsp;>
+      </span> -->
     </div>
+    <div v-else>
+      <!-- <div v-for="note in noteList" :key="note.id" class="MainList_Item">일기 하나임</div> -->
+      <div
+        v-for="note in viewList"
+        :key="note.id"
+        @click="goDetailNote(note)"
+        class="note_Item"
+      >    
+        <div class="note_ImgBox">
+          <v-img class="note_Img" :src="note.noteMediaList[0]" />
+        </div>
+        <div class="note-under">
+          <span class="note_Name">{{ note.noteTitle }}</span>
+          <span class="note_Day">{{ note.noteCreatedDate }}</span>
+        </div>
+      </div>
 
-    <!-- 일기 페이지네이션 -->
-    <div id="diary-pagination">
-      <v-pagination
-        style="margin-bottom:30px;"
-        v-model="page"
-        :length="Math.ceil(noteList.length/6)"
-        @input="change"
-        circle
-        color="#FFB300"
-      ></v-pagination>
+      <!-- 일기 페이지네이션 -->
+      <div id="diary-pagination">
+        <v-pagination
+          style="margin-bottom:30px;"
+          v-model="page"
+          :length="Math.ceil(noteList.length/6)"
+          @input="change"
+          circle
+          color="#FFB300"
+        ></v-pagination>
+      </div>
     </div>
   </div>
 </template>
@@ -89,7 +101,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .note_Item {
   display: inline-block;
   width: 284px;
@@ -127,5 +139,15 @@ export default {
   display: flex;
   justify-content: space-between;
   align-items:center;
+}
+
+.empty {
+  font-size: 18px;
+  text-align: center;
+  margin-top: 140px;
+
+  h2 {
+    color: #444;
+  }
 }
 </style>
