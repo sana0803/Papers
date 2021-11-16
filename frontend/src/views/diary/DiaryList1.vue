@@ -11,9 +11,7 @@
           <div class="diary-content">
             <div class="diary-title-wrap">
               <div class="title-sec">
-                <span class="diary-title" :style="{ 'font-family': note.fontId }">{{ note.noteTitle }}</span>
-                <br>
-                <span class="diary-writer">{{ note.noteId }}</span>
+                <span class="diary-title" :style="{ 'font-family': getAllFonts[note.fontId - 1].fontUrl }">{{ note.noteTitle }}</span>
               </div>
               <div class="date-sec">
                 <span class="diary-writer">{{ note.writerNickName}}</span>
@@ -24,7 +22,7 @@
             </div>
             <div id="horizon-line"></div>
             <div class="diary-text">
-              <span :style="{ 'font-family': note.fontId }">{{ note.noteContent }}</span>
+              <span :style="{ 'font-family': getAllFonts[note.fontId - 1].fontUrl }">{{ note.noteContent }}</span>
             </div>
             <div class="diary-hashtag" v-for="(hashtag, idx) in note.noteHashtagList" :key="idx">
               <span>#{{ hashtag }}</span>
