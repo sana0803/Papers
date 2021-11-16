@@ -20,6 +20,7 @@
       v-for="note in noteList"
       :key="note.id"
       class="note_Item"
+      @click="goDetailNote(note)"
     >
       <div class="note_ImgBox">
         <v-img class="note_Img" :src="note.noteMediaList[0]" />
@@ -76,6 +77,14 @@ export default {
         this.listVisible = true
         this.noteList = []
       }
+    },
+    goDetailNote(note) {
+      this.$store.dispatch("getDiaryContent", note.diaryId).then((res) => {
+        this.$store.commit('setCurrentDiary', res.data)
+        this.$store.commit('setNoteContent', note) // mutaion 호출 ('뮤테이션 이름, 매개변수)
+        // this.$router.push({name: 'diary', query: {diaryId: '1', noteId: '2'}})
+        this.$router.push("/diary");
+      })
     }
   },
   created() {

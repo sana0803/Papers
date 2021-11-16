@@ -83,6 +83,7 @@
                   v-model="selected[idx]"
                   :key="member.userId"
                   :value="member.userId"
+                  color="orange"
                 ></v-checkbox>
               </div>
             </div>
@@ -143,7 +144,7 @@ export default {
       
       this.$store.dispatch('getDiaryContent', diary.id)
         .then((res) => {
-          this.$store.commit('setNoteContent', res.data.note[0])
+          this.$store.commit('setNoteContent', res.data.note[res.data.note.length-1])
           this.$router.push("/diary");
         })
     },
