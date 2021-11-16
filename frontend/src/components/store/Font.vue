@@ -1,19 +1,21 @@
 <template>
   <div>
-    <div v-for="font in viewList" :key="font.id" class="Font_Item">
-      <div class="font-header">
-        <div class="font-name">
-          <span :style="{ 'font-family': font.fontUrl }">{{
-            font.fontName
-          }}</span>
-        </div>
-        <div class="font-price">
-          <span >{{ font.fontPrice }}장</span>
-        </div>
+    <div class="input-area">
+      <v-text-field v-model="previewText"></v-text-field>
+    </div>
+    <div
+    v-for="font in viewList"
+    :key="font.id"
+    class="Font_Item"
+    >
+      <div class="Font_Header">
+        <span class="font-name" :style="{ 'font-family': font.fontUrl }">{{font.fontName}}</span>
+        <span class="Font_Price">{{font.fontPrice}}장</span>
       </div>
       <div class="Font_Content">
         <div class="Font_Discription" :style="{ 'font-family': font.fontUrl }">
-          즐거운 일기 쓰기! papers에서 매일매일 추억을 쌓아보아요.
+          <!-- 즐거운 일기 쓰기! papers에서 매일매일 추억을 쌓아보아요. -->
+          {{previewText}}
         </div>
         <div v-if="font.owned">
           <v-btn
@@ -99,6 +101,7 @@ export default {
         userMileage: "",
       },
       myFontList: [],
+      previewText: '즐거운 일기 쓰기! papers에서 매일매일 추억을 쌓아보아요.',
     };
   },
   created() {
@@ -259,5 +262,10 @@ export default {
   width: 76px;
   height: 32px;
   color: #585858;
+}
+.input-area {
+  width: 90%; 
+  margin-left:5%; 
+  margin-top: -20px;
 }
 </style>

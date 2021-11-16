@@ -43,8 +43,10 @@ export default {
     window.onresize = function (e) {
       console.log(e)
       const el = document.querySelector('.noti-container')
-      el.style.left = (window.innerWidth - 350 ) + 'px'
-      el.style.top = (window.innerHeight - 200) + 'px'
+      if (el) {
+        el.style.left = (window.innerWidth - 350 ) + 'px'
+        el.style.top = (window.innerHeight - 200) + 'px'
+      }
     }
   },
 };
