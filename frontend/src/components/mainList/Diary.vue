@@ -12,9 +12,9 @@
       v-for="diary in viewList"
       :key="diary.id"
       @click="goDiary(diary)"
-      class="Diary_Item"
+      class="Diary_Item" 
     >
-      <div class="Diary_Img">
+      <div class="Diary_Img" :class="{ 'highlight' : highlightDiaryId === diary.id }">
         <img :src="diary.diaryCover.coverUrl" />
       </div>
       <div class="diary-under">
@@ -119,7 +119,8 @@ export default {
       search: "",
       memberList: [],
       selected: [],
-      currentCreateDiaryId: 0
+      currentCreateDiaryId: 0,
+      highlightDiaryId: 0,
     };
   },
   methods: {
@@ -200,6 +201,12 @@ export default {
       }
       console.log(this.viewList[0].diaryCover.coverUrl, '뷰리스트')
     });
+  },
+  mounted() {
+    const diaryIdQuery = this.$route.query.diaryId
+    if (diaryIdQuery) {
+      this.highlightDiaryId = diaryIdQuery
+    }
   },
 };
 </script>
@@ -362,5 +369,25 @@ export default {
   text-align: center;
   font-size: 16px;
   color: #9f9f9f;
+}
+.highlight {
+  background: white;
+  animation-name: backdiv;
+  animation-duration: 1.8s; 
+  animation-iteration-count: infinite;
+}
+@keyframes backdiv {
+  50% {
+    // background: #f0df81;
+    box-shadow : 10px 10px 50px 15px rgb(228, 228, 172);
+  }
+}
+@keyframes beat {
+  0% {
+    transform: scale(1) rotate(-45deg);
+  }
+  50% {
+    transform: scale(0.6) rotate(-45deg);
+  }
 }
 </style>

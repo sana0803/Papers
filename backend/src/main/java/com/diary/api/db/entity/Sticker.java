@@ -1,11 +1,12 @@
 package com.diary.api.db.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -16,4 +17,8 @@ public class Sticker extends BaseEntity{
     @ManyToOne
     @JoinColumn(name = "stickerPackageId", referencedColumnName = "id", nullable = false)
     StickerPackage stickerPackage;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "sticker", cascade = CascadeType.ALL)
+    private Set<NoteSticker> noteStickers = new HashSet<>();
 }

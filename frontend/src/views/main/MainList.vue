@@ -21,7 +21,7 @@
       <div id="MainList_Head">
         <span id="Head_Main">분류</span>
         <div
-          @click="select('list')"
+          @click="[removeUrl(), select('list')]"
           id="list"
           style="color: #222; font-weight: 600;"
           class="Head_Item"
@@ -38,7 +38,7 @@
       </div>
       <div id="MainList_Content">
         <div v-if="mainListMode == 'list'">
-          <All />
+          <All @showDiaryList="showDiaryList" @selectDairy="selectDairy" />
         </div>
         <div v-if="mainListMode == 'diary'">
           <Diary />
@@ -76,6 +76,7 @@ export default {
     select(target) {
       this.mainListMode = target;
       var tar = document.getElementById(target);
+      console.log(tar)
 
       var arr = [
         document.getElementById("list"),
@@ -94,12 +95,27 @@ export default {
         }
       }
     },
+    removeUrl() {
+      this.$router.push('/main')
+    },
+    selectDairy() {
+      // const diaryMenu = document.getElementById("diary")
+      // alert(diaryMenu)
+      // diaryMenu.style.color = "#222";
+      // diaryMenu.style.fontWeight = "600";
+      // 적용안됨
+    },
     goTemplete() {
       this.$store.commit('initNoteContent')
       this.$store.commit('setIsUpdate', false)
       this.$store.commit('setCurrentDiary', '')
       this.$router.push("/write");
     },
+    showDiaryList() {
+      // if (this.mainListMode == 'diary')
+      // this.select('diary')
+      this.mainListMode = 'diary'
+    }
   },
 };
 </script>
