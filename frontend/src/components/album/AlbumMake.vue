@@ -211,7 +211,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 #albumMenu {
   position: fixed;
   right: 59px;
