@@ -92,13 +92,13 @@ export default {
 <style scoped>
 .note_Item {
   display: inline-block;
-  width: 284px;
+  width: 286px;
   height: 432px;
   margin-bottom: 31px;
   margin-left: 31px;
 }
 .note_ImgBox {
-  width: 284px;
+  width: 286px;
   height: 394px;
   background: #fff;
   box-shadow: 3px 3px 11px rgba(166, 166, 168, 0.35);

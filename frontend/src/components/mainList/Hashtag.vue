@@ -140,16 +140,16 @@ export default {
 }
 .note_Item {
   display: inline-block;
-  width: 284px;
+  width: 286px;
   height: 432px;
   margin-bottom: 31px;
   margin-left: 31px;
 }
 .note_ImgBox {
-  width: 284px;
+  width: 286px;
   height: 394px;
-  background: rgb(185, 228, 161);
-  box-shadow: 2px 3px 12px 2px rgba(35, 35, 35, 0.25);
+  background: #fff;
+  box-shadow: 3px 3px 11px rgba(166, 166, 168, 0.35);
   cursor: pointer;
   overflow:hidden;
   margin:0 auto;

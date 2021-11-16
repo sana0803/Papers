@@ -151,43 +151,26 @@ export default {
 #Dialog_Content {
   height: 458px;
   padding: 34px 46px;
+  // background-color: #b8dfd8;
 }
 #Dialog_Title {
   height: 375px;
-  vertical-align: center;
-}
-#Dialog_List {
-  height: 306px;
-  margin-top: 55px;
+  // background: greenyellow;
   display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
 }
-.Dialog_Item {
-  width: 100px;
-  height: 100px;
-  border-radius: 50px;
-  background: #fae7cb;
-  margin-right: 10px;
-  margin-left: 10px;
-}
 #Dialog_img {
-  display: inline-block;
   width: 50%;
   height: 100%;
-  border-radius: 100px;
-  background: #b8dfd8;
+  img {
+    overflow: hidden;
+  }
 }
 #Dialog_Name {
-  /* display: inline-block; */
-  /* width:200px; */
   width: 37%;
   height: 118px;
   margin-left: 61px;
-  overflow: hidden;
-  float: right;
-  margin-top: 25%;
 }
 #Name_Author {
   color: #585858;

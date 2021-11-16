@@ -196,7 +196,8 @@ export default {
 }
 #Dialog_Title {
   height: 118px;
-  background-color: #eee;
+  /* background-color: #eee; */
+  display: flex;
   overflow: hidden;
 }
 #Dialog_List {
@@ -208,26 +209,24 @@ export default {
   align-items: center;
 }
 .Dialog_Item {
+  background-color: lemonchiffon;
   width: 100px;
   height: 100px;
   border-radius: 50px;
-  background: #fae7cb;
+  background: #f7f7f7;
   margin-right: 10px;
   margin-left: 10px;
 }
 #Dialog_img {
-  display: inline-block;
   width: 118px;
   height: 118px;
   border-radius: 100px;
-  background: #b8dfd8;
+  background: #FAE7CB;
 }
 #Dialog_Name {
-  display: inline-block;
   /* width:200px; */
   height: 118px;
   margin-left: 61px;
-  overflow: hidden;
 }
 #Name_Author {
   color: #585858;
