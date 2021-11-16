@@ -26,7 +26,7 @@
           style="color: #222; font-weight: 600;"
           class="Head_Item"
         >
-          전체
+          내가 쓴 일기
         </div>
         <div @click="select('diary')" id="diary" class="Head_Item">일기장</div>
         <div @click="select('calender')" id="calender" class="Head_Item">
