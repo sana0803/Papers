@@ -363,7 +363,7 @@ export default {
       if(this.$store.getters['getIsUpdate'] == true) {
         const stickerList = this.$store.getters.getStickerList;
         this.note = this.$store.getters['getNoteContent']
-        
+        if(this.note.noteHashtagList == '#undefined') this.note.noteHashtagList = ''
         const box = document.getElementById('file-section')
         for(let i = 0; i < this.note.stickerList.length; i++){
           for(let j = 0; j < stickerList.length; j++){
