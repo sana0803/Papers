@@ -55,24 +55,18 @@
         :activator="selectedElement"
         offset-x
       >
-      <!-- 일기선택하면 누르는 카드화면 -->
         <v-card
           color="rgb(255 253 250)"
           min-width="400px"
           flat
         >
-          <!-- <v-toolbar
-            :color="selectedEvent.color"
-          >
-            <v-toolbar-title v-html="selectedEvent.name"></v-toolbar-title>
-            <v-spacer></v-spacer>
-          </v-toolbar> -->
           <div style="height:300px;" v-if="selectedEvent.noteMedia">
             <v-img style="height:100%;" :src="selectedEvent.noteMedia" alt="일기 사진"/>
           </div>
           <v-card-title>
             <span>{{selectedEvent.name}} </span>
             <div style="font-size:14px; margin-left:200px;">작성자:{{selectedEvent.writerNickName}}</div>
+            <div style="font-size:11px;">({{selectedEvent.time}})</div>
           </v-card-title>
           <v-card-actions>
             <v-btn
@@ -95,9 +89,8 @@
               <v-card-text id="select-box"> 
                 <span>{{selectedEvent.content}}</span>
                 <div v-for="(hashtag, i) in selectedEvent.hashTag" :key="i">
-                  <span style="font-size:14px;">#{{hashtag}}</span>
+                  <span style="font-size:14px; color:#ffb319">#{{hashtag}}</span>
                 </div>
-
               </v-card-text>
             </div>
           </v-expand-transition>
@@ -111,7 +104,6 @@
           </v-card-actions>
         </v-card>
       </v-menu>
-      
     </v-sheet>
     <!-- 더보기 눌렀을때의 Dialog -->
       <v-dialog v-model="dialog" persistent max-width="280">
@@ -136,12 +128,13 @@
             <v-list-item
               v-for="(item, i) in items"
               :key="i"
+              @click="showMore(item.idx)"
             >
               <v-list-item-icon>
                 <v-icon v-text="item.icon"></v-icon>
               </v-list-item-icon>
-              <v-list-item-content>
-                <v-list-item-title v-text="item.text" @click="showMore(item.idx)"></v-list-item-title>
+              <v-list-item-content >
+                <v-list-item-title v-text="item.text" ></v-list-item-title>
               </v-list-item-content>
             </v-list-item>
           </v-list-item-group>
@@ -202,7 +195,7 @@ export default {
             noteMedia: res.data[i].noteMediaList[0],
             color: this.colors[this.rnd(0, this.colors.length - 1)],
             timed: true,
-            // time: res.data[i].noteCreatedTime
+            time: res.data[i].noteCreatedTime
           }
           note.text = res.data[i].noteTitle
           note.idx = res.data[i].noteId,
@@ -210,7 +203,6 @@ export default {
           events[i] = event
         }
         this.events = events;
-        console.log(this.items, '아이템즈')
       });
     },
     getEventColor(event) {
