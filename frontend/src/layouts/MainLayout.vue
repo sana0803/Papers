@@ -19,7 +19,7 @@ export default {
   created(){
     const loginCheck = localStorage.getItem('userId')
     if(loginCheck==null){
-      this.$router.push('/')
+      this.$router.push('/').catch(() => {})
     }
   }
 };

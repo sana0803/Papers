@@ -59,10 +59,10 @@ export default {
   methods: {
     change() {
       if (!this.mode) {
-        this.$router.push("diaryList2");
+        this.$router.push("diaryList2").catch(() => {});
         this.mode = true;
       } else if (this.mode) {
-        this.$router.push("diaryList1");
+        this.$router.push("diaryList1").catch(() => {});
         this.mode = false;
       }
     },
@@ -100,7 +100,7 @@ export default {
   mounted() {
     const loginCheck = localStorage.getItem("userId");
     if (loginCheck == null) {
-      this.$router.push("/");
+      this.$router.push("/").catch(() => {});
     }
     // 일기장 커버선택시 레이아웃 변경
     EventBus.$on("changeCover", (cover) => {

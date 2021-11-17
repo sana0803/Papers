@@ -103,7 +103,7 @@ export default {
   methods: {    
     cancel() {
       // this.$router.go(-1);
-       this.$emit('onPreview', false)
+      this.$emit('onPreview', false)
     },
   },
   computed: {
