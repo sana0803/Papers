@@ -1,11 +1,18 @@
 package com.diary.api.db.repository;
 
+import com.amazonaws.auth.AWSCredentials;
+import com.amazonaws.auth.BasicAWSCredentials;
+import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.AmazonS3Client;
+import com.amazonaws.services.s3.model.ObjectListing;
+import com.amazonaws.services.s3.model.S3ObjectSummary;
 import com.diary.api.db.entity.*;
 import com.diary.api.response.FontRes;
 import com.diary.api.response.StickerPackagesRes;
 import com.diary.api.response.StickerRes;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 
 import javax.swing.text.html.Option;
@@ -16,6 +23,14 @@ import java.util.OptionalInt;
 
 @Repository
 public class StoreRepositorySupport {
+
+    private String S3_IMAGE_URL = "https://papers-bucket.s3.amazonaws.com/";
+
+    @Value("${cloud.aws.credentials.access-key}")
+    private String ACCESS_KEY;
+
+    @Value("${cloud.aws.credentials.secret-key}")
+    private String SECRET_KEY;
 
     @Autowired
     JPAQueryFactory jpaQueryFactory;
@@ -29,17 +44,33 @@ public class StoreRepositorySupport {
     QSticker qSticker = QSticker.sticker;
 
 
-    public Optional<List<StickerRes>> getStickerList(String userId, Long stickerPackageId){
-        List<StickerRes> stickerResList = new ArrayList<>();
-        List<Sticker> stickers = jpaQueryFactory.select(qSticker).from(qSticker)
-                .where(qSticker.stickerPackage.id.eq(stickerPackageId)).fetch();
-        if(stickers == null) return Optional.empty();
+    public Optional<List<String>> getStickerList(String userId, String stickerPackageName){
+        AWSCredentials crd = new BasicAWSCredentials(ACCESS_KEY, SECRET_KEY);
+        AmazonS3 s3 = new AmazonS3Client(crd);
+        ObjectListing objects = s3.listObjects("papers-bucket", "store/sticker/" + stickerPackageName);
 
-        for(Sticker sticker : stickers) {
-            StickerRes stickerRes = new StickerRes(sticker.getId(), sticker.getStickerUrl());
-            stickerResList.add(stickerRes);
-        }
-        return Optional.of(stickerResList);
+        List<String> urls = new ArrayList<>();
+        do {
+            for (S3ObjectSummary objectSummary : objects.getObjectSummaries()) {
+                urls.add(S3_IMAGE_URL + objectSummary.getKey());
+            }
+        } while (objects.isTruncated());
+        if(urls.size() > 0) urls.remove(0);
+        return Optional.of(urls);
+    }
+
+    public Optional<List<String>> getDiaryCoverList(){
+        AWSCredentials crd = new BasicAWSCredentials(ACCESS_KEY, SECRET_KEY);
+        AmazonS3 s3 = new AmazonS3Client(crd);
+        ObjectListing objects = s3.listObjects("papers-bucket", "store/diary-cover");
+
+        List<String> urls = new ArrayList<>();
+        do {
+            for (S3ObjectSummary objectSummary : objects.getObjectSummaries()) {
+                urls.add(S3_IMAGE_URL + objectSummary.getKey());
+            }
+        } while (objects.isTruncated());
+        return Optional.of(urls);
     }
 
     public Optional<UserStickerPackage> getUserSticker(String userId, Long stickerPackageId) {
