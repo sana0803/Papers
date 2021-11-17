@@ -407,6 +407,13 @@
     // border-bottom: 1px solid #ffb319;
     transition: .25s;
   }
+  .go-write-btn:hover {
+    transition: .25s;
+  }
+  .go-write-btn:hover:after {
+    width: 98%;
+    left: 0;
+  }
 }
 #diary-list-item {
   float: left;
@@ -490,7 +497,7 @@
   min-height: 250px;
   // max-height: 300px;
   overflow: hidden;
-  background-color: #f7f7f7;
+  // background-color: #f7f7f7;
 }
 .diary-content-img {
   height: 300px;
