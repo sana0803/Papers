@@ -25,7 +25,13 @@
       <div v-if="currentDiary.ownerId == loginUser.userId" @click="goManage" id="Diary_PostIt2">
         관리
       </div>
-      <v-icon @click="change" id="Diary_Btn" style="font-size: 2em">widgets</v-icon>
+      <v-icon
+        @click="change"
+        id="Diary_Btn"
+        style="font-size: 2em"
+      >
+        apps
+      </v-icon>
       <div id="Diary_Out" class="diaryCover">
         <div id="Diary_In">
           <router-view />
@@ -117,8 +123,8 @@ export default {
 
 <style scoped>
 #Diary_Container {
-  border-right: 1px solid lightgrey;
-  border-left: 1px solid lightgrey;
+  /* border-right: 1px solid lightgrey; */
+  /* border-left: 1px solid lightgrey; */
   margin: 0 auto;
   width: 1272px;
   height: 100vh;
@@ -169,7 +175,7 @@ export default {
 }
 #Diary_Btn {
   position: absolute;
-  top: 8px;
+  top: 3px;
   left: 877px;
   cursor: pointer;
 }
@@ -179,9 +185,11 @@ export default {
   margin-top: 43px;
   background: #fae7cb;
   border-radius: 20px;
+  box-shadow: 2px 2px 11px 1px rgba(35, 35, 35, 0.20);
   display: flex;
   justify-content: center;
   align-items: center;
+
 }
 #Diary_In {
   width: 886px;

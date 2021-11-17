@@ -10,7 +10,7 @@
         v-on:focus="check"
       ></v-text-field>
       <v-btn id="Search_Btn" icon @click="searchHashtag">
-        <v-icon style="font-size: 2.8em">search</v-icon>
+        <v-icon style="font-size: 2.3em">search</v-icon>
       </v-btn>
     </div>
     <div v-if="listVisible" id="Hastag_List">
@@ -109,12 +109,13 @@ export default {
   display: inline-block;
 }
 #Search_Btn {
-  background: #ffb319;
-  color: white;
+  /* background: #ffb319; */
+  color: #585858;
   width: 40px;
   height: 40px;
   position: relative;
   top: -2px;
+  box-shadow: none;
 }
 #Hastag_List {
   text-align: center;

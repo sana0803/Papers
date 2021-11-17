@@ -61,9 +61,9 @@
             <div
               v-for="(sticker, id) in myStickerList"
               :key="id"
-              class="my-item"
+              class="my-sticker-item"
             >
-              <div class="item-img">
+              <div class="sticker-item-img">
                 <img :src="sticker.stickerList[0].stickerUrl" alt="스티커팩 이미지">
               </div>
               <div class="my-item-name">
@@ -82,7 +82,7 @@
             <div
               v-for="(myfont, id) in myFontList"
               :key="id"
-              class="my-item"
+              class="my-font-item"
             >
               <div class="my-font-name">
                 <span :style="{ 'font-family': myfont.fontUrl }">
@@ -341,7 +341,7 @@ export default {
   // background-color: aliceblue;
   border-top: 1px solid #d7d7d7;
   overflow: hidden;
-  padding: 22px;
+  padding: 22px 8px 22px 22px;
   overflow-y: auto;
 
   p {
@@ -356,6 +356,8 @@ export default {
 .my-item {
   // background-color: lightblue;
   float: left;
+  overflow: hidden;
+  width: 110px;
   margin-right: 15px;
   margin-bottom: 15px;
 }
@@ -364,23 +366,42 @@ export default {
   clear: both;
   display: block;
 }
+.my-sticker-item {
+  // background-color: lightblue;
+  float: left;
+  width: 110px;  
+  margin-right: 15px;
+  margin-bottom: 15px;
+}
+.my-font-item {
+  // background-color: lightblue;
+  line-height: 1.2;
+}
+.sticker-item-img {
+  width: 110px;
+  height: 110px;
+  overflow: hidden;
+
+  img {
+    width: 100%;
+  }
+}
 .item-img {
-  // border: 1px solid #ccc;
-  background: #eee;
+  // background: #eee;
   width: 110px;
   height: 150px;
   overflow: hidden;
 
   img {
     width: 100%;
-    height: 100%;
+    // height: 100%;
   }
 }
 .my-item-name {
   margin-top: 8px;
 
   span:first-child {
-    font-size: 16px;
+    font-size: 14px;
     font-weight: 500;
   }
 }
@@ -392,7 +413,6 @@ export default {
     font-weight: 500;
   }
 }
-
 #Mypage_Btn_Box {
   margin-top: 20px;
   float: right;

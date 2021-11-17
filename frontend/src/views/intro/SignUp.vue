@@ -160,6 +160,7 @@ export default {
   position: relative;
   /* top:10px; */
   font-size: 20px;
+  box-shadow: none;
 }
 .SignUp_Input {
   width: 220px;
@@ -168,7 +169,7 @@ export default {
 }
 #Line {
   height: 590px;
-  border: 1px solid #d7d7d7;
+  border: 1px solid #e7e7e7;
   position: absolute;
   top: 10px;
   left: 443px;

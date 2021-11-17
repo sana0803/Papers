@@ -5,9 +5,9 @@
       <div class="Sticker_img">
         <img :src="stickerPackage.stickerList[0].stickerUrl" style="width: 80%; margin-top: 10px; margin-left: 10%; margin-top: 30%;"/>
       </div>
-      <div class="Sticker_Title">
-        <span class="Sticker_Name">{{ stickerPackage.stickerPackageName }}</span>
-        <span class="Sticker_Price">{{ stickerPackage.stickerPackagePrice }}장</span>
+      <div class="sticker-title">
+        <span class="sticker-name">{{ stickerPackage.stickerPackageName }}</span>
+        <span class="sticker-price">{{ stickerPackage.stickerPackagePrice }}장</span>
       </div>
     </div>
 
@@ -37,10 +37,10 @@
         <div id="Dialog_Content">
           <div id="Dialog_Title">
             <div id="Dialog_img">
-              <img :src="stickerList[0].stickerUrl" style="width: 80%; height: 80%; margin-top: 15px; margin-left: 15px;"/>
+              <img :src="stickerList[0].stickerUrl" />
             </div>
             <div id="Dialog_Name">
-              <div id="Name_Author">작가명 아무개</div>
+              <div id="Name_Author">Papers</div>
               <div id="Name_Name">{{ stickerPackage.stickerPackageName }}</div>
               <div id="Name_Price">{{ stickerPackage.stickerPackagePrice }}장</div>
               <div id="Name_Btn_Box">
@@ -149,16 +149,13 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .Sticker_Item {
   display: inline-block;
   width: 286px;
   margin-bottom: 32px;
   margin-left: 32px;
   position: relative;
-}
-.Sticker_Item:hover {
-  opacity: 0.7;
 }
 .sticker-check{
   position: absolute;
@@ -172,6 +169,7 @@ export default {
   top: 12px;
   left: 12px;
   border-radius: 4px;
+  z-index: 3;
 }
 .Sticker_img {
   width: 286px;
@@ -180,12 +178,23 @@ export default {
   box-shadow: 3px 3px 11px rgba(166, 166, 168, 0.35);
   overflow: hidden;
   cursor: pointer;
+
+  img:hover {
+    opacity: 0.7;
+    transition: .2s;
+  }
 }
-.Sticker_Title {
+.sticker-title {
   margin-top: 19px;
   font-size: 15px;
 }
-.Sticker_Price {
+.sticker-name {
+  cursor: pointer;  
+}
+.sticker-name:hover {
+  color: #979797;
+}
+.sticker-price {
   float: right;
   color: #ffb319;
   font-weight: 600;
@@ -224,7 +233,6 @@ export default {
   align-items: center;
 }
 .Dialog_Item {
-  background-color: lemonchiffon;
   width: 100px;
   height: 100px;
   border-radius: 50px;
@@ -237,11 +245,18 @@ export default {
   height: 118px;
   border-radius: 100px;
   background: #FAE7CB;
+
+  img {
+    margin-top: 11px;
+    margin-left: 11px;
+    width: 96px;
+    height: 96px;
+  }
 }
 #Dialog_Name {
-  /* width:200px; */
   height: 118px;
   margin-left: 61px;
+  /* background: lightcoral; */
 }
 #Name_Author {
   color: #585858;
@@ -260,7 +275,7 @@ export default {
 }
 #Name_Btn_Box {
   width: 164px;
-  height: 32px;
+  /* height: 32px; */
   display: flex;
   justify-content: space-between;
 }

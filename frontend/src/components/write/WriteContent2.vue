@@ -20,8 +20,8 @@
             id="utitle"
             label="제목을 입력하세요"
             color="#979797"
-            counter="20"
-            maxlength="20"            
+            counter="26"
+            maxlength="26"            
             single-line
             required
           ></v-text-field>        
@@ -80,26 +80,10 @@
           <div v-else-if="files.length > 0">
             <img :src="files[0].preview" class="img-preview">
           </div>
-        </div>
-          <!-- <div v-if="note.noteS3MediaList > 0" sytle="height:300px;">
-            <v-carousel
-              hide-delimiters
-              height="300"
-              style="height:300px;">
-              <v-carousel-item
-                v-for="(media, idx) in note.noteS3MediaList"
-                :key="idx"
-              >
-                <img class="img-preview" :src="media" style="height: 300px width: 100%;"/>
-              </v-carousel-item>
-              <v-carousel-item
-                v-for="(file, idx) in files"
-                :key="idx"
-                :src="file.preview"
-                class="img-preview"
-              ></v-carousel-item>
-            </v-carousel>            
-          </div> -->   
+          <p v-else style="color:#888; text-align: center; margin-top:36%;">
+            사진 용량은 각 2MB까지 업로드 가능합니다.
+          </p>
+        </div>  
       </div>
     <div id="HashTag_Input">
       <v-text-field
@@ -524,14 +508,14 @@ export default {
 }
 .img-preview {
   // background: #eee;
-  display: inline-block;  
-  width: 100%;
+  display: inline-block;
+  width: 371px;
   height:300px;
-  
+  object-fit: cover;
+
   img {
-    width: 100%;    
-    object-fit: cover;
-    // height: auto;
+    height:300px; 
+    object-fit: cover;    
   }
 }
 .img-section {
@@ -589,8 +573,7 @@ textarea {
   width:300px;
   height:300px;
 }
-
 #targetDialog::-webkit-scrollbar {
-    display: none; /* Chrome, Safari, Opera*/
+  display: none; /* Chrome, Safari, Opera*/
 }
 </style>
