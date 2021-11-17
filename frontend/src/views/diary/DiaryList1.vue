@@ -40,6 +40,7 @@
                     :src="img"
                     class="diary-content-img"
                   ></v-carousel-item>
+                  <img v-for="sticker in note.stickerList" :key="sticker.id" :src="sticker.sticker.stickerUrl" :style="{top:sticker.topPixel, left:sticker.leftPixel}" class="sticker"/>
                 </v-carousel>
               </div>
               <div v-else-if="note.noteMediaList.length == 0">
@@ -47,7 +48,7 @@
               <div v-else>
                 <div style="position:relative;">
                   <img :src="note.noteMediaList[0]" class="diary-content-img" alt="일기 사진" style="width:371px;"/>
-                  <img v-for="sticker in note.noteStickerList" :key="sticker.id" :src="sticker.sticker.stickerUrl" :style="{top:sticker.topPixel, left:sticker.leftPixel}" class="sticker" />
+                  <img v-for="sticker in note.stickerList" :key="sticker.id" :src="sticker.sticker.stickerUrl" :style="{top:sticker.topPixel, left:sticker.leftPixel}" class="sticker"/>
                 </div> 
               </div>
             </div>
@@ -212,7 +213,7 @@
       goWrite() {
         this.$store.commit('initNoteContent')
         this.$store.commit('setIsUpdate', false)
-        this.$router.push("/write");
+        this.$router.push("/write").catch(() => {});
       },
       goUpdate(note) {
         const localNote = {
@@ -227,12 +228,22 @@
           noteS3MediaList: note.noteMediaList,
           noteMediaList: [],
           noteHashtagList: '#' + note.noteHashtagList[0],
-          stickerList: note.noteStickerList,
+          stickerList: note.stickerList,
           emotionList: note.emotionList
         }
+        
         localNote.noteContent = note.noteContent.replace(/\/>/g, "")
         localNote.noteContent = localNote.noteContent.replace(/<br /g, "\n") // 줄 바꿈 처리 html to string
-
+        const stickerList = [];
+        for(let i = 0; i < localNote.stickerList.length; i++){
+          stickerList.push({
+            stickerId : localNote.stickerList[i].sticker.id,
+            topPixel : localNote.stickerList[i].topPixel,
+            leftPixel : localNote.stickerList[i].leftPixel
+          })
+        }
+        this.$store.commit('setStickerList', note.stickerList)
+        localNote.stickerList = stickerList;
         for (let i = 1; i < note.noteHashtagList.length; i++) {
           localNote.noteHashtagList += ('#' + note.noteHashtagList[i])
         }
@@ -247,11 +258,9 @@
       onDeleteNote(id) {
         this.$store.dispatch("deleteNote", id)
           .then(() => {
-            console.log('일기 삭제')
             this.dialog = false;
             this.$store.dispatch("getDiaryContent", this.currentDiary.id)
               .then((res) => {
-                console.log(res.data)
                 this.noteList = res.data.note.reverse();
                 this.emotionReq.diaryId = this.noteList[0].diaryId
                 this.page = 1

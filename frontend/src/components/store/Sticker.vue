@@ -71,6 +71,8 @@
 </template>
 
 <script>
+import Swal from "sweetalert2";
+
 export default {
   data() {
     return {
@@ -123,7 +125,20 @@ export default {
       this.$store.dispatch('purchaseStickerPackage', stickerPackage.id).then(() => {
         this.loginUser.userMileage -= stickerPackage.stickerPackagePrice;
         this.$store.commit('setLoginUser', this.loginUser);
-        this.$router.go();
+        
+        this.$store.dispatch('getStoreStickerList').then((res) => {
+          this.stickerPackageList = res.data;
+          this.change(this.page)
+
+          Swal.fire({
+            icon: "success",
+            title:
+              '<span style="font-size:25px;">성공적으로 구매되었습니다.</span>',
+            confirmButtonColor: "#b0da9b",
+            confirmButtonText: '<span style="font-size:18px;">확인</span>',
+          });
+          this.dialog = false
+        })
       })
       .catch(() => {
         alert('마일리지가 부족하거나 이미 소유중입니다');
@@ -196,7 +211,8 @@ export default {
 }
 #Dialog_Title {
   height: 118px;
-  background-color: #eee;
+  /* background-color: #eee; */
+  display: flex;
   overflow: hidden;
 }
 #Dialog_List {
@@ -208,26 +224,24 @@ export default {
   align-items: center;
 }
 .Dialog_Item {
+  background-color: lemonchiffon;
   width: 100px;
   height: 100px;
   border-radius: 50px;
-  background: #fae7cb;
+  background: #f7f7f7;
   margin-right: 10px;
   margin-left: 10px;
 }
 #Dialog_img {
-  display: inline-block;
   width: 118px;
   height: 118px;
   border-radius: 100px;
-  background: #b8dfd8;
+  background: #FAE7CB;
 }
 #Dialog_Name {
-  display: inline-block;
   /* width:200px; */
   height: 118px;
   margin-left: 61px;
-  overflow: hidden;
 }
 #Name_Author {
   color: #585858;

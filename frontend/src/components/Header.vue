@@ -2,7 +2,7 @@
   <div id="Header_Container">
     <div @click="goHome" id="header-title">PAPERS</div>
     <div @click="goDiary" id="header-diary">내 일기</div>
-    <div @click="goAlbum" id="header-album">내 앨범</div>
+    <div @click="goAlbum" id="header-album">앨범화</div>
     <div @click="goStore" id="header-store">상점</div>
     
     <div id="Header_Profile">
@@ -44,23 +44,23 @@ export default {
             this.$router.push('/main').catch((err) => {if(err.name !== 'NavigationDuplicated') throw err; });
         },
         goAlbum() {
-            this.$router.push('/main/album')
+            this.$router.push('/main/album').catch(() => {})
         },
         goStore() {
-            this.$router.push('/main/store')
+            this.$router.push('/main/store').catch(() => {})
         },
         goAlert() {
-            this.$router.push('/main/alert')
+            this.$router.push('/main/alert').catch(() => {})
         },
         goMyPage() {
-            this.$router.push('/main/myPage')
+            this.$router.push('/main/myPage').catch(() => {})
         },
         logout() {
             this.$store.commit('setLoginUser', {})
-            this.$router.push('/')
+            this.$router.push('/').catch(() => {})
             console.log(this.getAlarmEventSource + '로그아웃 시 event close')
             localStorage.removeItem('userId')
-            this.getAlarmEventSource.close()
+            this.getAlarmEventSource.close
         }
     }
 }

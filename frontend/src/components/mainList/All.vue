@@ -17,7 +17,6 @@
       <div v-else align="center">
         <div class="note-detail" >
           <div class="note-detail-area" :style="{ 'font-family': getAllFonts[note.fontId - 1].fontUrl }" v-html="note.noteContent">
-            
           </div>
         </div>
       </div>
@@ -26,7 +25,7 @@
         <span class="note_Day">{{ note.noteCreatedDate }}</span>
       </div>
     </div>
-
+    
     <!-- 일기 페이지네이션 -->
     <div id="diary-pagination">
       <v-pagination
@@ -38,6 +37,7 @@
         color="#FFB300"
       ></v-pagination>
     </div>
+
   </div>
 </template>
 
@@ -80,7 +80,7 @@ export default {
         this.$store.commit('setCurrentDiary', res.data)
         this.$store.commit('setNoteContent', note) // mutaion 호출 ('뮤테이션 이름, 매개변수)
         // this.$router.push({name: 'diary', query: {diaryId: '1', noteId: '2'}})
-        this.$router.push("/diary");
+        this.$router.push("/diary").catch(() => {});
       })
     }
   },

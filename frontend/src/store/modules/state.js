@@ -24,7 +24,8 @@ export default function () {
         noteHashtagList: [],
         stickerList: [],
         emotionList: []
-    }
+  }
+    const stickerList = []
   
     let isUpdate = false
     
@@ -55,6 +56,7 @@ export default function () {
       notifications,
       myFont,
       allFonts,
+      stickerList,
       myFontList
     }
 }

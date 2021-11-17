@@ -22,7 +22,7 @@ export default {
       console.log('hi')
       this.$store.commit('initNoteContent')
       this.$store.commit('setIsUpdate', false)
-      this.$router.push("/write");
+      this.$router.push("/write").catch(() => {});
     },
   },
 };
@@ -54,7 +54,7 @@ export default {
 }
 .MainList_Item {
   display: inline-block;
-  width: 284px;
+  width: 286px;
   height: 394px;
   margin-bottom: 31px;
   margin-left: 31px;

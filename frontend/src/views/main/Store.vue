@@ -69,7 +69,7 @@ export default {
       }
     },
     goTemplete() {
-      this.$router.push("templete");
+      this.$router.push("templete").catch(() => {});
     },
   },
 };

@@ -173,6 +173,9 @@ export default {
     loginUser() {
       return this.$store.getters.getLoginUser;
     },
+    currentDiary() {
+      return this.$store.getters.getCurrentDiary;
+    },
     getMyFont() {
       // v-text-field에 폰트 적용하기
       const target = document.getElementsByClassName("v-text-field__slot")
@@ -229,12 +232,18 @@ export default {
           break;
         }
       }
-      for(let i=1;i<this.stickerNum;i++){
-        var temp = document.getElementById('sticker' + i) 
+      outer: for(let i=1; i < this.stickerNum; i++){
+        var temp = document.getElementById('sticker' + i)
         var item = {
           leftPixel: temp.style.left,
           stickerId: temp.className,
           topPixel: temp.style.top
+        }
+        for(let j = 0; j < this.note.stickerList.length; j++){
+          if(this.note.stickerList[j].stickerId == item.stickerId) {
+            this.note.stickerList[j] = item;
+            continue outer;
+          }
         }
         this.note.stickerList.push(item)
       }
@@ -245,6 +254,7 @@ export default {
         noteHashtagList[i-1] = tmp[i]
       }
 
+      console.log('노트', this.note.stickerList)
       // 리퀘스트 객체 작성
       const formData = new FormData();
       formData.append("designId", this.note.designId);  // 디자인 ID
@@ -261,6 +271,7 @@ export default {
         formData.append("noteMediaList[]", this.$refs.files.files[i]);
       }
       formData.append("noteTitle", this.note.noteTitle);    // 타이틀
+      console.log('스티커리스트', this.note.stickerList)
       for(let i = 0; i < this.note.stickerList.length; i++){  // 스티커 리스트
         formData.append('stickerList[' + i + '].leftPixel', this.note.stickerList[i].leftPixel)
         formData.append('stickerList[' + i + '].stickerId', this.note.stickerList[i].stickerId)
@@ -280,7 +291,7 @@ export default {
           const loginUser = this.$store.getters["getLoginUser"];
           loginUser.userMileage += 10;
           this.$store.commit("setLoginUser", loginUser);
-          this.$router.push("/main");
+          this.$router.push("/main").catch(() => {});
         });
       } else if (this.$store.getters["getIsUpdate"] == true) {  // 일기 수정
         const note = {
@@ -295,7 +306,7 @@ export default {
             confirmButtonText: '<span style="font-size:18px;">확인</span>',
           });
           this.$store.commit("initNoteContent");
-          this.$router.push("/main");
+          this.$router.push("/main").catch(() => {});
         });
       }
     },
@@ -340,11 +351,47 @@ export default {
           }
         }
   },
-  created() {
+  mounted() {
       // 만약 수정하는 상태이면, state에 저장된 노트 컨텐츠들 가져오기
+      this.selectDiary = this.currentDiary.diaryTitle
+
       if(this.$store.getters['getIsUpdate'] == true) {
+        const stickerList = this.$store.getters.getStickerList;
         this.note = this.$store.getters['getNoteContent']
-        console.log(this.note)
+        
+        const box = document.getElementById('file-section')
+        for(let i = 0; i < this.note.stickerList.length; i++){
+          for(let j = 0; j < stickerList.length; j++){
+            console.log('실행')
+            if(this.note.stickerList[i].stickerId === stickerList[j].sticker.id){
+              let img = document.createElement('img')
+
+              img.id = 'sticker' + this.stickerNum
+              this.stickerNum++
+              img.src = stickerList[j].sticker.stickerUrl
+              img.style.width = '50px'
+              img.style.height = '50px'
+              img.style.position = 'absolute'
+              img.style.top = stickerList[j].topPixel
+              img.style.left = stickerList[j].leftPixel
+              img.style.cursor = 'pointer'
+              img.className = stickerList[j].sticker.id
+              box.append(img)
+              this.dragElement(img);
+              break;
+            }
+          }          
+        }
+        const stickerArray = []
+        for(let i = 0; i < stickerList.length; i++){
+          const stickers = {
+            stickerId : stickerList[i].sticker.id,
+            topPixel : stickerList[i].topPixel,
+            leftPixel : stickerList[i].leftPixel
+          }
+          stickerArray.push(stickers)
+        }
+        this.note.stickerList = stickerArray
       }
       this.$store.dispatch("diaryGet").then((res) => {
         const tmp = []
@@ -357,7 +404,6 @@ export default {
 
       EventBus.$on('createSticker', (sticker) => {
         const box = document.getElementById('file-section')
-        console.log('312312313',box)
         // const div = document.createElement('div')
         const img = document.createElement('img')
 
