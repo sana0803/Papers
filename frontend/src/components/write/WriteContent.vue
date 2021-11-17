@@ -142,7 +142,7 @@ export default {
             });
           // console.log(res.data);
           this.$store.commit('initNoteContent')
-          this.$router.push('/main')
+          this.$router.push('/main').catch(() => {})
         });
       }
       else if(this.$store.getters['getIsUpdate'] == true) {
@@ -160,7 +160,7 @@ export default {
             });
           // console.log(res.data);
           this.$store.commit('initNoteContent')
-          this.$router.push('/main')
+          this.$router.push('/main').catch(() => {})
         });
       }
     },

@@ -141,7 +141,7 @@ export default {
           }
           this.$store.commit('setAlarmEventSource', alarmEventSource)
 
-          this.$router.push("main");
+          this.$router.push("main").catch(() => {});
         })
         .catch(() => {
           Swal.fire({
@@ -154,7 +154,7 @@ export default {
         });
     },
     goSignUp() {
-      this.$router.push("signUp");
+      this.$router.push("signUp").catch(() => {});
     },
     spread() {
       setTimeout(() => (this.introMode = false), 250);

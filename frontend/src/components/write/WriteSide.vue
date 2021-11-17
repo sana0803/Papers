@@ -111,7 +111,7 @@ export default {
       this.dialog = true;
     },
     goStore() {
-      this.$router.push("/main/store");
+      this.$router.push("/main/store").catch(() => {});
     },
     getUserFonts: function () {
       this.$store.dispatch("getUserFonts")
