@@ -133,7 +133,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .note_Item {
   display: inline-block;
   width: 286px;
@@ -204,5 +204,24 @@ export default {
   margin-top: 24px;
   padding-bottom: 2px;
   font-weight: 600;
+  background-color: #eee;
+}
+.go-write-btn:after {
+  position: absolute;
+  content: '';
+  width: 0;
+  left: 0;
+  height: 2px;
+  bottom: 0px;
+  background-color: #ffb319;
+  // border-bottom: 1px solid #ffb319;
+  transition: .25s;
+}
+.go-write-btn:hover {
+  transition: .25s;
+}
+.go-write-btn:hover:after {
+  width: 98%;
+  left: 0;
 }
 </style>
