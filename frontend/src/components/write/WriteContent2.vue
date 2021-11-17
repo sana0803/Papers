@@ -524,14 +524,14 @@ export default {
 }
 .img-preview {
   // background: #eee;
-  display: inline-block;  
-  width: 100%;
+  display: inline-block;
+  width: 371px;
   height:300px;
-  
+  object-fit: cover;
+
   img {
-    width: 100%;    
-    object-fit: cover;
-    // height: auto;
+    height:300px; 
+    object-fit: cover;    
   }
 }
 .img-section {

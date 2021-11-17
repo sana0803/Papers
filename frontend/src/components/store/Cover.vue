@@ -185,6 +185,7 @@ export default {
   width: 37%;
   margin-left: 61px;
   // background: #585858;
+  margin-top: -5%;
 }
 #Name_Author {
   color: #585858;
@@ -228,22 +229,33 @@ export default {
   top: 12px;
   left: 12px;
   border-radius: 5px;
+  z-index: 3;
 }
 .cover-img {
   width: 286px;
   height: 394px;
-  background: rgb(199, 193, 188);
   box-shadow: 3px 3px 11px rgba(166, 166, 168, 0.35);
   overflow: hidden;
   cursor: pointer;
+
   img {
     width: 100%;
     height: 100%;
   }
+  img:hover {
+    transition: .2s;
+    opacity: .7;
+  }
 }
 .cover-title {
   margin-top: 19px;
-  font-size: 15px;
+  font-size: 15px;  
+}
+.cover-name {
+  cursor: pointer;
+}
+.cover-name:hover {
+  color: #979797;
 }
 .cover-price {
   float: right;

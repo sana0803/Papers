@@ -9,12 +9,6 @@
         </v-btn>
       </div>
       <div id="Font_Content">
-        <!-- <div class="Font_Item">
-          <v-icon class="Font_Icon" style="font-size: 1.2em; color: #ffb319"
-            >done</v-icon
-          >
-          <span class="Font_Name">카페숑24 숑숑체</span>
-        </div> -->
         <div v-for="myFont in myFontList" :key="myFont.id" class="Font_Item">
           <v-icon v-if="myFont.fontName == select" class="Font_Icon" style="font-size: 1.2em; color: #ffb319"
             >done</v-icon
@@ -34,7 +28,7 @@
       <div id="Sticker_Content">
         <div v-for="stickerPackage in stickerPackageList" :key="stickerPackage.id" @click="dialogOn(stickerPackage)" class="Sticker_Item">
           <div class="Sticker_Img">
-            <img :src="stickerPackage.stickerList[0].stickerUrl" style="width:100%; height:100%;" />
+            <img :src="stickerPackage.stickerList[0].stickerUrl" />
           </div>
           <div class="Sticker_Name">{{ stickerPackage.stickerPackageName }}</div>
         </div>
@@ -53,26 +47,12 @@
         <div id="Dialog_Content">
           <div id="Dialog_Title">
             <div id="Dialog_img">
-              <img :src="stickerList[0].stickerUrl" style="width: 80%; height: 80%; margin-top: 15px; margin-left: 15px;"/>
+              <img :src="stickerList[0].stickerUrl"/>
             </div>
             <div id="Dialog_Name">
-              <div id="Name_Author">작가명 아무개</div>
+              <div id="Name_Author">Papers</div>
               <div id="Name_Name">{{ stickerPackage.stickerPackageName }}</div>
               <div id="Name_Price">{{ stickerPackage.stickerPackagePrice }}장</div>
-              <!-- <div id="Name_Btn_Box">
-                <v-btn
-                  style="background: #ffb319; color: white"
-                  class="Name_Btn"
-                  @click="purchageStickerPackage(stickerPackage)"
-                  >구매</v-btn
-                >
-                <v-btn
-                  @click="dialog = false"
-                  style="background: #9f9f9f; color: white"
-                  class="Name_Btn"
-                  >취소</v-btn
-                >
-              </div> -->
             </div>
           </div>
           <div id="Dialog_List">
@@ -186,7 +166,9 @@ export default {
   color: #ffb319;
 }
 #Font_Content {
+  // background: #eee;
   height: 285px;
+  padding: 12px;
   overflow: auto;
   -ms-overflow-style: none;
   scrollbar-width: none;
@@ -199,12 +181,10 @@ export default {
   // padding-left:31px;
   height: 30px;
   font-size: 20px;
-  margin-top: 15px;
   position: relative;
 }
 .Font_Icon {
   position: absolute;
-  left: 3px;
   top: 1px;
 }
 .Font_Name {
@@ -213,11 +193,15 @@ export default {
   cursor: pointer;
 }
 .Font_Name:hover {
-  background: rgb(221, 221, 221);
+  // background: #eee;
+  color: #ffb319;
+  font-weight: 500;
+  transition: .2s;
 }
 #Sticker_Content {
   height: 574px;
   width:85%;
+  // background: #ffb319;
   margin:0 auto;
   display: flex;
   flex-wrap: wrap;
@@ -231,17 +215,26 @@ export default {
 }
 .Sticker_Item {
   width: 150px;
-  height: 230px;
+  height: 185px;
   margin-top: 27px;
   cursor: pointer;
+  // background: yellow;
 }
 .Sticker_Item:hover{
   opacity: 0.7;
 }
 .Sticker_Img {
   width: 150px;
-  height: 205px;
-  background: #ffb319;
+  height: 150px;
+  // background: #eee;
+  border: solid 1px #eee;
+  overflow: hidden;
+  
+  img {
+    width: 150px;
+    // height: 150px;
+    object-fit: cover;
+  }
 }
 .Sticker_Name {
   font-size: 16px;
@@ -265,9 +258,13 @@ export default {
 #Dialog_Content {
   height: 568px;
   padding: 34px 46px;
+  // background-color: lightpink;
 }
 #Dialog_Title {
   height: 118px;
+  // background-color: #eee;
+  display: flex;
+  overflow: hidden;
 }
 #Dialog_List {
   height: 306px;
@@ -281,28 +278,30 @@ export default {
   width: 100px;
   height: 100px;
   border-radius: 50px;
-  background: #fae7cb;
+  background: #f7f7f7;
   margin-right: 10px;
   margin-left: 10px;
-  cursor:pointer;
 }
 #Dialog_img {
-  display: inline-block;
   width: 118px;
   height: 118px;
   border-radius: 100px;
-  background: #b8dfd8;
+  background: #FAE7CB;
+
+  img {
+    margin-top: 11px;
+    margin-left: 11px;
+    width: 96px;
+    height: 96px;
+  }
 }
 #Dialog_Name {
-  // border:1px solid red;
-  padding-top:30px;
-  display: inline-block;
-  /* width:200px; */
   height: 118px;
   margin-left: 61px;
-  overflow: hidden;
+  // background: lightcoral;
 }
 #Name_Author {
+  margin-top: 16px;
   color: #585858;
   font-size: 14px;
 }
@@ -314,11 +313,12 @@ export default {
   position: relative;
   top: -3px;
   font-size: 18px;
+  font-weight: 600;
   color: #ffb319;
 }
 #Name_Btn_Box {
   width: 164px;
-  height: 32px;
+  /* height: 32px; */
   display: flex;
   justify-content: space-between;
 }

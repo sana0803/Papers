@@ -524,6 +524,7 @@
 }
 .diary-content-img {
   height: 300px;
+  object-fit: cover;
   // background-color: aquamarine;
 }
 .diary-emotion {

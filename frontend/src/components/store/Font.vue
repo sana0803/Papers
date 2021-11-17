@@ -245,6 +245,7 @@ export default {
   margin-right: 16px;
   float: right;
   font-size: 15px;
+  box-shadow: none;
   /* color: #585858; */
 }
 #Dialog {
@@ -280,6 +281,7 @@ export default {
   width: 76px;
   height: 32px;
   color: #585858;
+  box-shadow: none;
 }
 .input-area {
   width: 45%; 

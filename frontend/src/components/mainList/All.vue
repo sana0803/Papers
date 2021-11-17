@@ -199,12 +199,12 @@ export default {
   position: relative;
   overflow: hidden;
   cursor: pointer;
-  width: 37%;
+  width: 18%;
   color: #ffb319;
   margin-top: 24px;
   padding-bottom: 2px;
   font-weight: 600;
-  background-color: #eee;
+  // background-color: #eee;
 }
 .go-write-btn:after {
   position: absolute;
@@ -221,7 +221,7 @@ export default {
   transition: .25s;
 }
 .go-write-btn:hover:after {
-  width: 98%;
+  width: 99%;
   left: 0;
 }
 </style>

@@ -25,7 +25,13 @@
       <div v-if="currentDiary.ownerId == loginUser.userId" @click="goManage" id="Diary_PostIt2">
         관리
       </div>
-      <v-icon @click="change" id="Diary_Btn" style="font-size: 2em">widgets</v-icon>
+      <v-icon
+        @click="change"
+        id="Diary_Btn"
+        style="font-size: 2em"
+      >
+        apps
+      </v-icon>
       <div id="Diary_Out" class="diaryCover">
         <div id="Diary_In">
           <router-view />
