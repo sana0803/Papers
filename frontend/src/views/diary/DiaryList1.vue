@@ -194,7 +194,10 @@
             this.$store.dispatch("getDiaryContent", this.currentDiary.id)
               .then((res) => {
                 this.noteList = res.data.note.reverse();
-                this.emotionReq.diaryId = this.noteList[0].diaryId
+                for (let i = 0; i < this.noteList.length; i++) {
+                  this.noteList[i].noteContent = this.noteList[i].noteContent.replace(/\n/g, "<br />")
+                }
+                this.emotionReq.diaryId = this.currentDiary.id
                 this.change(this.page)
               })
           })
@@ -205,7 +208,10 @@
             this.$store.dispatch("getDiaryContent", this.currentDiary.id)
               .then((res) => {
                 this.noteList = res.data.note.reverse();
-                this.emotionReq.diaryId = this.noteList[0].diaryId
+                for (let i = 0; i < this.noteList.length; i++) {
+                  this.noteList[i].noteContent = this.noteList[i].noteContent.replace(/\n/g, "<br />")
+                }
+                this.emotionReq.diaryId = this.currentDiary.id
                 this.change(this.page)
               })
           })
@@ -292,19 +298,19 @@
       ]),
     },
     created() {
-      this.$store.dispatch("getDiaryContent", this.currentDiary.id)
-        .then((res) => {
-          this.noteList = res.data.note.reverse();
-          // 일기의 폰트 id값에 맞춰 폰트url값으로 변경
-          for (var j=0; j<this.noteList.length; j++) {
-            for (var i = 0; i < this.getAllFonts.length; i++) {
-              if (this.getAllFonts[i].id == this.noteList[j].fontId) {
-                this.noteList[j].fontId = this.getAllFonts[i].fontUrl
-                break
-              }
-            }
-          }
-        })
+      // this.$store.dispatch("getDiaryContent", this.currentDiary.id) // 일기를 notelist에 저장하고 폰트를 매칭해줌 
+      //   .then((res) => {
+      //     this.noteList = res.data.note.reverse();
+      //     // 일기의 폰트 id값에 맞춰 폰트url값으로 변경
+      //     for (var j=0; j<this.noteList.length; j++) {
+      //       for (var i = 0; i < this.getAllFonts.length; i++) {
+      //         if (this.getAllFonts[i].id == this.noteList[j].fontId) {
+      //           this.noteList[j].fontId = this.getAllFonts[i].fontUrl
+      //           break
+      //         }
+      //       }
+      //     }
+      //   })
       const diaryIdQuery = this.$route.query.diaryId
       const noteIdQuery = this.$route.query.noteId
       if (diaryIdQuery && noteIdQuery) {
@@ -313,6 +319,9 @@
         this.$store.dispatch("getDiaryContent", diaryIdQuery)
         .then((res) => {
           this.noteList = res.data.note.reverse();
+          for (let i = 0; i < this.noteList.length; i++) {
+            this.noteList[i].noteContent = this.noteList[i].noteContent.replace(/\n/g, "<br />")
+          }
           this.emotionReq.diaryId = this.noteList[0].diaryId
 
           for (let i = 0; i < this.noteList.length; i++) {
@@ -329,15 +338,18 @@
       this.$store.dispatch("getDiaryContent", this.currentDiary.id)
         .then((res) => {
           this.noteList = res.data.note.reverse();
-          this.emotionReq.diaryId = this.noteList[0].diaryId
+          this.emotionReq.diaryId = this.currentDiary.id
           
+          for (let i = 0; i < this.noteList.length; i++) {
+            this.noteList[i].noteContent = this.noteList[i].noteContent.replace(/\n/g, "<br />")
+          }
           this.viewList = []
           var page = 1
           for(let i=0;i<this.noteList.length;i++){
             if(i>0 && i%2==0){
               page++
             }
-            this.noteList[i].noteContent = this.noteList[i].noteContent.replace(/\n/g, "<br />")
+            
             if(this.noteContent.noteId == this.noteList[i].noteId) {
               if(i==this.noteList.length-1 && i%2==0){
                 this.viewList.push(this.noteList[i])
