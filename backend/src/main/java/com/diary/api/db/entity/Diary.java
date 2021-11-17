@@ -3,6 +3,7 @@ package com.diary.api.db.entity;
 
 import com.diary.api.db.repository.DiaryCoverRepository;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
