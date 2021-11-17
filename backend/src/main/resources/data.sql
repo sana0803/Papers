@@ -38,8 +38,8 @@ insert into user_font values (2, 2, 'test1') ON DUPLICATE KEY UPDATE id=2;
 insert into user_font values (3, 3, 'test2') ON DUPLICATE KEY UPDATE id=3;
 
 -- 스티커 패키지
-insert into sticker_package values (1, 'pack1', 50) ON DUPLICATE KEY UPDATE id=1;
-insert into sticker_package values (2, 'pack2', 50) ON DUPLICATE KEY UPDATE id=2;
+insert into sticker_package values (1, 'sample 스티커', 50) ON DUPLICATE KEY UPDATE id=1;
+insert into sticker_package values (2, '우리의 친구 페퍼', 50) ON DUPLICATE KEY UPDATE id=2;
 
 -- 다이어리 커버
 insert into diary_cover values (1, 'blue', 500, 'https://papers-bucket.s3.ap-northeast-2.amazonaws.com/diary-cover/blue.jpg') ON DUPLICATE KEY UPDATE id=1;
@@ -49,10 +49,12 @@ insert into diary_cover values (4, '노을커버', 600, 'https://papers-bucket.s
 
 -- 다이어리
 insert into diary values (1, sysdate(), '기본 일기장', 1, 'test1') ON DUPLICATE KEY UPDATE id=1;
+insert into diary values (2, sysdate(), '기본 일기장', 1, 'test2') ON DUPLICATE KEY UPDATE id=2;
+insert into diary values (3, sysdate(), '기본 일기장', 1, 'test3') ON DUPLICATE KEY UPDATE id=3;
 
 -- 노트
-insert into note (id, note_content, note_create_date, note_create_time, note_title, diary_id, font_id, design_id, layout_id, writer_id)
- values (1, 'content1', sysdate(), localtime(), 'title1', 1, 1, 1, 1, 'test1') ON DUPLICATE KEY UPDATE id = 1;
+--insert into note (id, note_content, note_create_date, note_create_time, note_title, diary_id, font_id, design_id, layout_id, writer_id)
+-- values (1, 'content1', sysdate(), localtime(), 'title1', 1, 1, 1, 1, 'test1') ON DUPLICATE KEY UPDATE id = 1;
 
 -- 스티커
 insert into sticker values (1, 'sticker-url-1', 1) ON DUPLICATE KEY UPDATE id=1;
@@ -66,13 +68,13 @@ insert into sticker values (8, 'https://papers-bucket.s3.ap-northeast-2.amazonaw
 insert into sticker values (9, 'https://papers-bucket.s3.ap-northeast-2.amazonaws.com/store/sticker/pack1/sticker6.png', 2) ON DUPLICATE KEY UPDATE id=9;
 
 -- 유저 스티커 패키지
-insert into user_sticker_package values (1, 1, 'test1') ON DUPLICATE KEY UPDATE id=1;
+--insert into user_sticker_package values (1, 1, 'test1') ON DUPLICATE KEY UPDATE id=1;
 
 -- 노트 해시태그
-insert into note_hashtag values (1, '좋아요', 1) ON DUPLICATE KEY UPDATE id=1;
+--insert into note_hashtag values (1, '좋아요', 1) ON DUPLICATE KEY UPDATE id=1;
 
 -- 노트 미디어
-insert into note_media values (1, '.jpg', 'media-url-1', 1) ON DUPLICATE KEY UPDATE id=1;
+--insert into note_media values (1, '.jpg', 'media-url-1', 1) ON DUPLICATE KEY UPDATE id=1;
 
 -- 다이어리 커버
 insert into diary_cover values (1, '다이어리 커버1', 600, 'img url-1') ON DUPLICATE KEY UPDATE id=1;
@@ -82,6 +84,10 @@ insert into diary_cover values (3, '다이어리 커버3', 600, 'img url-3') ON 
 -- 유저 다이어리 커버
 insert into user_diary_cover values (1, 1, 'test1') ON DUPLICATE KEY UPDATE id=1;
 insert into user_diary_cover values (2, 2, 'test1') ON DUPLICATE KEY UPDATE id=2;
+insert into user_diary_cover values (3, 1, 'test2') ON DUPLICATE KEY UPDATE id=3;
+insert into user_diary_cover values (4, 2, 'test2') ON DUPLICATE KEY UPDATE id=4;
+insert into user_diary_cover values (5, 1, 'test3') ON DUPLICATE KEY UPDATE id=5;
+insert into user_diary_cover values (6, 2, 'test3') ON DUPLICATE KEY UPDATE id=6;
 
 -- 노티피케이션 정보
 insert into notification_info values (1, '일기 작성 알림') ON DUPLICATE KEY UPDATE id=1;
