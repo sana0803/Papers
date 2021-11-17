@@ -59,7 +59,7 @@
   </div>
 </template>
 
-<script>
+<script scoped>
 import html2pdf from 'html2pdf.js';
 import { mapGetters } from 'vuex';
 
