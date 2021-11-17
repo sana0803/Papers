@@ -122,6 +122,11 @@ export default {
           }
           this.$store.commit('setAlarmEventSource', alarmEventSource)
 
+          this.$store.dispatch("getAllFonts")
+          .then((res) => {
+            this.$store.commit('setAllFonts', res.data)
+          })
+
           this.$router.push("main").catch(() => {});
         })
         .catch(() => {

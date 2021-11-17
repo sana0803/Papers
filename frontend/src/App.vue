@@ -51,7 +51,7 @@ export default {
     }
   },
   created() {
-    this.setFont()
+    // this.setFont()
   }
 };
 </script>
