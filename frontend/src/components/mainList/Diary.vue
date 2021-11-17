@@ -49,22 +49,23 @@
           <div class="Invite_Input">
             <v-text-field
               v-model="diaryTitle"
-              style="margin-top: 10px"
+              style="margin-top: 5px"
               color="#FFB319"
               label="일기장 타이틀을 입력해주세요."
+              counter="14"
+              maxlength="14"
             ></v-text-field>
           </div>
           <div class="Dialog_Header" style="margin-top: 5px">멤버 초대</div>
           <div class="Invite_Input">
             <v-text-field
               class="Search_Input"
-              color="#FFB319"
               label="아이디 검색"
               v-model="search"
               v-on:keyup="memberSearch"
             ></v-text-field>
             <v-btn id="Search_Btn" icon>
-              <v-icon @click="memberSearch" style="font-size: 2.8em">search</v-icon>
+              <v-icon @click="memberSearch" style="font-size: 2.3em">search</v-icon>
             </v-btn>
           </div>
           <div id="Search_List">
@@ -271,6 +272,10 @@ export default {
 .Diary_Name {
   max-width:190px;
   font-size: 15px;
+  cursor: pointer;
+}
+.Diary_Name:hover {
+  color: #979797;
 }
 .Diary_Day{
   font-size: 15px;
@@ -312,8 +317,8 @@ export default {
   display: inline-block;
 }
 #Search_Btn {
-  background: #ffb319;
-  color: white;
+  // background: #ffb319;
+  color: #585858;
   width: 40px;
   height: 40px;
   position: relative;

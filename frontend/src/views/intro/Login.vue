@@ -174,8 +174,8 @@ export default {
 <style scoped>
 #Intro_Container {
   display: flex;
-  border-right: 1px solid lightgrey;
-  border-left: 1px solid lightgrey;
+  /* border-right: 1px solid lightgrey; */
+  /* border-left: 1px solid lightgrey; */
   margin: 0 auto;
   width: 1270px;
   height: 100vh;
@@ -193,7 +193,7 @@ export default {
   height: 644px;
   border-radius: 20px;
   position: relative;
-  left: -460px;
+  left: -460px;  
 }
 #Login_Outer {
   width: 461px;
@@ -270,6 +270,7 @@ export default {
   font-size: 20px;
   position: relative;
   top: -10px;
+  box-shadow: none;
 }
 #GoSignUp_Btn {
   width: 200px;
@@ -277,6 +278,7 @@ export default {
   position: relative;
   top: 35px;
   color: #222222;
+  box-shadow: none;
 }
 .Login_Input {
   width: 220px;

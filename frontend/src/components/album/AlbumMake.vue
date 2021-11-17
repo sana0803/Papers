@@ -2,17 +2,32 @@
   <div style="text-align: center; padding: 10px">
     <!-- 사이드 메뉴 -->
     <div id="albumMenu" data-html2canvas-ignore="true">
-      <v-btn @click="appendImage" style="margin-right: 10px"
-        >사진 추가하기</v-btn
+      <v-btn
+        @click="appendImage"
+        outlined
+        color="#FFB319"
+        style="margin-right: 10px; box-shadow: none;"
       >
-      <v-btn @click="appendArea">페이지 추가하기</v-btn>
+        사진 추가하기
+      </v-btn>
+      <v-btn
+        @click="appendArea"
+        outlined
+        color="#FFB319"
+        style="box-shadow: none;"
+      >
+        페이지 추가하기
+      </v-btn>
       <v-btn
         @click="exportToPDF"
-        style="display: block; width: 100%; margin-top: 10px"
+        color="#FFB319"
+        dark
+        style="display: block; width: 100%; margin-top: 10px; box-shadow: none;"
         >pdf 만들기</v-btn
       >
-      <v-list rounded>
-        <v-subheader>MY FONT</v-subheader>
+      <div style="background: #fff; margin-top: 36px;">
+        <p style="font-weight: 600; text-align: left; margin-bottom: 10px;">내 폰트</p>
+        <hr>
         <v-list-item-group id="fontList" color="primary">
           <v-list-item v-for="(myFont, i) in myFontList" :key="i">
             <v-list-item-content
@@ -25,7 +40,7 @@
             </v-list-item-content>
           </v-list-item>
         </v-list-item-group>
-      </v-list>
+      </div>
     </div>
 
     <!-- 콘텐츠 -->
@@ -33,21 +48,26 @@
       <div class="albumContent" style="height: 100%; overflow: auto">
         <div class="picContents" v-for="(image, idx) in imageList" :key="idx">
           <div class="picContentsheader" data-html2canvas-ignore="true">
-            Click here to move
+            이곳을 눌러 움직여보세요.
           </div>
-          <img
-            :src="image"
-            @click="dialogOn(idx)"
-            style="width: 80%; margin-top: 20px"
-          />
-          <textarea
-            name="content"
-            id="ucontent"
-            rows="19"
-            cols="70"
-            placeholder="내용을 입력하세요"
-            :style="{ 'font-family': getMyFont.fontUrl }"
-          />
+          <div class="pic-content-wrap">
+            <img
+              :src="image"
+              @click="dialogOn(idx)"
+              style="width: 100%; margin-bottom: 12px; cursor:pointer;"
+            />
+            <textarea
+              name="content"
+              class="img-desc"
+              rows="1"
+              cols="40"
+              color="#ffffff"
+              hide-details
+              placeholder="내용을 입력하세요"
+              :style="{ 'font-family': getMyFont.fontUrl }"
+            >
+            </textarea>
+          </div>
         </div>
       </div>
     </div>
@@ -283,9 +303,10 @@ export default {
 
 <style lang="scss" scoped>
 #albumMenu {
+  // background: #bbb;
   position: fixed;
   right: 59px;
-  top: 370px;
+  top: 25%;
 }
 .albumContent {
   width: 1055px;
@@ -305,11 +326,11 @@ export default {
 }
 .picContents {
   position: absolute;
-  background-color: white;
-  text-align: center;
+  background-color: #fff;
+  // padding: 20px;
   resize: both;
   overflow: auto;
-  /* box-shadow: grey 6px 8px 10px 5px; */
+  box-shadow: 2px 2px 11px 2px rgba(35, 35, 35, 0.28);
 }
 .picContentsheader {
   padding: 10px;
@@ -317,6 +338,10 @@ export default {
   /* z-index: 10; */
   background-color: #ffb319;
   color: #fff;
+}
+.pic-content-wrap {
+  background-color: #fff;
+  padding: 20px;
 }
 #fontLlist {
   height: 300px;
@@ -349,20 +374,16 @@ export default {
 .picContents::-webkit-scrollbar {
   display: none; /* Chrome, Safari, Opera*/
 }
-textarea {
-  width: 80%;
-  height: 33px;
+.img-desc {  
   display: block;
   margin: 0 auto;
   /* margin-bottom: 20px;  */
-  border-radius: 20px;
   background-color: white;
-  text-align: center;
 }
 .img-wrap {
-  width: 100%;
+  width: 680px;
   height: 100%;
-  background-color: yellowgreen;
+  // background-color: yellowgreen;
   overflow: hidden;
 }
 .img-item {
@@ -372,8 +393,8 @@ textarea {
   height: 150px;
   cursor: pointer;
   line-height: 150px;
-  margin: 0 7px 12px 0;
-  background-color: #257a23;
+  margin: 0 9px 9px 0;
+  background-color: #fff;
   overflow: hidden;
   // transition: 0.3s;
 
@@ -389,6 +410,7 @@ textarea {
 //   clear: both;
 // }
 .img-item:hover {
-  background-color: #ccc !important;
+  opacity: .7;
+  transition: 0.3s;
 }
 </style>

@@ -27,8 +27,8 @@ export default {
 
 <style scoped>
 #Main_Container {
-  border-right: 1px solid lightgrey;
-  border-left: 1px solid lightgrey;
+  /* border-right: 1px solid lightgrey; */
+  /* border-left: 1px solid lightgrey; */
   margin: 0 auto;
   width: 1272px;
   height: 100%;

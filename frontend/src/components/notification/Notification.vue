@@ -95,7 +95,4 @@ export default {
 .close-noti {
   cursor: pointer;
 }
-.close-noti:hover {
-  color: yellow;
-}
 </style>

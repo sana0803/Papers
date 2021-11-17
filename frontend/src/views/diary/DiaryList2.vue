@@ -284,17 +284,20 @@ export default {
   padding:36px;
   overflow: hidden;
 }
-.List_Header{
+.List_Header {
   float:right;
 }
-.Header_txt{
+.Header_txt {
   cursor: pointer;
   font-size:14px; 
   color:#9f9f9f;
   position:relative;
   top:-10px;
 }
-.Img_Box{
+.Header_txt:hover {
+  color: #333;
+}
+.Img_Box {
   width:378px;
   height:505px;
   margin:0 auto;
@@ -310,7 +313,7 @@ export default {
   position: relative;
   margin-bottom:8px;
   margin-right:6px;
-  cursor:pointer;
+  cursor: pointer;
 }
 .check{
   width:25px;
@@ -324,6 +327,10 @@ export default {
   width:182px;
   height:163px;
   object-fit: cover;
+}
+.Img:hover {
+  opacity: .7;
+  transition: .3s;
 }
 .Img2{
   width:182px;
@@ -347,7 +354,7 @@ export default {
   width:131px;
   height:38px;
   margin:0 auto;
-  margin-top:10px;
+  margin-top: 7px;
   font-size:16px;
   text-align: center;
 }
@@ -371,5 +378,6 @@ export default {
 .Dialog_Btn{
   width:76px;
   height:32px;
+  box-shadow: none;
 }
 </style>

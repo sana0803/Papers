@@ -178,10 +178,11 @@ export default {
 }
 .Font_Item {
   width: 317px;
-  // padding-left:31px;
-  height: 30px;
+  height: 35px;
+  margin-bottom: 3px;
   font-size: 20px;
   position: relative;
+  // background: yellow;
 }
 .Font_Icon {
   position: absolute;
@@ -191,6 +192,7 @@ export default {
   position: absolute;
   left: 31px;
   cursor: pointer;
+  // background: #aaa;
 }
 .Font_Name:hover {
   // background: #eee;
