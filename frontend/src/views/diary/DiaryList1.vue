@@ -22,7 +22,7 @@
             </div>
             <div id="horizon-line"></div>
             <div class="diary-text">
-              <span :style="{ 'font-family': getAllFonts[note.fontId - 1].fontUrl }">{{ note.noteContent }}</span>
+              <span :style="{ 'font-family': getAllFonts[note.fontId - 1].fontUrl }" v-html="note.noteContent"></span>
             </div>
             <div class="diary-hashtag" v-for="(hashtag, idx) in note.noteHashtagList" :key="idx">
               <span>#{{ hashtag }}</span>
@@ -230,6 +230,9 @@
           stickerList: note.noteStickerList,
           emotionList: note.emotionList
         }
+        localNote.noteContent = note.noteContent.replace(/\/>/g, "")
+        localNote.noteContent = localNote.noteContent.replace(/<br /g, "\n") // 줄 바꿈 처리 html to string
+
         for (let i = 1; i < note.noteHashtagList.length; i++) {
           localNote.noteHashtagList += ('#' + note.noteHashtagList[i])
         }
@@ -283,7 +286,6 @@
       this.$store.dispatch("getDiaryContent", this.currentDiary.id)
         .then((res) => {
           this.noteList = res.data.note.reverse();
-          console.log(res.data, 'zzzzzzz')
           // 일기의 폰트 id값에 맞춰 폰트url값으로 변경
           for (var j=0; j<this.noteList.length; j++) {
             for (var i = 0; i < this.getAllFonts.length; i++) {
@@ -326,7 +328,7 @@
             if(i>0 && i%2==0){
               page++
             }
-
+            this.noteList[i].noteContent = this.noteList[i].noteContent.replace(/\n/g, "<br />")
             if(this.noteContent.noteId == this.noteList[i].noteId) {
               if(i==this.noteList.length-1 && i%2==0){
                 this.viewList.push(this.noteList[i])
@@ -468,11 +470,13 @@
 .diary-text {
   margin-bottom: 12px;
   // background-color: lightblue;
-  overflow: hidden;
+  overflow: scroll;
   max-height: 95px;
   line-height: 1.4;
 }
-
+.diary-text::-webkit-scrollbar {
+   display: none;
+}
 .diary-hashtag {
   display: inline-block;
   margin-right: 5px;

@@ -9,12 +9,15 @@
     >    
       <div v-if="note.noteMediaList[0]" class="note_ImgBox" align="center" :style="{ 'font-family': getAllFonts[note.fontId - 1].fontUrl }">
           <v-img class="note_Img" :src="note.noteMediaList[0]" /><br>
-          {{note.noteContent}}
+          <!-- {{note.noteContent}} -->
+          <div style="height: 70px; overflow:hidden;">
+            <span v-html="note.noteContent"></span>
+          </div>
       </div>
       <div v-else align="center">
         <div class="note-detail" >
-          <div class="note-detail-area" :style="{ 'font-family': getAllFonts[note.fontId - 1].fontUrl }">
-            {{note.noteContent}}
+          <div class="note-detail-area" :style="{ 'font-family': getAllFonts[note.fontId - 1].fontUrl }" v-html="note.noteContent">
+            
           </div>
         </div>
       </div>
@@ -49,7 +52,12 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['getAllFonts'])
+    ...mapGetters(['getAllFonts']),
+  },
+  filters: {
+      test (value) {
+          return value.replace("\n", "<br />")
+      }
   },
   methods: {
     change(num) {
@@ -60,6 +68,7 @@ export default {
           for(let i=temp;i<temp+6;i++){
             if(this.noteList.length==i)
               break
+            this.noteList[i].noteContent = this.noteList[i].noteContent.replace(/\n/g, "<br />")
             this.viewList.push(this.noteList[i])
           }
         }
@@ -89,6 +98,7 @@ export default {
       for(let i=0;i<6;i++){
         if(this.noteList.length==i) 
           break
+        this.noteList[i].noteContent = this.noteList[i].noteContent.replace(/\n/g, "<br />")
         this.viewList.push(this.noteList[i])
       }
     });
