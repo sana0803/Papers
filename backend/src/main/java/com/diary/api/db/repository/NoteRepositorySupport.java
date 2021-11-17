@@ -9,6 +9,7 @@ import com.amazonaws.services.s3.model.ObjectListing;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.amazonaws.services.s3.model.S3ObjectSummary;
+import com.diary.PapersApplication;
 import com.diary.api.db.entity.*;
 import com.diary.api.request.NoteEmotionReq;
 import com.diary.common.util.S3Util;
@@ -19,9 +20,12 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.imageio.ImageIO;
 import javax.transaction.Transactional;
-import java.io.File;
-import java.io.InputStream;
+import java.awt.image.BufferedImage;
+import java.io.*;
+import java.net.URL;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -247,6 +251,48 @@ public class NoteRepositorySupport {
             }
         }
         return true;
+    }
+
+    public boolean setNoteS3Medias(List<String> medias, String userId, Long diaryId) {
+
+        URL url = null;
+        InputStream in = null;
+        OutputStream out = null;
+
+        try {
+            for(String imageUrl : medias) {
+                if(imageUrl.equals("")) continue;
+                url = new URL(imageUrl);
+                in = url.openStream();
+
+                File file = new File("..\\\\diary-files\\\\kakao.jpg");
+                out = new FileOutputStream(file);
+
+                while(true) {
+                    int data = in.read();
+                    if(data == -1) break;
+                    out.write(data);
+                }
+
+                in.close();
+                out.close();
+
+                imageUrl = imageUrl.split("/")[imageUrl.split("/").length - 1];
+                String fileName = "diary-file/" + userId + "/" + diaryId + "/" + imageUrl;
+                S3Util.putS3(file, fileName);
+            }
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        } finally{
+            try {
+                if(in != null){in.close();}
+                if(out != null){out.close();}
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     public Optional<List<String>> getHashtagList(String userId){
