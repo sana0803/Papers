@@ -29,7 +29,7 @@ insert into font values (16, '어그로체', 80, 'SBAggroB') ON DUPLICATE KEY UP
 insert into font values (17, '둥근모꼴', 80, 'DungGeunMo') ON DUPLICATE KEY UPDATE id=17;
 insert into font values (18, '웰컴체', 80, 'OTWelcomeRA') ON DUPLICATE KEY UPDATE id=18;
 insert into font values (19, '고운돋음', 80, 'GowunDodum-Regular') ON DUPLICATE KEY UPDATE id=19;
-insert into font values (20, '프리텐다드', 80, 'Pretendard-Regular') ON DUPLICATE KEY UPDATE id=20;
+insert into font values (20, '망고빙수', 80, 'SF_IceMango') ON DUPLICATE KEY UPDATE id=20;
 
 
 -- 유저 폰트
