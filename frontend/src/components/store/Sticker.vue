@@ -260,7 +260,7 @@ export default {
 }
 #Name_Btn_Box {
   width: 164px;
-  height: 32px;
+  /* height: 32px; */
   display: flex;
   justify-content: space-between;
 }

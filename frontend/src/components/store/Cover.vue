@@ -183,14 +183,13 @@ export default {
 }
 #Dialog_Name {
   width: 37%;
-  height: 150px;
   margin-left: 61px;
-  // border:1px solid red;
+  // background: #585858;
 }
 #Name_Author {
   color: #585858;
   font-size: 14px;
-  margin-bottom: 7px;
+  margin-bottom: 3px;
 }
 #Name_Name {
   font-size: 21px;
@@ -207,9 +206,10 @@ export default {
 }
 #Name_Btn_Box {
   width: 164px;
-  height: 32px;
+  // height: 32px;
   display: flex;
   justify-content: space-between;
+  // background: #b8dfd8;
 }
 .Name_Btn {
   width: 76px;
