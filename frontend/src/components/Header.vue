@@ -70,7 +70,10 @@ export default {
 #Header_Container {
   width: 1272px;
   height: 7.5vh;
-  background: #f6f6f6;
+  // background: #f7f7f7;
+  background: #fff;
+  // box-shadow: 3px 3px 11px rgba(166, 166, 168, 0.35);
+  border-bottom: 1px solid #eee;
   display: flex;
   position: fixed;
   z-index: 100;

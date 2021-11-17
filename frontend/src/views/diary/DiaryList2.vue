@@ -264,110 +264,120 @@ export default {
 
 <style lang="scss" scoped>
 #Line{
-    height:590px;
-    border: 1px solid #D7D7D7;
-    position:absolute;
-    top:70px;
-    left:461px;
+  height:590px;
+  border: 1px solid #e7e7e7;
+  position:absolute;
+  top:71px;
+  left:461px;
 }
 #List_Left{
-    width:443px;
-    height:610px;
-    display:inline-block;
-    padding:36px;
-    overflow: hidden;
+  width:443px;
+  height:610px;
+  display:inline-block;
+  padding:36px;
+  overflow: hidden;
 }
 #List_Right{
-    width:443px;
-    height:610px;
-    display:inline-block;
-    padding:36px;
-    overflow: hidden;
+  width:443px;
+  height:610px;
+  display:inline-block;
+  padding:36px;
+  overflow: hidden;
 }
-.List_Header{
-    float:right;
+.List_Header {
+  float:right;
 }
-.Header_txt{
-    cursor: pointer;
-    font-size:14px; 
-    color:#9f9f9f;
-    position:relative;
-    top:-10px;
+.Header_txt {
+  cursor: pointer;
+  font-size:14px; 
+  color:#9f9f9f;
+  position:relative;
+  top:-10px;
 }
-.Img_Box{
-    width:378px;
-    height:505px;
-    margin:0 auto;
-    margin-top:22px;
-    overflow: hidden;
+.Header_txt:hover {
+  color: #333;
+}
+.Img_Box {
+  width:378px;
+  height:505px;
+  margin:0 auto;
+  margin-top:22px;
+  overflow: hidden;
 }
 .Img_Item{
-    display: inline-block;
-    width:182px;
-    height:163px;
-    // border:1px solid #929292;
-    background:#f7f7f7;
-    position: relative;
-    margin-bottom:8px;
-    margin-right:6px;
-    cursor:pointer;
+  display: inline-block;
+  width:182px;
+  height:163px;
+  // border:1px solid #929292;
+  background:#f7f7f7;
+  position: relative;
+  margin-bottom:8px;
+  margin-right:6px;
+  cursor: pointer;
 }
 .check{
-    width:25px;
-    height:25px;
-    position:absolute;
-    top:-12px;
-    left:8px;
-    z-index: 100;
+  width:25px;
+  height:25px;
+  position:absolute;
+  top:-12px;
+  left:8px;
+  z-index: 100;
 }
 .Img{
-    width:182px;
-    height:163px;
+  width:182px;
+  height:163px;
+  object-fit: cover;
+}
+.Img:hover {
+  opacity: .7;
+  transition: .3s;
 }
 .Img2{
-    width:182px;
-    height:163px;
-    opacity: 0.3;
-    z-index: -1;  
+  width:182px;
+  height:163px;
+  object-fit: cover;
+  opacity: 0.3;
+  z-index: -1;  
 }
 .Dialog{
-    height:180px;
+  height:180px;
 }
 .Dialog_Header{
-    height:40px;
+  height:40px;
 }
 .Dialog_Close{
-    float:right;
-    margin-top:5px;
-    margin-right:5px;
+  float:right;
+  margin-top:5px;
+  margin-right:5px;
 }
 .Dialog_Text{
-    width:131px;
-    height:38px;
-    margin:0 auto;
-    margin-top:10px;
-    font-size:16px;
-    text-align: center;
+  width:131px;
+  height:38px;
+  margin:0 auto;
+  margin-top: 7px;
+  font-size:16px;
+  text-align: center;
 }
 .Dialog_Combo{
-    width:164px;
-    height:38px;
-    margin:0 auto;
-    font-size:16px;
-    text-align: center;
-    position:relative;
-    top:-10px;
+  width:164px;
+  height:38px;
+  margin:0 auto;
+  font-size:16px;
+  text-align: center;
+  position:relative;
+  top:-10px;
 }
 .Dialog_Btn_Box{
-    width:164px;
-    height:32px;
-    display:flex;
-    justify-content: space-between;
-    margin:0 auto;
-    margin-top:30px;
+  width:164px;
+  height:32px;
+  display:flex;
+  justify-content: space-between;
+  margin:0 auto;
+  margin-top:30px;
 }
 .Dialog_Btn{
-    width:76px;
-    height:32px;
+  width:76px;
+  height:32px;
+  box-shadow: none;
 }
 </style>

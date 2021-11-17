@@ -130,6 +130,7 @@ export default {
   left: 77.2%;
   top: 86.3%;
   box-shadow: none;
+  z-index: 3;
 }
 #MainList_Container {
   margin: 0 auto;

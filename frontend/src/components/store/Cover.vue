@@ -183,17 +183,14 @@ export default {
 }
 #Dialog_Name {
   width: 37%;
-  height: 150px;
   margin-left: 61px;
-  overflow: hidden;
-  float: right;
-  margin-top: 22%;
-  // border:1px solid red;
+  // background: #585858;
+  margin-top: -5%;
 }
 #Name_Author {
   color: #585858;
   font-size: 14px;
-  margin-bottom: 7px;
+  margin-bottom: 3px;
 }
 #Name_Name {
   font-size: 21px;
@@ -210,9 +207,10 @@ export default {
 }
 #Name_Btn_Box {
   width: 164px;
-  height: 32px;
+  // height: 32px;
   display: flex;
   justify-content: space-between;
+  // background: #b8dfd8;
 }
 .Name_Btn {
   width: 76px;
@@ -231,22 +229,33 @@ export default {
   top: 12px;
   left: 12px;
   border-radius: 5px;
+  z-index: 3;
 }
 .cover-img {
   width: 286px;
   height: 394px;
-  background: rgb(199, 193, 188);
   box-shadow: 3px 3px 11px rgba(166, 166, 168, 0.35);
   overflow: hidden;
   cursor: pointer;
+
   img {
     width: 100%;
     height: 100%;
   }
+  img:hover {
+    transition: .2s;
+    opacity: .7;
+  }
 }
 .cover-title {
   margin-top: 19px;
-  font-size: 15px;
+  font-size: 15px;  
+}
+.cover-name {
+  cursor: pointer;
+}
+.cover-name:hover {
+  color: #979797;
 }
 .cover-price {
   float: right;

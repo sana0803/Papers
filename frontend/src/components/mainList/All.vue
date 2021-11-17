@@ -18,22 +18,29 @@
       @click="goDetailNote(note)"
       class="note_Item"
     >    
-      <div v-if="note.noteMediaList[0]" class="note_ImgBox" align="center" :style="{ 'font-family': getAllFonts[note.fontId - 1].fontUrl }">
-          <v-img class="note_Img" :src="note.noteMediaList[0]" /><br>
-          <!-- {{note.noteContent}} -->
-          <div style="height: 70px; overflow:hidden;">
-            <span v-html="note.noteContent"></span>
-          </div>
+      <div v-if="note.noteMediaList[0]"
+        class="note_ImgBox"
+        align="center"
+        :style="{ 'font-family': getAllFonts[note.fontId - 1].fontUrl }"
+      >
+        <v-img class="note_Img" :src="note.noteMediaList[0]" /><br>
+        <!-- {{note.noteContent}} -->
+        <span class="note-detail-area" v-html="note.noteContent"></span>
       </div>
       <div v-else align="center">
         <div class="note-detail" >
-          <div class="note-detail-area" :style="{ 'font-family': getAllFonts[note.fontId - 1].fontUrl }" v-html="note.noteContent">
-          </div>
+          <span
+            class="note-detail-area"
+            :style="{ 'font-family': getAllFonts[note.fontId - 1].fontUrl }"
+            v-html="note.noteContent"
+          >
+          </span>
         </div>
       </div>
       <div class="note-under">
         <span class="note_Name">{{ note.noteTitle }}</span>
         <span class="note_Day">{{ note.noteCreatedDate }}</span>
+        
       </div>
     </div>
     
@@ -127,49 +134,63 @@ export default {
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .note_Item {
   display: inline-block;
-  width: 284px;
+  width: 286px;
   height: 432px;
   margin-bottom: 31px;
   margin-left: 31px;
+  // background: #aaa;
 }
 .note_ImgBox {
-  width: 284px;
+  width: 286px;
   height: 394px;
+  padding: 20px;
   background: #fff;
   box-shadow: 3px 3px 11px rgba(166, 166, 168, 0.35);
   cursor: pointer;
   overflow:hidden;
   margin:0 auto;
-  display: inline-block;
-  justify-content: center;
-  align-items: center;
+}
+.note_ImgBox:hover {
+  opacity: .7;
+  transition: .3s;
 }
 .note-detail {
-  width: 284px;
+  width: 286px;
   height: 394px;
-  background: #fff;
+  padding: 20px;
+  // background: #415678;
   box-shadow: 3px 3px 11px rgba(166, 166, 168, 0.35);
   cursor: pointer;
   overflow:hidden;
-  margin:0 auto;
+  /* margin:0 auto; */
   display: flex;
   justify-content: center;
   align-items: center;
 }
+.note-detail:hover {
+  opacity: .7;
+  transition: .3s;
+}
 .note-detail-area {
-  width: 250px;
+  color: #929292;
 }
 .note_Img{
-  /* width:100%;
-  height:100%; */
-  object-fit:contain;
+  // width:100%;
+  // height:100%;
+  object-fit: cover;
+  // background-color: #eee;
 }
 .note_Name {
   font-size: 15px;
   max-width:190px;
+  // font-weight: 500;
+  cursor: pointer;
+}
+.note_Name:hover {
+  color: #979797;
 }
 .note_Day{
   font-size: 15px;
@@ -192,10 +213,29 @@ export default {
   position: relative;
   overflow: hidden;
   cursor: pointer;
-  width: 37%;
+  width: 18%;
   color: #ffb319;
   margin-top: 24px;
   padding-bottom: 2px;
   font-weight: 600;
+  // background-color: #eee;
+}
+.go-write-btn:after {
+  position: absolute;
+  content: '';
+  width: 0;
+  left: 0;
+  height: 2px;
+  bottom: 0px;
+  background-color: #ffb319;
+  // border-bottom: 1px solid #ffb319;
+  transition: .25s;
+}
+.go-write-btn:hover {
+  transition: .25s;
+}
+.go-write-btn:hover:after {
+  width: 99%;
+  left: 0;
 }
 </style>

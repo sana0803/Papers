@@ -44,7 +44,7 @@
             v-on:keyup="memberSearch"
           ></v-text-field>
           <v-btn id="Search_Btn" icon>
-            <v-icon @click="memberSearch" style="font-size: 2.8em">search</v-icon>
+            <v-icon @click="memberSearch" style="font-size: 2.3em">search</v-icon>
           </v-btn>
         </div>
         <div id="Search_List">
@@ -82,19 +82,33 @@
       <div id="Right_Box">
         <div class="Header">타이틀 변경</div>
         <div id="Title_Input">
-          <v-text-field color="#FFB319" v-model="diaryInfo.diaryTitle"></v-text-field>
+          <v-text-field
+            color="#FFB319"
+            v-model="diaryInfo.diaryTitle"
+            counter="14"
+            maxlength="14"
+          >
+          </v-text-field>
         </div>
         <div class="Header2">커버 편집</div>
         <div class="Header3">기본 커버</div>
-        <div class="Cover_Box">
-          <div v-for="(item, idx) in coverList" :key="idx" class="cover-item" @click="selectCover(item.id)">
+        <div class="cover-box">
+          <div
+            v-for="(item, idx) in coverList" :key="idx"
+            class="cover-item" @click="selectCover(item.id)"
+          >
             <v-img class="cover-img" :src="item.coverUrl" @click="clickCover(item)"/>
           </div>
         </div>
         <div class="Header3">내 커버</div>
-        <div class="Cover_Box"></div>
-        <!-- <div class="Header3">사진</div>
-        <div class="Cover_Box"></div> -->
+        <div class="cover-box">
+          <div
+            v-for="(item, idx) in coverList" :key="idx"
+            class="cover-item" @click="selectCover(item.id)"
+          >
+            <v-img class="cover-img" :src="item.coverUrl" @click="clickCover(item)"/>
+          </div>
+        </div> 
         <div id="Btn_Box">
           <v-btn style="background: #ffb319; color: white" class="Btn" @click="modifyDiary"
             >수정</v-btn
@@ -295,9 +309,9 @@ export default {
 <style lang="scss" scoped>
 #Line {
   height: 590px;
-  border: 1px solid #d7d7d7;
+  border: 1px solid #e7e7e7;
   position: absolute;
-  top: 70px;
+  top: 71px;
   left: 461px;
 }
 #Manage_Left {
@@ -376,39 +390,40 @@ export default {
   height: 60px;
 }
 .Member_Name {
+  margin-top: 6px;
   height: 20px;
   line-height: 20px;
   font-size: 15px;
   text-align: center;
+  // background: #e41d35;
 }
 .Header2 {
-  margin-top: 32px;
+  margin-top: 30px;
   height: 22px;
   font-size: 18px;
   line-height: 22px;
   font-weight: 600;
 }
 #Invite_Input {
-  margin-top: 20px;
+  margin-top: 18px;
 }
 .Search_Input {
   width: 89%;
   display: inline-block;
 }
 #Search_Btn {
-  background: #ffb319;
-  color: white;
+  // background: #ffb319;
+  color: #585858;
   width: 40px;
   height: 40px;
   position: relative;
   top: -2px;
 }
 #Search_List {
-  margin-top: 22px;
-  height: 245px;
+  margin-top: 14px;
+  height: 255px;
   padding: 14px;
   border: 1px solid #d7d7d7;
-
 }
 #member-list::-webkit-scrollbar {
   display: none;
@@ -426,17 +441,78 @@ export default {
   color: #9f9f9f;
 }
 #Title_Input {
-  margin-top: 20px;
+  margin-top: 18px;
   height: 45px;
 }
 .Header3 {
-  margin-top: 20px;
+  margin-top: 17px;
+  margin-bottom: 4px;
   font-size: 15px;
   color: #585858;
+  // background: red;
 }
-.Cover_Box {
+.cover-box {
+  width: 381px;
   height: 125px;
-  border: 1px solid#d7d7d7;
+  // border: 1px solid #d7d7d7;
+  overflow-x: scroll;
+  // white-space:nowrap
+}
+.cover-box::-webkit-scrollbar {
+  display: none;
+}
+.cover-item{
+  display: inline-block;
+  // float: left;
+  height:100%;
+  width:90px;
+  cursor: pointer;
+  overflow: hidden;
+  margin: 0 auto;
+  margin-right: 5px;
+}
+.cover-img{
+  width:100%;
+  height:100%;
+  object-fit: cover;
+  margin-right: 8px;
+}
+.Search_Item {
+  height: 50px;
+  line-height: 50px;
+}
+.Search_Img {
+  float: left;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.Img {
+  width: 43px;
+  height: 43px;
+  display: inline-block;
+}
+.Search_Name {
+  margin-left: 16px;
+  font-size: 16px;
+}
+.Search_UserId {
+  color: red;
+}
+.Search_Check {
+  height:50px;
+  float: right;
+}
+.check{
+  position:relative;
+  top:-7px;
+}
+#invite_btn{
+  width:76px;
+  margin:0 auto;
+  margin-top:7px;
 }
 #Btn_Box {
   width: 164px;
@@ -477,56 +553,5 @@ export default {
   margin-top: 5px;
   font-size: 16px;
   text-align: center;
-}
-.cover-item{
-  display:inline-block;
-  height:100%;
-  width:90px;
-  cursor: pointer;
-  overflow:hidden;
-  margin:0 auto;
-}
-.cover-img{
-  width:100%;
-  height:100%;
-  object-fit:cover;
-  margin-right: 8px;
-}
-.Search_Item {
-  height: 50px;
-  line-height: 50px;
-}
-.Search_Img {
-  float: left;
-  width: 50px;
-  height: 50px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-.Img {
-  width: 43px;
-  height: 43px;
-  display: inline-block;
-}
-.Search_Name {
-  margin-left: 16px;
-  font-size: 16px;
-}
-.Search_UserId {
-  color: red;
-}
-.Search_Check {
-  height:50px;
-  float: right;
-}
-.check{
-  position:relative;
-  top:-7px;
-}
-#invite_btn{
-  width:76px;
-  margin:0 auto;
-  margin-top:7px;
 }
 </style>
