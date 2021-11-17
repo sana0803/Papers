@@ -68,28 +68,31 @@ export default {
     },
     goList() {
       this.$router.push("diaryList1").catch(() => {});
-      const now = document.getElementById("Diary_PostIt1")
-      const managebtn = document.getElementById("Diary_PostIt2")
-      now.style.width = "45px";
-      now.style.fontWeight = "700"
-      now.style.color = 'black'
-      managebtn.style.fontWeight = "400"
-      managebtn.style.color = '#929292'
-      managebtn.style.width = "28px"
-      managebtn.style.left = "120px"
+      if (document.getElementById("Diary_PostIt1") && document.getElementById("Diary_PostIt2")) {
+        const now = document.getElementById("Diary_PostIt1")
+        const managebtn = document.getElementById("Diary_PostIt2")
+        now.style.width = "45px";
+        now.style.fontWeight = "700"
+        now.style.color = 'black'
+        managebtn.style.fontWeight = "400"
+        managebtn.style.color = '#929292'
+        managebtn.style.width = "28px"
+        managebtn.style.left = "120px"
+      }
     },
     goManage() {
       this.$router.push("manage").catch(() => {});
-      const now = document.getElementById("Diary_PostIt1")
-      const managebtn = document.getElementById("Diary_PostIt2")
-      now.style.width = "28px";
-      now.style.fontWeight = "400"
-      now.style.color = '#929292'
-      managebtn.style.left = "107px"
-      managebtn.style.fontWeight = "700"
-      managebtn.style.width = "45px"
-      managebtn.style.color = 'black'
-
+      if (document.getElementById("Diary_PostIt1") && document.getElementById("Diary_PostIt2")) {
+        const now = document.getElementById("Diary_PostIt1")
+        const managebtn = document.getElementById("Diary_PostIt2")
+        now.style.width = "28px";
+        now.style.fontWeight = "400"
+        now.style.color = '#929292'
+        managebtn.style.left = "107px"
+        managebtn.style.fontWeight = "700"
+        managebtn.style.width = "45px"
+        managebtn.style.color = 'black'
+      }
     },
     // 일기장 레이아웃 커버
     setCover() {
