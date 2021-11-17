@@ -53,6 +53,9 @@ public class UserServiceImpl implements UserService{
     UserStickerPackageRepository userStickerPackageRepository;
 
     @Autowired
+    DiaryCoverRepository diaryCoverRepository;
+
+    @Autowired
     DiaryCoverRepositorySupport diaryCoverRepositorySupport;
 
     @Autowired
@@ -60,6 +63,15 @@ public class UserServiceImpl implements UserService{
 
     @Autowired
     NotificationInfoRepository notificationInfoRepository;
+
+    @Autowired
+    UserDiaryCoverRepository userDiaryCoverRepository;
+
+    @Autowired
+    UserFontRepository userFontRepository;
+
+    @Autowired
+    DiaryRepository diaryRepository;
 
     @Override
     public boolean signupUser(UserSignupReq userSignupReq) {
@@ -74,6 +86,25 @@ public class UserServiceImpl implements UserService{
 
         if (userRepository.save(user) == null)
             return false;
+
+        // 유저 기본 다이어리 커버
+//        DiaryCover basicDiaryCover = null;
+        for (int i = 1; i <= 4; i++) {
+            DiaryCover basicDiaryCover = diaryCoverRepository.findById((long)i).get();
+            userDiaryCoverRepository.save(new UserDiaryCover(basicDiaryCover, user));
+        }
+
+        // 유저 기본 다이어리
+        Diary basicDiary = new Diary();
+        basicDiary.setDiaryCover(diaryCoverRepository.findById((long)1).get());
+        basicDiary.setUser(user);
+        basicDiary.setDiaryTitle("기본 일기장");
+        diaryRepository.save(basicDiary);
+
+
+        // 유저 기본 폰트
+        Font basicFont = fontRepository.findById((long)1).get();
+        userFontRepository.save(new UserFont(basicFont, user));
         return true;
     }
 
