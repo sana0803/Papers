@@ -117,6 +117,7 @@ export default {
       this.$store.dispatch("getUserFonts")
       .then((res) => {
         this.myFontList = res.data
+        console.log(this.myFontList)
       })
     },
     getUserStickers: function () {
@@ -138,6 +139,12 @@ export default {
   created () {
     this.getUserFonts()
     this.getUserStickers()
+    this.$store.commit("setMyFont", {
+      fontName: '기본체',
+      fontPrice: 0,
+      fontUrl: 'Pretendard Variable',
+      id: 1,
+    })
   }
 
 };
