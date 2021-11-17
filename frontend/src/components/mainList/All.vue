@@ -10,7 +10,9 @@
       <div v-if="note.noteMediaList[0]" class="note_ImgBox" align="center" :style="{ 'font-family': getAllFonts[note.fontId - 1].fontUrl }">
           <v-img class="note_Img" :src="note.noteMediaList[0]" /><br>
           <!-- {{note.noteContent}} -->
-          <span v-html="note.noteContent"></span>
+          <div style="height: 70px; overflow:hidden;">
+            <span v-html="note.noteContent"></span>
+          </div>
       </div>
       <div v-else align="center">
         <div class="note-detail" >
