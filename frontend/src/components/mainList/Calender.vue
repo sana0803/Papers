@@ -34,33 +34,6 @@
         <v-icon>mdi-chevron-right</v-icon>
       </v-btn>
       <v-spacer></v-spacer>
-      <!-- 달력 형태 -->
-      <v-menu
-        bottom
-        right
-      >
-        <template v-slot:activator="{ on, attrs }">
-          <v-btn
-            outlined
-            color="grey darken-2"
-            v-bind="attrs"
-            v-on="on"
-          >
-            <span>{{ typeToLabel[type] }}</span>
-            <v-icon right>
-              mdi-menu-down
-            </v-icon>
-          </v-btn>
-        </template>
-        <v-list>
-          <v-list-item @click="type = 'day'">
-            <v-list-item-title>Day</v-list-item-title>
-          </v-list-item>
-          <v-list-item @click="type = 'month'">
-            <v-list-item-title>Month</v-list-item-title>
-          </v-list-item>
-        </v-list>
-      </v-menu>
     </v-sheet>
     <!-- 달력 -->
     <v-sheet height="600">
@@ -73,8 +46,7 @@
         :event-color="getEventColor"
         @change="getEvents"
         @click:event="showEvent"
-        @click:date="viewDay"
-        @click:more="viewDay"
+        @click:more="dialog = true"
       ></v-calendar>
       <!-- @change="getEvents" -->
       <v-menu
@@ -83,30 +55,55 @@
         :activator="selectedElement"
         offset-x
       >
+      <!-- 일기선택하면 누르는 카드화면 -->
         <v-card
-          color="grey lighten-4"
-          min-width="350px"
+          color="rgb(255 253 250)"
+          min-width="400px"
           flat
         >
-          <v-toolbar
+          <!-- <v-toolbar
             :color="selectedEvent.color"
-            dark
           >
             <v-toolbar-title v-html="selectedEvent.name"></v-toolbar-title>
             <v-spacer></v-spacer>
-          </v-toolbar>
-          <v-card-text id="select-box"> 
-            <div style="height:350px;">
-              <v-img style="height:100%;" :src="selectedEvent.noteMedia" alt="일기 사진"/>
+          </v-toolbar> -->
+          <div style="height:300px;" v-if="selectedEvent.noteMedia">
+            <v-img style="height:100%;" :src="selectedEvent.noteMedia" alt="일기 사진"/>
+          </div>
+          <v-card-title>
+            <span>{{selectedEvent.name}} </span>
+            <div style="font-size:14px; margin-left:200px;">작성자:{{selectedEvent.writerNickName}}</div>
+          </v-card-title>
+          <v-card-actions>
+            <v-btn
+              color="orange lighten-2"
+              text
+            >
+              일기 내용 보기
+            </v-btn>
+            <v-spacer></v-spacer>
+            <v-btn
+              icon
+              @click="show = !show"
+            >
+              <v-icon>{{ show ? 'mdi-chevron-up' : 'mdi-chevron-down' }}</v-icon>
+            </v-btn>
+          </v-card-actions>
+          <v-expand-transition>
+            <div v-show="show">
+              <v-divider></v-divider>
+              <v-card-text id="select-box"> 
+                <span>{{selectedEvent.content}}</span>
+                <div v-for="(hashtag, i) in selectedEvent.hashTag" :key="i">
+                  <span style="font-size:14px;">#{{hashtag}}</span>
+                </div>
+
+              </v-card-text>
             </div>
-            <div style="padding-top:10px">
-              <span>{{selectedEvent.content}}</span>
-            </div>
-          </v-card-text>
+          </v-expand-transition>
           <v-card-actions>
             <v-btn
               text
-              color="secondary"
               @click="selectedOpen = false"
             >
               닫기
@@ -114,7 +111,44 @@
           </v-card-actions>
         </v-card>
       </v-menu>
+      
     </v-sheet>
+    <!-- 더보기 눌렀을때의 Dialog -->
+      <v-dialog v-model="dialog" persistent max-width="280">
+      <v-card 
+        class="mx-auto"
+        max-width="280"
+        tile>
+        <div>
+          <v-icon
+            @click="dialog = false"
+            id="Dialog_Close"
+            style="font-size: 1.8rem; float: right; margin-top:5px; margin-left:15px;"
+            >close</v-icon>
+        </div>
+        <v-list flat>
+          <!-- <v-subheader>--일기 목록--</v-subheader> -->
+          <v-list-item-group
+            v-model="selectedItem"
+            color="primary"
+            style="margin-top:10px;"
+          >
+            <v-list-item
+              v-for="(item, i) in items"
+              :key="i"
+            >
+              <v-list-item-icon>
+                <v-icon v-text="item.icon"></v-icon>
+              </v-list-item-icon>
+              <v-list-item-content>
+                <v-list-item-title v-text="item.text" @click="showMore(item.idx)"></v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+          </v-list-item-group>
+        </v-list>
+      </v-card>
+    </v-dialog>
+
   </div>
 </template>
 
@@ -126,10 +160,6 @@ export default {
     return {
       focus: '',
       type: 'month',
-      typeToLabel: {
-        month: 'Month',
-        day: 'Day',
-      },
       month: dayjs().format("MM"),
       // value: "",
       events: [],
@@ -146,20 +176,27 @@ export default {
       selectedEvent: {},
       selectedElement: null,
       selectedOpen: false,
+      show: false,
+      dialog: false,
+      selectedItem: 1,
+      items: [],
     };
   },
   methods: {
+    // 달마다 일기가져오기
     getEvents() {
       this.$store.dispatch("calenderGet", this.month).then((res) => {
         const events = []
-        console.log(res.data)
+        console.log(res.data, 'aaaaaaaaaaa')
         for(let i = 0; i < res.data.length; i++) {
-          // const allDay = this.rnd(0, 3) === 0;
-
+          const note = {}           // 더보기 눌렀을때 보여질 일기제목담음
           const event = {
             name: res.data[i].noteTitle,
             id: res.data[i].noteId,
+            writerNickName: res.data[i].writerNickName,
             content: res.data[i].noteContent,
+            hashTag: res.data[i].noteHashtagList,
+            font: res.data[i].fontId,
             start: res.data[i].noteCreatedDate,
             end: res.data[i].noteCreatedDate,
             noteMedia: res.data[i].noteMediaList[0],
@@ -167,35 +204,14 @@ export default {
             timed: true,
             // time: res.data[i].noteCreatedTime
           }
+          note.text = res.data[i].noteTitle
+          note.idx = res.data[i].noteId,
+          this.items[i] = note
           events[i] = event
         }
         this.events = events;
+        console.log(this.items, '아이템즈')
       });
-
-      // const events = [];
-
-      // const min = new Date(`${start.date}T00:00:00`);
-      // const max = new Date(`${end.date}T23:59:59`);
-      // const days = (max.getTime() - min.getTime()) / 86400000;
-      // const eventCount = this.rnd(days, days + 20);
-
-      // for (let i = 0; i < eventCount; i++) {
-      //   const allDay = this.rnd(0, 3) === 0;
-      //   const firstTimestamp = this.rnd(min.getTime(), max.getTime());
-      //   const first = new Date(firstTimestamp - (firstTimestamp % 900000));
-      //   const secondTimestamp = this.rnd(2, allDay ? 288 : 8) * 900000;
-      //   const second = new Date(first.getTime() + secondTimestamp);
-
-      //   events.push({
-      //     name: this.names[this.rnd(0, this.names.length - 1)],
-      //     start: first,
-      //     end: second,
-      //     color: this.colors[this.rnd(0, this.colors.length - 1)],
-      //     timed: !allDay,
-      //   });
-      // }
-
-      // this.events = events;
     },
     getEventColor(event) {
       return event.color;
@@ -209,6 +225,7 @@ export default {
     next() {
       this.month = this.month + 1;
     },
+    // 달력에서 보이는 일기들 누를떄
     showEvent ({ nativeEvent, event }) {
       const open = () => {
         this.selectedEvent = event
@@ -222,13 +239,28 @@ export default {
       } else {
         open()
       }
-
       nativeEvent.stopPropagation()
     },
-    // 일별로 보기
-    viewDay ({ date }) {
-      this.focus = date
-      this.type = 'day'
+    // 더보기 리스트에서 일기볼때
+    showMore (idx) {
+      let nowSelect = []
+      for (var i = 0; i < this.events.length; i++) {
+        if (this.events[i].id == idx) {
+          nowSelect = this.events[i]
+          break
+        }
+      }
+      const open = () => {
+        this.selectedEvent = nowSelect
+        this.selectedElement = 'div.pl-1'
+        requestAnimationFrame(() => requestAnimationFrame(() => this.selectedOpen = true))
+      }
+      if (this.selectedOpen) {
+        this.selectedOpen = false
+        requestAnimationFrame(() => requestAnimationFrame(() => open()))
+      } else {
+        open()
+      }
     },
     // 오늘 날짜로 이동
     setToday () {
@@ -236,21 +268,6 @@ export default {
     },
   },
   created() {
-    // this.$store.dispatch("calenderGet", this.month).then((res) => {
-    //   // this.calenderList = res.data.reverse()
-    //   const events = []
-    //   for(let i = 0; i < res.data.length; i++) {
-    //     const allDay = this.rnd(0, 3) === 0;
-    //     const event = {
-    //       name : res.data[i].noteTitle,
-    //       // id : res.data[i].noteId,
-    //       color: this.colors[this.rnd(0, this.colors.length - 1)],
-    //       timed: !allDay,
-    //     }
-    //     events[i] = event
-    //   }
-    //   this.events = events;
-    // });
   },
 };
 </script>
@@ -262,10 +279,12 @@ export default {
 }
 #select-box {
   font-size: 18px;
-  width: 400px;
-  height: 430px;
+  /* width: 400px;
+  height: 430px; */
   /* display:flex;
   justify-content: center;
-  align-items: center; */
+  align-items: 
+  center; */
 }
+
 </style>
