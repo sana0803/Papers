@@ -7,15 +7,23 @@
       @click="goDetailNote(note)"
       class="note_Item"
     >    
-      <div v-if="note.noteMediaList[0]" class="note_ImgBox" align="center" :style="{ 'font-family': getAllFonts[note.fontId - 1].fontUrl }">
-          <v-img class="note_Img" :src="note.noteMediaList[0]" /><br>
-          <!-- {{note.noteContent}} -->
-          <span v-html="note.noteContent"></span>
+      <div v-if="note.noteMediaList[0]"
+        class="note_ImgBox"
+        align="center"
+        :style="{ 'font-family': getAllFonts[note.fontId - 1].fontUrl }"
+      >
+        <v-img class="note_Img" :src="note.noteMediaList[0]" /><br>
+        <!-- {{note.noteContent}} -->
+        <span v-html="note.noteContent"></span>
       </div>
       <div v-else align="center">
         <div class="note-detail" >
-          <div class="note-detail-area" :style="{ 'font-family': getAllFonts[note.fontId - 1].fontUrl }" v-html="note.noteContent">
-          </div>
+          <span
+            class="note-detail-area"
+            :style="{ 'font-family': getAllFonts[note.fontId - 1].fontUrl }"
+            v-html="note.noteContent"
+          >
+          </span>
         </div>
       </div>
       <div class="note-under">
@@ -112,31 +120,31 @@ export default {
 <style scoped>
 .note_Item {
   display: inline-block;
-  width: 284px;
+  width: 286px;
   height: 432px;
   margin-bottom: 31px;
   margin-left: 31px;
+  background: #aaa;
 }
 .note_ImgBox {
-  width: 284px;
+  width: 286px;
   height: 394px;
-  background: #fff;
+  background: lemonchiffon;
   box-shadow: 3px 3px 11px rgba(166, 166, 168, 0.35);
   cursor: pointer;
   overflow:hidden;
   margin:0 auto;
-  display: inline-block;
   justify-content: center;
   align-items: center;
 }
 .note-detail {
-  width: 284px;
+  width: 286px;
   height: 394px;
-  background: #fff;
+  background: goldenrod;
   box-shadow: 3px 3px 11px rgba(166, 166, 168, 0.35);
   cursor: pointer;
   overflow:hidden;
-  margin:0 auto;
+  /* margin:0 auto; */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -148,6 +156,7 @@ export default {
   /* width:100%;
   height:100%; */
   object-fit:contain;
+  background-color: aquamarine;
 }
 .note_Name {
   font-size: 15px;

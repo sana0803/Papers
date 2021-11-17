@@ -40,7 +40,7 @@
               <img :src="stickerList[0].stickerUrl" style="width: 80%; height: 80%; margin-top: 15px; margin-left: 15px;"/>
             </div>
             <div id="Dialog_Name">
-              <div id="Name_Author">작가명 아무개</div>
+              <div id="Name_Author">Papers</div>
               <div id="Name_Name">{{ stickerPackage.stickerPackageName }}</div>
               <div id="Name_Price">{{ stickerPackage.stickerPackagePrice }}장</div>
               <div id="Name_Btn_Box">

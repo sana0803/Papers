@@ -295,9 +295,9 @@ export default {
 <style lang="scss" scoped>
 #Line {
   height: 590px;
-  border: 1px solid #d7d7d7;
+  border: 1px solid #e7e7e7;
   position: absolute;
-  top: 70px;
+  top: 71px;
   left: 461px;
 }
 #Manage_Left {

@@ -185,9 +185,6 @@ export default {
   width: 37%;
   height: 150px;
   margin-left: 61px;
-  overflow: hidden;
-  float: right;
-  margin-top: 22%;
   // border:1px solid red;
 }
 #Name_Author {

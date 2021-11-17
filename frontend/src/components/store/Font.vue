@@ -1,7 +1,12 @@
 <template>
   <div>
     <div class="input-area">
-      <v-text-field v-model="previewText"></v-text-field>
+      <v-text-field
+        v-model="previewText"
+        color="#FFB319"
+        placeholder="이곳에 텍스트를 입력해보세요"
+      >
+      </v-text-field>
     </div>
     <div
     v-for="font in viewList"
@@ -243,8 +248,8 @@ export default {
   color: #585858;
 }
 .input-area {
-  width: 90%; 
-  margin-left:5%; 
+  width: 45%; 
+  margin-left: 34px; 
   margin-top: -20px;
 }
 </style>
