@@ -11,9 +11,7 @@
           <div class="diary-content">
             <div class="diary-title-wrap">
               <div class="title-sec">
-                <span class="diary-title" :style="{ 'font-family': note.fontId }">{{ note.noteTitle }}</span>
-                <br>
-                <span class="diary-writer">{{ note.noteId }}</span>
+                <span class="diary-title" :style="{ 'font-family': getAllFonts[note.fontId - 1].fontUrl }">{{ note.noteTitle }}</span>
               </div>
               <div class="date-sec">
                 <span class="diary-writer">{{ note.writerNickName}}</span>
@@ -24,7 +22,7 @@
             </div>
             <div id="horizon-line"></div>
             <div class="diary-text">
-              <span :style="{ 'font-family': note.fontId }">{{ note.noteContent }}</span>
+              <span :style="{ 'font-family': getAllFonts[note.fontId - 1].fontUrl }">{{ note.noteContent }}</span>
             </div>
             <div class="diary-hashtag" v-for="(hashtag, idx) in note.noteHashtagList" :key="idx">
               <span>#{{ hashtag }}</span>
@@ -42,6 +40,7 @@
                     :src="img"
                     class="diary-content-img"
                   ></v-carousel-item>
+                  <img v-for="sticker in note.stickerList" :key="sticker.id" :src="sticker.sticker.stickerUrl" :style="{top:sticker.topPixel, left:sticker.leftPixel}" class="sticker"/>
                 </v-carousel>
               </div>
               <div v-else-if="note.noteMediaList.length == 0">
@@ -49,7 +48,7 @@
               <div v-else>
                 <div style="position:relative;">
                   <img :src="note.noteMediaList[0]" class="diary-content-img" alt="일기 사진" style="width:371px;"/>
-                  <img v-for="sticker in note.noteStickerList" :key="sticker.id" :src="sticker.sticker.stickerUrl" :style="{top:sticker.topPixel, left:sticker.leftPixel}" class="sticker" />
+                  <img v-for="sticker in note.stickerList" :key="sticker.id" :src="sticker.sticker.stickerUrl" :style="{top:sticker.topPixel, left:sticker.leftPixel}" class="sticker"/>
                 </div> 
               </div>
             </div>
@@ -229,9 +228,21 @@
           noteS3MediaList: note.noteMediaList,
           noteMediaList: [],
           noteHashtagList: '#' + note.noteHashtagList[0],
-          stickerList: note.noteStickerList,
+          stickerList: note.stickerList,
           emotionList: note.emotionList
         }
+
+        const stickerList = [];
+        for(let i = 0; i < localNote.stickerList.length; i++){
+          stickerList.push({
+            stickerId : localNote.stickerList[i].sticker.id,
+            topPixel : localNote.stickerList[i].topPixel,
+            leftPixel : localNote.stickerList[i].leftPixel
+          })
+        }
+        this.$store.commit('setStickerList', note.stickerList)
+        localNote.stickerList = stickerList;
+        
         for (let i = 1; i < note.noteHashtagList.length; i++) {
           localNote.noteHashtagList += ('#' + note.noteHashtagList[i])
         }
@@ -246,11 +257,9 @@
       onDeleteNote(id) {
         this.$store.dispatch("deleteNote", id)
           .then(() => {
-            console.log('일기 삭제')
             this.dialog = false;
             this.$store.dispatch("getDiaryContent", this.currentDiary.id)
               .then((res) => {
-                console.log(res.data)
                 this.noteList = res.data.note.reverse();
                 this.emotionReq.diaryId = this.noteList[0].diaryId
                 this.page = 1
@@ -285,7 +294,6 @@
       this.$store.dispatch("getDiaryContent", this.currentDiary.id)
         .then((res) => {
           this.noteList = res.data.note.reverse();
-          console.log(res.data, 'zzzzzzz')
           // 일기의 폰트 id값에 맞춰 폰트url값으로 변경
           for (var j=0; j<this.noteList.length; j++) {
             for (var i = 0; i < this.getAllFonts.length; i++) {

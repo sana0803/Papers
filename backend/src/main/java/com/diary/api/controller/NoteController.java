@@ -173,6 +173,8 @@ public class NoteController {
             Map<String, Object> object = (Map<String, Object>)params.get("action");
             Map<String, Object> object2 = (Map<String, Object>)object.get("params");
 
+            System.out.println(jsonInString);
+
             UserLoginReq userLoginReq = new UserLoginReq();
             userLoginReq.setUserId((String) object2.get("id"));
             userLoginReq.setUserPwd((String) object2.get("pwd"));

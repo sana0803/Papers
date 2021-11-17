@@ -59,7 +59,7 @@
   </div>
 </template>
 
-<script>
+<script scoped>
 import html2pdf from 'html2pdf.js';
 import { mapGetters } from 'vuex';
 
@@ -211,7 +211,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style>
 #albumMenu {
   position: fixed;
   right: 59px;
@@ -223,7 +223,7 @@ export default {
   min-height: 215.62mm;
   padding: 20px;
   /* border : 1px solid black; */
-  background-image: url(https://t1.daumcdn.net/cfile/blog/15696F344F76928530);
+  background-image: url('../../assets/image/albumBackground.jpg');
   background-size: cover;
   align-content: center;
 }

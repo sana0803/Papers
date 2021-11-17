@@ -28,7 +28,7 @@ public class NoteRes extends BaseResponseBody{
     LocalTime noteCreatedTime;
     List<String> noteHashtagList;
     List<String> noteMediaList;
-    List<NoteSticker> noteStickerList;
+    List<NoteSticker> stickerList;
 //    List<Emotion> emotionList;
     EmotionStatusRes emotionStatusRes;
 //    List<EmotionStatusRes> emotionStatusResList;

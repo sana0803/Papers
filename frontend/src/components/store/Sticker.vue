@@ -71,6 +71,8 @@
 </template>
 
 <script>
+import Swal from "sweetalert2";
+
 export default {
   data() {
     return {
@@ -123,7 +125,20 @@ export default {
       this.$store.dispatch('purchaseStickerPackage', stickerPackage.id).then(() => {
         this.loginUser.userMileage -= stickerPackage.stickerPackagePrice;
         this.$store.commit('setLoginUser', this.loginUser);
-        this.$router.go();
+        
+        this.$store.dispatch('getStoreStickerList').then((res) => {
+          this.stickerPackageList = res.data;
+          this.change(this.page)
+
+          Swal.fire({
+            icon: "success",
+            title:
+              '<span style="font-size:25px;">성공적으로 구매되었습니다.</span>',
+            confirmButtonColor: "#b0da9b",
+            confirmButtonText: '<span style="font-size:18px;">확인</span>',
+          });
+          this.dialog = false
+        })
       })
       .catch(() => {
         alert('마일리지가 부족하거나 이미 소유중입니다');

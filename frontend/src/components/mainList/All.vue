@@ -7,15 +7,23 @@
       @click="goDetailNote(note)"
       class="note_Item"
     >    
-      <div class="note_ImgBox">
-        <v-img class="note_Img" :src="note.noteMediaList[0]" />
+      <div v-if="note.noteMediaList[0]" class="note_ImgBox" align="center" :style="{ 'font-family': getAllFonts[note.fontId - 1].fontUrl }">
+          <v-img class="note_Img" :src="note.noteMediaList[0]" /><br>
+          <!-- {{note.noteContent}} -->
+          <span v-html="note.noteContent"></span>
+      </div>
+      <div v-else align="center">
+        <div class="note-detail" >
+          <div class="note-detail-area" :style="{ 'font-family': getAllFonts[note.fontId - 1].fontUrl }" v-html="note.noteContent">
+          </div>
+        </div>
       </div>
       <div class="note-under">
         <span class="note_Name">{{ note.noteTitle }}</span>
         <span class="note_Day">{{ note.noteCreatedDate }}</span>
       </div>
     </div>
-
+    
     <!-- 일기 페이지네이션 -->
     <div id="diary-pagination">
       <v-pagination
@@ -27,10 +35,12 @@
         color="#FFB300"
       ></v-pagination>
     </div>
+
   </div>
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 export default {
   data() {
     return{
@@ -38,6 +48,14 @@ export default {
       viewList: [],
       page: 1
     }
+  },
+  computed: {
+    ...mapGetters(['getAllFonts']),
+  },
+  filters: {
+      test (value) {
+          return value.replace("\n", "<br />")
+      }
   },
   methods: {
     change(num) {
@@ -48,6 +66,7 @@ export default {
           for(let i=temp;i<temp+6;i++){
             if(this.noteList.length==i)
               break
+            this.noteList[i].noteContent = this.noteList[i].noteContent.replace(/\n/g, "<br />")
             this.viewList.push(this.noteList[i])
           }
         }
@@ -73,10 +92,11 @@ export default {
     }
     this.$store.dispatch("noteGet").then((res) => {
       this.noteList = res.data.reverse();
-
+      console.log(this.noteList)
       for(let i=0;i<6;i++){
         if(this.noteList.length==i) 
           break
+        this.noteList[i].noteContent = this.noteList[i].noteContent.replace(/\n/g, "<br />")
         this.viewList.push(this.noteList[i])
       }
     });
@@ -92,13 +112,25 @@ export default {
 <style scoped>
 .note_Item {
   display: inline-block;
-  width: 286px;
+  width: 284px;
   height: 432px;
   margin-bottom: 31px;
   margin-left: 31px;
 }
 .note_ImgBox {
-  width: 286px;
+  width: 284px;
+  height: 394px;
+  background: #fff;
+  box-shadow: 3px 3px 11px rgba(166, 166, 168, 0.35);
+  cursor: pointer;
+  overflow:hidden;
+  margin:0 auto;
+  display: inline-block;
+  justify-content: center;
+  align-items: center;
+}
+.note-detail {
+  width: 284px;
   height: 394px;
   background: #fff;
   box-shadow: 3px 3px 11px rgba(166, 166, 168, 0.35);
@@ -108,6 +140,9 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+.note-detail-area {
+  width: 250px;
 }
 .note_Img{
   /* width:100%;
