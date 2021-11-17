@@ -132,8 +132,8 @@ export default {
       this.$store.commit("setMyFont", font)
     },
     selectSticker(sticker) {
-      EventBus.$emit('createSticker', sticker)
       this.dialog = false
+      EventBus.$emit('createSticker', sticker)
     }
   },
   created () {

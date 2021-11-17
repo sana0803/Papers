@@ -14,28 +14,6 @@
             Click&nbsp;&nbsp; >
           </v-btn>
 
-          <!-- <br>    
-          <v-btn
-            id="connection"
-            @click="connection"
-          >
-          연결
-          </v-btn>
-          <br>    
-          <v-btn
-            id="publish"
-            @click="publish"
-          >
-          알림 발생
-          </v-btn>
-          <br>    
-          <v-btn
-            id="close"
-            @click="close"
-          >
-          연결 끊기
-          </v-btn> -->
-
         </div>
         <div v-if="!introMode" id="Login_left">
           <div id="Login_Left_In">
@@ -92,8 +70,8 @@ import { mapGetters } from 'vuex'
 export default {
   data() {
     return {
-      API_NOTIFICATION_URL: 'https://localhost/api',
-      // API_NOTIFICATION_URL: 'https://k5b102.p.ssafy.io/api',
+      // API_NOTIFICATION_URL: 'https://localhost/api',
+      API_NOTIFICATION_URL: 'https://k5b102.p.ssafy.io/api',
       alarmEventSource: null,
       introMode: true,
       userId: "",
@@ -144,6 +122,11 @@ export default {
           }
           this.$store.commit('setAlarmEventSource', alarmEventSource)
 
+          this.$store.dispatch("getAllFonts")
+          .then((res) => {
+            this.$store.commit('setAllFonts', res.data)
+          })
+
           this.$router.push("main").catch(() => {});
         })
         .catch(() => {
@@ -170,32 +153,6 @@ export default {
       container.style.transition = "1s";
       loginBox.style.boxShadow = "2px 3px 12px 2px rgba(35, 35, 35, 0.25)";
       loginBox.style.transition = "1.2s";
-    },
-    connection() {
-      // alert('tes')
-      const API_NOTIFICATION_URL = 'https://localhost/api'
-      // let url = API_NOTIFICATION_URL + "/notification/push?uuid=dsasasa";
-      // let eventSource = new EventSource(url, {withCredentials: true});
-      // eventSource.onmessage = function (e) {
-      //   alert(e.data)
-      // }
-      // console.log(eventSource)
-
-      const alarmEventSource = new EventSource(API_NOTIFICATION_URL + `/notification/subscribe?uuid=${Math.random()}`);
-      this.alarmEventSource = alarmEventSource
-      alarmEventSource.onopen = (e) => {
-        console.log('---open---')
-        console.log(e)
-        console.log('----------')
-      }
-      alarmEventSource.onerror = (e) => {
-        console.log('---error---')
-        console.log(e)
-        console.log('----------')
-      }
-      alarmEventSource.onmessage = (e) => {
-        alert(e.data);
-      }
     },
     close () {
       this.getAlarmEventSource.close()
