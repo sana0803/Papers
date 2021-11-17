@@ -133,6 +133,7 @@
 <script>
 import Swal from "sweetalert2";
 import EventBus from '../../eventBus'
+import { mapGetters } from 'vuex'
 
 export default {
   data() {
@@ -176,16 +177,17 @@ export default {
     currentDiary() {
       return this.$store.getters.getCurrentDiary;
     },
-    getMyFont() {
-      // v-text-field에 폰트 적용하기
-      const target = document.getElementsByClassName("v-text-field__slot")
-      // 해시태그에 폰트적용 빼기위해서 -1함
-      for (let i = 0; i < target.length-1; i++) {
-        target[i].style.fontFamily = this.$store.getters.getMyFont.fontUrl;
-        console.log(target[i]);
-      }
-      return this.$store.getters["getMyFont"];
-    },
+    // getMyFont() {
+    //   // v-text-field에 폰트 적용하기
+    //   const target = document.getElementsByClassName("v-text-field__slot")
+    //   // 해시태그에 폰트적용 빼기위해서 -1함
+    //   for (let i = 0; i < target.length-1; i++) {
+    //     target[i].style.fontFamily = this.$store.getters.getMyFont.fontUrl;
+    //     console.log(target[i]);
+    //   }
+    //   return this.$store.getters["getMyFont"];
+    // },
+    ...mapGetters(['getMyFont']),
   },
   methods: {
     selectImage(image) {
@@ -255,7 +257,10 @@ export default {
       }
 
       console.log('노트', this.note.stickerList)
+      alert(this.getMyFont + ' 폰트')
+      console.log(this.getMyFont)
       // 리퀘스트 객체 작성
+      
       const formData = new FormData();
       formData.append("designId", this.note.designId);  // 디자인 ID
       formData.append("diaryId", selectDiaryId);  // 다이어리 ID
