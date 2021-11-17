@@ -44,19 +44,17 @@ public class StoreRepositorySupport {
     QSticker qSticker = QSticker.sticker;
 
 
-    public Optional<List<String>> getStickerList(String userId, String stickerPackageName){
-        AWSCredentials crd = new BasicAWSCredentials(ACCESS_KEY, SECRET_KEY);
-        AmazonS3 s3 = new AmazonS3Client(crd);
-        ObjectListing objects = s3.listObjects("papers-bucket", "store/sticker/" + stickerPackageName);
+    public Optional<List<StickerRes>> getStickerList(String userId, Long stickerPackageId){
+        List<StickerRes> stickerResList = new ArrayList<>();
+        List<Sticker> stickers = jpaQueryFactory.select(qSticker).from(qSticker)
+                .where(qSticker.stickerPackage.id.eq(stickerPackageId)).fetch();
+        if(stickers == null) return Optional.empty();
 
-        List<String> urls = new ArrayList<>();
-        do {
-            for (S3ObjectSummary objectSummary : objects.getObjectSummaries()) {
-                urls.add(S3_IMAGE_URL + objectSummary.getKey());
-            }
-        } while (objects.isTruncated());
-        if(urls.size() > 0) urls.remove(0);
-        return Optional.of(urls);
+        for(Sticker sticker : stickers) {
+            StickerRes stickerRes = new StickerRes(sticker.getId(), sticker.getStickerUrl());
+            stickerResList.add(stickerRes);
+        }
+        return Optional.of(stickerResList);
     }
 
     public Optional<List<String>> getDiaryCoverList(){
