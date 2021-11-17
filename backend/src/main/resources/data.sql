@@ -5,31 +5,31 @@ insert into note_design values (1, 'design-url-1') ON DUPLICATE KEY UPDATE id=1;
 insert into note_layout values (1) ON DUPLICATE KEY UPDATE id=1;
 
 -- 사용자
-insert into user values ('test1', 50, '의적', 'https://papers-bucket.s3.ap-northeast-2.amazonaws.com/dummy-user/test1/%EC%9D%98%EC%A0%81.png', '$2a$10$9RbUeMd5zBbv1bic5Me.euAyCi1fqlwbWhKfmn0k3D7bnqJCtJhx.') ON DUPLICATE KEY UPDATE user_id='test1';
-insert into user values ('test2', 150, '로봇', 'https://papers-bucket.s3.ap-northeast-2.amazonaws.com/dummy-user/test2/%EB%A1%9C%EB%B4%87.jpg', '$2a$10$9RbUeMd5zBbv1bic5Me.euAyCi1fqlwbWhKfmn0k3D7bnqJCtJhx.') ON DUPLICATE KEY UPDATE user_id='test2';
-insert into user values ('test3', 210, '카누', 'https://papers-bucket.s3.ap-northeast-2.amazonaws.com/dummy-user/test3/%EC%B9%B4%EB%88%84.jpg', '$2a$10$9RbUeMd5zBbv1bic5Me.euAyCi1fqlwbWhKfmn0k3D7bnqJCtJhx.') ON DUPLICATE KEY UPDATE user_id='test3';
+insert into user values ('test1', 1000, '의적', 'https://papers-bucket.s3.ap-northeast-2.amazonaws.com/dummy-user/test1/%EC%9D%98%EC%A0%81.png', '$2a$10$9RbUeMd5zBbv1bic5Me.euAyCi1fqlwbWhKfmn0k3D7bnqJCtJhx.') ON DUPLICATE KEY UPDATE user_id='test1';
+insert into user values ('test2', 1000, '로봇', 'https://papers-bucket.s3.ap-northeast-2.amazonaws.com/dummy-user/test2/%EB%A1%9C%EB%B4%87.jpg', '$2a$10$9RbUeMd5zBbv1bic5Me.euAyCi1fqlwbWhKfmn0k3D7bnqJCtJhx.') ON DUPLICATE KEY UPDATE user_id='test2';
+insert into user values ('test3', 1000, '카누', 'https://papers-bucket.s3.ap-northeast-2.amazonaws.com/dummy-user/test3/%EC%B9%B4%EB%88%84.jpg', '$2a$10$9RbUeMd5zBbv1bic5Me.euAyCi1fqlwbWhKfmn0k3D7bnqJCtJhx.') ON DUPLICATE KEY UPDATE user_id='test3';
 
 -- 폰트
 insert into font values (1, '기본체', 0, 'Pretendard Variable') ON DUPLICATE KEY UPDATE id=1;
 insert into font values (2, '코트라 희망체', 50, 'KOTRAHOPE') ON DUPLICATE KEY UPDATE id=2;
-insert into font values (3, '교보 손글씨체', 60, 'KyoboHand') ON DUPLICATE KEY UPDATE id=3;
-insert into font values (4, '완도 희망체', 70, 'WandohopeB') ON DUPLICATE KEY UPDATE id=4;
-insert into font values (5, '카페24 써라운드에어', 80, 'Cafe24SsurroundAir') ON DUPLICATE KEY UPDATE id=5;
-insert into font values (6, '티웨이하늘체', 80, 'twaysky') ON DUPLICATE KEY UPDATE id=6;
-insert into font values (7, 'Y이드스트릿체', 80, 'YdestreetB') ON DUPLICATE KEY UPDATE id=7;
-insert into font values (8, '정묵 바위체', 80, 'SangSangRock') ON DUPLICATE KEY UPDATE id=8;
-insert into font values (9, '서평원 꺾깎체', 80, 'SLEIGothicTTF') ON DUPLICATE KEY UPDATE id=9;
-insert into font values (10, '어비 깡자체', 80, 'UhBeeKang-Ja') ON DUPLICATE KEY UPDATE id=10;
-insert into font values (11, '조선일보 명조체', 80, 'Chosunilbo_myungjo') ON DUPLICATE KEY UPDATE id=11;
-insert into font values (12, '경기천년바탕체', 80, 'GyeonggiBatang') ON DUPLICATE KEY UPDATE id=12;
-insert into font values (13, '가나 초콜릿체', 80, 'ghanachoco') ON DUPLICATE KEY UPDATE id=13;
-insert into font values (14, '도스명조체', 80, 'DOSMyungjo') ON DUPLICATE KEY UPDATE id=14;
-insert into font values (15, '서울한강체', 80, 'SeoulHangangM') ON DUPLICATE KEY UPDATE id=15;
-insert into font values (16, '어그로체', 80, 'SBAggroB') ON DUPLICATE KEY UPDATE id=16;
-insert into font values (17, '둥근모꼴', 80, 'DungGeunMo') ON DUPLICATE KEY UPDATE id=17;
-insert into font values (18, '웰컴체', 80, 'OTWelcomeRA') ON DUPLICATE KEY UPDATE id=18;
-insert into font values (19, '고운돋음', 80, 'GowunDodum-Regular') ON DUPLICATE KEY UPDATE id=19;
-insert into font values (20, '망고빙수', 80, 'SF_IceMango') ON DUPLICATE KEY UPDATE id=20;
+insert into font values (3, '교보 손글씨체', 50, 'KyoboHand') ON DUPLICATE KEY UPDATE id=3;
+insert into font values (4, '완도 희망체', 50, 'WandohopeB') ON DUPLICATE KEY UPDATE id=4;
+insert into font values (5, '카페24 써라운드에어', 50, 'Cafe24SsurroundAir') ON DUPLICATE KEY UPDATE id=5;
+insert into font values (6, '티웨이하늘체', 50, 'twaysky') ON DUPLICATE KEY UPDATE id=6;
+insert into font values (7, 'Y이드스트릿체', 50, 'YdestreetB') ON DUPLICATE KEY UPDATE id=7;
+insert into font values (8, '정묵 바위체', 50, 'SangSangRock') ON DUPLICATE KEY UPDATE id=8;
+insert into font values (9, '서평원 꺾깎체', 50, 'SLEIGothicTTF') ON DUPLICATE KEY UPDATE id=9;
+insert into font values (10, '어비 깡자체', 50, 'UhBeeKang-Ja') ON DUPLICATE KEY UPDATE id=10;
+insert into font values (11, '조선일보 명조체', 50, 'Chosunilbo_myungjo') ON DUPLICATE KEY UPDATE id=11;
+insert into font values (12, '경기천년바탕체', 50, 'GyeonggiBatang') ON DUPLICATE KEY UPDATE id=12;
+insert into font values (13, '가나 초콜릿체', 50, 'ghanachoco') ON DUPLICATE KEY UPDATE id=13;
+insert into font values (14, '도스명조체', 50, 'DOSMyungjo') ON DUPLICATE KEY UPDATE id=14;
+insert into font values (15, '서울한강체', 50, 'SeoulHangangM') ON DUPLICATE KEY UPDATE id=15;
+insert into font values (16, '어그로체', 50, 'SBAggroB') ON DUPLICATE KEY UPDATE id=16;
+insert into font values (17, '둥근모꼴', 50, 'DungGeunMo') ON DUPLICATE KEY UPDATE id=17;
+insert into font values (18, '웰컴체', 50, 'OTWelcomeRA') ON DUPLICATE KEY UPDATE id=18;
+insert into font values (19, '고운돋음', 50, 'GowunDodum-Regular') ON DUPLICATE KEY UPDATE id=19;
+insert into font values (20, '망고빙수', 50, 'SF_IceMango') ON DUPLICATE KEY UPDATE id=20;
 
 
 -- 유저 폰트
@@ -38,14 +38,22 @@ insert into user_font values (2, 2, 'test1') ON DUPLICATE KEY UPDATE id=2;
 insert into user_font values (3, 3, 'test2') ON DUPLICATE KEY UPDATE id=3;
 
 -- 스티커 패키지
-insert into sticker_package values (1, 'sample 스티커', 50) ON DUPLICATE KEY UPDATE id=1;
-insert into sticker_package values (2, '우리의 친구 페퍼', 50) ON DUPLICATE KEY UPDATE id=2;
+insert into sticker_package values (1, 'pack1', 50) ON DUPLICATE KEY UPDATE id=1;
+insert into sticker_package values (2, 'Circle', 50) ON DUPLICATE KEY UPDATE id=2;
+insert into sticker_package values (3, 'star', 50) ON DUPLICATE KEY UPDATE id=3;
+insert into sticker_package values (4, 'Heart', 50) ON DUPLICATE KEY UPDATE id=4;
 
 -- 다이어리 커버
-insert into diary_cover values (1, 'blue', 500, 'https://papers-bucket.s3.ap-northeast-2.amazonaws.com/diary-cover/blue.jpg') ON DUPLICATE KEY UPDATE id=1;
-insert into diary_cover values (2, 'sample', 500, 'https://papers-bucket.s3.ap-northeast-2.amazonaws.com/diary-cover/sample.png') ON DUPLICATE KEY UPDATE id=2;
-insert into diary_cover values (3, '기린커버', 600, 'https://papers-bucket.s3.ap-northeast-2.amazonaws.com/store/diary-cover/%EA%B8%B0%EB%A6%B0%EB%AC%B4%EB%8A%AC%EC%BB%A4%EB%B2%84.png') ON DUPLICATE KEY UPDATE id=3;
-insert into diary_cover values (4, '노을커버', 600, 'https://papers-bucket.s3.ap-northeast-2.amazonaws.com/store/diary-cover/%EB%85%B8%EC%9D%84%EC%BB%A4%EB%B2%84.jpg') ON DUPLICATE KEY UPDATE id=4;
+insert into diary_cover values (1, '알록 달록 포장지', 150, 'https://papers-bucket.s3.ap-northeast-2.amazonaws.com/store/diary-cover/store_cover1.jpg') ON DUPLICATE KEY UPDATE id=1;
+insert into diary_cover values (2, '바다위에 올챙이', 150, 'https://papers-bucket.s3.ap-northeast-2.amazonaws.com/store/diary-cover/store_cover2.jpg') ON DUPLICATE KEY UPDATE id=2;
+insert into diary_cover values (3, '별 사탕 팡팡', 150, 'https://papers-bucket.s3.ap-northeast-2.amazonaws.com/store/diary-cover/store_cover3.jpg') ON DUPLICATE KEY UPDATE id=3;
+insert into diary_cover values (4, '케익 좋아하는 사람?', 150, 'https://papers-bucket.s3.ap-northeast-2.amazonaws.com/store/diary-cover/store_cover4.jpg') ON DUPLICATE KEY UPDATE id=4;
+insert into diary_cover values (5, '구겨놓은 종이', 150, 'https://papers-bucket.s3.ap-northeast-2.amazonaws.com/store/diary-cover/store_cover5.jpg') ON DUPLICATE KEY UPDATE id=5;
+insert into diary_cover values (6, '파랑색 식탁보', 150, 'https://papers-bucket.s3.ap-northeast-2.amazonaws.com/store/diary-cover/store_cover6.jpg') ON DUPLICATE KEY UPDATE id=6;
+insert into diary_cover values (7, '분홍색 식탁보', 150, 'https://papers-bucket.s3.ap-northeast-2.amazonaws.com/store/diary-cover/store_cover7.jpg') ON DUPLICATE KEY UPDATE id=7;
+insert into diary_cover values (8, '커버명 : - 미 정 -', 150, 'https://papers-bucket.s3.ap-northeast-2.amazonaws.com/store/diary-cover/store_cover8.jpg') ON DUPLICATE KEY UPDATE id=8;
+insert into diary_cover values (9, '할아부지 식탁보', 150, 'https://papers-bucket.s3.ap-northeast-2.amazonaws.com/store/diary-cover/store_cover9.jpg') ON DUPLICATE KEY UPDATE id=9;
+insert into diary_cover values (10, '한정판일 것 같은 커버', 150, 'https://papers-bucket.s3.ap-northeast-2.amazonaws.com/store/diary-cover/store_cover10.jpg') ON DUPLICATE KEY UPDATE id=10;
 
 -- 다이어리
 insert into diary values (1, sysdate(), '기본 일기장', 1, 'test1') ON DUPLICATE KEY UPDATE id=1;
