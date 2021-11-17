@@ -22,7 +22,7 @@ export default {
       console.log('hi')
       this.$store.commit('initNoteContent')
       this.$store.commit('setIsUpdate', false)
-      this.$router.push("/write");
+      this.$router.push("/write").catch(() => {});
     },
   },
 };

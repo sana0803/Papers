@@ -102,14 +102,14 @@ export default {
       .then((res) => {
         console.log(res.data)
         if (noteId === 0) { // 노트 아이디가 없는 것은 일기장 생성에 대한 알림
-          this.$router.push({name: 'main', query: {diaryId: diaryId, mainListMode: 'diary'}})
+          this.$router.push({name: 'main', query: {diaryId: diaryId, mainListMode: 'diary'}}).catch(() => {})
           return
         }
 
         this.$store.dispatch('getDiaryContent', diaryId)
           .then((res) => {
             this.$store.commit('setCurrentDiary', res.data)
-            this.$router.push({name: 'diary', query: {diaryId: diaryId, noteId: noteId}})
+            this.$router.push({name: 'diary', query: {diaryId: diaryId, noteId: noteId}}).catch(() => {})
           })
       }) 
     }

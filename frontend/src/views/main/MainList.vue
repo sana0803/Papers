@@ -96,7 +96,7 @@ export default {
       }
     },
     removeUrl() {
-      this.$router.push('/main')
+      this.$router.push('/main').catch(() => {})
     },
     selectDairy() {
       // const diaryMenu = document.getElementById("diary")
@@ -109,7 +109,7 @@ export default {
       this.$store.commit('initNoteContent')
       this.$store.commit('setIsUpdate', false)
       this.$store.commit('setCurrentDiary', '')
-      this.$router.push("/write");
+      this.$router.push("/write").catch(() => {});
     },
     showDiaryList() {
       // if (this.mainListMode == 'diary')

@@ -59,18 +59,37 @@ export default {
   methods: {
     change() {
       if (!this.mode) {
-        this.$router.push("diaryList2");
+        this.$router.push("diaryList2").catch(() => {});
         this.mode = true;
       } else if (this.mode) {
-        this.$router.push("diaryList1");
+        this.$router.push("diaryList1").catch(() => {});
         this.mode = false;
       }
     },
     goList() {
-      this.$router.push("diaryList1");
+      this.$router.push("diaryList1").catch(() => {});
+      const now = document.getElementById("Diary_PostIt1")
+      const managebtn = document.getElementById("Diary_PostIt2")
+      now.style.width = "45px";
+      now.style.fontWeight = "700"
+      now.style.color = 'black'
+      managebtn.style.fontWeight = "400"
+      managebtn.style.color = '#929292'
+      managebtn.style.width = "28px"
+      managebtn.style.left = "120px"
     },
     goManage() {
-      this.$router.push("manage");
+      this.$router.push("manage").catch(() => {});
+      const now = document.getElementById("Diary_PostIt1")
+      const managebtn = document.getElementById("Diary_PostIt2")
+      now.style.width = "28px";
+      now.style.fontWeight = "400"
+      now.style.color = '#929292'
+      managebtn.style.left = "107px"
+      managebtn.style.fontWeight = "700"
+      managebtn.style.width = "45px"
+      managebtn.style.color = 'black'
+
     },
     // 일기장 레이아웃 커버
     setCover() {
@@ -81,7 +100,7 @@ export default {
   mounted() {
     const loginCheck = localStorage.getItem("userId");
     if (loginCheck == null) {
-      this.$router.push("/");
+      this.$router.push("/").catch(() => {});
     }
     // 일기장 커버선택시 레이아웃 변경
     EventBus.$on("changeCover", (cover) => {
@@ -120,13 +139,14 @@ export default {
 }
 #Diary_PostIt1 {
   display: inline-block;
-  width: 28px;
+  width: 45px;
   height: 60px;
   background: #ffb385;
   position: absolute;
   left: 66px;
   line-height: 60px;
   font-size: 14px;
+  font-weight: 700;
   text-align: center;
   cursor: pointer;
 }
@@ -136,11 +156,13 @@ export default {
   height: 60px;
   background: #b8dfd8;
   position: absolute;
-  left: 107px;
+  /* left: 107px; */
+  left: 120px;
   line-height: 60px;
   font-size: 14px;
   text-align: center;
   cursor: pointer;
+  color: #929292;
 }
 #Diary_Btn {
   position: absolute;

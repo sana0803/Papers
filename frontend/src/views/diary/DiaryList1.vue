@@ -22,7 +22,7 @@
             </div>
             <div id="horizon-line"></div>
             <div class="diary-text">
-              <span :style="{ 'font-family': getAllFonts[note.fontId - 1].fontUrl }">{{ note.noteContent }}</span>
+              <span :style="{ 'font-family': getAllFonts[note.fontId - 1].fontUrl }" v-html="note.noteContent"></span>
             </div>
             <div class="diary-hashtag" v-for="(hashtag, idx) in note.noteHashtagList" :key="idx">
               <span>#{{ hashtag }}</span>
@@ -213,7 +213,7 @@
       goWrite() {
         this.$store.commit('initNoteContent')
         this.$store.commit('setIsUpdate', false)
-        this.$router.push("/write");
+        this.$router.push("/write").catch(() => {});
       },
       goUpdate(note) {
         const localNote = {
@@ -231,7 +231,9 @@
           stickerList: note.stickerList,
           emotionList: note.emotionList
         }
-
+        
+        localNote.noteContent = note.noteContent.replace(/\/>/g, "")
+        localNote.noteContent = localNote.noteContent.replace(/<br /g, "\n") // 줄 바꿈 처리 html to string
         const stickerList = [];
         for(let i = 0; i < localNote.stickerList.length; i++){
           stickerList.push({
@@ -242,7 +244,6 @@
         }
         this.$store.commit('setStickerList', note.stickerList)
         localNote.stickerList = stickerList;
-        
         for (let i = 1; i < note.noteHashtagList.length; i++) {
           localNote.noteHashtagList += ('#' + note.noteHashtagList[i])
         }
@@ -336,7 +337,7 @@
             if(i>0 && i%2==0){
               page++
             }
-
+            this.noteList[i].noteContent = this.noteList[i].noteContent.replace(/\n/g, "<br />")
             if(this.noteContent.noteId == this.noteList[i].noteId) {
               if(i==this.noteList.length-1 && i%2==0){
                 this.viewList.push(this.noteList[i])
@@ -485,11 +486,13 @@
 .diary-text {
   margin-bottom: 12px;
   // background-color: lightblue;
-  overflow: hidden;
+  overflow: scroll;
   max-height: 95px;
   line-height: 1.4;
 }
-
+.diary-text::-webkit-scrollbar {
+   display: none;
+}
 .diary-hashtag {
   display: inline-block;
   margin-right: 5px;

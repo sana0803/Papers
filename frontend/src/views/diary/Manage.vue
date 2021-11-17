@@ -273,7 +273,7 @@ export default {
             confirmButtonColor: "#b0da9b",
             confirmButtonText: '<span style="font-size:18px;">확인</span>',
         })
-        this.$router.push("/diary/diaryList1");
+        this.$router.push("/diary/diaryList1").catch(() => {});
       })
     },
     clickCover(cover) {

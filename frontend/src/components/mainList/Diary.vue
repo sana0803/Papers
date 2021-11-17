@@ -147,7 +147,7 @@ export default {
       this.$store.dispatch('getDiaryContent', diary.id)
         .then((res) => {
           this.$store.commit('setNoteContent', res.data.note[res.data.note.length-1])
-          this.$router.push("/diary");
+          this.$router.push("/diary").catch(() => {});
         })
     },
     create() {
@@ -178,11 +178,10 @@ export default {
                 break
               this.viewList.push(this.diaryList[i])
             }
-
             Swal.fire({
               icon: "success",
               title:
-                '<span style="font-size:25px;">일기장 생성 완료.</span>',
+                '<span style="font-size:25px;">일기장이 만들어졌습니다.</span>',
               confirmButtonColor: "#b0da9b",
               confirmButtonText: '<span style="font-size:18px;">확인</span>',
             });
