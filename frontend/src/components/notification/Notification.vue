@@ -19,10 +19,7 @@
 import { mapGetters } from 'vuex'
 export default {
   data() {
-    return {
-      // imageUrl: 'https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/cbdef037365169.573db7853cebb.jpg',
-      audio: 'https://papers-bucket.s3.ap-northeast-2.amazonaws.com/audio/melody.mp3'
-    }
+    return {}
   },
   computed: {
     ...mapGetters(["getNotificationMessage", "getNotificationUserImage"]),
