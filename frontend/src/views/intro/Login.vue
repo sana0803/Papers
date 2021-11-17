@@ -103,6 +103,9 @@ export default {
   },
   computed: {
     ...mapGetters(["getAlarmEventSource"]),
+    loginUser() {
+            return this.$store.getters.getLoginUser
+    },
   },
   methods: {
     login() {
@@ -202,6 +205,12 @@ export default {
       fetch(API_NOTIFICATION_URL + `/notification/publish?message=알림 발생입니다.`);
     },
   },
+  created(){
+    const loginCheck = this.loginUser.userId
+    if(loginCheck) {
+      this.$router.push('main')
+    }
+  }
 };
 </script>
 
