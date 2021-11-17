@@ -77,7 +77,7 @@ export default {
         userId: this.userId,
         userPwd: this.userPwd,
         userNickname: this.userNickname,
-        userName: "이름",
+        // userName: "이름",
       };
       this.$store
         .dispatch("signUp", user)
@@ -89,7 +89,7 @@ export default {
             confirmButtonColor: "#b0da9b",
             confirmButtonText: '<span style="font-size:18px;">확인</span>',
           });
-          this.$router.push("/");
+          this.$router.push("/").catch(() => {});
         })
         .catch(() => {
           Swal.fire({

@@ -152,7 +152,7 @@ export default {
     },
     goDetailNote(note){
       this.$store.commit('setNoteContent', note) // mutaion 호출 ('뮤테이션 이름, 매개변수)
-      this.$router.push("/diary");
+      this.$router.push("/diary").catch(() => {});
     },
     modify(){
       var changeId = ''

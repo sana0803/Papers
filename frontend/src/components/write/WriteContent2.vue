@@ -291,7 +291,7 @@ export default {
           const loginUser = this.$store.getters["getLoginUser"];
           loginUser.userMileage += 10;
           this.$store.commit("setLoginUser", loginUser);
-          this.$router.push("/main");
+          this.$router.push("/main").catch(() => {});
         });
       } else if (this.$store.getters["getIsUpdate"] == true) {  // 일기 수정
         const note = {
@@ -306,7 +306,7 @@ export default {
             confirmButtonText: '<span style="font-size:18px;">확인</span>',
           });
           this.$store.commit("initNoteContent");
-          this.$router.push("/main");
+          this.$router.push("/main").catch(() => {});
         });
       }
     },
