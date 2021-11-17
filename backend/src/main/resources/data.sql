@@ -69,15 +69,33 @@ insert into diary values (3, sysdate(), '기본 일기장', 1, 'test3') ON DUPLI
 -- values (1, 'content1', sysdate(), localtime(), 'title1', 1, 1, 1, 1, 'test1') ON DUPLICATE KEY UPDATE id = 1;
 
 -- 스티커
-insert into sticker values (1, 'sticker-url-1', 1) ON DUPLICATE KEY UPDATE id=1;
-insert into sticker values (2, 'sticker-url-2', 1) ON DUPLICATE KEY UPDATE id=2;
-insert into sticker values (3, 'sticker-url-3', 1) ON DUPLICATE KEY UPDATE id=3;
-insert into sticker values (4, 'https://papers-bucket.s3.ap-northeast-2.amazonaws.com/store/sticker/pack1/sticker1.png', 2) ON DUPLICATE KEY UPDATE id=4;
-insert into sticker values (5, 'https://papers-bucket.s3.ap-northeast-2.amazonaws.com/store/sticker/pack1/sticker2.png', 2) ON DUPLICATE KEY UPDATE id=5;
-insert into sticker values (6, 'https://papers-bucket.s3.ap-northeast-2.amazonaws.com/store/sticker/pack1/sticker3.png', 2) ON DUPLICATE KEY UPDATE id=6;
-insert into sticker values (7, 'https://papers-bucket.s3.ap-northeast-2.amazonaws.com/store/sticker/pack1/sticker4.png', 2) ON DUPLICATE KEY UPDATE id=7;
-insert into sticker values (8, 'https://papers-bucket.s3.ap-northeast-2.amazonaws.com/store/sticker/pack1/sticker5.png', 2) ON DUPLICATE KEY UPDATE id=8;
-insert into sticker values (9, 'https://papers-bucket.s3.ap-northeast-2.amazonaws.com/store/sticker/pack1/sticker6.png', 2) ON DUPLICATE KEY UPDATE id=9;
+insert into sticker values (1, 'https://papers-bucket.s3.ap-northeast-2.amazonaws.com/store/sticker/pack1/sticker1.png', 1) ON DUPLICATE KEY UPDATE id=1;
+insert into sticker values (2, 'https://papers-bucket.s3.ap-northeast-2.amazonaws.com/store/sticker/pack1/sticker2.png', 1) ON DUPLICATE KEY UPDATE id=2;
+insert into sticker values (3, 'https://papers-bucket.s3.ap-northeast-2.amazonaws.com/store/sticker/pack1/sticker3.png', 1) ON DUPLICATE KEY UPDATE id=3;
+insert into sticker values (4, 'https://papers-bucket.s3.ap-northeast-2.amazonaws.com/store/sticker/pack1/sticker4.png', 1) ON DUPLICATE KEY UPDATE id=4;
+insert into sticker values (5, 'https://papers-bucket.s3.ap-northeast-2.amazonaws.com/store/sticker/pack1/sticker5.png', 1) ON DUPLICATE KEY UPDATE id=5;
+insert into sticker values (6, 'https://papers-bucket.s3.ap-northeast-2.amazonaws.com/store/sticker/pack1/sticker6.png', 1) ON DUPLICATE KEY UPDATE id=6;
+
+insert into sticker values (7, 'https://papers-bucket.s3.ap-northeast-2.amazonaws.com/store/sticker/Circle/circle1.png', 2) ON DUPLICATE KEY UPDATE id=7;
+insert into sticker values (8, 'https://papers-bucket.s3.ap-northeast-2.amazonaws.com/store/sticker/Circle/circle2.png', 2) ON DUPLICATE KEY UPDATE id=8;
+insert into sticker values (9, 'https://papers-bucket.s3.ap-northeast-2.amazonaws.com/store/sticker/Circle/circle3.png', 2) ON DUPLICATE KEY UPDATE id=9;
+insert into sticker values (10, 'https://papers-bucket.s3.ap-northeast-2.amazonaws.com/store/sticker/Circle/circle4.png', 2) ON DUPLICATE KEY UPDATE id=10;
+insert into sticker values (11, 'https://papers-bucket.s3.ap-northeast-2.amazonaws.com/store/sticker/Circle/circle5.png', 2) ON DUPLICATE KEY UPDATE id=11;
+insert into sticker values (12, 'https://papers-bucket.s3.ap-northeast-2.amazonaws.com/store/sticker/Circle/circle6.png', 2) ON DUPLICATE KEY UPDATE id=12;
+
+insert into sticker values (13, 'https://papers-bucket.s3.ap-northeast-2.amazonaws.com/store/sticker/star/star1.png', 3) ON DUPLICATE KEY UPDATE id=13;
+insert into sticker values (14, 'https://papers-bucket.s3.ap-northeast-2.amazonaws.com/store/sticker/star/star2.png', 3) ON DUPLICATE KEY UPDATE id=14;
+insert into sticker values (15, 'https://papers-bucket.s3.ap-northeast-2.amazonaws.com/store/sticker/star/star3.png', 3) ON DUPLICATE KEY UPDATE id=15;
+insert into sticker values (16, 'https://papers-bucket.s3.ap-northeast-2.amazonaws.com/store/sticker/star/star4.png', 3) ON DUPLICATE KEY UPDATE id=16;
+insert into sticker values (17, 'https://papers-bucket.s3.ap-northeast-2.amazonaws.com/store/sticker/star/star5.png', 3) ON DUPLICATE KEY UPDATE id=17;
+insert into sticker values (18, 'https://papers-bucket.s3.ap-northeast-2.amazonaws.com/store/sticker/star/star6.png', 3) ON DUPLICATE KEY UPDATE id=18;
+
+insert into sticker values (19, 'https://papers-bucket.s3.ap-northeast-2.amazonaws.com/store/sticker/Heart/heart1.png', 4) ON DUPLICATE KEY UPDATE id=19;
+insert into sticker values (20, 'https://papers-bucket.s3.ap-northeast-2.amazonaws.com/store/sticker/Heart/heart2.png', 4) ON DUPLICATE KEY UPDATE id=20;
+insert into sticker values (21, 'https://papers-bucket.s3.ap-northeast-2.amazonaws.com/store/sticker/Heart/heart3.png', 4) ON DUPLICATE KEY UPDATE id=21;
+insert into sticker values (22, 'https://papers-bucket.s3.ap-northeast-2.amazonaws.com/store/sticker/Heart/heart4.png', 4) ON DUPLICATE KEY UPDATE id=22;
+insert into sticker values (24, 'https://papers-bucket.s3.ap-northeast-2.amazonaws.com/store/sticker/Heart/heart6.png', 4) ON DUPLICATE KEY UPDATE id=23;
+insert into sticker values (23, 'https://papers-bucket.s3.ap-northeast-2.amazonaws.com/store/sticker/Heart/heart5.png', 4) ON DUPLICATE KEY UPDATE id=24;
 
 -- 유저 스티커 패키지
 --insert into user_sticker_package values (1, 1, 'test1') ON DUPLICATE KEY UPDATE id=1;
@@ -95,17 +113,17 @@ insert into diary_cover values (3, '다이어리 커버3', 600, 'img url-3') ON 
 
 -- 유저 다이어리 커버
 insert into user_diary_cover values (1, 1, 'test1') ON DUPLICATE KEY UPDATE id=1;
-insert into user_diary_cover values (2, 2, 'test1') ON DUPLICATE KEY UPDATE id=1;
-insert into user_diary_cover values (3, 3, 'test1') ON DUPLICATE KEY UPDATE id=1;
-insert into user_diary_cover values (4, 4, 'test1') ON DUPLICATE KEY UPDATE id=1;
-insert into user_diary_cover values (5, 1, 'test2') ON DUPLICATE KEY UPDATE id=3;
-insert into user_diary_cover values (6, 2, 'test2') ON DUPLICATE KEY UPDATE id=3;
-insert into user_diary_cover values (7, 3, 'test2') ON DUPLICATE KEY UPDATE id=3;
-insert into user_diary_cover values (8, 4, 'test2') ON DUPLICATE KEY UPDATE id=3;
-insert into user_diary_cover values (9, 1, 'test3') ON DUPLICATE KEY UPDATE id=5;
-insert into user_diary_cover values (10, 2, 'test3') ON DUPLICATE KEY UPDATE id=6;
-insert into user_diary_cover values (11, 3, 'test3') ON DUPLICATE KEY UPDATE id=5;
-insert into user_diary_cover values (12, 4, 'test3') ON DUPLICATE KEY UPDATE id=5;
+insert into user_diary_cover values (2, 2, 'test1') ON DUPLICATE KEY UPDATE id=2;
+insert into user_diary_cover values (3, 3, 'test1') ON DUPLICATE KEY UPDATE id=3;
+insert into user_diary_cover values (4, 4, 'test1') ON DUPLICATE KEY UPDATE id=4;
+insert into user_diary_cover values (5, 1, 'test2') ON DUPLICATE KEY UPDATE id=5;
+insert into user_diary_cover values (6, 2, 'test2') ON DUPLICATE KEY UPDATE id=6;
+insert into user_diary_cover values (7, 3, 'test2') ON DUPLICATE KEY UPDATE id=7;
+insert into user_diary_cover values (8, 4, 'test2') ON DUPLICATE KEY UPDATE id=8;
+insert into user_diary_cover values (9, 1, 'test3') ON DUPLICATE KEY UPDATE id=9;
+insert into user_diary_cover values (10, 2, 'test3') ON DUPLICATE KEY UPDATE id=10;
+insert into user_diary_cover values (11, 3, 'test3') ON DUPLICATE KEY UPDATE id=11;
+insert into user_diary_cover values (12, 4, 'test3') ON DUPLICATE KEY UPDATE id=12;
 
 -- 노티피케이션 정보
 insert into notification_info values (1, '일기 작성 알림') ON DUPLICATE KEY UPDATE id=1;
