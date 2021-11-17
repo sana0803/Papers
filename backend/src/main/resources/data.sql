@@ -94,8 +94,8 @@ insert into sticker values (19, 'https://papers-bucket.s3.ap-northeast-2.amazona
 insert into sticker values (20, 'https://papers-bucket.s3.ap-northeast-2.amazonaws.com/store/sticker/Heart/heart2.png', 4) ON DUPLICATE KEY UPDATE id=20;
 insert into sticker values (21, 'https://papers-bucket.s3.ap-northeast-2.amazonaws.com/store/sticker/Heart/heart3.png', 4) ON DUPLICATE KEY UPDATE id=21;
 insert into sticker values (22, 'https://papers-bucket.s3.ap-northeast-2.amazonaws.com/store/sticker/Heart/heart4.png', 4) ON DUPLICATE KEY UPDATE id=22;
-insert into sticker values (24, 'https://papers-bucket.s3.ap-northeast-2.amazonaws.com/store/sticker/Heart/heart6.png', 4) ON DUPLICATE KEY UPDATE id=23;
-insert into sticker values (23, 'https://papers-bucket.s3.ap-northeast-2.amazonaws.com/store/sticker/Heart/heart5.png', 4) ON DUPLICATE KEY UPDATE id=24;
+insert into sticker values (23, 'https://papers-bucket.s3.ap-northeast-2.amazonaws.com/store/sticker/Heart/heart6.png', 4) ON DUPLICATE KEY UPDATE id=23;
+insert into sticker values (24, 'https://papers-bucket.s3.ap-northeast-2.amazonaws.com/store/sticker/Heart/heart5.png', 4) ON DUPLICATE KEY UPDATE id=24;
 
 -- 유저 스티커 패키지
 --insert into user_sticker_package values (1, 1, 'test1') ON DUPLICATE KEY UPDATE id=1;
@@ -105,11 +105,6 @@ insert into sticker values (23, 'https://papers-bucket.s3.ap-northeast-2.amazona
 
 -- 노트 미디어
 --insert into note_media values (1, '.jpg', 'media-url-1', 1) ON DUPLICATE KEY UPDATE id=1;
-
--- 다이어리 커버
-insert into diary_cover values (1, '다이어리 커버1', 600, 'img url-1') ON DUPLICATE KEY UPDATE id=1;
-insert into diary_cover values (2, '다이어리 커버2', 600, 'img url-2') ON DUPLICATE KEY UPDATE id=2;
-insert into diary_cover values (3, '다이어리 커버3', 600, 'img url-3') ON DUPLICATE KEY UPDATE id=3;
 
 -- 유저 다이어리 커버
 insert into user_diary_cover values (1, 1, 'test1') ON DUPLICATE KEY UPDATE id=1;
