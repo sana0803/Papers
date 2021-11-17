@@ -24,15 +24,13 @@ export default {
     Notification,
   },
   watch: {
-    getNotificationState() {
-      if (this.getNotificationState === true) {
-        var player = new Audio(this.audio)
-        player.play()
-      }
+    getNotificationMessage() {
+      var player = new Audio(this.audio)
+      player.play()
     }
   },
   computed: {
-    ...mapGetters(["getNotificationState"]),
+    ...mapGetters(["getNotificationState", "getNotificationMessage"]),
   },
   methods: {
     setFont: function () {
