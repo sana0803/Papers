@@ -70,18 +70,10 @@ public class StoreServiceImpl implements StoreService {
             ids.add(stickerPackage.getId());
 
         for(StickerPackage stickerPackage : stickerPackageRepository.findAll()) {
-            List<String> stickerList = storeRepositorySupport.getStickerList(userId, stickerPackage.getStickerPackageName()).get();
-            List<StickerRes> stickerResList = new ArrayList<>();
-            for(int i = 1; i <= stickerList.size(); i++) {
-                StickerRes stickerRes = new StickerRes();
-                stickerRes.setStickerUrl(stickerList.get(i-1));
-                stickerRes.setId((long)i);
-                stickerResList.add(stickerRes);
-            }
 
             StickerPackagesRes stickerPackagesRes = new StickerPackagesRes(
                     stickerPackage,
-                    stickerResList
+                    storeRepositorySupport.getStickerList(userId, stickerPackage.getId()).get()
             );
             if(ids.contains(stickerPackagesRes.getId()))
                 stickerPackagesRes.setOwned(true);
