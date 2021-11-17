@@ -169,22 +169,25 @@ export default {
           'inviteList': inviteAlarmPushUser
           }
           this.$store.dispatch("shareDiary", share).then(() => { // 다이어리 공유 요청 보내기
-            this.dialog = false;
-            this.diaryTitle = "";
-            this.page = 1
-            this.viewList = []
-            for(let i=0;i<5;i++){
-              if(this.diaryList.length==i) 
-                break
-              this.viewList.push(this.diaryList[i])
-            }
-            Swal.fire({
-              icon: "success",
-              title:
-                '<span style="font-size:25px;">일기장이 만들어졌습니다.</span>',
-              confirmButtonColor: "#b0da9b",
-              confirmButtonText: '<span style="font-size:18px;">확인</span>',
-            });
+            this.$store.dispatch("diaryGet").then((res) => {
+              this.diaryList = res.data.reverse()
+              this.dialog = false;
+              this.diaryTitle = "";
+              this.page = 1
+              this.viewList = []
+              for(let i=0;i<5;i++){
+                if(this.diaryList.length==i) 
+                  break
+                this.viewList.push(this.diaryList[i])
+              }
+              Swal.fire({
+                icon: "success",
+                title:
+                  '<span style="font-size:25px;">일기장이 만들어졌습니다.</span>',
+                confirmButtonColor: "#b0da9b",
+                confirmButtonText: '<span style="font-size:18px;">확인</span>',
+              });
+            })
           });
         });
       });

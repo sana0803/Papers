@@ -284,6 +284,7 @@ export default {
 
       if(this.$store.getters['getIsUpdate'] == false){  //  일기 작성
         this.$store.dispatch("write", formData).then(() => {
+          this.$store.commit('setStickerList', [])
           Swal.fire({
             icon: "success",
             title: '<span style="font-size:25px;">일기 작성 완료.</span>',
@@ -302,6 +303,7 @@ export default {
           formData: formData,
         };
         this.$store.dispatch("modifyNote", note).then(() => {
+          this.$store.commit('setStickerList', [])
           Swal.fire({
             icon: "success",
             title: '<span style="font-size:25px;">일기 수정 완료.</span>',
@@ -313,7 +315,8 @@ export default {
         });
       }
     },
-    dragElement(elmnt) {
+    async dragElement(elmnt) {
+          console.log('드래그 실행')
           var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
           if (document.getElementById(elmnt.id)) {
             /* if present, the header is where you move the DIV from:*/
@@ -357,7 +360,6 @@ export default {
   mounted() {
       // 만약 수정하는 상태이면, state에 저장된 노트 컨텐츠들 가져오기
       this.selectDiary = this.currentDiary.diaryTitle
-
       if(this.$store.getters['getIsUpdate'] == true) {
         const stickerList = this.$store.getters.getStickerList;
         this.note = this.$store.getters['getNoteContent']
@@ -405,7 +407,7 @@ export default {
         this.diaryList = res.data
       });
 
-      EventBus.$on('createSticker', (sticker) => {
+      EventBus.$on('createSticker', async (sticker) => {
         const box = document.getElementById('file-section')
         // const div = document.createElement('div')
         const img = document.createElement('img')
@@ -427,8 +429,7 @@ export default {
         img.className = sticker.id
 
         box.append(img)
-
-        this.dragElement(img);
+        await this.dragElement(img);
       })
     this.$store.dispatch("diaryGet").then((res) => {
       const tmp = [];
@@ -438,6 +439,9 @@ export default {
       this.diaryTitleList = tmp;
       this.diaryList = res.data;
     });
+  },
+  beforeDestroy(){
+    EventBus.$off('createSticker');
   }
 }
 </script>
