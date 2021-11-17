@@ -435,6 +435,9 @@ export default {
       this.diaryTitleList = tmp;
       this.diaryList = res.data;
     });
+  },
+  beforeDestroy(){
+    EventBus.$off('createSticker');
   }
 }
 </script>
