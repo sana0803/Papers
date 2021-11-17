@@ -1,6 +1,17 @@
 <template>
   <div>
     <!-- <div v-for="note in noteList" :key="note.id" class="MainList_Item">일기 하나임</div> -->
+    <div align="center" class="note-empty" v-if="viewList.length === 0">
+      <div>
+        <div>
+          <img src="../../assets/image/paper.png" style="width:90px; margin-bottom:24px;" />
+        </div>
+        <span>아직 작성한 일기가 없는 것 같아요.</span> <br>
+        <span class="go-write-btn" @click="goWrite()">
+          일기 작성하러 가기 &nbsp;&nbsp;>
+        </span>
+      </div>
+    </div>
     <div
       v-for="note in viewList"
       :key="note.id"
@@ -88,7 +99,12 @@ export default {
         // this.$router.push({name: 'diary', query: {diaryId: '1', noteId: '2'}})
         this.$router.push("/diary").catch(() => {});
       })
-    }
+    },
+    goWrite() {
+      this.$store.commit('initNoteContent')
+      this.$store.commit('setIsUpdate', false)
+      this.$router.push("/write").catch(() => {});
+    },
   },
   created() {
     const diaryIdQuery = this.$route.query.diaryId
@@ -171,5 +187,22 @@ export default {
   display: flex;
   justify-content: space-between;
   align-items:center;
+}
+.note-empty {
+  width: 100%;
+  height: 100%;
+  margin: 20% 0;
+  font-size: 20px;
+}
+.go-write-btn {
+  display: inline-block;
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  width: 37%;
+  color: #ffb319;
+  margin-top: 24px;
+  padding-bottom: 2px;
+  font-weight: 600;
 }
 </style>
