@@ -205,6 +205,14 @@ export default {
           this.imageList.push(URL.createObjectURL(blob));
       })
   },
+  mounted() {
+    this.$store.commit("setMyFont", {
+      fontName: '기본체',
+      fontPrice: 0,
+      fontUrl: 'Pretendard Variable',
+      id: 1,
+    })
+  },
   updated() {
     this.excuteDragElement()
   }

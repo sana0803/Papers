@@ -133,6 +133,7 @@
 <script>
 import Swal from "sweetalert2";
 import EventBus from '../../eventBus'
+// import { mapGetters } from 'vuex'
 
 export default {
   data() {
@@ -186,6 +187,7 @@ export default {
       }
       return this.$store.getters["getMyFont"];
     },
+    // ...mapGetters(['getMyFont']),
   },
   methods: {
     selectImage(image) {
@@ -256,6 +258,7 @@ export default {
 
       console.log('노트', this.note.stickerList)
       // 리퀘스트 객체 작성
+      
       const formData = new FormData();
       formData.append("designId", this.note.designId);  // 디자인 ID
       formData.append("diaryId", selectDiaryId);  // 다이어리 ID
