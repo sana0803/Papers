@@ -149,8 +149,9 @@ public class StoreServiceImpl implements StoreService {
         for(DiaryCover diaryCover : userService.getDiaryCover(userRepository.findByUserId(userId).get()))
             userDiaryCoverIds.add(diaryCover.getId());
 
-        for(DiaryCover diaryCover : diaryCoverRepository.findAll()){
-            DiaryCoverRes diaryCoverRes = new DiaryCoverRes(diaryCover);
+        List<DiaryCover> diaryCoverList = diaryCoverRepository.findAll();
+        for(int i = 4; i < diaryCoverList.size(); i++){
+            DiaryCoverRes diaryCoverRes = new DiaryCoverRes(diaryCoverList.get(i));
             if(userDiaryCoverIds.contains(diaryCoverRes.getId())) diaryCoverRes.setOwned(true);
             diaryCoverResList.add(diaryCoverRes);
         }
