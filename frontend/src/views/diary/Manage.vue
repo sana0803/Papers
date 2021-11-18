@@ -94,7 +94,7 @@
         <div class="Header3">기본 커버</div>
         <div class="cover-box">
           <div
-            v-for="(item, idx) in coverList" :key="idx"
+            v-for="(item, idx) in basicCoverList" :key="idx"
             class="cover-item" @click="selectCover(item.id)"
           >
             <v-img class="cover-img" :src="item.coverUrl" @click="clickCover(item)"/>
@@ -103,7 +103,7 @@
         <div class="Header3">내 커버</div>
         <div class="cover-box">
           <div
-            v-for="(item, idx) in coverList" :key="idx"
+            v-for="(item, idx) in myCoverList" :key="idx"
             class="cover-item" @click="selectCover(item.id)"
           >
             <v-img class="cover-img" :src="item.coverUrl" @click="clickCover(item)"/>
@@ -175,6 +175,8 @@ export default {
       dialog: false,
       search: '',
       coverList: [],
+      basicCoverList: [],
+      myCoverList: [],
       shareList: [],
       memberList: [],
       selected: [],
@@ -230,7 +232,7 @@ export default {
                 Swal.fire({
                 icon: "success",
                 title:
-                  '<span style="font-size:25px;">초대가 완료되었습니다.</span>',
+                  '<span style="font-size:25px;">멤버 초대가 완료되었습니다.</span>',
                 confirmButtonColor: "#b0da9b",
                 confirmButtonText: '<span style="font-size:18px;">확인</span>',
                 })
@@ -258,7 +260,7 @@ export default {
               Swal.fire({
                 icon: "success",
                 title:
-                  '<span style="font-size:25px;">추방이 완료되었습니다.</span>',
+                  '<span style="font-size:25px;">멤버 삭제가 완료되었습니다.</span>',
                 confirmButtonColor: "#b0da9b",
                 confirmButtonText: '<span style="font-size:18px;">확인</span>',
                 })
@@ -269,7 +271,6 @@ export default {
       this.diaryInfo.coverId = id
     },
     modifyDiary() {
-      console.log('다이어리 수정')
       const diary= {
         diaryId: this.getCurrentDiary.id,
         diaryInfo: this.diaryInfo
@@ -278,7 +279,7 @@ export default {
       .then(() => {
         const nowDiary = this.$store.getters['getCurrentDiary']
         nowDiary.diaryTitle = diary.diaryInfo.diaryTitle
-        nowDiary.diaryCover = diary.diaryInfo.coverId
+        nowDiary.diaryCover.id = diary.diaryInfo.coverId
         this.$store.commit("setCurrentDiary", nowDiary)
         Swal.fire({
           icon: "success",
@@ -299,9 +300,12 @@ export default {
     this.$store.dispatch('getCover')
       .then((res) => {
         this.coverList = res.data
+        this.basicCoverList = this.coverList.slice(0,4)
+        this.myCoverList = this.coverList.slice(4)
       })
 
     this.diaryInfo.diaryTitle = this.getCurrentDiary.diaryTitle
+    this.diaryInfo.coverId = this.getCurrentDiary.diaryCover.id
   }
 };
 </script>
@@ -455,16 +459,30 @@ export default {
   width: 381px;
   height: 125px;
   // border: 1px solid #d7d7d7;
-  overflow-x: scroll;
-  // white-space:nowrap
+  overflow-x: auto;
+  overflow-y: hidden;
+  white-space:nowrap
+}
+.cover-box::-webkit-scrollbar-button {
+  display: none;
 }
 .cover-box::-webkit-scrollbar {
-  display: none;
+  height: 7px;
+  width: 0px;
+  cursor: pointer;
+}
+.cover-box::-webkit-scrollbar-thumb {
+  background-color: #9f9f9f;
+  border-radius: 10px;
+}
+.cover-box::-webkit-scrollbar-track {
+  background-color: #e2e2e2;
+  border-radius: 10px;
 }
 .cover-item{
   display: inline-block;
   // float: left;
-  height:100%;
+  height:125px;
   width:90px;
   cursor: pointer;
   overflow: hidden;
