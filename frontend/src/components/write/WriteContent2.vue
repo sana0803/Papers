@@ -47,7 +47,7 @@
             </label>
           </div>
           <div>
-            <span style="font-weight: 600; cursor: pointer;" @click="uploadS3Images">S3에서 업로드  ></span>
+            <span style="font-weight: 600; cursor: pointer;" @click="uploadS3Images">내 클라우드에서 업로드  ></span>
           </div>      
         </div>      
         <div class="file-input">
@@ -57,6 +57,7 @@
             ref="files"
             multiple
             @change="onImgUpload"
+            accept="image/*"
             style="opacity: 0; cursor: pointer; visibility: none; background: red"
           />
         </div>
