@@ -79,7 +79,16 @@ export default {
         userNickname: this.userNickname,
         // userName: "이름",
       };
-      this.$store
+      if(user.userId.length < 4 || user.userPwd.length < 4) {
+        Swal.fire({
+            icon: "error",
+            title: '<span style="font-size:25px;">아이디는 4자 이상, 비밀번호는 4자 이상 유효합니다.</span>',
+            confirmButtonColor: "#f27474",
+            confirmButtonText: '<span style="font-size:18px;">확인</span>',
+          });
+          
+      } else {
+        this.$store
         .dispatch("signUp", user)
         .then(() => {
           Swal.fire({
@@ -99,6 +108,7 @@ export default {
             confirmButtonText: '<span style="font-size:18px;">확인</span>',
           });
         });
+      }
     },
   },
 };
