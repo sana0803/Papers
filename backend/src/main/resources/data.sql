@@ -11,7 +11,7 @@ insert into user values ('wodud', 1000, '카누', 'https://papers-bucket.s3.ap-n
 insert into user values ('qjawls', 1000, '마카롱', 'https://papers-bucket.s3.ap-northeast-2.amazonaws.com/dummy-user/qjawls/%EB%A7%88%EC%B9%B4%EB%A1%B1.jpg', '$2a$10$9RbUeMd5zBbv1bic5Me.euAyCi1fqlwbWhKfmn0k3D7bnqJCtJhx.') ON DUPLICATE KEY UPDATE user_id='qjawls';
 insert into user values ('wlgns', 1000, '착한 훈이', 'https://papers-bucket.s3.ap-northeast-2.amazonaws.com/dummy-user/wlgns/%ED%9B%88.jpg', '$2a$10$9RbUeMd5zBbv1bic5Me.euAyCi1fqlwbWhKfmn0k3D7bnqJCtJhx.') ON DUPLICATE KEY UPDATE user_id='wlgns';
 insert into user values ('ssafy_consult', 1000, '컨설턴트', 'https://papers-bucket.s3.ap-northeast-2.amazonaws.com/dummy-user/ssafy_consult/ssafy.png', '$2a$10$9RbUeMd5zBbv1bic5Me.euAyCi1fqlwbWhKfmn0k3D7bnqJCtJhx.') ON DUPLICATE KEY UPDATE user_id='ssafy_consult';
-insert into user values ('ssafy_coach ', 1000, '코치', 'https://papers-bucket.s3.ap-northeast-2.amazonaws.com/dummy-user/ssafy_coach/ssafy.png', '$2a$10$9RbUeMd5zBbv1bic5Me.euAyCi1fqlwbWhKfmn0k3D7bnqJCtJhx.') ON DUPLICATE KEY UPDATE user_id='ssafy_coach ';
+insert into user values ('ssafy_coach', 1000, '코치', 'https://papers-bucket.s3.ap-northeast-2.amazonaws.com/dummy-user/ssafy_coach/ssafy.png', '$2a$10$9RbUeMd5zBbv1bic5Me.euAyCi1fqlwbWhKfmn0k3D7bnqJCtJhx.') ON DUPLICATE KEY UPDATE user_id='ssafy_coach ';
 
 -- 폰트
 insert into font values (1, '기본체', 0, 'Pretendard Variable') ON DUPLICATE KEY UPDATE id=1;

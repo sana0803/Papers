@@ -70,8 +70,8 @@ import { mapGetters } from 'vuex'
 export default {
   data() {
     return {
-      API_NOTIFICATION_URL: 'https://localhost/api',
-      // API_NOTIFICATION_URL: 'https://k5b102.p.ssafy.io/api',
+      // API_NOTIFICATION_URL: 'https://localhost/api',
+      API_NOTIFICATION_URL: 'https://k5b102.p.ssafy.io/api',
       alarmEventSource: null,
       introMode: true,
       userId: "",
