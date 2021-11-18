@@ -39,8 +39,7 @@
       </div>
       <div class="note-under">
         <span class="note_Name">{{ note.noteTitle }}</span>
-        <span class="note_Day">{{ note.noteCreatedDate }}</span>
-        
+        <span class="note_Day">{{ note.noteCreatedDate }}</span>        
       </div>
     </div>
     

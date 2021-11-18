@@ -467,7 +467,7 @@ export default {
   display: none;
 }
 .cover-box::-webkit-scrollbar {
-  height: 7px;
+  height: 5px;
   width: 0px;
   cursor: pointer;
 }

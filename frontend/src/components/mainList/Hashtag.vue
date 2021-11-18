@@ -23,7 +23,10 @@
       @click="goDetailNote(note)"
     >
       <div class="note_ImgBox">
-        <v-img class="note_Img" :src="note.noteMediaList[0]" />
+        <v-img class="note_Img"
+          align="center"
+          :src="note.noteMediaList[0]" />
+        <!-- <span class="note-detail-area" v-html="note.noteContent"></span> -->
       </div>
       <div class="note-under">
         <span class="note_Name">{{ note.noteTitle }}</span>
@@ -122,6 +125,8 @@ export default {
   width: 922px;
   margin: 0 auto;
   height:90px;
+  /* background: #aaa; */
+  margin-bottom: 32px;
 }
 .Hashtag_Item {
   background: #f6f6f6;
@@ -137,35 +142,47 @@ export default {
   cursor: pointer;
 }
 .Hashtag_Item:hover {
+  transition: .3s;
   background: rgb(212, 212, 212);
 }
 .note_Item {
   display: inline-block;
   width: 286px;
   height: 432px;
-  margin-bottom: 31px;
   margin-left: 31px;
+  margin-bottom: 31px;
 }
 .note_ImgBox {
   width: 286px;
   height: 394px;
+  padding: 20px;
   background: #fff;
   box-shadow: 3px 3px 11px rgba(166, 166, 168, 0.35);
   cursor: pointer;
   overflow:hidden;
   margin:0 auto;
   display: flex;
-  justify-content: center;
-  align-items: center;
+  /* justify-content: center; */
+}
+.note_ImgBox:hover {
+  opacity: .7;
+  transition: .3s;
+}
+.note-detail-area {
+  color: #929292;
 }
 .note_Img{
   /* width:100%;
   height:100%; */
-  object-fit:contain;
+  object-fit: cover;
 }
 .note_Name {
   font-size: 15px;
   max-width:190px;
+  cursor: pointer;
+}
+.note_Name:hover {
+  color: #979797;
 }
 .note_Day{
   font-size: 15px;
