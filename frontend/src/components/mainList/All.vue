@@ -25,10 +25,10 @@
       >
         <v-img class="note_Img" :src="note.noteMediaList[0]" /><br>
         <!-- {{note.noteContent}} -->
-        <span class="note-detail-area" v-html="note.noteContent"></span>
+        <span class="note-detail-area" v-html="note.noteContent" :style="{ 'font-family': getAllFonts[note.fontId - 1].fontUrl }"></span>
       </div>
       <div v-else align="center">
-        <div class="note-detail" >
+        <div class="note-detail">
           <span
             class="note-detail-area"
             :style="{ 'font-family': getAllFonts[note.fontId - 1].fontUrl }"
@@ -179,7 +179,6 @@ export default {
 }
 .note_Img{
   // width:100%;
-  // height:100%;
   object-fit: cover;
   // background-color: #eee;
 }
