@@ -362,7 +362,7 @@ public class NoteServiceImpl implements NoteService{
                 });
             }
             Note note = noteRepositorySupport.getNote(noteEmotionReq.getNoteId()).get();
-            String message = user.getUserNickname() + "님이" + " \"" + note.getNoteTitle() + "\" " + "에 감정을 표현했습니다.";
+            String message = user.getUserNickname() + "님이" + " \"" + note.getNoteTitle() + "\" " + "일기에 반응을 남겼습니다.";
             NotificationDetailRes notificationDetailRes = new NotificationDetailRes(message, user.getUserProfile());
             notificationService.publishToUsers(notificationDetailRes, guestList);
 
