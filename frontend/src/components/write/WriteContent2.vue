@@ -47,7 +47,9 @@
             </label>
           </div>
           <div>
-            <span style="font-weight: 600; cursor: pointer;" @click="uploadS3Images">내 클라우드에서 업로드  ></span>
+            <span style="font-weight: 600; cursor: pointer;" @click="uploadS3Images">
+              내 클라우드에서 업로드  >
+            </span>
           </div>      
         </div>      
         <div class="file-input">
@@ -60,20 +62,7 @@
             accept="image/*"
             style="opacity: 0; cursor: pointer; visibility: none; background: red"
           />
-        </div>
-          <!-- <v-file-input
-            v-model="note.noteMediaList"
-            class="target-file"
-            label="사진을 등록하세요 (최대 4장, 각 용량 2MB 이하)"
-            color="#979797"
-            counter
-            multiple
-            show-size
-            small-chips
-            truncate-length="11"
-            prepend-icon="mdi-camera"
-            @change="onImgUpload"
-          > -->          
+        </div>        
         <div id="file-section">
           <div v-if="note.noteS3MediaList.length > 0">
             <img :src="note.noteS3MediaList[0]" class="img-preview">
@@ -101,16 +90,31 @@
     </div>
 
     <!-- 다이얼로그 --> 
-    <v-dialog v-model="dialog" max-width="920px" id="targetDialog">
-      <img 
-        v-for="image in getS3result" 
-        :key="image" 
-        :src="image" 
-        @click="selectImage(image)"
-        style="width: 300px; "
-        />
-      <br>
-      <v-btn @click="dialog=false">닫기</v-btn>
+    <v-dialog
+      v-model="dialog" 
+      persistent
+      max-width="750"
+      id="targetDialog">
+      <v-card>
+        <div id="Dialog_Header">
+          <v-icon
+            @click="dialog = false"
+            id="album-dialog-close"
+            style="font-size: 2em"
+            >close</v-icon
+          >
+        </div>
+        <div class="dialog-content">
+          <div class="cloud-img-wrap">
+            <div v-for="image in getS3result" :key="image" class="cloud-img-item">
+              <img
+                :src="image" 
+                @click="selectImage(image)"
+              />
+            </div>
+          </div>
+        </div>
+      </v-card>
     </v-dialog>
   </div>  
 </template>
@@ -474,7 +478,7 @@ export default {
   }
 }
 .v-input__control {
-  background-color: red;
+  // background-color: red;
   padding: none;
 }
 .title-section {
@@ -533,9 +537,43 @@ export default {
     // height: 100%;
   }
 }
+#Dialog_Header {
+  height: 42px;
+  border-bottom: 1px solid #e7e7e7;
+}
+.dialog-content {
+  padding: 20px 40px;
+  // background-color: yellowgreen;
+}
+.cloud-img-wrap {  
+  width: 680px;
+  height: 100%;  
+  overflow: hidden;
+}
+.cloud-img-item {
+  display: inline-block;
+  position: relative;
+  width: 160px;
+  height: 150px;
+  cursor: pointer;
+  overflow: hidden;
+  margin: 0 9px 9px 0;
+
+  img {
+    width: 160px;
+    height: 150px;
+    object-fit: cover;
+  }
+}
 #HashTag_Input {
   margin-top: 20px;
   // background-color: #eee;
+}
+#targetDialog::-webkit-scrollbar {
+  overflow: scroll;
+}
+#targetDialog::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera*/
 }
 #WriteContent_Btn {
   height: 38px;
@@ -573,8 +611,5 @@ textarea {
   // border:3px solid red;
   width:300px;
   height:300px;
-}
-#targetDialog::-webkit-scrollbar {
-  display: none; /* Chrome, Safari, Opera*/
 }
 </style>
