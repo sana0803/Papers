@@ -60,10 +60,10 @@ INSERT INTO `user_font` VALUES (13,5,'tksgk') ON DUPLICATE KEY UPDATE id=13;
 
 
 -- 스티커 패키지
-insert into sticker_package values (1, 'pack1', 50) ON DUPLICATE KEY UPDATE id=1;
-insert into sticker_package values (2, 'Circle', 50) ON DUPLICATE KEY UPDATE id=2;
-insert into sticker_package values (3, 'star', 50) ON DUPLICATE KEY UPDATE id=3;
-insert into sticker_package values (4, 'Heart', 50) ON DUPLICATE KEY UPDATE id=4;
+insert into sticker_package values (1, '우리의 친구 페퍼', 50) ON DUPLICATE KEY UPDATE id=1;
+insert into sticker_package values (2, '동그라미 스티커팩', 50) ON DUPLICATE KEY UPDATE id=2;
+insert into sticker_package values (3, '별 스티커팩', 50) ON DUPLICATE KEY UPDATE id=3;
+insert into sticker_package values (4, '하트 스티커팩', 50) ON DUPLICATE KEY UPDATE id=4;
 
 -- 다이어리 커버
 insert into diary_cover values (1, '기본 살구색 커버', 150, 'https://papers-bucket.s3.ap-northeast-2.amazonaws.com/base-cover/basic_cover1.jpg') ON DUPLICATE KEY UPDATE id=1;
@@ -77,9 +77,9 @@ insert into diary_cover values (8, '케익 좋아하는 사람?', 150, 'https://
 insert into diary_cover values (9, '구겨놓은 종이', 150, 'https://papers-bucket.s3.ap-northeast-2.amazonaws.com/store/diary-cover/store_cover5.jpg') ON DUPLICATE KEY UPDATE id=9;
 insert into diary_cover values (10, '파랑색 식탁보', 150, 'https://papers-bucket.s3.ap-northeast-2.amazonaws.com/store/diary-cover/store_cover6.jpg') ON DUPLICATE KEY UPDATE id=10;
 insert into diary_cover values (11, '분홍색 식탁보', 150, 'https://papers-bucket.s3.ap-northeast-2.amazonaws.com/store/diary-cover/store_cover7.jpg') ON DUPLICATE KEY UPDATE id=11;
-insert into diary_cover values (12, '커버명 : - 미 정 -', 150, 'https://papers-bucket.s3.ap-northeast-2.amazonaws.com/store/diary-cover/store_cover8.jpg') ON DUPLICATE KEY UPDATE id=12;
+insert into diary_cover values (12, '할머니 식탁보', 150, 'https://papers-bucket.s3.ap-northeast-2.amazonaws.com/store/diary-cover/store_cover8.jpg') ON DUPLICATE KEY UPDATE id=12;
 insert into diary_cover values (13, '할아부지 식탁보', 150, 'https://papers-bucket.s3.ap-northeast-2.amazonaws.com/store/diary-cover/store_cover9.jpg') ON DUPLICATE KEY UPDATE id=13;
-insert into diary_cover values (14, '한정판일 것 같은 커버', 150, 'https://papers-bucket.s3.ap-northeast-2.amazonaws.com/store/diary-cover/store_cover10.jpg') ON DUPLICATE KEY UPDATE id=14;
+insert into diary_cover values (14, '밤하늘 커버', 150, 'https://papers-bucket.s3.ap-northeast-2.amazonaws.com/store/diary-cover/store_cover10.jpg') ON DUPLICATE KEY UPDATE id=14;
 
 -- 기본 일기장
 --insert into diary values (1, sysdate(), '기본 일기장', 1, 'wldks') ON DUPLICATE KEY UPDATE id=1;

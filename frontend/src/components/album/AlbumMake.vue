@@ -375,6 +375,7 @@ export default {
 .img-desc {  
   display: block;
   margin: 0 auto;
+  width: 100%;
   /* margin-bottom: 20px;  */
   background-color: white;
 }
