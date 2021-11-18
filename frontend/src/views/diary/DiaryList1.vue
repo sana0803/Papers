@@ -387,13 +387,11 @@
   top: 71px;
   left: 461px;
 }
-
 #horizon-line {
   width: 100%;
   border-bottom: 1px solid #ccc;
   margin-bottom: 8px;
 }
-
 #diary-empty {
   width: 50%;
   font-size: 18px;

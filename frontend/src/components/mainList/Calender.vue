@@ -56,40 +56,50 @@
         offset-x
       >
         <v-card
-          color="rgb(255 253 250)"
-          min-width="400px"
+          color="#fff"
+          min-width="360px"
+          max-width="500px"
           flat
         >
-          <div style="height:300px;" v-if="selectedEvent.noteMedia">
-            <v-img style="height:100%;" :src="selectedEvent.noteMedia" alt="일기 사진"/>
+          <div class="calendar-diary-img" style="" v-if="selectedEvent.noteMedia">
+            <v-img style="height: 100%; object-fit:cover;" :src="selectedEvent.noteMedia" alt="일기 사진"/>
           </div>
-          <v-card-title>
-            <span>{{selectedEvent.name}} </span>
-            <div style="font-size:14px; margin-left:200px;">작성자:{{selectedEvent.writerNickName}}</div>
-            <div style="font-size:11px;">({{selectedEvent.time}})</div>
+          <v-card-title class="calendar-diary-title">
+            <div class="diary-title">
+              <span style="font-size: 17px;">{{selectedEvent.name}}</span>
+            </div>
+            <div class="diary-writer">
+              <div style="font-size:14px; display: inline-block;">
+                <span style="color:">{{selectedEvent.writerNickName}}</span>
+              </div>
+              <div style="margin-left:6px; display: inline-block;">
+                <span style="font-size:13px; color:#929292;"> ({{selectedEvent.time}})</span>              
+              </div>
+            </div>
           </v-card-title>
-          <v-card-actions>
-            <v-btn
-              color="orange lighten-2"
-              text
-            >
+          <div id="horizon-line"></div>
+          <v-card-actions @click="show = !show">
+            <v-btn color="#979797" text>
               일기 내용 보기
             </v-btn>
             <v-spacer></v-spacer>
-            <v-btn
-              icon
-              @click="show = !show"
-            >
+            <v-btn icon>
               <v-icon>{{ show ? 'mdi-chevron-up' : 'mdi-chevron-down' }}</v-icon>
             </v-btn>
           </v-card-actions>
           <v-expand-transition>
             <div v-show="show">
               <v-divider></v-divider>
-              <v-card-text id="select-box"> 
+              <v-card-text id="diary-text"> 
                 <span>{{selectedEvent.content}}</span>
-                <div v-for="(hashtag, i) in selectedEvent.hashTag" :key="i">
-                  <span style="font-size:14px; color:#ffb319">#{{hashtag}}</span>
+                <div style="margin-top: 10px;">
+                  <div
+                    v-for="(hashtag, i) in selectedEvent.hashTag"
+                    :key="i"
+                    style="display: inline-block; margin-right: 5px;"
+                  >
+                    <span style="font-size:15px; font-weight: 500; color:#ffb319">#{{hashtag}}</span>
+                  </div>
                 </div>
               </v-card-text>
             </div>
@@ -111,19 +121,17 @@
         class="mx-auto"
         max-width="280"
         tile>
-        <div>
+        <div id="Dialog_Close">
           <v-icon
-            @click="dialog = false"
-            id="Dialog_Close"
-            style="font-size: 1.8rem; float: right; margin-top:5px; margin-left:15px;"
+            @click="dialog = false"            
+            style="font-size: 1.8rem; float: right; margin-top:8px; margin-right:8px;"
             >close</v-icon>
         </div>
         <v-list flat>
           <!-- <v-subheader>--일기 목록--</v-subheader> -->
           <v-list-item-group
             v-model="selectedItem"
-            color="primary"
-            style="margin-top:10px;"
+            color="#222"
           >
             <v-list-item
               v-for="(item, i) in items"
@@ -134,7 +142,7 @@
                 <v-icon v-text="item.icon"></v-icon>
               </v-list-item-icon>
               <v-list-item-content >
-                <v-list-item-title v-text="item.text" ></v-list-item-title>
+                <v-list-item-title v-text="item.text"></v-list-item-title>
               </v-list-item-content>
             </v-list-item>
           </v-list-item-group>
@@ -269,14 +277,33 @@ export default {
   margin: 0 auto;
   width: 95%;
 }
-#select-box {
-  font-size: 18px;
-  /* width: 400px;
-  height: 430px; */
-  /* display:flex;
-  justify-content: center;
-  align-items: 
-  center; */
+#diary-text {
+  font-size: 16px;
 }
-
+#horizon-line {
+  width: 100%;
+  border-bottom: 1px solid #ccc;
+  margin-bottom: 8px;
+}
+#Dialog_Close {
+  height: 42px;
+  /* background: #aaa; */
+  border-bottom: 1px solid #e7e7e7;
+}
+.calendar-diary-img {
+  width: 100%;
+  height:320px;
+}
+.calendar-diary-title {
+  display: flex;
+  justify-content: space-between;
+  /* background: #aaa; */
+}
+/* .diary-title { */
+  /* background: yellowgreen; */
+/* } */
+.diary-writer {
+  /* background: paleturquoise; */
+  margin-left: 18px;
+}
 </style>
