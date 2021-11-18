@@ -16,72 +16,7 @@
         <div class="alert-time">
           <span>{{notification.notificationDate}}</span>
         </div>
-      </div>
-      <!-- <div id="alert-list-item">
-        <div class="alert-content">
-          <div class="alert-profile">
-            <img src="../../assets/image/user.png" style="width:100%; height:100%" />
-          </div>
-          <div class="alert-msg">
-            <span>싸피님이 '여행 기록 일기장'에 일기를 작성했습니다. 싸피님이 '여행 기록 일기장'에 일기를 작성했습니다.</span>
-          </div>
-        </div>
-        <div class="alert-time">
-          <span>오후 12시 49분</span>
-        </div>
-      </div>
-      <div id="alert-list-item">
-        <div class="alert-content">
-          <div class="alert-profile">
-            <img src="../../assets/image/user.png" style="width:100%; height:100%" />
-          </div>
-          <div class="alert-msg">
-            <span>싸피님이 '여행 기록 일기장'에 일기를 작성했습니다.</span>
-          </div>
-        </div>
-        <div class="alert-time">
-          <span>오후 7시 21분</span>
-        </div>
-      </div>
-      <div id="alert-list-item">
-        <div class="alert-content">
-          <div class="alert-profile">
-            <img src="../../assets/image/user.png" style="width:100%; height:100%" />
-          </div>
-          <div class="alert-msg">
-            <span>싸피님이 '여행 기록 일기장'에 일기를 작성했습니다. 싸피님이 '여행 기록 일기장'에 일기를 작성했습니다.</span>
-          </div>
-        </div>
-        <div class="alert-time">
-          <span>오후 12시 49분</span>
-        </div>
-      </div>
-      <div id="alert-list-item">
-        <div class="alert-content">
-          <div class="alert-profile">
-            <img src="../../assets/image/user.png" style="width:100%; height:100%" />
-          </div>
-          <div class="alert-msg">
-            <span>싸피님이 '여행 기록 일기장'에 일기를 작성했습니다.</span>
-          </div>
-        </div>
-        <div class="alert-time">
-          <span>오후 7시 21분</span>
-        </div>
-      </div>
-      <div id="alert-list-item">
-        <div class="alert-content">
-          <div class="alert-profile">
-            <img src="../../assets/image/user.png" style="width:100%; height:100%" />
-          </div>
-          <div class="alert-msg">
-            <span>싸피님이 '여행 기록 일기장'에 일기를 작성했습니다. 싸피님이 '여행 기록 일기장'에 일기를 작성했습니다.</span>
-          </div>
-        </div>
-        <div class="alert-time">
-          <span>오후 12시 49분</span>
-        </div>
-      </div> -->
+      </div>      
     </div>
   </div>
 </template>
@@ -156,6 +91,11 @@ export default {
   background-color: #fff;
   box-shadow: 2px 2px 10px rgba(166, 166, 168, 0.25);
   cursor: pointer;
+}
+.alert-list-item:hover {
+  transition: .25s;
+  background-color: #f5f5f5;
+  box-shadow: 2px 2px 10px rgba(166, 166, 168, 0.6);
 }
 .alert-content {
   display: flex;

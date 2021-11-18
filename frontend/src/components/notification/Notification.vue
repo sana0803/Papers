@@ -63,7 +63,7 @@ export default {
 .right-area {
   float: right;
   width: 70%;
-  padding: 25px 10px;
+  padding: 25px 12px;
   height: 100%;
   line-height: 20px;
 }
