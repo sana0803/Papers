@@ -224,7 +224,7 @@ public class DiaryServiceImpl implements DiaryService {
         }
 
         // 알림 전송 ---------------------------------
-        String message = user.getUserNickname() + "님이 " + diary.getDiaryTitle() + " 일기장에 회원님을 초대했습니다.";
+        String message = user.getUserNickname() + "님이 \"" + diary.getDiaryTitle() + "\" 일기장에 회원님을 초대했습니다.";
         NotificationDetailRes notificationDetailRes = new NotificationDetailRes(message, user.getUserProfile());
         notificationService.publishToUsers(notificationDetailRes, guestList);
 
