@@ -62,6 +62,7 @@
               class="Search_Input"
               label="아이디 검색"
               v-model="search"
+              color="orange"
               v-on:keyup="memberSearch"
             ></v-text-field>
             <v-btn id="Search_Btn" icon>
