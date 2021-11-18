@@ -490,12 +490,27 @@
 .diary-text {
   margin-bottom: 12px;
   // background-color: lightblue;
-  overflow: scroll;
+  overflow-x: hidden;
+  overflow-y: auto;
+  white-space:nowrap;
   max-height: 95px;
   line-height: 1.4;
 }
+.diary-text::-webkit-scrollbar-button {
+  display: none;
+}
 .diary-text::-webkit-scrollbar {
-   display: none;
+  height: 0px;
+  width: 5px;
+  cursor: pointer;
+}
+.diary-text::-webkit-scrollbar-thumb {
+  background-color: #b9b9b9;
+  border-radius: 10px;
+}
+.diary-text::-webkit-scrollbar-track {
+  background-color: #e2e2e2;
+  border-radius: 10px;
 }
 .diary-hashtag {
   display: inline-block;

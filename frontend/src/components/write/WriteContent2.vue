@@ -99,7 +99,7 @@
         <div id="Dialog_Header">
           <v-icon
             @click="dialog = false"
-            id="album-dialog-close"
+            id="Dialog_Close"
             style="font-size: 2em"
             >close</v-icon
           >
@@ -540,6 +540,12 @@ export default {
 #Dialog_Header {
   height: 42px;
   border-bottom: 1px solid #e7e7e7;
+}
+#Dialog_Close {
+  float: right;
+  line-height: 36px;
+  cursor: pointer;
+  margin-right: 7px;  
 }
 .dialog-content {
   padding: 20px 40px;
