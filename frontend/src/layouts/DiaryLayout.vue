@@ -6,19 +6,55 @@
     <div id="Diary_Header">
       <span style="font-size: 18px">{{ currentDiary.diaryTitle }}</span>
       <!-- <span class="Header_txt">김싸피 </span> -->
-      <span
-        v-if="currentDiary.guest.length >= 0 && currentDiary.ownerId == loginUser.userId"
-        class="guest-txt"
+      <v-tooltip
+        class="guest-list"
+        bottom
+        nudge-right="92"
+        nudge-top="33"
+        z-index="5"
+        max-width="150"
+        color="#fff"
       >
-        ({{ currentDiary.guest.length + 1 }}명)
-      </span>
-      <span
-        v-if="currentDiary.guest.length >= 0 && currentDiary.ownerId != loginUser.userId"
-        class="guest-txt"
-      >
-        ({{ currentDiary.guest.length + 2 }}명)
-      </span>
-      <span v-else></span>
+        <template v-slot:activator="{ on, attrs }">      
+          <span
+            v-if="currentDiary.guest.length >= 0 && currentDiary.ownerId == loginUser.userId"
+            class="guest-txt"
+            v-bind="attrs"
+            v-on="on"
+          >
+            ({{ currentDiary.guest.length + 1 }}명)
+          </span>
+          <span
+            v-if="currentDiary.guest.length >= 0 && currentDiary.ownerId != loginUser.userId"
+            class="guest-txt"
+            v-bind="attrs"
+            v-on="on"
+          >
+            ({{ currentDiary.guest.length + 2 }}명)
+          </span>
+          <span v-else></span>
+        </template>
+        <div class="guest-list-item">
+          <div class="guest-profile-img">
+            <img :src="loginUser.userProfile" alt="">
+          </div>
+          <div class="guest-name">
+            <span>{{ loginUser.userNickname }}</span>
+          </div>
+        </div>
+        <div
+          v-for="(person, idx) in currentDiary.guest"
+          :key="idx"
+          class="guest-list-item"
+        >
+          <div class="guest-profile-img">
+            <img :src="person.userProfile" alt="">
+          </div>
+          <div class="guest-name">
+            <span>{{ person.userNickname }}</span>
+          </div>
+        </div>        
+      </v-tooltip>
     </div>
     <div id="Diary_Content">
       <div @click="goList" id="Diary_PostIt1">일기</div>
@@ -121,7 +157,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 #Diary_Container {
   /* border-right: 1px solid lightgrey; */
   /* border-left: 1px solid lightgrey; */
@@ -137,6 +173,42 @@ export default {
   font-size: 16px;
   color: #929292;
   margin-left: 8px;
+  cursor: default;
+}
+.v-tooltip__content {
+  box-shadow: 2px 2px 9px rgba(166, 166, 168, 0.45);
+  opacity: 1 !important;
+}
+.guest-list {
+  border: 1px solid #a7a7a7;
+}
+.guest-list-item {
+  // background: green;
+  width: 100%;
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  margin-top: 4px;
+  margin-bottom: 4px;
+}
+.guest-profile-img {
+  background: #fff;
+  widows: 32px;
+  height: 32px;
+  border-radius: 32px;
+  overflow: hidden;
+  display: inline-block;
+
+  img {
+    width: 32px;
+    height: 32px;
+    object-fit: cover;
+  }
+}
+.guest-name {
+  // background: yellow;
+  margin-left: 12px;
+  font-size: 15px;
 }
 #Diary_Content {
   width: 922px;
