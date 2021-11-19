@@ -8,7 +8,7 @@
 
 
 
-<img src="C:\Users\multicampus\Documents\S05P31B102\README.assets\sticker1.png" alt="sticker1" style="zoom: 33%;" /> -> => -> 안녕하세요 페퍼스의 마스코트 **페퍼**입니다!
+<img src="README.assets\sticker1.png" alt="sticker1" style="zoom: 33%;" /> -> => -> 안녕하세요 페퍼스의 마스코트 **페퍼**입니다!
 
 
 
