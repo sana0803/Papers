@@ -40,11 +40,9 @@
 
 #### ✔아키텍쳐
 
-------
-
-![아키텍쳐](C:\Users\multicampus\Documents\S05P31B102\README.assets\아키텍쳐.png)
 
 
+![아키텍쳐](README.assets/아키텍쳐.png)
 
 
 
@@ -58,13 +56,13 @@
 
 ------
 
-![Animation](C:\Users\multicampus\Documents\S05P31B102\README.assets\Animation.gif)
+![Animation](README.assets/Animation.gif)
 
 > 페퍼스의 인트로 화면입니다. 클릭을 누르면 다이어리가 펼쳐지듯 로그인 또는 회원가입으로 넘어갈수 있는 화면이 나와요.
 
 
 
-![Animation1](C:\Users\multicampus\Documents\S05P31B102\README.assets\Animation1.gif)
+![Animation1](README.assets/Animation1.gif)
 
 > 로그인을 하면 자신이 쓴 일기들을 볼 수 있어요.
 
@@ -72,7 +70,7 @@
 
 
 
-![Animation2](C:\Users\multicampus\Documents\S05P31B102\README.assets\Animation2.gif)
+![Animation2](README.assets/Animation2.gif)
 
 > 일기장을 가면 내가 만든일기장, 내가 초대된 일기장, 내가 공유한 일기장 모두 가능해요!
 >
@@ -82,7 +80,7 @@
 
 
 
-![Animation3](C:\Users\multicampus\Documents\S05P31B102\README.assets\Animation3.gif)
+![Animation3](README.assets/Animation3.gif)
 
 > 날짜를 가보면 달력으로 일기 조회가 가능해요! 내가 언제 무슨일기를 썼는지 일일이 일기장을 넘겨가며 찾아보지 않아도 된답니다!
 >
@@ -94,7 +92,7 @@
 
 
 
-![Animation4](C:\Users\multicampus\Documents\S05P31B102\README.assets\Animation4.gif)
+![Animation4](README.assets/Animation4.gif)
 
 > 해시태그도 빼놓을수 없죠! 
 >
@@ -106,7 +104,7 @@
 
 
 
-![Animation5](C:\Users\multicampus\Documents\S05P31B102\README.assets\Animation5.gif)
+![Animation5](README.assets/Animation5.gif)
 
 > 싸이월드에 포도알이 있었다면 페퍼스에는 종이가 있습니다!
 >
@@ -120,7 +118,7 @@
 
 
 
-![Animation6](C:\Users\multicampus\Documents\S05P31B102\README.assets\Animation6.gif)
+![Animation6](README.assets/Animation6.gif)
 
 > 아이템을 장착했으니 일기를 써볼까요
 >
@@ -132,7 +130,7 @@
 
 
 
-![Animation7](C:\Users\multicampus\Documents\S05P31B102\README.assets\Animation7.gif)
+![Animation7](README.assets/Animation7.gif)
 
 > 내가 일기에 썼던 소중한 사진들, 웹에서만 보기 아깝다면? 앨범을 만들어보세요!
 >
