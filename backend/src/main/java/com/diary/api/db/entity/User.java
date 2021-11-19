@@ -33,6 +33,6 @@ public class User {
 
     @PrePersist
     public void setUp(){
-        this.userMileage = 50;
+        this.userMileage = 1000;
     }
 }
