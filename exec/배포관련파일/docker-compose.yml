@@ -1,0 +1,38 @@
+#Docker compose 버전
+version: "3.3"
+
+#가동할 컨테이너 목록
+services:
+  db:
+    #사용할 이미지
+    image: mariadb-setting
+    container_name: mariadb-setting
+    restart: always
+
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: papers
+      TZ: "Asia/Seoul"
+    privileged: true
+    volumes:
+      - ./db:/docker-entrypoint-initdb.d
+    networks:
+      - backend
+  app:
+    build:
+      context: ./
+    container_name: papers_app
+    restart: always
+    ports:
+      - "443:443"
+    environment:
+      TZ: "Asia/Seoul"
+      SPRING_DATASOURCE_URL:
+        "jdbc:mariadb://k5b102.p.ssafy.io:3306/papersdb?characterEncoding=UTF-8&serverTimezone=UTC"
+    depends_on:
+      - db
+    networks:
+      - backend
+networks:
+  backend:

@@ -1,13 +1,14 @@
-const login = {
+const Login = {
     namespaced: true,
     state: {
     },
-    mutation: {
-    },
     getters: {
     },
-    action: {
+    actions: {
+        sign({ state }, name) {
+            console.log(state, name, '사인사인')
+        }
     }
-  }
-   
-  export default login;
+};
+
+export default Login;
